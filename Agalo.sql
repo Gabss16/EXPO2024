@@ -2,6 +2,8 @@
 
 //Varchar2(50) para poder usar el UUID
 //Number para auto incremento
+
+
 CREATE TABLE EMPRESA (
     IdEmpresa varchar2(50) PRIMARY KEY, 
     NombreEmpresa VARCHAR2(50) NOT NULL UNIQUE,
@@ -26,7 +28,7 @@ CREATE TABLE ESTADOSOLICITUD (
 
 CREATE TABLE ESTADOSOLICITANTE (
     IdEstadoSolicitante NUMBER PRIMARY KEY , 
-    Estado VARCHAR(10) CHECK (Estado IN ('Empleado', 'Desempleado'))
+    Estado VARCHAR(11) CHECK (Estado IN ('Empleado', 'Desempleado'))
 );
 
 CREATE TABLE TRABAJO (
@@ -48,6 +50,7 @@ CREATE TABLE TRABAJO (
 CREATE TABLE SOLICITANTE (
     IdSolicitante VARCHAR2(50) PRIMARY KEY, 
     Nombre VARCHAR2(50) NOT NULL,
+    CorreoElectronico VARCHAR2(50) NOT NULL UNIQUE,
     Telefono VARCHAR2(15) NOT NULL UNIQUE,
     Direccion VARCHAR2(100) NOT NULL,
     Ciudad VARCHAR2(50) NOT NULL,
@@ -63,6 +66,7 @@ CREATE TABLE SOLICITANTE (
     CONSTRAINT FK_EstadoSolicitante_Solicitante FOREIGN KEY (IdEstadoSolicitante) REFERENCES ESTADOSOLICITANTE(IdEstadoSolicitante)
 );
 
+
 CREATE TABLE SOLICITUD (
     IdSolicitud NUMBER PRIMARY KEY , 
     IdSolicitante VARCHAR2(50) NOT NULL,
@@ -73,6 +77,7 @@ CREATE TABLE SOLICITUD (
     CONSTRAINT FK_Empleador_Solicitud FOREIGN KEY (IdEmpresa) REFERENCES EMPRESA(IdEmpresa),
     CONSTRAINT FK_EstadoSolicitud_Solicitud FOREIGN KEY (IdEstadoSolicitud) REFERENCES ESTADOSOLICITUD(IdEstadoSolicitud)
 );
+
 
 //Secuencias y triggers para auto incremento 
 CREATE SEQUENCE EstadoTrabajoSequence
@@ -136,5 +141,92 @@ BEGIN
   FROM Dual;
 END;
 
+//Inserts de prueba Login
+INSERT INTO EMPRESA (
+    IdEmpresa, 
+    NombreEmpresa, 
+    CorreoElectronico, 
+    NumeroTelefono, 
+    DireccionEmpresa, 
+    SitioWebEmpresa, 
+    NombreRepresentante, 
+    Ciudad, 
+    Contrasena
+) VALUES (
+    'EMP001', 
+    'Innovaciones Tecnológicas SA de CV', 
+    'contacto@innovaciones.com.sv', 
+    '+503 9876-5432', 
+    'Boulevard de Los Héroes, San Salvador', 
+    'https://www.innovaciones.com.sv', 
+    'Carlos Hernández', 
+    'San Salvador', 
+    'contraseña1'
+);
 
+insert into ESTADOSOLICITANTE (Estado) values ('Desempleado');
+
+
+INSERT INTO SOLICITANTE (
+    IdSolicitante, 
+    Nombre, 
+    Telefono, 
+    Direccion, 
+    Ciudad, 
+    Pais, 
+    FechaDeNacimiento, 
+    Genero, 
+    InteresEmpleo, 
+    Habilidades, 
+    Curriculum, 
+    Foto, 
+    Contrasena, 
+    IdEstadoSolicitante, 
+    CorreoElectronico
+) VALUES (
+    'SOL001', 
+    'Ana Martinez', 
+    '+503 1234-5678', 
+    'Calle El Mirador #123, San Salvador', 
+    'San Salvador', 
+    'El Salvador', 
+    TO_DATE('1990-05-14', 'YYYY-MM-DD'), 
+    'Femenino', 
+    1, 
+    1, 
+    EMPTY_BLOB(), 
+    EMPTY_BLOB(), 
+    'contraseña1', 
+    1, 
+    'ana.martinez@example.com'
+);
+
+
+
+SELECT * FROM EMPRESA WHERE CorreoElectronico = 'contacto@innovaciones.com.sv' AND Contrasena = 'hashed_password_here';
+SELECT * FROM SOLICITANTE WHERE CorreoElectronico =  'ana.martinez@example.com' AND Contrasena = 'hashed_password_here';
+SELECT * FROM ESTADOSOLICITANTE ;
+
+-- Eliminar secuencias
+DROP SEQUENCE EstadoTrabajoSequence;
+DROP SEQUENCE EstadoSolicitudSequence;
+DROP SEQUENCE EstadoSolicitanteSequence;
+DROP SEQUENCE TrabajoSequence;
+DROP SEQUENCE SolicitudSequence;
+
+-- Eliminar triggers
+DROP TRIGGER TrigEstadoTrabajo;
+DROP TRIGGER TrigEstadoSolicitud;
+DROP TRIGGER TrigEstadoSolicitante;
+DROP TRIGGER TrigTrabajo;
+DROP TRIGGER TrigSolicitud;
+
+-- Eliminar tablas
+DROP TABLE SOLICITUD;
+DROP TABLE SOLICITANTE;
+DROP TABLE TRABAJO;
+DROP TABLE ESTADOSOLICITANTE;
+DROP TABLE ESTADOSOLICITUD;
+DROP TABLE ESTADOTRABAJO;
+DROP TABLE EMPRESA;
 
