@@ -7,7 +7,7 @@
 CREATE TABLE EMPLEADOR (
     IdEmpleador varchar2(50) PRIMARY KEY, 
     NombreEmpresa VARCHAR2(50) UNIQUE,
-    NombreRepresentante VARCHAR2(50) NOT NULL
+    NombreRepresentante VARCHAR2(50) NOT NULL,
     CorreoElectronico VARCHAR2(50) NOT NULL UNIQUE,
     NumeroTelefono VARCHAR2(15) NOT NULL,
     Direccion VARCHAR2(100) NOT NULL,
@@ -203,8 +203,8 @@ INSERT INTO SOLICITANTE (
 
 
 
-SELECT * FROM EMPLEADOR WHERE CorreoElectronico = 'contacto@innovaciones.com.sv' AND Contrasena = 'hashed_password_here';
-SELECT * FROM SOLICITANTE WHERE CorreoElectronico =  'ana.martinez@example.com' AND Contrasena = 'hashed_password_here';
+SELECT * FROM EMPLEADOR WHERE CorreoElectronico = 'contacto@innovaciones.com.sv' AND Contrasena = 'contraseña1';
+SELECT * FROM SOLICITANTE WHERE CorreoElectronico =  'ana.martinez@example.com' AND Contrasena = 'contraseña1';
 SELECT * FROM ESTADOSOLICITANTE ;
 
 -- Eliminar secuencias
