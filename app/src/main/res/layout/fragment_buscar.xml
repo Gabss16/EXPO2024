@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imgLineas2"
-        android:layout_width="182dp"
-        android:layout_height="257dp"
+        android:layout_width="255dp"
+        android:layout_height="322dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -17,18 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/lineas_decoracion1" />
-
-    <ImageView
-        android:id="@+id/imgLineas1"
-        android:layout_width="192dp"
-        android:layout_height="251dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/lineas_decoracion2" />
 
     <EditText
         android:id="@+id/txtBarraBusqueda"
