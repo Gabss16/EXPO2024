@@ -41,7 +41,7 @@ class login : AppCompatActivity() {
 
 
                 val comprobarCredencialesSiEsEmpresa =
-                    objConexion?.prepareStatement("SELECT * FROM EMPRESA WHERE CorreoElectronico = ? AND Contrasena = ?")!!
+                    objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE CorreoElectronico = ? AND Contrasena = ?")!!
                 comprobarCredencialesSiEsEmpresa.setString(1, txtEmail.text.toString())
                 comprobarCredencialesSiEsEmpresa.setString(2, txtPassword.text.toString())
 
