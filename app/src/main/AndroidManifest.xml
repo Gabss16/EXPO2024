@@ -15,6 +15,15 @@
         android:theme="@style/Theme.EXPOgbss"
         tools:targetApi="31">
         <activity
+            android:name=".recoveryCode"
+            android:exported="false" />
+        <activity
+            android:name=".passwordResetSuccessful"
+            android:exported="false" />
+        <activity
+            android:name=".forgotPassword"
+            android:exported="false"/>
+        <activity
             android:name=".rolSelector"
             android:exported="false" />
         <activity
@@ -26,7 +35,8 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -4,14 +4,14 @@
 //Number para auto incremento
 
 
-CREATE TABLE EMPRESA (
-    IdEmpresa varchar2(50) PRIMARY KEY, 
-    NombreEmpresa VARCHAR2(50) NOT NULL UNIQUE,
+CREATE TABLE EMPLEADOR (
+    IdEmpleador varchar2(50) PRIMARY KEY, 
+    NombreEmpresa VARCHAR2(50) UNIQUE,
+    NombreRepresentante VARCHAR2(50) NOT NULL
     CorreoElectronico VARCHAR2(50) NOT NULL UNIQUE,
     NumeroTelefono VARCHAR2(15) NOT NULL,
-    DireccionEmpresa VARCHAR2(100) NOT NULL,
-    SitioWebEmpresa VARCHAR2(500) NOT NULL,
-    NombreRepresentante VARCHAR2(50) NOT NULL,
+    Direccion VARCHAR2(100) NOT NULL,
+    SitioWeb VARCHAR2(500),
     Ciudad VARCHAR2(50) NOT NULL,
     Contrasena VARCHAR2(250) NOT NULL 
 );
@@ -34,7 +34,7 @@ CREATE TABLE ESTADOSOLICITANTE (
 CREATE TABLE TRABAJO (
     IdTrabajoEmpleador NUMBER PRIMARY KEY, 
     Titulo VARCHAR2(50) NOT NULL,
-    IdEmpresa VARCHAR2(50) NOT NULL,
+    IdEmpleador VARCHAR2(50) NOT NULL,
     IdEstadoTrabajo INT NOT NULL,
     Descripcion VARCHAR2(150),
     Ubicacion VARCHAR2(100),
@@ -43,8 +43,8 @@ CREATE TABLE TRABAJO (
     Salario NUMBER(3,3),
     Beneficios VARCHAR2(100),
     FechaDePublicacion DATE,
-    CONSTRAINT FK_Empresa_Trabajo FOREIGN KEY (IdEmpresa) REFERENCES EMPRESA(IdEmpresa),
-    CONSTRAINT FK_EstadoTrabajo_Trabajo FOREIGN KEY (IdEstadoTrabajo) REFERENCES ESTADOTRABAJO(IdEstadoTrabajo)
+    CONSTRAINT FKEmpleadorTrabajo FOREIGN KEY (IdEmpleador) REFERENCES EMPLEADOR(IdEmpleador),
+    CONSTRAINT FKEstadoTrabajoTrabajo FOREIGN KEY (IdEstadoTrabajo) REFERENCES ESTADOTRABAJO(IdEstadoTrabajo)
 );
 
 CREATE TABLE SOLICITANTE (
@@ -63,19 +63,19 @@ CREATE TABLE SOLICITANTE (
     Foto BLOB,
     Contrasena VARCHAR2(250) NOT NULL,
     IdEstadoSolicitante NUMBER NOT NULL,
-    CONSTRAINT FK_EstadoSolicitante_Solicitante FOREIGN KEY (IdEstadoSolicitante) REFERENCES ESTADOSOLICITANTE(IdEstadoSolicitante)
+    CONSTRAINT FKEstadoSolicitanteSolicitante FOREIGN KEY (IdEstadoSolicitante) REFERENCES ESTADOSOLICITANTE(IdEstadoSolicitante)
 );
 
 
 CREATE TABLE SOLICITUD (
     IdSolicitud NUMBER PRIMARY KEY , 
     IdSolicitante VARCHAR2(50) NOT NULL,
-    IdEmpresa VARCHAR2(50) NOT NULL,
+    IdEmpleador VARCHAR2(50) NOT NULL,
     IdEstadoSolicitud NUMBER NOT NULL,
     FechaSolicitud DATE NOT NULL,
-    CONSTRAINT FK_Solicitante_Solicitud FOREIGN KEY (IdSolicitante) REFERENCES SOLICITANTE(IdSolicitante),
-    CONSTRAINT FK_Empleador_Solicitud FOREIGN KEY (IdEmpresa) REFERENCES EMPRESA(IdEmpresa),
-    CONSTRAINT FK_EstadoSolicitud_Solicitud FOREIGN KEY (IdEstadoSolicitud) REFERENCES ESTADOSOLICITUD(IdEstadoSolicitud)
+    CONSTRAINT FKSolicitanteSolicitud FOREIGN KEY (IdSolicitante) REFERENCES SOLICITANTE(IdSolicitante),
+    CONSTRAINT FKEmpleadorSolicitud FOREIGN KEY (IdEmpleador) REFERENCES EMPLEADOR(IdEmpleador),
+    CONSTRAINT FKEstadoSolicitudSolicitud FOREIGN KEY (IdEstadoSolicitud) REFERENCES ESTADOSOLICITUD(IdEstadoSolicitud)
 );
 
 
@@ -142,26 +142,26 @@ BEGIN
 END;
 
 //Inserts de prueba Login
-INSERT INTO EMPRESA (
-    IdEmpresa, 
+INSERT INTO EMPLEADOR (
+    IdEmpleador, 
     NombreEmpresa, 
     CorreoElectronico, 
     NumeroTelefono, 
-    DireccionEmpresa, 
-    SitioWebEmpresa, 
+    Direccion, 
+    SitioWeb, 
     NombreRepresentante, 
     Ciudad, 
     Contrasena
 ) VALUES (
     'EMP001', 
-    'Innovaciones TecnolÛgicas SA de CV', 
+    'Innovaciones Tecnol√≥gicas SA de CV', 
     'contacto@innovaciones.com.sv', 
     '+503 9876-5432', 
-    'Boulevard de Los HÈroes, San Salvador', 
+    'Boulevard de Los H√©roes, San Salvador', 
     'https://www.innovaciones.com.sv', 
-    'Carlos Hern·ndez', 
+    'Carlos Hern√°ndez', 
     'San Salvador', 
-    'contraseÒa1'
+    'contrase√±a1'
 );
 
 insert into ESTADOSOLICITANTE (Estado) values ('Desempleado');
@@ -196,14 +196,14 @@ INSERT INTO SOLICITANTE (
     1, 
     EMPTY_BLOB(), 
     EMPTY_BLOB(), 
-    'contraseÒa1', 
+    'contrase√±a1', 
     1, 
     'ana.martinez@example.com'
 );
 
 
 
-SELECT * FROM EMPRESA WHERE CorreoElectronico = 'contacto@innovaciones.com.sv' AND Contrasena = 'hashed_password_here';
+SELECT * FROM EMPLEADOR WHERE CorreoElectronico = 'contacto@innovaciones.com.sv' AND Contrasena = 'hashed_password_here';
 SELECT * FROM SOLICITANTE WHERE CorreoElectronico =  'ana.martinez@example.com' AND Contrasena = 'hashed_password_here';
 SELECT * FROM ESTADOSOLICITANTE ;
 
@@ -228,5 +228,5 @@ DROP TABLE TRABAJO;
 DROP TABLE ESTADOSOLICITANTE;
 DROP TABLE ESTADOSOLICITUD;
 DROP TABLE ESTADOTRABAJO;
-DROP TABLE EMPRESA;
+DROP TABLE EMPLEADOR;
 
