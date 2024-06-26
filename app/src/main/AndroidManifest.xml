@@ -15,6 +15,13 @@
         android:theme="@style/Theme.EXPOgbss"
         tools:targetApi="31">
         <activity
+            android:name=".requests"
+            android:exported="false" />
+        <activity
+            android:name=".Empleadores"
+            android:exported="false"
+            android:label="@string/title_activity_empleadores" />
+        <activity
             android:name=".rolSelector"
             android:exported="false" />
         <activity
