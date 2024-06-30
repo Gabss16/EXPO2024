@@ -15,6 +15,9 @@
         android:theme="@style/Theme.EXPOgbss"
         tools:targetApi="31">
         <activity
+            android:name=".registroSolicitante"
+            android:exported="false" />
+           <activity
             android:name=".requests"
             android:exported="false" />
         <activity
@@ -29,7 +32,7 @@
             android:exported="false" />
         <activity
             android:name=".forgotPassword"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".rolSelector"
             android:exported="false" />
