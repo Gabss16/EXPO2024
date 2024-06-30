@@ -27,6 +27,7 @@ class login : AppCompatActivity() {
         val txtEmail = findViewById<EditText>(R.id.txtEmailLogin)
         val txtPassword = findViewById<EditText>(R.id.txtPasswordLogin)
         val btnSignIn = findViewById<Button>(R.id.btnSignInLogin)
+        val txtforgotPassword = findViewById<TextView>(R.id.txtForgotYourPassword)
         //  val btnRegistrarse = findViewById<TextView>(R.id.btnRegistrarse) (Agregar cuando esté el botón
 
 
@@ -41,7 +42,7 @@ class login : AppCompatActivity() {
 
 
                 val comprobarCredencialesSiEsEmpresa =
-                    objConexion?.prepareStatement("SELECT * FROM EMPRESA WHERE CorreoElectronico = ? AND Contrasena = ?")!!
+                    objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE CorreoElectronico = ? AND Contrasena = ?")!!
                 comprobarCredencialesSiEsEmpresa.setString(1, txtEmail.text.toString())
                 comprobarCredencialesSiEsEmpresa.setString(2, txtPassword.text.toString())
 
@@ -56,7 +57,7 @@ class login : AppCompatActivity() {
                 if (esEmpresa.next()) {
                     startActivity(pantallaPrincipal)
                 }
-                else if(esSolicitante.next()){
+                if(esSolicitante.next()){
                     startActivity(pantallaPrincipal)
                 }
                 else
@@ -65,6 +66,11 @@ class login : AppCompatActivity() {
                 }
             }
         }
+        txtforgotPassword.setOnClickListener {
+            //Cambio de pantalla a activity forgot password
+               val pantallaOlvideContrasena = Intent(this, forgotPassword::class.java)
+                 startActivity(pantallaOlvideContrasena)
+             }
 
         // Agregar cuando esté el botón de registrarse, y la activity de registrarse
         //  btnRegistrarse.setOnClickListener {

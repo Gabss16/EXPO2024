@@ -8,7 +8,7 @@
     tools:context=".login">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imgLineas2"
         android:layout_width="623dp"
         android:layout_height="221dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,6 +25,8 @@
         android:background="@drawable/txt"
         android:ems="10"
         android:inputType="text"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.469"
@@ -33,7 +35,7 @@
         app:layout_constraintVertical_bias="0.577" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imgLineas1"
         android:layout_width="217dp"
         android:layout_height="170dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -77,7 +79,8 @@
         android:background="@drawable/txt"
         android:ems="10"
         android:inputType="text"
-        android:text="    "
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"

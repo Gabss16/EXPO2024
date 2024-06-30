@@ -14,7 +14,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EXPOgbss"
         tools:targetApi="31">
-
+        <activity
+            android:name=".registroSolicitante"
+            android:exported="false" />
+           <activity
+            android:name=".requests"
+            android:exported="false" />
+        <activity
+            android:name=".Empleadores"
+            android:exported="false"
+            android:label="@string/title_activity_empleadores" />
+       <activity
+            android:name=".recoveryCode"
+            android:exported="false" />
+        <activity
+            android:name=".passwordResetSuccessful"
+            android:exported="false" />
+        <activity
+            android:name=".forgotPassword"
+            android:exported="false" />
+        <activity
+            android:name=".rolSelector"
+            android:exported="false" />
         <activity
             android:name=".solicitante"
             android:exported="false"
@@ -24,10 +45,9 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
