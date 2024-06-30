@@ -15,6 +15,9 @@
         android:theme="@style/Theme.EXPOgbss"
         tools:targetApi="31">
         <activity
+            android:name=".Detalle_Puesto"
+            android:exported="false" />
+        <activity
             android:name=".requests"
             android:exported="false" />
         <activity
