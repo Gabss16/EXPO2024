@@ -23,11 +23,11 @@ class forgotPassword : AppCompatActivity() {
         }
 
         val btnEnviar = findViewById<ImageView>(R.id.btnViaEmail)
-        val codigoRecuperacion = (1000..9999).random()
+        var codigoRecuperacion = (1000..9999).random()
 
         btnEnviar.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                recuperarContrasena("20230454@ricaldone.edu.sv", "Recuperación de contraseña", "Hola este es su codigo de recuperacion:$codigoRecuperacion")
+                recuperarContrasena("contrerasgab01@gmail.com", "Recuperación de contraseña", "Hola este es su codigo de recuperacion:$codigoRecuperacion")
 
             }
         }
