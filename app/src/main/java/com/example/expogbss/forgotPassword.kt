@@ -1,10 +1,15 @@
 package com.example.expogbss
 
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class forgotPassword : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,5 +22,14 @@ class forgotPassword : AppCompatActivity() {
             insets
         }
 
+        val btnEnviar = findViewById<ImageView>(R.id.btnViaEmail)
+        val codigoRecuperacion = (1000..9999).random()
+
+        btnEnviar.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                recuperarContrasena("20230454@ricaldone.edu.sv", "Recuperación de contraseña", "Hola este es su codigo de recuperacion:$codigoRecuperacion")
+
+            }
+        }
     }
 }
