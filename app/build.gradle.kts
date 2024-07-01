@@ -46,6 +46,7 @@ dependencies {
     implementation(files("libs\\additionnal.jar"))
     implementation(files("libs\\mail.jar"))
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("androidx.navigation:navigation-fragment-ktx:2.6.0")
     implementation("androidx.navigation:navigation-ui-ktx:2.6.0")

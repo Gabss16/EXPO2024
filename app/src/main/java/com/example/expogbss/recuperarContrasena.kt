@@ -11,7 +11,7 @@ import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
-suspend fun recuperarContrasena(receptor: String, sujeto: String, mensaje: String) = withContext(
+suspend fun recuperarContrasena(receptor: String, sujeto: String, mensaje: String): Boolean = withContext(
     Dispatchers.IO) {
     // Configuración del servidor SMTP
     val props = Properties().apply {
@@ -25,14 +25,12 @@ suspend fun recuperarContrasena(receptor: String, sujeto: String, mensaje: Strin
     // Iniciamos Sesión
     val session = Session.getInstance(props, object : javax.mail.Authenticator() {
         override fun getPasswordAuthentication(): PasswordAuthentication {
-            return PasswordAuthentication("agaloempresa@gmail.com", "nilamasminimaidea")
+            return PasswordAuthentication("agaloempresa@gmail.com", "ASDASDASD")
         }
     })
 
-    // Hacemos el envío
-    try {
+    return@withContext try {
         val message = MimeMessage(session).apply {
-            //Con que correo enviaré el mensaje
             setFrom(InternetAddress("agaloempresa@gmail.com"))
             addRecipient(Message.RecipientType.TO, InternetAddress(receptor))
             subject = sujeto
@@ -40,8 +38,10 @@ suspend fun recuperarContrasena(receptor: String, sujeto: String, mensaje: Strin
         }
         Transport.send(message)
         println("Correo enviado satisfactoriamente")
+        true
     } catch (e: MessagingException) {
         e.printStackTrace()
         println("CORREO NO ENVIADO")
+        false
     }
 }

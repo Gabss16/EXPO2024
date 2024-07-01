@@ -1,7 +1,10 @@
 package com.example.expogbss
 
+import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -21,15 +24,11 @@ class forgotPassword : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+     val btnViaEmail = findViewById<ImageView>(R.id.btnViaEmail)
 
-        val btnEnviar = findViewById<ImageView>(R.id.btnViaEmail)
-        var codigoRecuperacion = (1000..9999).random()
-
-        btnEnviar.setOnClickListener {
-            CoroutineScope(Dispatchers.Main).launch {
-                recuperarContrasena("contrerasgab01@gmail.com", "Recuperación de contraseña", "Hola este es su codigo de recuperacion:$codigoRecuperacion")
-
-            }
+        btnViaEmail.setOnClickListener {
+            val pantallaIngresoCorreo = Intent(this, ingresarCorreoRecupContrasena::class.java)
+            startActivity(pantallaIngresoCorreo)
         }
     }
 }
