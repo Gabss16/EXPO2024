@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
             delay(3000)
             val pantallaLogin = Intent(this@MainActivity, login::class.java)
             startActivity(pantallaLogin)
+            finish()
         }
 
     }

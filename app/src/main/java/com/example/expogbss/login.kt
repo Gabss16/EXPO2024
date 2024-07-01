@@ -17,7 +17,9 @@ import modelo.ClaseConexion
 
 class login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -67,17 +69,18 @@ class login : AppCompatActivity() {
                 }
             }
         }
+
         txtforgotPassword.setOnClickListener {
             //Cambio de pantalla a activity forgot password
                val pantallaOlvideContrasena = Intent(this, forgotPassword::class.java)
                  startActivity(pantallaOlvideContrasena)
              }
 
-        // Agregar cuando esté el botón de registrarse, y la activity de registrarse
-        //  btnRegistrarse.setOnClickListener {
-        //Cambio de pantalla para poder registrarse
-        //   val pantallaRegistrarse = Intent(this, Registrarse::class.java)
-        //     startActivity(pantallaRegistrarse)
-        //   }
+//         Agregar cuando esté el botón de registrarse, y la activity de registrarse
+//          btnRegistrarse.setOnClickListener {
+//        Cambio de pantalla para poder registrarse
+//           val pantallaRegistrarse = Intent(this, Registrarse::class.java)
+//             startActivity(pantallaRegistrarse)
+//           }
     }
 }
