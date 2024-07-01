@@ -40,38 +40,85 @@
         app:layout_constraintVertical_bias="0.131" />
 
     <ScrollView
-        android:layout_width="331dp"
-        android:layout_height="699dp"
-        tools:layout_editor_absoluteX="40dp"
-        tools:layout_editor_absoluteY="150dp">
+        android:layout_width="313dp"
+        android:layout_height="581dp"
+        tools:layout_editor_absoluteX="50dp"
+        tools:layout_editor_absoluteY="152dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/txtNumeroTelefonoSolicitante"
+            app:layout_constraintTop_toBottomOf="@+id/txtNumeroTelefonoSolicitante">
 
             <EditText
                 android:id="@+id/txtNombreSolicitante"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/textboxregistro"
                 android:ems="10"
                 android:hint="Nombre Completo"
                 android:inputType="text"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.511"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.205" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/editTextText4"
+                android:id="@+id/txtCorreoSolicitante"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/textboxregistro"
                 android:ems="10"
+                android:hint="Correo Electronico"
                 android:inputType="text"
-                android:text="Name"
-                tools:layout_editor_absoluteX="63dp"
-                tools:layout_editor_absoluteY="76dp" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.511"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtNombreSolicitante" />
+
+            <EditText
+                android:id="@+id/txtContrasenaSolicitante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/textboxregistro"
+                android:ems="10"
+                android:hint="Contraseña"
+                android:inputType="textPassword"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.511"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtCorreoSolicitante" />
+
+            <EditText
+                android:id="@+id/txtNumeroTelefonoSolicitante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="208dp"
+                android:background="@drawable/textboxregistro"
+                android:ems="10"
+                android:hint="Número de Telefono"
+                android:inputType="text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtContrasenaSolicitante" />
+
+            <EditText
+                android:id="@+id/txtHabilidades"
+                android:layout_width="281dp"
+                android:layout_height="105dp"
+                android:background="@drawable/textboxregistro"
+                android:ems="10"
+                android:hint="Habilidades"
+                android:inputType="text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.468"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="262dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
