@@ -13,9 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 class ingresarCorreoRecupContrasena : AppCompatActivity() {
 
-    private val correoEnviado = MutableStateFlow(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,24 +28,26 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
             insets
         }
         val btnEnviar = findViewById<Button>(R.id.btnEnviarCodigoRecuperacion)
-        var codigoRecuperacion = (1000..9999).random()
         val txtCorreo = findViewById<EditText>(R.id.txtIngresarCorreoRecuperacion)
+        var codigoRecuperacion = (1000..9999).random()
 
         btnEnviar.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                val correo = txtCorreo.text.toString()
-                recuperarContrasena(correo, "Recuperación de contraseña", "Hola este es su codigo de recuperacion: $codigoRecuperacion")
-                correoEnviado.emit(true)
-            }
-        }
+                val correoEnviado = recuperarContrasena(txtCorreo.text.toString(), "Recuperación de contraseña", "Hola este es su codigo de recuperacion: $codigoRecuperacion")
 
-        CoroutineScope(Dispatchers.Main).launch {
-            correoEnviado.collect { enviado ->
-                if (enviado) {
-                    val pantallaIngresoCodigo = Intent(this@ingresarCorreoRecupContrasena, recoveryCode::class.java)
+                if (correoEnviado) {
+                    var pantallaIngresoCodigo = Intent(this@ingresarCorreoRecupContrasena, recoveryCode::class.java)
                     startActivity(pantallaIngresoCodigo)
+                    finish()
+                } else {
+                    println("PapuError")
+
+
                 }
             }
+
         }
+
+
     }
-}
+    }

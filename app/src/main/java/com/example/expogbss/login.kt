@@ -17,7 +17,9 @@ import modelo.ClaseConexion
 
 class login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -67,6 +69,7 @@ class login : AppCompatActivity() {
                 }
             }
         }
+
         txtforgotPassword.setOnClickListener {
             //Cambio de pantalla a activity forgot password
                val pantallaOlvideContrasena = Intent(this, forgotPassword::class.java)
