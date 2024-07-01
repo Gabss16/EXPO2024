@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
@@ -26,7 +27,7 @@ class login : AppCompatActivity() {
         }
         val txtEmail = findViewById<EditText>(R.id.txtEmailLogin)
         val txtPassword = findViewById<EditText>(R.id.txtPasswordLogin)
-        val btnSignIn = findViewById<Button>(R.id.btnSignInLogin)
+        val btnSignIn = findViewById<ImageButton>(R.id.btnSignInLogin)
         val txtforgotPassword = findViewById<TextView>(R.id.txtForgotYourPassword)
         //  val btnRegistrarse = findViewById<TextView>(R.id.btnRegistrarse) (Agregar cuando esté el botón
 
