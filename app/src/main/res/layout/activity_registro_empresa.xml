@@ -12,7 +12,7 @@
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="empresa"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +29,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.979">
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            tools:layout_editor_absoluteX="190dp"
+            tools:layout_editor_absoluteY="635dp" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            tools:layout_editor_absoluteX="40dp"
+            tools:layout_editor_absoluteY="596dp" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            tools:layout_editor_absoluteX="40dp"
+            tools:layout_editor_absoluteY="596dp" />
 
         <ImageButton
             android:id="@+id/imageButton"
@@ -55,6 +79,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="foto de perfil"
+                app:layout_constraintTop_toBottomOf="@+id/editTextText9"
+                tools:layout_editor_absoluteX="39dp" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="subir foto"
+                tools:layout_editor_absoluteX="189dp"
+                tools:layout_editor_absoluteY="703dp" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="tomar foto"
+                tools:layout_editor_absoluteX="189dp"
+                tools:layout_editor_absoluteY="638dp" />
+
+            <ImageView
+                android:id="@+id/imageView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView19"
+                app:layout_constraintVertical_bias="1.0"
+                tools:layout_editor_absoluteX="22dp"
+                tools:srcCompat="@tools:sample/avatars" />
+
             <EditText
                 android:id="@+id/editTextText6"
                 android:layout_width="298dp"
@@ -64,21 +123,13 @@
                 android:layout_marginEnd="23dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
-                android:hint="Direccion"
+                android:hint="Telefono"
                 android:inputType="text"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editTextText5" />
-
-            <TextView
-                android:id="@+id/textView16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1550dp"
-                android:text="TextView"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/editTextText2"
@@ -102,11 +153,11 @@
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="60dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
-                android:hint="Correo"
+                android:hint="Empresa (si aplica)"
                 android:inputType="text"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -125,7 +176,7 @@
                 android:layout_marginEnd="22dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
-                android:hint="contraseña"
+                android:hint="correo"
                 android:inputType="text"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -142,7 +193,7 @@
                 android:layout_marginEnd="23dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
-                android:hint="Telefono"
+                android:hint="Contraseña"
                 android:inputType="text"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -159,7 +210,7 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
-                android:hint="Pais"
+                android:hint="Direccion"
                 android:inputType="text"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -189,11 +240,11 @@
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="28dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="38dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
-                android:hint="Fecha de nacimiento"
+                android:hint="Sitio Web (si aplica)"
                 android:inputType="text"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
