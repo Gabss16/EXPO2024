@@ -31,7 +31,7 @@
         app:layout_constraintVertical_bias="0.979">
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/btnCrearCuentaEmpleador"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#FFFEFE"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/editTextText6"
+                android:id="@+id/txtTelefonoEmpleador"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="21dp"
@@ -70,7 +70,7 @@
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextText5" />
+                app:layout_constraintTop_toBottomOf="@+id/txtContrasenaEmpleador" />
 
             <TextView
                 android:id="@+id/textView16"
@@ -81,7 +81,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/editTextText2"
+                android:id="@+id/txtNombreEmpleador"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="15dp"
@@ -98,7 +98,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/editTextText3"
+                android:id="@+id/txtNombreEmpresaEmpleador"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="24dp"
@@ -113,11 +113,11 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextText2"
+                app:layout_constraintTop_toBottomOf="@+id/txtNombreEmpleador"
                 app:layout_constraintVertical_bias="0.031" />
 
             <EditText
-                android:id="@+id/editTextText4"
+                android:id="@+id/txtCorreoEmpleador"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
@@ -131,10 +131,10 @@
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextText3" />
+                app:layout_constraintTop_toBottomOf="@+id/txtNombreEmpresaEmpleador" />
 
             <EditText
-                android:id="@+id/editTextText5"
+                android:id="@+id/txtContrasenaEmpleador"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="21dp"
@@ -148,10 +148,10 @@
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextText4" />
+                app:layout_constraintTop_toBottomOf="@+id/txtCorreoEmpleador" />
 
             <EditText
-                android:id="@+id/editTextText7"
+                android:id="@+id/txtDireccionEmpleador"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="24dp"
@@ -165,10 +165,10 @@
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextText6" />
+                app:layout_constraintTop_toBottomOf="@+id/txtTelefonoEmpleador" />
 
             <EditText
-                android:id="@+id/editTextText8"
+                android:id="@+id/txtCiudadEmpleador"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
@@ -182,10 +182,10 @@
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextText7" />
+                app:layout_constraintTop_toBottomOf="@+id/txtDireccionEmpleador" />
 
             <EditText
-                android:id="@+id/editTextText9"
+                android:id="@+id/txtSitioWebEmpleador"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="28dp"
@@ -199,7 +199,7 @@
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextText8" />
+                app:layout_constraintTop_toBottomOf="@+id/txtCiudadEmpleador" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

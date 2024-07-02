@@ -7,13 +7,16 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
+import java.security.MessageDigest
 
 class login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +34,12 @@ class login : AppCompatActivity() {
         val txtPassword = findViewById<EditText>(R.id.txtPasswordLogin)
         val btnSignIn = findViewById<ImageButton>(R.id.btnSignInLogin)
         val txtforgotPassword = findViewById<TextView>(R.id.txtForgotYourPassword)
-        //  val btnRegistrarse = findViewById<TextView>(R.id.btnRegistrarse) (Agregar cuando esté el botón
+      //  val btnRegistrarse = findViewById<TextView>(R.id.btnRegistrarse)
 
+        fun hashSHA256(input: String): String {
+            val bytes = MessageDigest.getInstance("SHA-256").digest(input.toByteArray())
+            return bytes.joinToString("") { "%02x".format(it) }
+        }
 
         //Botones para ingresar al sistema
 
@@ -43,16 +50,18 @@ class login : AppCompatActivity() {
             GlobalScope.launch(Dispatchers.IO) {
                 val objConexion = ClaseConexion().cadenaConexion()
 
+                val PasswordEncriptada = hashSHA256(txtPassword.text.toString())
+
 
                 val comprobarCredencialesSiEsEmpresa =
                     objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE CorreoElectronico = ? AND Contrasena = ?")!!
                 comprobarCredencialesSiEsEmpresa.setString(1, txtEmail.text.toString())
-                comprobarCredencialesSiEsEmpresa.setString(2, txtPassword.text.toString())
+                comprobarCredencialesSiEsEmpresa.setString(2, PasswordEncriptada)
 
                 val comprobarCredencialesSiEsSolicitante =
                     objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE CorreoElectronico = ? AND Contrasena = ?")!!
                 comprobarCredencialesSiEsSolicitante.setString(1, txtEmail.text.toString())
-                comprobarCredencialesSiEsSolicitante.setString(2, txtPassword.text.toString())
+                comprobarCredencialesSiEsSolicitante.setString(2, PasswordEncriptada)
 
                 val esEmpresa = comprobarCredencialesSiEsEmpresa.executeQuery()
                 val esSolicitante = comprobarCredencialesSiEsSolicitante.executeQuery()
@@ -65,7 +74,10 @@ class login : AppCompatActivity() {
                 }
                 else
                     {
-                    println("Usuario no encontrado, verifique las credenciales")
+                        withContext(Dispatchers.Main){
+                            Toast.makeText(this@login, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                            println("contraseña $PasswordEncriptada")
+                        }
                 }
             }
         }
