@@ -60,7 +60,7 @@ class login : AppCompatActivity() {
                 if (esEmpresa.next()) {
                     startActivity(pantallaPrincipal)
                 }
-                if(esSolicitante.next()){
+                else if(esSolicitante.next()){
                     startActivity(pantallaPrincipal)
                 }
                 else
