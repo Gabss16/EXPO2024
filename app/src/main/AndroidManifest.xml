@@ -15,6 +15,9 @@
         android:theme="@style/Theme.EXPOgbss"
         tools:targetApi="31">
         <activity
+            android:name=".registro_empresa"
+            android:exported="false" />
+        <activity
             android:name=".ingresarCorreoRecupContrasena"
             android:exported="false" />
         <activity
@@ -61,7 +64,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
+            android:value="@string/google_maps_key" />
     </application>
 
 </manifest>
