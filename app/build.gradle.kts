@@ -42,6 +42,7 @@ dependencies {
     implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.oracle.database.jdbc:ojdbc6:11.2.0.4")
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
     implementation(files("libs\\activation.jar"))
     implementation(files("libs\\additionnal.jar"))
     implementation(files("libs\\mail.jar"))

@@ -26,8 +26,7 @@ suspend fun recuperarContrasena(receptor: String, sujeto: String, mensaje: Strin
     val session = Session.getInstance(props, object : javax.mail.Authenticator() {
         override fun getPasswordAuthentication(): PasswordAuthentication {
 
-            return PasswordAuthentication("agaloempresa@gmail.com", "jfjt mexf oorp dgzp")
-
+            return PasswordAuthentication("agaloempresa@gmail.com", "dadasad")
         }
     })
 
