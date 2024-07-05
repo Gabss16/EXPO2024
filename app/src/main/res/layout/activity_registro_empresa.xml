@@ -12,7 +12,7 @@
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="empresa"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +30,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.979">
 
+
+
         <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="wrap_content"
@@ -44,8 +46,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
-
-
         android:layout_width="342dp"
         android:layout_height="681dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -57,8 +57,53 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="foto de perfil"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.186"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextText9" />
 
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="48dp"
+                android:layout_marginBottom="16dp"
+                android:text="subir foto"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="44dp"
+                android:text="tomar foto"
+                app:layout_constraintBottom_toTopOf="@+id/button3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextText9"
+                app:layout_constraintVertical_bias="0.545" />
+
+            <ImageView
+                android:id="@+id/imageView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/button3"
+                app:layout_constraintHorizontal_bias="0.175"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView19"
+                app:layout_constraintVertical_bias="0.0"
+                tools:srcCompat="@drawable/circulos" />
+
+            <EditText
                 android:id="@+id/editTextText6"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
@@ -67,7 +112,7 @@
                 android:layout_marginEnd="23dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
-                android:hint="Direccion"
+                android:hint="Telefono"
                 android:inputType="text"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -80,7 +125,7 @@
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="15dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
@@ -90,30 +135,22 @@
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/editTextText3"
                 android:layout_width="298dp"
-
                 android:layout_height="48dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
-                android:hint="Correo"
+                android:hint="Empresa (si aplica)"
                 android:inputType="text"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-
-                app:layout_constraintTop_toBottomOf="@+id/editTextText2"
-                app:layout_constraintVertical_bias="0.017" />
+                app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
 
             <EditText
                 android:id="@+id/editTextText4"
@@ -124,7 +161,7 @@
                 android:layout_marginEnd="22dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
-                android:hint="contraseña"
+                android:hint="correo"
                 android:inputType="text"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -141,7 +178,7 @@
                 android:layout_marginEnd="23dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
-                android:hint="Telefono"
+                android:hint="Contraseña"
                 android:inputType="text"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -150,154 +187,56 @@
                 app:layout_constraintTop_toBottomOf="@+id/editTextText4" />
 
             <EditText
-                android:id="@+id/editTextText9"
+                android:id="@+id/editTextText7"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="28dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
-                android:hint="Fecha de nacimiento"
+                android:hint="Direccion"
                 android:inputType="text"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner3" />
-
-            <TextView
-                android:id="@+id/textView17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="261dp"
-                android:text="Genero"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextText9" />
-
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="225dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="33dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="84dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
-
-            <TextView
-                android:id="@+id/textView20"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="194dp"
-                android:text="Area de trabajo "
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner" />
-
-            <Spinner
-                android:id="@+id/spinner2"
-                android:layout_width="225dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="33dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="84dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView20" />
-
-            <TextView
-                android:id="@+id/textView21"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="33dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="219dp"
-                android:text="Departamento"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editTextText6" />
 
-            <Spinner
-                android:id="@+id/spinner3"
-                android:layout_width="225dp"
+            <EditText
+                android:id="@+id/editTextText8"
+                android:layout_width="298dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="33dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="84dp"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="22dp"
+                android:background="@drawable/txt_registro"
+                android:ems="10"
+                android:hint="Ciudad"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+                app:layout_constraintTop_toBottomOf="@+id/editTextText7" />
 
-            <ImageView
-                android:id="@+id/imageView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="188dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView22"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="21dp"
+            <EditText
+                android:id="@+id/editTextText9"
+                android:layout_width="298dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="22dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="77dp"
-                android:text="Subir desde galeria"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.227"
-                app:layout_constraintStart_toEndOf="@+id/imageView14"
-                app:layout_constraintTop_toBottomOf="@+id/textView22" />
-
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="73dp"
-                android:text="tomar foto"
+                android:layout_marginEnd="22dp"
+                android:background="@drawable/txt_registro"
+                android:ems="10"
+                android:hint="Sitio Web (si aplica)"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/imageView14"
-                app:layout_constraintTop_toBottomOf="@+id/button" />
-
-            <TextView
-                android:id="@+id/textView22"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="245dp"
-                android:text="Foto de perfil"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner2" />
-
-            <ImageView
-                android:id="@+id/imageView15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="122dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView14"
-                app:srcCompat="@drawable/btn_cv" />
+                app:layout_constraintTop_toBottomOf="@+id/editTextText8" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
