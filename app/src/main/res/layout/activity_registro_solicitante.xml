@@ -44,6 +44,8 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
+
+
         android:layout_width="342dp"
         android:layout_height="681dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -56,6 +58,7 @@
             android:layout_height="wrap_content">
 
             <EditText
+
                 android:id="@+id/editTextText6"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
@@ -87,11 +90,13 @@
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/editTextText3"
                 android:layout_width="298dp"
+
                 android:layout_height="48dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="1dp"
@@ -103,9 +108,10 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
+
                 app:layout_constraintTop_toBottomOf="@+id/editTextText2"
                 app:layout_constraintVertical_bias="0.017" />
 
