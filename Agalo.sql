@@ -12,9 +12,10 @@ CREATE TABLE EMPLEADOR (
     NumeroTelefono VARCHAR2(15) NOT NULL,
     Direccion VARCHAR2(100) NOT NULL,
     SitioWeb VARCHAR2(500),
-    Ciudad VARCHAR2(50) NOT NULL,
-    Contrasena VARCHAR2(250) NOT NULL 
-);
+    Departamento VARCHAR2(50) NOT NULL,
+    Contrasena VARCHAR2(250) NOT NULL,
+    Estado VARCHAR(10) CHECK (Estado IN ('Activo', 'Pendiente')),
+    Foto BLOB);
 
 CREATE TABLE ESTADOTRABAJO (
     IdEstadoTrabajo NUMBER PRIMARY KEY , 
@@ -47,23 +48,28 @@ CREATE TABLE TRABAJO (
     CONSTRAINT FKEstadoTrabajoTrabajo FOREIGN KEY (IdEstadoTrabajo) REFERENCES ESTADOTRABAJO(IdEstadoTrabajo)
 );
 
+Create table AreaDeTrabajo(
+IdAreaDeTrabajo int PRIMARY KEY,
+NombreAreaDetrabajo varchar2(100));
+
 CREATE TABLE SOLICITANTE (
     IdSolicitante VARCHAR2(50) PRIMARY KEY, 
     Nombre VARCHAR2(50) NOT NULL,
     CorreoElectronico VARCHAR2(50) NOT NULL UNIQUE,
     Telefono VARCHAR2(15) NOT NULL UNIQUE,
     Direccion VARCHAR2(100) NOT NULL,
-    Ciudad VARCHAR2(50) NOT NULL,
-    Pais VARCHAR2(50),
+    Departamento VARCHAR2(50) NOT NULL,
     FechaDeNacimiento DATE,
-    Genero VARCHAR2(15),
-    InteresEmpleo INT,
-    Habilidades INT,
+    Genero VARCHAR2(20) CHECK (Genero IN ('Masculino', 'Femenino', 'Prefiero no decirlo')),
+    IdAreaDeTrabajo INT,
+    Habilidades varchar2(250),
     Curriculum BLOB,
     Foto BLOB,
     Contrasena VARCHAR2(250) NOT NULL,
     IdEstadoSolicitante NUMBER NOT NULL,
-    CONSTRAINT FKEstadoSolicitanteSolicitante FOREIGN KEY (IdEstadoSolicitante) REFERENCES ESTADOSOLICITANTE(IdEstadoSolicitante)
+    CONSTRAINT FKEstadoSolicitanteSolicitante FOREIGN KEY (IdEstadoSolicitante) REFERENCES ESTADOSOLICITANTE(IdEstadoSolicitante),
+    CONSTRAINT FkAreaDeTrabajoSolicitante FOREIGN KEY (IdAreaDeTrabajo) REFERENCES AreaDeTrabajo(IdAreaDeTrabajo)
+
 );
 
 
@@ -154,14 +160,14 @@ INSERT INTO EMPLEADOR (
     Contrasena
 ) VALUES (
     'EMP001', 
-    'Innovaciones TecnolÃ³gicas SA de CV', 
+    'Innovaciones Tecnológicas SA de CV', 
     'contacto@innovaciones.com.sv', 
     '+503 9876-5432', 
-    'Boulevard de Los HÃ©roes, San Salvador', 
+    'Boulevard de Los Héroes, San Salvador', 
     'https://www.innovaciones.com.sv', 
-    'Carlos HernÃ¡ndez', 
+    'Carlos Hernández', 
     'San Salvador', 
-    'contraseÃ±a1'
+    'contraseña1'
 );
 
 insert into ESTADOSOLICITANTE (Estado) values ('Desempleado');
@@ -196,15 +202,15 @@ INSERT INTO SOLICITANTE (
     1, 
     EMPTY_BLOB(), 
     EMPTY_BLOB(), 
-    'contraseÃ±a1', 
+    'contraseña1', 
     1, 
     'ana.martinez@example.com'
 );
 
 
-
-SELECT * FROM EMPLEADOR WHERE CorreoElectronico = 'contacto@innovaciones.com.sv' AND Contrasena = 'contraseÃ±a1';
-SELECT * FROM SOLICITANTE WHERE CorreoElectronico =  'ana.martinez@example.com' AND Contrasena = 'contraseÃ±a1';
+select * from empleador;
+SELECT * FROM EMPLEADOR WHERE CorreoElectronico = 'contacto@innovaciones.com.sv' AND Contrasena = 'contraseña1';
+SELECT * FROM SOLICITANTE WHERE CorreoElectronico =  'ana.martinez@example.com' AND Contrasena = 'contraseña1';
 SELECT * FROM ESTADOSOLICITANTE ;
 
 -- Eliminar secuencias
@@ -229,4 +235,3 @@ DROP TABLE ESTADOSOLICITANTE;
 DROP TABLE ESTADOSOLICITUD;
 DROP TABLE ESTADOTRABAJO;
 DROP TABLE EMPLEADOR;
-

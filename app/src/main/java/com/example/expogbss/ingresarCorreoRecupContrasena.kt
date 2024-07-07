@@ -1,5 +1,6 @@
 package com.example.expogbss
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -21,6 +22,7 @@ import modelo.ClaseConexion
 class ingresarCorreoRecupContrasena : AppCompatActivity() {
 
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,6 +32,9 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        //TODO: Verificar en clase por qué no se envían los correos, el código es el correcto
+
         val btnEnviar = findViewById<Button>(R.id.btnEnviarCodigoRecuperacion)
         val txtcorreoRecuperacion = findViewById<EditText>(R.id.txtIngresarCorreoRecuperacion)
         val codigoRecupContrasena = (1000..9999).random()
@@ -38,6 +43,8 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
             btnEnviar.setOnClickListener {
 
                 val correo = txtcorreoRecuperacion.text.toString()
+
+                //Validar que el Texview de correo no esté vacío
                 if (correo.isEmpty())
                 {
                     Toast.makeText(
@@ -52,20 +59,22 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
                         val correoRecuperacion = txtcorreoRecuperacion.text.toString()
 
 
+                        //Se ejecutan los select respectivos para verificar que el correo exista en alguna de las tablas existentes
                         val comprobarCredencialesSiEsSolicitante =
                             objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE CorreoElectronico = ?")!!
                         comprobarCredencialesSiEsSolicitante.setString(1, correoRecuperacion)
 
-                        val comprobarCredencialesSiEsEmpresa =
+                        val comprobarCredencialesSiEsEmpleador =
                             objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE CorreoElectronico = ?")!!
-                        comprobarCredencialesSiEsEmpresa.setString(1, correoRecuperacion)
+                        comprobarCredencialesSiEsEmpleador.setString(1, correoRecuperacion)
 
-                        val esEmpresa = comprobarCredencialesSiEsEmpresa.executeQuery()
+                        val esEmpleador = comprobarCredencialesSiEsEmpleador.executeQuery()
                         val esSolicitante = comprobarCredencialesSiEsSolicitante.executeQuery()
 
-                        if (esEmpresa.next()) {
+                        //Bloque de código que se ejecuta en caso de detectar el correo en la tabla de Empleador
+                        if (esEmpleador.next()) {
                             CoroutineScope(Dispatchers.Main).launch {
-                                println("Es empresa kkk")
+                                println("Es empleador kkk")
                                 val correoEnviado = recuperarContrasena(
                                     correoRecuperacion,"Recuperación de contraseña","Hola este es su codigo de recuperacion: $codigoRecupContrasena")
                                 if (correoEnviado) {
@@ -105,7 +114,10 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
                                 }
                             }
                         } else {
-                            println("Correo no encontrado, ingrese uno válido")
+                            //Toast para indicar a usuario que el correo no existe
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(this@ingresarCorreoRecupContrasena, "Correo electrónico no encontrado, ingrese un correo válido", Toast.LENGTH_LONG).show()
+                            }
                         }
                     }
                 }
