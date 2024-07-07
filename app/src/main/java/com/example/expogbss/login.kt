@@ -87,28 +87,33 @@ class login : AppCompatActivity() {
 
                     val contrasenaEncriptada = hashSHA256(txtcontrasenaLogin.text.toString())
 
-                    val comprobarCredencialesSiEsEmpresa =
+
+                    //Se ejecutan los select respectivos para verificar que el correo exista en alguna de las tablas existentes
+                    val comprobarCredencialesSiEsEmpleador =
                         objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE CorreoElectronico = ? AND Contrasena = ?")!!
-                    comprobarCredencialesSiEsEmpresa.setString(1, correo)
-                    comprobarCredencialesSiEsEmpresa.setString(2, contrasenaEncriptada)
+                    comprobarCredencialesSiEsEmpleador.setString(1, correo)
+                    comprobarCredencialesSiEsEmpleador.setString(2, contrasenaEncriptada)
 
                     val comprobarCredencialesSiEsSolicitante =
                         objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE CorreoElectronico = ? AND Contrasena = ?")!!
                     comprobarCredencialesSiEsSolicitante.setString(1, correo)
                     comprobarCredencialesSiEsSolicitante.setString(2, contrasenaEncriptada)
 
-                    val esEmpresa = comprobarCredencialesSiEsEmpresa.executeQuery()
+                    val esEmpleador = comprobarCredencialesSiEsEmpleador.executeQuery()
                     val esSolicitante = comprobarCredencialesSiEsSolicitante.executeQuery()
 
 
-                    if (esEmpresa.next()) {
+                    //Si el usuario es Empleador, se le muestra su pantalla respectiva
+                    if (esEmpleador.next()) {
                         startActivity(pantallaPrincipal)
                     } else if (
-                        esSolicitante.next()) {
+
+                    //Si el usuario es Solicitante, se le muestra su pantalla respectiva
+                    esSolicitante.next()) {
                         startActivity(pantallaPrincipal)
                     }else {
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(this@login, "Usuario no encontrado, verifique las credenciales", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@login, "Usuario no encontrado, verifique sus credenciales", Toast.LENGTH_LONG).show()
                         }
                     }
                 }

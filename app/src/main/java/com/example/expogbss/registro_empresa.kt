@@ -32,6 +32,9 @@ class registro_empresa : AppCompatActivity() {
             insets
         }
 
+        //TODO: Falta que se puedan agregar fotografias, faltan los inserts en caso de no agregar sitio web o nombre de empresa.
+        //TODO: Ver cómo evitar que exista el mismo correo en ambas tablas, consultar con el profe
+
         //1-Mandar a llamar a todos los elementos de la vista
         val txtNombreEmpleador = findViewById<EditText>(R.id.txtNombreEmpleador)
         val txtEmpresaEmpleador = findViewById<EditText>(R.id.txtNombreEmpresaEmpleador)
@@ -71,15 +74,11 @@ class registro_empresa : AppCompatActivity() {
             return bytes.joinToString("") { "%02x".format(it) }
         }
 
-
-
-
-
-
-
+        //Código para registrar a un empleador
 
         btnCrearCuentaEmpleador.setOnClickListener {
 
+            //mando a llamar a cada textview
             val nombreEmpleador = txtNombreEmpleador.text.toString()
             val CorreoEmpleador = txtCorreoEmpleador.text.toString()
             val ContrasenaEmpleador = txtContrasenaEmpleador.text.toString()
@@ -92,6 +91,7 @@ class registro_empresa : AppCompatActivity() {
             val verificarCorreo = Regex ("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
             val verificarContraseña = Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
 
+            //Validaciones de campos vacíos y cosas por ese estilo
             if (nombreEmpleador.isEmpty() || EmpresaEmpleador.isEmpty()  || CorreoEmpleador.isEmpty() || ContrasenaEmpleador.isEmpty() || TelefoEmpleador.isEmpty() || DireccionEmpleador.isEmpty()) {
 
                 Toast.makeText(
@@ -122,12 +122,13 @@ class registro_empresa : AppCompatActivity() {
 
                     val objConexion = ClaseConexion().cadenaConexion()
 
-                    //Encripto la contraseña usando la función de arriba
+                    //Encripto la contraseña usando la función de encriptación
                     val contrasenaEncriptada = hashSHA256(txtContrasenaEmpleador.text.toString())
 
                     //Creo una variable que contenga un PrepareStatement
+
                     val crearUsuario =
-                        objConexion?.prepareStatement("INSERT INTO EMPLEADOR (IdEmpleador, NombreEmpresa, CorreoElectronico, NumeroTelefono,Direccion,SitioWeb, NombreRepresentante, Ciudad, Contrasena) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
+                        objConexion?.prepareStatement("INSERT INTO EMPLEADOR (IdEmpleador, NombreEmpresa, CorreoElectronico, NumeroTelefono,Direccion,SitioWeb, NombreRepresentante, Departamento, Contrasena) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
                     crearUsuario.setString(1, UUID.randomUUID().toString())
                     crearUsuario.setString(2, txtEmpresaEmpleador.text.toString())
                     crearUsuario.setString(3, txtCorreoEmpleador.text.toString())
