@@ -14,6 +14,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.security.MessageDigest
 
 class registroSolicitante : AppCompatActivity() {
@@ -95,27 +99,12 @@ class registroSolicitante : AppCompatActivity() {
         spGeneroSolicitante.adapter = adaptadorDeGeneros
 
         val spAreaDeTrabajoSolicitante = findViewById<Spinner>(R.id.spAreaDeTrabajoSolicitante)
-        val listadoAreas = listOf(
-            "Trabajo doméstico",
-            "Freelancers",
-            "Trabajos remotos",
-            "Servicios de entrega",
-            "Sector de la construcción",
-            "Área de la salud",
-            "Sector de la hostelería",
-            "Servicios profesionales",
-            "Área de ventas y atención al cliente",
-            "Educación y enseñanza"
-        )
-        val adaptadorDeAreas =
-            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listadoAreas)
-        spAreaDeTrabajoSolicitante.adapter = adaptadorDeAreas
+        CoroutineScope(Dispatchers.IO).launch {  }
 
         val imgFotoDePerfilSolicitante = findViewById<ImageView>(R.id.imgFotoDePerfilSolicitante)
         val btnSubirDesdeGaleriaSolicitante =
             findViewById<Button>(R.id.btnSubirDesdeGaleriaSolicitante)
         val btnTomarFotoSolicitante = findViewById<Button>(R.id.btnTomarFotoSolicitante)
-        val btnSubirCV = findViewById<ImageView>(R.id.btnSubirCV)
         val btnCrearCuentaSolicitante = findViewById<ImageButton>(R.id.btnCrearCuentaSolicitante)
 
         //Creo la función para encriptar la contraseña

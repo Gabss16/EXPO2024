@@ -20,11 +20,18 @@ class rolSelector : AppCompatActivity() {
         }
 
         val btnEmpleador = findViewById<ImageView>(R.id.btnCuentaEmpleador)
+        val btnSolicitante = findViewById<ImageView>(R.id.btnCuentaSolicitante)
 
         btnEmpleador.setOnClickListener {
             //Cambio de pantalla para poder registrarse
             val pantallaRegistrarse = Intent(this, registro_empresa::class.java)
             startActivity(pantallaRegistrarse)
+        }
+
+        btnSolicitante.setOnClickListener {
+            //Cambio de pantalla para poder registratse
+            val pantallaRegistrarseSolicitante = Intent(this,registroSolicitante :: class.java)
+            startActivity(pantallaRegistrarseSolicitante)
         }
     }
 }
