@@ -70,7 +70,8 @@ class registroSolicitante : AppCompatActivity() {
             val datePickerDialog = DatePickerDialog(
                 this,
                 { view, anioSeleccionado, mesSeleccionado, diaSeleccionado ->
-                    val fechaSeleccionada = "$diaSeleccionado/${mesSeleccionado + 1}/$anioSeleccionado"
+                    val fechaSeleccionada =
+                        "$diaSeleccionado/${mesSeleccionado + 1}/$anioSeleccionado"
                     txtFechaSolicitante.setText(fechaSeleccionada)
                 },
                 anio, mes, dia
@@ -111,7 +112,8 @@ class registroSolicitante : AppCompatActivity() {
         spAreaDeTrabajoSolicitante.adapter = adaptadorDeAreas
 
         val imgFotoDePerfilSolicitante = findViewById<ImageView>(R.id.imgFotoDePerfilSolicitante)
-        val btnSubirDesdeGaleriaSolicitante = findViewById<Button>(R.id.btnSubirDesdeGaleriaSolicitante)
+        val btnSubirDesdeGaleriaSolicitante =
+            findViewById<Button>(R.id.btnSubirDesdeGaleriaSolicitante)
         val btnTomarFotoSolicitante = findViewById<Button>(R.id.btnTomarFotoSolicitante)
         val btnSubirCV = findViewById<ImageView>(R.id.btnSubirCV)
         val btnCrearCuentaSolicitante = findViewById<ImageButton>(R.id.btnCrearCuentaSolicitante)
@@ -126,7 +128,7 @@ class registroSolicitante : AppCompatActivity() {
         //Programo el boton para registrar a un solicitante
 
 
-        btnCrearCuentaSolicitante.setOnClickListener{
+        btnCrearCuentaSolicitante.setOnClickListener {
 
             //Mando a llamar a cada Edit Text
         }

@@ -143,8 +143,8 @@ class registro_empresa : AppCompatActivity() {
 
                     withContext(Dispatchers.Main) {
                         AlertDialog.Builder(this@registro_empresa)
-                            .setTitle("Se ha registrado exitosamente")
-                            .setMessage("Su cuenta ha sido creada.")
+                            .setTitle("Cuenta registrada")
+                            .setMessage("Tu cuenta ha sido creada, puedes regresar al inicio de sesión.")
                             .setPositiveButton("Aceptar", null)
                             .show()
                         txtNombreEmpleador.setText("")
