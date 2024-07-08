@@ -3,23 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation2"
-    app:startDestination="@+id/navigation_home">
-
+    app:startDestination="@id/homeEmpresa">
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.expogbss.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
-
+        android:id="@+id/homeEmpresa"
+        android:name="com.example.expogbss.homeEmpresa"
+        android:label="fragment_home_empresa"
+        tools:layout="@layout/fragment_home_empresa" />
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.expogbss.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-
+        android:id="@+id/busquedaEmpresa"
+        android:name="com.example.expogbss.busquedaEmpresa"
+        android:label="fragment_busqueda_empresa"
+        tools:layout="@layout/fragment_busqueda_empresa" />
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.expogbss.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/perfilEmpresa"
+        android:name="com.example.expogbss.perfilEmpresa"
+        android:label="fragment_perfil_empresa"
+        tools:layout="@layout/fragment_perfil_empresa" />
+    <fragment
+        android:id="@+id/chatEmpresa"
+        android:name="com.example.expogbss.chatEmpresa"
+        android:label="fragment_chat_empresa"
+        tools:layout="@layout/fragment_chat_empresa" />
 </navigation>
