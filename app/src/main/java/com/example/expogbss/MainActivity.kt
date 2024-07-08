@@ -3,6 +3,7 @@ package com.example.expogbss
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.EditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -17,8 +18,10 @@ class MainActivity : AppCompatActivity() {
             delay(3000)
             val pantallaLogin = Intent(this@MainActivity, login::class.java)
             startActivity(pantallaLogin)
+            finish()
         }
 
     }
+
 
 }

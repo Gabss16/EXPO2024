@@ -1,10 +1,18 @@
 package com.example.expogbss
 
+import android.content.Intent
+import android.media.Image
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class forgotPassword : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,5 +25,12 @@ class forgotPassword : AppCompatActivity() {
             insets
         }
 
+        val btnViaEmail = findViewById<ImageView>(R.id.btnViaEmail)
+        val btnViaSms = findViewById<ImageView>(R.id.btnViaSms)
+
+        btnViaEmail.setOnClickListener {
+            val pantallaIngresoCorreo = Intent(this, ingresarCorreoRecupContrasena::class.java)
+            startActivity(pantallaIngresoCorreo)
+        }
     }
 }
