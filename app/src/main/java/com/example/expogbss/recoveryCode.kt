@@ -52,8 +52,6 @@ class recoveryCode : AppCompatActivity() {
         btnReenviarCodigo.setOnClickListener {
 
             CoroutineScope(Dispatchers.IO).launch {
-                val objConexion = ClaseConexion().cadenaConexion()
-
                 val correoEnviado = recuperarContrasena(
                     correo,
                     "Recuperación de contraseña",
@@ -64,7 +62,6 @@ class recoveryCode : AppCompatActivity() {
                         this@recoveryCode, recoveryCode::class.java
                     )
                     startActivity(pantallaIngresoCodigo)
-                    finish()
                 } else {
                     Toast.makeText(
                         this@recoveryCode,
