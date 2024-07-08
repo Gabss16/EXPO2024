@@ -31,7 +31,7 @@
         app:layout_constraintVertical_bias="0.979">
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/btnCrearCuentaSolicitante"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#FFFEFE"
@@ -110,28 +110,11 @@
                 app:layout_constraintVertical_bias="0.017" />
 
             <EditText
-                android:id="@+id/txtContrasenaSolicitante"
-                android:layout_width="298dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="22dp"
-                android:background="@drawable/txt_registro"
-                android:ems="10"
-                android:hint="contraseña"
-                android:inputType="text"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtCorreoSolicitante" />
-
-            <EditText
                 android:id="@+id/txtTelefonoSolicitante"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="21dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="23dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
@@ -140,11 +123,12 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtContrasenaSolicitante" />
 
             <EditText
-                android:id="@+id/editTextText9"
+                android:id="@+id/txtFechaSolicitante"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="28dp"
@@ -153,7 +137,8 @@
                 android:background="@drawable/txt_registro"
                 android:ems="10"
                 android:hint="Fecha de nacimiento"
-                android:inputType="text"
+                android:inputType="none"
+                android:focusable="false"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -171,7 +156,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextText9" />
+                app:layout_constraintTop_toBottomOf="@+id/txtFechaSolicitante" />
 
             <Spinner
                 android:id="@+id/spGeneroSolicitante"
@@ -263,7 +248,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="73dp"
-                android:text="tomar foto"
+                android:text="Tomar foto"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imgFotoDePerfilSolicitante"
@@ -282,7 +267,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/spAreaDeTrabajoSolicitante" />
 
             <ImageView
-                android:id="@+id/imageView15"
+                android:id="@+id/btnSubirCV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -292,6 +277,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imgFotoDePerfilSolicitante"
                 app:srcCompat="@drawable/btn_cv" />
+
+            <EditText
+                android:id="@+id/txtContrasenaSolicitante"
+                android:layout_width="298dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/txt_registro"
+                android:ems="10"
+                android:hint="Contraseña"
+                android:inputType="textPassword"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.508"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtCorreoSolicitante" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

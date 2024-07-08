@@ -23,31 +23,22 @@
         android:background="@drawable/elementorol"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
         <ImageButton
-            android:id="@+id/btnSolicitante"
+            android:id="@+id/btnCuentaEmpleador"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="116dp"
+            android:background="@drawable/botonrolempleador"
+            android:src="@drawable/botonrolempleador"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.171"
-            app:srcCompat="@drawable/buttonrol" />
-
-        <ImageButton
-            android:id="@+id/btnEmpleador"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.605"
-            app:srcCompat="@drawable/buttonrol2" />
+            tools:src="@drawable/botonrolempleador" />
 
         <TextView
             android:id="@+id/textView5"
@@ -60,6 +51,44 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.913" />
+
+        <ImageButton
+            android:id="@+id/btnCuentaSolicitante"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"
+            android:background="@drawable/botonsms"
+            app:layout_constraintBottom_toTopOf="@+id/btnCuentaEmpleador"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/botonrolsolicitante" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="312dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="6dp"
+            android:text="Descubre oportunidades laborales y solicita puestos que se ajusten a tus habilidades y preferencias."
+            app:layout_constraintBottom_toBottomOf="@+id/btnCuentaSolicitante"
+            app:layout_constraintEnd_toEndOf="@+id/btnCuentaSolicitante"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/btnCuentaSolicitante"
+            app:layout_constraintTop_toTopOf="@+id/btnCuentaSolicitante"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="302dp"
+            android:layout_height="43dp"
+            android:text="Publica y gestiona ofertas de trabajo y encuentra talento cualificado para tu empresa"
+            app:layout_constraintBottom_toBottomOf="@+id/btnCuentaEmpleador"
+            app:layout_constraintEnd_toEndOf="@+id/btnCuentaEmpleador"
+            app:layout_constraintStart_toStartOf="@+id/btnCuentaEmpleador"
+            app:layout_constraintTop_toTopOf="@+id/btnCuentaEmpleador"
+            app:layout_constraintVertical_bias="0.584" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

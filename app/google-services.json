@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "472542818086",
+    "project_id": "agalo-e4597",
+    "storage_bucket": "agalo-e4597.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:472542818086:android:1860621903821eb3b71be7",
+        "android_client_info": {
+          "package_name": "com.example.expogbss"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMElw4GeoCqbBy-rXihhthuUkM4vrdCVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
