@@ -21,7 +21,7 @@ import modelo.ClaseConexion
 
 class ingresarCorreoRecupContrasena : AppCompatActivity() {
 
-    companion object variablesGlobalesLogin{
+    companion object variablesGlobalesRecuperacionDeContrasena{
         lateinit var correoIngresado : String
         lateinit var codigo : String
     }

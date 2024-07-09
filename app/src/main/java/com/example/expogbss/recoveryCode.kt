@@ -95,61 +95,10 @@ class recoveryCode : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else if (codigoIngresado == codigoRecuperacion) {
-                val verificarContraseña =
-                    Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
 
-                // Mostrar AlertDialog para ingresar nueva contraseña
-                val builder = AlertDialog.Builder(this@recoveryCode)
-                val inflater = layoutInflater
-                val dialogLayout = inflater.inflate(R.layout.alertdialogcambiodecontrasena, null)
-                val editTextNewPassword =
-                    dialogLayout.findViewById<EditText>(R.id.txtnuevacontrasena)
 
-                builder.setTitle("Nueva Contraseña")
-                    .setMessage("Ingrese su nueva contraseña")
-                    .setView(dialogLayout)
-                    .setPositiveButton(
-                        "Confirmar",
-                        null
-                    ) // Pasamos null para manejar el clic manualmente
-                    .create()
 
-                val alertDialog = builder.create()
-                alertDialog.show()
-
-                // Manejo manual del botón Confirmar
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                    val newPassword = editTextNewPassword.text.toString()
-
-                    if (newPassword.isEmpty()) {
-                        Toast.makeText(
-                            this@recoveryCode,
-                            "La contraseña no puede estar vacía",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else if (!verificarContraseña.matches(newPassword)) {
-                        Toast.makeText(
-                            this@recoveryCode,
-                            "La contraseña debe tener al menos 6 caracteres y un carácter especial",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        val objConexion = ClaseConexion().cadenaConexion()
-
-                        // Encripto la contraseña usando la función de encriptación
-                        val contrasenaEncriptada = hashSHA256(newPassword)
-
-                        val actualizarcontraseña =
-                            objConexion?.prepareStatement("UPDATE EMPLEADOR SET contrasena = ? WHERE CorreoElectronico = ?")!!
-                        actualizarcontraseña.setString(1, contrasenaEncriptada)
-                        actualizarcontraseña.setString(2, correo)
-                        actualizarcontraseña.executeQuery()
-
-                        // Si todo está bien, cerrar el AlertDialog
-                        alertDialog.dismiss()
-                    }
-                }
-            } else {
+        } else {
                 Toast.makeText(
                     this@recoveryCode,
                     "El código ingresado es incorrecto",
