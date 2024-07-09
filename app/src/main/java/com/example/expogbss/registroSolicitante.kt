@@ -290,33 +290,33 @@ class registroSolicitante : AppCompatActivity() {
         }
     }
     //Esta función onActivityResult se encarga de capturar lo que pasa al abrir la geleria o la camara
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-
-                codigo_opcion_galeria -> {
-                    val imageUri: Uri? = data?.data
-                    imageUri?.let {
-                        val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
-                        subirimagenFirebase(imageBitmap) { url gs://agalo-e4597.appspot.com
-                            miPath = url
-                            imgFotoDePerfilSolicitante.setImageURI(it)
-                        }
-                    }
-                }
-
-
-                codigo_opcion_tomar_foto -> {
-                    val imageBitmap = data?.extras?.get("data") as? Bitmap
-                    imageBitmap?.let {
-                        subirimagenFirebase(it) { url ->
-                            miPath = url
-                            imageView.setImageBitmap(it)
-                        }
-                    }
-                }
-            }
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (resultCode == Activity.RESULT_OK) {
+//            when (requestCode) {
+//
+//                codigo_opcion_galeria -> {
+//                    val imageUri: Uri? = data?.data
+//                    imageUri?.let {
+//                        val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
+//                        subirimagenFirebase(imageBitmap) { url gs://agalo-e4597.appspot.com
+//                            miPath = url
+//                            imgFotoDePerfilSolicitante.setImageURI(it)
+//                        }
+//                    }
+//                }
+//
+//
+//                codigo_opcion_tomar_foto -> {
+//                    val imageBitmap = data?.extras?.get("data") as? Bitmap
+//                    imageBitmap?.let {
+//                        subirimagenFirebase(it) { url ->
+//                            miPath = url
+//                            imageView.setImageBitmap(it)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 }
