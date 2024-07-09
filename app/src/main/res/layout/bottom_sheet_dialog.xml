@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/editTextText"
+                    android:id="@+id/txtTituloJob"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_trabajos"
@@ -42,7 +42,7 @@
                     app:layout_constraintVertical_bias="0.1" />
 
                 <EditText
-                    android:id="@+id/editTextText1"
+                    android:id="@+id/txtUbicacionJob"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_trabajos"
@@ -57,10 +57,10 @@
                     app:layout_constraintHorizontal_bias="0.494"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.4" />
+                    app:layout_constraintVertical_bias="0.34" />
 
                 <EditText
-                    android:id="@+id/editTextText2"
+                    android:id="@+id/txtDescripcionJob"
                     android:layout_width="325dp"
                     android:layout_height="66dp"
                     android:background="@drawable/edittext_trabajos"
@@ -75,10 +75,10 @@
                     app:layout_constraintHorizontal_bias="0.494"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.24" />
+                    app:layout_constraintVertical_bias="0.21" />
 
                 <EditText
-                    android:id="@+id/editTextText3"
+                    android:id="@+id/txtExperienciaJob"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_trabajos"
@@ -93,13 +93,13 @@
                     app:layout_constraintHorizontal_bias="0.494"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.53" />
+                    app:layout_constraintVertical_bias="0.44" />
 
                 <Button
                     android:id="@+id/idBtnDismiss"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="508dp"
+                    android:layout_marginTop="600dp"
                     android:background="@drawable/boton_publicar_trabajo"
                     android:foreground="@drawable/boton_publicar_trabajo"
                     android:text="Button"
@@ -107,7 +107,7 @@
                     tools:layout_editor_absoluteX="91dp" />
 
                 <EditText
-                    android:id="@+id/editTextText4"
+                    android:id="@+id/txtHabilidadesJob"
                     android:layout_width="325dp"
                     android:layout_height="66dp"
                     android:background="@drawable/edittext_trabajos"
@@ -122,10 +122,10 @@
                     app:layout_constraintHorizontal_bias="0.494"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.7" />
+                    app:layout_constraintVertical_bias="0.57" />
 
                 <EditText
-                    android:id="@+id/editTextText5"
+                    android:id="@+id/txtBeneficiosJob"
                     android:layout_width="325dp"
                     android:layout_height="66dp"
                     android:background="@drawable/edittext_trabajos"
@@ -140,10 +140,10 @@
                     app:layout_constraintHorizontal_bias="0.494"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.7" />
+                    app:layout_constraintVertical_bias="0.72" />
 
                 <EditText
-                    android:id="@+id/editTextText3"
+                    android:id="@+id/txtSalarioJob"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_trabajos"
@@ -158,7 +158,7 @@
                     app:layout_constraintHorizontal_bias="0.494"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.85" />
+                    app:layout_constraintVertical_bias="0.84" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

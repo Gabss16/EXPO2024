@@ -54,6 +54,9 @@ class homeEmpresa : Fragment() {
             // which we are using to dismiss our dialog.
             val btnClose = view.findViewById<Button>(R.id.idBtnDismiss)
 
+
+
+
             // on below line we are adding on click listener
             // for our dismissing the dialog button.
             btnClose.setOnClickListener {
