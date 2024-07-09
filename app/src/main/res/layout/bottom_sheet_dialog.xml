@@ -1,72 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="413dp"
+        android:layout_height="343dp"
         android:layout_margin="2dp"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="-3dp">
 
-        <!--image view for displaying course image-->
-        <ImageView
-            android:id="@+id/idIVCourse"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_launcher_background" />
+        <ScrollView
+            android:layout_width="413dp"
+            android:layout_height="343dp"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="1dp">
 
-        <!--text view for displaying course name-->
-        <TextView
-            android:id="@+id/idTVCourseName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/idIVCourse"
-            android:layout_toRightOf="@id/idIVCourse"
-            android:text="DSA Self Paced Course"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <!--text view for displaying course tracks-->
-        <TextView
-            android:id="@+id/idTVCourseTracks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/idTVCourseName"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/idIVCourse"
-            android:layout_toRightOf="@id/idIVCourse"
-            android:text="Course Tracks : 30"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+                <EditText
+                    android:id="@+id/txtTituloJob"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_trabajos"
+                    android:ems="10"
+                    android:hint="Título"
+                    android:inputType="text"
+                    android:paddingLeft="35dp"
+                    android:textColor="#97000000"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.505"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.1" />
 
-        <!--text view for displaying course duration-->
-        <TextView
-            android:id="@+id/idTVCourseDuration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/idTVCourseTracks"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/idIVCourse"
-            android:layout_toRightOf="@id/idIVCourse"
-            android:text="Course Duration : 4 Months"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+                <EditText
+                    android:id="@+id/txtUbicacionJob"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_trabajos"
+                    android:ems="10"
+                    android:hint="Ubicación"
+                    android:inputType="text"
+                    android:paddingLeft="35dp"
+                    android:textColor="#97000000"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.494"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.34" />
 
-        <!--button for dismissing our dialog-->
-        <Button
-            android:id="@+id/idBtnDismiss"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/idIVCourse"
-            android:layout_margin="10dp"
-            android:text="Dismiss dialog"
-            android:textAllCaps="false" />
+                <EditText
+                    android:id="@+id/txtDescripcionJob"
+                    android:layout_width="325dp"
+                    android:layout_height="66dp"
+                    android:background="@drawable/edittext_trabajos"
+                    android:ems="10"
+                    android:hint="Descripción"
+                    android:inputType="text"
+                    android:paddingLeft="35dp"
+                    android:textColor="#97000000"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.494"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.21" />
 
-    </RelativeLayout>
+                <EditText
+                    android:id="@+id/txtExperienciaJob"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_trabajos"
+                    android:ems="10"
+                    android:hint="Experiencia Requerida"
+                    android:inputType="text"
+                    android:paddingLeft="35dp"
+                    android:textColor="#97000000"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.494"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.44" />
+
+                <Button
+                    android:id="@+id/idBtnDismiss"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="600dp"
+                    android:background="@drawable/boton_publicar_trabajo"
+                    android:foreground="@drawable/boton_publicar_trabajo"
+                    android:text="Button"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_editor_absoluteX="91dp" />
+
+                <EditText
+                    android:id="@+id/txtHabilidadesJob"
+                    android:layout_width="325dp"
+                    android:layout_height="66dp"
+                    android:background="@drawable/edittext_trabajos"
+                    android:ems="10"
+                    android:hint="Habilidades Y Competencias"
+                    android:inputType="text"
+                    android:paddingLeft="35dp"
+                    android:textColor="#97000000"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.494"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.57" />
+
+                <EditText
+                    android:id="@+id/txtBeneficiosJob"
+                    android:layout_width="325dp"
+                    android:layout_height="66dp"
+                    android:background="@drawable/edittext_trabajos"
+                    android:ems="10"
+                    android:hint="Beneficios"
+                    android:inputType="text"
+                    android:paddingLeft="35dp"
+                    android:textColor="#97000000"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.494"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.72" />
+
+                <EditText
+                    android:id="@+id/txtSalarioJob"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_trabajos"
+                    android:ems="10"
+                    android:hint="Salario"
+                    android:inputType="text"
+                    android:paddingLeft="35dp"
+                    android:textColor="#97000000"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.494"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.84" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
