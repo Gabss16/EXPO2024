@@ -24,7 +24,9 @@ class forgotPassword : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-     val btnViaEmail = findViewById<ImageView>(R.id.btnViaEmail)
+
+        val btnViaEmail = findViewById<ImageView>(R.id.btnViaEmail)
+        val btnViaSms = findViewById<ImageView>(R.id.btnViaSms)
 
         btnViaEmail.setOnClickListener {
             val pantallaIngresoCorreo = Intent(this, ingresarCorreoRecupContrasena::class.java)
