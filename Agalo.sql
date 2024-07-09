@@ -15,7 +15,7 @@ CREATE TABLE EMPLEADOR (
     Departamento VARCHAR2(50) NOT NULL,
     Contrasena VARCHAR2(250) NOT NULL,
     Estado VARCHAR(10) CHECK (Estado IN ('Activo', 'Pendiente')),
-    Foto BLOB);
+    Foto varchar2(300));
 
 
 Create table AreaDeTrabajo(
@@ -56,7 +56,7 @@ CREATE TABLE SOLICITANTE (
     IdAreaDeTrabajo INT,
     Habilidades varchar2(250),
     Curriculum BLOB,
-    Foto BLOB,
+    Foto varchar2(300),
     Contrasena VARCHAR2(250) NOT NULL,
     CONSTRAINT FkAreaDeTrabajoSolicitante FOREIGN KEY (IdAreaDeTrabajo) REFERENCES AreaDeTrabajo(IdAreaDeTrabajo)
 
@@ -103,40 +103,6 @@ INSERT INTO EMPLEADOR (
 
 insert into ESTADOSOLICITANTE (Estado) values ('Desempleado');
 
-
-INSERT INTO SOLICITANTE (
-    IdSolicitante, 
-    Nombre, 
-    Telefono, 
-    Direccion, 
-    Ciudad, 
-    Pais, 
-    FechaDeNacimiento, 
-    Genero, 
-    InteresEmpleo, 
-    Habilidades, 
-    Curriculum, 
-    Foto, 
-    Contrasena, 
-    IdEstadoSolicitante, 
-    CorreoElectronico
-) VALUES (
-    'SOL001', 
-    'Ana Martinez', 
-    '+503 1234-5678', 
-    'Calle El Mirador #123, San Salvador', 
-    'San Salvador', 
-    'El Salvador', 
-    TO_DATE('1990-05-14', 'YYYY-MM-DD'), 
-    'Femenino', 
-    1, 
-    1, 
-    EMPTY_BLOB(), 
-    EMPTY_BLOB(), 
-    'contraseña1', 
-    1, 
-    'ana.martinez@example.com'
-);
 
 --insert para area de trabajo
 insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (1,'Trabajo doméstico');
