@@ -47,7 +47,7 @@
             app:layout_constraintVertical_bias="0.304">
 
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/idBtnShowBottomSheet"
                 android:layout_width="58dp"
                 android:layout_height="48dp"
                 android:backgroundTint="#FBFBFB"
