@@ -14,6 +14,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import modelo.AreaDeTrabajo
+import modelo.ClaseConexion
 import java.security.MessageDigest
 
 class registroSolicitante : AppCompatActivity() {
@@ -94,28 +102,43 @@ class registroSolicitante : AppCompatActivity() {
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listadoGeneros)
         spGeneroSolicitante.adapter = adaptadorDeGeneros
 
+        //Funcion para hacer el select de las areas de trabajo
+        fun obtenerDoctores(): List<AreaDeTrabajo>{
+            val objConexion = ClaseConexion().cadenaConexion()
+
+            //Creo un Statement que me ejecutará el select
+            val statement = objConexion?.createStatement()
+            val resultSet = statement?.executeQuery("select * from AreaDeTrabajo")!!
+
+            val listadoDeAreasDeTrabajo = mutableListOf<AreaDeTrabajo>()
+
+            while (resultSet.next()){
+                val IdAreaDeTrabajo = resultSet.getString("IdAreaDeTrabajo ")
+                val  NombreAreaDetrabajo = resultSet.getString(" NombreAreaDetrabajo")
+                val AreaCompleta = AreaDeTrabajo(uuid, nombre, especialidad, telefono)
+                listadoDoctores.add(unDoctorCompleto)
+            }
+            return listadoDoctores
+        }
+
         val spAreaDeTrabajoSolicitante = findViewById<Spinner>(R.id.spAreaDeTrabajoSolicitante)
-        val listadoAreas = listOf(
-            "Trabajo doméstico",
-            "Freelancers",
-            "Trabajos remotos",
-            "Servicios de entrega",
-            "Sector de la construcción",
-            "Área de la salud",
-            "Sector de la hostelería",
-            "Servicios profesionales",
-            "Área de ventas y atención al cliente",
-            "Educación y enseñanza"
-        )
-        val adaptadorDeAreas =
-            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listadoAreas)
-        spAreaDeTrabajoSolicitante.adapter = adaptadorDeAreas
+        CoroutineScope(Dispatchers.IO).launch {
+            val listadoDeAreasDeTrabajo = obtenerAreasDeTrabajo()
+            val AreasDeTrabajo = listadoDeAreasDeTrabajo.map {it.AreasDeTrabajo}
+
+            withContext(Dispatchers.Main){
+                //Creo la configuracion del adaptador
+                //El Adaptador solicita tres cosas: contexto, layout y los datos
+                val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, AreasDeTrabajo)
+                spAreaDeTrabajoSolicitante.adapter = adapter
+            }
+
+        }
 
         val imgFotoDePerfilSolicitante = findViewById<ImageView>(R.id.imgFotoDePerfilSolicitante)
         val btnSubirDesdeGaleriaSolicitante =
             findViewById<Button>(R.id.btnSubirDesdeGaleriaSolicitante)
         val btnTomarFotoSolicitante = findViewById<Button>(R.id.btnTomarFotoSolicitante)
-        val btnSubirCV = findViewById<ImageView>(R.id.btnSubirCV)
         val btnCrearCuentaSolicitante = findViewById<ImageButton>(R.id.btnCrearCuentaSolicitante)
 
         //Creo la función para encriptar la contraseña
