@@ -146,7 +146,7 @@ class registroSolicitante : AppCompatActivity() {
             } else {
                 Log.e("registroSolicitante", "Connection to database failed")
             }
-
+            println("este es el listaod de aterasd faksjdflkashdfk $listadoDeAreasDeTrabajo")
             return listadoDeAreasDeTrabajo
         }
 
