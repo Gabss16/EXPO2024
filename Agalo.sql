@@ -66,12 +66,12 @@ CREATE TABLE SOLICITANTE (
 CREATE TABLE SOLICITUD (
     IdSolicitud NUMBER PRIMARY KEY , 
     IdSolicitante VARCHAR2(50) NOT NULL,
-    IdEmpleador VARCHAR2(50) NOT NULL,
+    IdTrabajoEmpleador VARCHAR2(50) NOT NULL,
     FechaSolicitud DATE NOT NULL,
     Estado VARCHAR(10) CHECK (Estado IN ('Activa', 'Finalizada', 'Pendiente')),
 
     CONSTRAINT FKSolicitanteSolicitud FOREIGN KEY (IdSolicitante) REFERENCES SOLICITANTE(IdSolicitante),
-    CONSTRAINT FKEmpleadorSolicitud FOREIGN KEY (IdEmpleador) REFERENCES EMPLEADOR(IdEmpleador),
+    CONSTRAINT FKEmpleadorSolicitud FOREIGN KEY (IdTrabajoEmpleador) REFERENCES TRABAJO(IdTrabajoEmpleador),
 );
 
 
@@ -91,14 +91,14 @@ INSERT INTO EMPLEADOR (
     Contrasena
 ) VALUES (
     'EMP001', 
-    'Innovaciones Tecnológicas SA de CV', 
+    'Innovaciones TecnolÃ³gicas SA de CV', 
     'contacto@innovaciones.com.sv', 
     '+503 9876-5432', 
-    'Boulevard de Los Héroes, San Salvador', 
+    'Boulevard de Los HÃ©roes, San Salvador', 
     'https://www.innovaciones.com.sv', 
-    'Carlos Hernández', 
+    'Carlos HernÃ¡ndez', 
     'San Salvador', 
-    'contraseña1'
+    'contraseÃ±a1'
 );
 
 insert into ESTADOSOLICITANTE (Estado) values ('Desempleado');
@@ -133,27 +133,27 @@ INSERT INTO SOLICITANTE (
     1, 
     EMPTY_BLOB(), 
     EMPTY_BLOB(), 
-    'contraseña1', 
+    'contraseÃ±a1', 
     1, 
     'ana.martinez@example.com'
 );
 
 --insert para area de trabajo
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (1,'Trabajo doméstico');
+insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (1,'Trabajo domÃ©stico');
 insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (2,'Freelancers');
 insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (3,'Trabajos remotos');
 insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (4,'Servicios de entrega');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (5,'Sector de la construcción');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (6,'Área de la salud');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (7,'Sector de la hostelería');
+insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (5,'Sector de la construcciÃ³n');
+insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (6,'Ãrea de la salud');
+insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (7,'Sector de la hostelerÃ­a');
 insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (8,'Servicios profesionales');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (9,'Área de ventas y atención al cliente');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (10,'Educación y enseñanza');
+insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (9,'Ãrea de ventas y atenciÃ³n al cliente');
+insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (10,'EducaciÃ³n y enseÃ±anza');
 
 
 select * from empleador;
-SELECT * FROM EMPLEADOR WHERE CorreoElectronico = 'contacto@innovaciones.com.sv' AND Contrasena = 'contraseña1';
-SELECT * FROM SOLICITANTE WHERE CorreoElectronico =  'ana.martinez@example.com' AND Contrasena = 'contraseña1';
+SELECT * FROM EMPLEADOR WHERE CorreoElectronico = 'contacto@innovaciones.com.sv' AND Contrasena = 'contraseÃ±a1';
+SELECT * FROM SOLICITANTE WHERE CorreoElectronico =  'ana.martinez@example.com' AND Contrasena = 'contraseÃ±a1';
 SELECT * FROM ESTADOSOLICITANTE ;
 
 -- Eliminar secuencias
