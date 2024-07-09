@@ -23,6 +23,8 @@ IdAreaDeTrabajo int PRIMARY KEY,
 NombreAreaDetrabajo varchar2(100));
 
 
+select * from empleador 
+
 CREATE TABLE TRABAJO (
     IdTrabajo NUMBER PRIMARY KEY, 
     Titulo VARCHAR2(50) NOT NULL,

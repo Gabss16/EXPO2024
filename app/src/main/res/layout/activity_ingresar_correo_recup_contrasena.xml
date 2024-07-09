@@ -6,6 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ingresarCorreoRecupContrasena">
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="623dp"
+        android:layout_height="221dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/login_desing" />
 
     <EditText
         android:id="@+id/txtIngresarCorreoRecuperacion"
@@ -16,15 +26,16 @@
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/btnEnviarCodigoRecuperacion"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75" />
+        app:layout_constraintVertical_bias="0.857" />
 
     <Button
         android:id="@+id/btnEnviarCodigoRecuperacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="376dp"
+        android:layout_marginBottom="272dp"
         android:text="Enviar Código"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

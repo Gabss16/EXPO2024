@@ -31,13 +31,6 @@ class recoveryCode : AppCompatActivity() {
             insets
         }
 
-        //Creo la función para encriptar la contraseña
-        fun hashSHA256(contraseniaEscrita: String): String {
-            val bytes =
-                MessageDigest.getInstance("SHA-256").digest(contraseniaEscrita.toByteArray())
-            return bytes.joinToString("") { "%02x".format(it) }
-        }
-
         //Botones
         val btnConfirmarCodigo = findViewById<Button>(R.id.btnConfirmarCodigo)
         val btnReenviarCodigo = findViewById<Button>(R.id.btnVolverAEnviarCodigo)
@@ -57,7 +50,7 @@ class recoveryCode : AppCompatActivity() {
         val tercerDigito = txtTercerDigito.text.toString()
         val cuartoDigito = txtCuartoDigito.text.toString()
 
-     println("Codigo recibido $codigoRecuperacion")
+        println("Codigo recibido $codigoRecuperacion")
 
         // Función para cambiar el foco al siguiente EditText
         fun setupNextEditText(currentEditText: EditText, nextEditText: EditText) {
@@ -95,10 +88,12 @@ class recoveryCode : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else if (codigoIngresado == codigoRecuperacion) {
+                val pantallaCambioContrasena = Intent(
+                    this@recoveryCode, cambio_de_contrasena::class.java
+                )
+                startActivity(pantallaCambioContrasena)
 
-
-
-        } else {
+            } else {
                 Toast.makeText(
                     this@recoveryCode,
                     "El código ingresado es incorrecto",
@@ -106,10 +101,6 @@ class recoveryCode : AppCompatActivity() {
                 ).show()
             }
         }
-
-
-
-
 
         btnReenviarCodigo.setOnClickListener {
 
@@ -120,10 +111,11 @@ class recoveryCode : AppCompatActivity() {
                     "Hola este es su codigo de recuperacion: $codigoRecuperacion"
                 )
                 if (correoEnviado) {
-                    val pantallaIngresoCodigo = Intent(
-                        this@recoveryCode, recoveryCode::class.java
-                    )
-                    startActivity(pantallaIngresoCodigo)
+                    Toast.makeText(
+                        this@recoveryCode,
+                        "Correo Reenviado satisfactoriamente",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
                     Toast.makeText(
                         this@recoveryCode,
