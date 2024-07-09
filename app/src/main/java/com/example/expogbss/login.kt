@@ -107,7 +107,6 @@ class login : AppCompatActivity() {
                     if (esEmpleador.next()) {
                         startActivity(pantallaPrincipal)
                     } else if (
-
                     //Si el usuario es Solicitante, se le muestra su pantalla respectiva
                     esSolicitante.next()) {
                         startActivity(pantallaPrincipal)

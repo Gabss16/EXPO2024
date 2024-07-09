@@ -88,12 +88,12 @@ class registro_empresa : AppCompatActivity() {
             val EmpresaEmpleador = txtEmpresaEmpleador.text.toString()
 
             val VerificarTelefono = Regex("^\\d{4}-\\d{4}\$")
-            val verificarCorreo = Regex ("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
-            val verificarContraseña = Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
+            val verificarCorreo = Regex("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
+            val verificarContraseña =
+                Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
 
             //Validaciones de campos vacíos y cosas por ese estilo
-            if (nombreEmpleador.isEmpty() || EmpresaEmpleador.isEmpty()  || CorreoEmpleador.isEmpty() || ContrasenaEmpleador.isEmpty() || TelefoEmpleador.isEmpty() || DireccionEmpleador.isEmpty()) {
-
+            if (nombreEmpleador.isEmpty() || EmpresaEmpleador.isEmpty() || CorreoEmpleador.isEmpty() || ContrasenaEmpleador.isEmpty() || TelefoEmpleador.isEmpty() || DireccionEmpleador.isEmpty()) {
                 Toast.makeText(
                     this@registro_empresa,
                     "Por favor, llenar los espacios obligatorios",

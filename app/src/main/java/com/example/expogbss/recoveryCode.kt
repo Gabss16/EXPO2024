@@ -57,10 +57,7 @@ class recoveryCode : AppCompatActivity() {
         val tercerDigito = txtTercerDigito.text.toString()
         val cuartoDigito = txtCuartoDigito.text.toString()
 
-        //Dígitos concatenados
-        val codigoIngresado = "$primerDigito$segundoDigito$tercerDigito$cuartoDigito"
-        println("Código ingresado: $codigoIngresado")
-
+     println("Codigo recibido $codigoRecuperacion")
 
         // Función para cambiar el foco al siguiente EditText
         fun setupNextEditText(currentEditText: EditText, nextEditText: EditText) {
@@ -83,31 +80,45 @@ class recoveryCode : AppCompatActivity() {
         setupNextEditText(txtSegundoDigito, txtTercerDigito)
         setupNextEditText(txtTercerDigito, txtCuartoDigito)
 
-        if (primerDigito.isEmpty() || segundoDigito.isEmpty() || tercerDigito.isEmpty() || cuartoDigito.isEmpty()) {
-            Toast.makeText(
-                this@recoveryCode,
-                "La contraseña no puede estar vacía",
-                Toast.LENGTH_SHORT
-            ).show()
-        } else {
         btnConfirmarCodigo.setOnClickListener {
-            val verificarContraseña =
-                Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
+            val primerDigito = txtPrimerDigito.text.toString()
+            val segundoDigito = txtSegundoDigito.text.toString()
+            val tercerDigito = txtTercerDigito.text.toString()
+            val cuartoDigito = txtCuartoDigito.text.toString()
+            val codigoIngresado = "$primerDigito$segundoDigito$tercerDigito$cuartoDigito"
+            println("Código ingresado: $codigoIngresado")
 
+            if (primerDigito.isEmpty() || segundoDigito.isEmpty() || tercerDigito.isEmpty() || cuartoDigito.isEmpty()) {
+                Toast.makeText(
+                    this@recoveryCode,
+                    "Por favor, ingresa un código válido",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (codigoIngresado == codigoRecuperacion) {
+                val verificarContraseña =
+                    Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
 
-            // Mostrar AlertDialog para ingresar nueva contraseña
+                // Mostrar AlertDialog para ingresar nueva contraseña
+                val builder = AlertDialog.Builder(this@recoveryCode)
+                val inflater = layoutInflater
+                val dialogLayout = inflater.inflate(R.layout.alertdialogcambiodecontrasena, null)
+                val editTextNewPassword =
+                    dialogLayout.findViewById<EditText>(R.id.txtnuevacontrasena)
 
-            val builder = AlertDialog.Builder(this@recoveryCode)
-            val inflater = layoutInflater
-            val dialogLayout =
-                inflater.inflate(R.layout.alertdialogcambiodecontrasena, null)
-            val editTextNewPassword =
-                dialogLayout.findViewById<EditText>(R.id.txtnuevacontrasena)
+                builder.setTitle("Nueva Contraseña")
+                    .setMessage("Ingrese su nueva contraseña")
+                    .setView(dialogLayout)
+                    .setPositiveButton(
+                        "Confirmar",
+                        null
+                    ) // Pasamos null para manejar el clic manualmente
+                    .create()
 
-            builder.setTitle("Nueva Contraseña")
-                .setMessage("Ingrese su nueva contraseña")
-                .setView(dialogLayout)
-                .setPositiveButton("Confirmar") { dialog, _ ->
+                val alertDialog = builder.create()
+                alertDialog.show()
+
+                // Manejo manual del botón Confirmar
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                     val newPassword = editTextNewPassword.text.toString()
 
                     if (newPassword.isEmpty()) {
@@ -116,47 +127,66 @@ class recoveryCode : AppCompatActivity() {
                             "La contraseña no puede estar vacía",
                             Toast.LENGTH_SHORT
                         ).show()
+                    } else if (!verificarContraseña.matches(newPassword)) {
+                        Toast.makeText(
+                            this@recoveryCode,
+                            "La contraseña debe tener al menos 6 caracteres y un carácter especial",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
-
                         val objConexion = ClaseConexion().cadenaConexion()
+
+                        // Encripto la contraseña usando la función de encriptación
+                        val contrasenaEncriptada = hashSHA256(newPassword)
+
                         val actualizarcontraseña =
-                            objConexion?.prepareStatement("update EMPLEADOR set contrasena = ? WHERE CorreoElectronico = ?")!!
-                        actualizarcontraseña.setString(1, correo)
-                      //  actualizarcontraseña.setString(2, contrasenaEncriptada)
+                            objConexion?.prepareStatement("UPDATE EMPLEADOR SET contrasena = ? WHERE CorreoElectronico = ?")!!
+                        actualizarcontraseña.setString(1, contrasenaEncriptada)
+                        actualizarcontraseña.setString(2, correo)
+                        actualizarcontraseña.executeQuery()
+
+                        // Si todo está bien, cerrar el AlertDialog
+                        alertDialog.dismiss()
                     }
                 }
+            } else {
+                Toast.makeText(
+                    this@recoveryCode,
+                    "El código ingresado es incorrecto",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
 
 
 
-            btnReenviarCodigo.setOnClickListener {
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    val correoEnviado = recuperarContrasena(
-                        correo,
-                        "Recuperación de contraseña",
-                        "Hola este es su codigo de recuperacion: $codigoRecuperacion"
+        btnReenviarCodigo.setOnClickListener {
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val correoEnviado = recuperarContrasena(
+                    correo,
+                    "Recuperación de contraseña",
+                    "Hola este es su codigo de recuperacion: $codigoRecuperacion"
+                )
+                if (correoEnviado) {
+                    val pantallaIngresoCodigo = Intent(
+                        this@recoveryCode, recoveryCode::class.java
                     )
-                    if (correoEnviado) {
-                        val pantallaIngresoCodigo = Intent(
-                            this@recoveryCode, recoveryCode::class.java
-                        )
-                        startActivity(pantallaIngresoCodigo)
-                    } else {
-                        Toast.makeText(
-                            this@recoveryCode,
-                            "Hubo un error al enviar el correo, intenta de nuevo",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
+                    startActivity(pantallaIngresoCodigo)
+                } else {
+                    Toast.makeText(
+                        this@recoveryCode,
+                        "Hubo un error al enviar el correo, intenta de nuevo",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-
 
             }
 
+
         }
+
     }
 }
-
