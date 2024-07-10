@@ -7,12 +7,12 @@
     tools:context=".ui.dashboard.DashboardFragment">
 
 
-
     <TextView
         android:id="@+id/textView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Usuario"
+        android:textColor="#BCB2B2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.044"
@@ -35,16 +35,14 @@
         app:layout_constraintVertical_bias="0.023" />
 
 
-
-
     <ImageView
         android:id="@+id/circularImageView"
-        android:layout_width="77dp"
-        android:layout_height="67dp"
-        android:background="@drawable/imagencirculo"
+        android:layout_width="86dp"
+        android:layout_height="76dp"
+        android:background="@drawable/imagencircular"
         android:clipToOutline="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/curco"
+        android:src="@drawable/fotoperfil"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.908"
