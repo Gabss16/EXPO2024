@@ -12,6 +12,8 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.expogbss.ui.dashboard.DashboardFragment
+import com.example.expogbss.ui.home.HomeFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -21,12 +23,18 @@ import modelo.ClaseConexion
 import java.security.MessageDigest
 
 class login : AppCompatActivity() {
+    companion object variablesGlobalesRecuperacionDeContrasena{
+        lateinit var correoLogin : String
+        lateinit var IdEmpleador : String
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -62,6 +70,7 @@ class login : AppCompatActivity() {
         //Botones para ingresar al sistema
 
         btnSignIn.setOnClickListener {
+            correoLogin = txtCorreoLogin.text.toString()
 
             val correo = txtCorreoLogin.text.toString()
             val contrasena = txtcontrasenaLogin.text.toString()
@@ -79,7 +88,8 @@ class login : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                val pantallaPrincipal = Intent(this, ingresarCorreoRecupContrasena::class.java)
+                val pantallaEmpleador = Intent(this, Empleadores::class.java)
+                val pantallaSolicitante = Intent(this, solicitante::class.java)
 
                 CoroutineScope(Dispatchers.IO).launch {
 
@@ -105,12 +115,13 @@ class login : AppCompatActivity() {
 
                     //Si el usuario es Empleador, se le muestra su pantalla respectiva
                     if (esEmpleador.next()) {
-                        startActivity(pantallaPrincipal)
+                        withContext(Dispatchers.Main) {
+                            startActivity(pantallaEmpleador)
+                        }
                     } else if (
-
                     //Si el usuario es Solicitante, se le muestra su pantalla respectiva
                     esSolicitante.next()) {
-                        startActivity(pantallaPrincipal)
+                        startActivity(pantallaSolicitante)
                     }else {
                         withContext(Dispatchers.Main) {
                             Toast.makeText(this@login, "Usuario no encontrado, verifique sus credenciales", Toast.LENGTH_LONG).show()

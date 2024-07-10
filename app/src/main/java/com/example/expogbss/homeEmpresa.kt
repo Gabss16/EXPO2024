@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 // TODO: Rename parameter arguments, choose names that match
@@ -39,7 +40,7 @@ class homeEmpresa : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home_empresa, container, false)
 
         // initializing our variable for button with its id.
-        val btnShowBottomSheet = root.findViewById<Button>(R.id.idBtnShowBottomSheet)
+        val btnShowBottomSheet = root.findViewById<ImageButton>(R.id.idBtnShowBottomSheet)
 
         // adding on click listener for our button.
         btnShowBottomSheet.setOnClickListener {

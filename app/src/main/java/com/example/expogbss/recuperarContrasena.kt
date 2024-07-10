@@ -22,6 +22,8 @@ suspend fun recuperarContrasena(receptor: String, sujeto: String, mensaje: Strin
             put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory")
             put("mail.smtp.auth", "true")
             put("mail.smtp.port", "465")
+            put("mail.smtp.ssl.protocols", "TLSv1.2") // Asegúrate de usar TLSv1.2
+
         }
 
         // Iniciamos Sesión

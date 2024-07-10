@@ -30,6 +30,9 @@
             android:name=".registro_empresa"
             android:exported="false" />
         <activity
+            android:name=".cambio_de_contrasena"
+            android:exported="false" />
+        <activity
             android:name=".ingresarCorreoRecupContrasena"
             android:exported="false" />
         <activity

@@ -1,47 +1,5 @@
-package com.example.expogbss
-
-import android.app.Activity
-import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.content.Intent
-import android.widget.ImageView
-import android.widget.Spinner
-import android.widget.Toast
-import android.app.AlertDialog
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.net.Uri
-import android.provider.MediaStore
-import android.widget.Button
-import android.widget.ImageButton
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.google.firebase.Firebase
-import com.google.firebase.storage.storage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import modelo.ClaseConexion
-import java.io.ByteArrayOutputStream
-import java.security.MessageDigest
-import java.util.UUID
-
 class registro_empresa : AppCompatActivity() {
-    val codigo_opcion_galeria = 102
-    val codigo_opcion_tomar_foto = 103
-    val CAMERA_REQUEST_CODE = 0
-    val STORAGE_REQUEST_CODE = 1
-
-    lateinit var imgFotoDePerfilEmpleador: ImageView
-    lateinit var miPathEmpresa: String
-    val uuid = UUID.randomUUID().toString()
+    // ... código omitido por brevedad
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,10 +56,7 @@ class registro_empresa : AppCompatActivity() {
             return bytes.joinToString("") { "%02x".format(it) }
         }
 
-
         imgFotoDePerfilEmpleador = findViewById(R.id.imgFotoDePerfilEmpleador)
-
-
 
         btnSubirFotoEmpleador.setOnClickListener {
             // Al darle clic al botón de la galería pedimos los permisos primero
@@ -112,10 +67,7 @@ class registro_empresa : AppCompatActivity() {
             checkCameraPermission()
         }
 
-
-        btnCrearCuentaEmpleador.setOnClickListener()
-        {
-
+        btnCrearCuentaEmpleador.setOnClickListener() {
             //mando a llamar a cada textview
             val nombreEmpleador = txtNombreEmpleador.text.toString()
             val CorreoEmpleador = txtCorreoEmpleador.text.toString()
@@ -131,7 +83,6 @@ class registro_empresa : AppCompatActivity() {
 
             //Validaciones de campos vacíos y cosas por ese estilo
             if (nombreEmpleador.isEmpty() || EmpresaEmpleador.isEmpty() || CorreoEmpleador.isEmpty() || ContrasenaEmpleador.isEmpty() || TelefoEmpleador.isEmpty() || DireccionEmpleador.isEmpty()) {
-
                 Toast.makeText(
                     this@registro_empresa,
                     "Por favor, llenar los espacios obligatorios",
@@ -315,7 +266,6 @@ class registro_empresa : AppCompatActivity() {
                     }
                 }
 
-
                 codigo_opcion_tomar_foto -> {
                     val imageBitmap = data?.extras?.get("data") as? Bitmap
                     imageBitmap?.let {
@@ -328,10 +278,6 @@ class registro_empresa : AppCompatActivity() {
             }
         }
     }
-
-
-
-
 
     //Subir la imagen a Firebase Storage
     private fun subirimagenFirebase(bitmap: Bitmap, onSuccess: (String) -> Unit) {
@@ -351,11 +297,5 @@ class registro_empresa : AppCompatActivity() {
                 onSuccess(uri.toString())
             }
         }
-
-    //Código para registrar a un empleador
-
-
     }
-}
-
 

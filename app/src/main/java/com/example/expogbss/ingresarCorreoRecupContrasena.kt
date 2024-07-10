@@ -21,6 +21,10 @@ import modelo.ClaseConexion
 
 class ingresarCorreoRecupContrasena : AppCompatActivity() {
 
+    companion object variablesGlobalesRecuperacionDeContrasena{
+        lateinit var correoIngresado : String
+        lateinit var codigo : String
+    }
 
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,17 +60,17 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
                 else{
                     CoroutineScope(Dispatchers.IO).launch {
                         val objConexion = ClaseConexion().cadenaConexion()
-                        val correoRecuperacion = txtcorreoRecuperacion.text.toString()
-
+                         correoIngresado = txtcorreoRecuperacion.text.toString()
+                         codigo = codigoRecupContrasena.toString()
 
                         //Se ejecutan los select respectivos para verificar que el correo exista en alguna de las tablas existentes
                         val comprobarCredencialesSiEsSolicitante =
                             objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE CorreoElectronico = ?")!!
-                        comprobarCredencialesSiEsSolicitante.setString(1, correoRecuperacion)
+                        comprobarCredencialesSiEsSolicitante.setString(1, correoIngresado)
 
                         val comprobarCredencialesSiEsEmpleador =
                             objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE CorreoElectronico = ?")!!
-                        comprobarCredencialesSiEsEmpleador.setString(1, correoRecuperacion)
+                        comprobarCredencialesSiEsEmpleador.setString(1, correoIngresado)
 
                         val esEmpleador = comprobarCredencialesSiEsEmpleador.executeQuery()
                         val esSolicitante = comprobarCredencialesSiEsSolicitante.executeQuery()
@@ -76,13 +80,10 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
                             CoroutineScope(Dispatchers.Main).launch {
                                 println("Es empleador kkk")
                                 val correoEnviado = recuperarContrasena(
-                                    correoRecuperacion,"Recuperación de contraseña","Hola este es su codigo de recuperacion: $codigoRecupContrasena")
+                                    correoIngresado,"Recuperación de contraseña","Hola este es su codigo de recuperacion: $codigo")
                                 if (correoEnviado) {
                                     val pantallaIngresoCodigo = Intent(
-                                        this@ingresarCorreoRecupContrasena,recoveryCode::class.java).apply {
-                                        putExtra("codigoRecuperacion", codigoRecupContrasena)
-                                        putExtra("correo", correoRecuperacion)
-                                    }
+                                        this@ingresarCorreoRecupContrasena,recoveryCode::class.java)
                                     startActivity(pantallaIngresoCodigo)
                                     finish()
                                 } else {
@@ -94,19 +95,16 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
                             CoroutineScope(Dispatchers.Main).launch {
                                 println("entra a la corrutina")
                                 val correoEnviado = recuperarContrasena(
-                                    correoRecuperacion,
+                                    correoIngresado,
                                     "Recuperación de contraseña",
-                                    "Hola este es su codigo de recuperacion: $codigoRecupContrasena"
+                                    "Hola este es su codigo de recuperacion: $codigo"
                                 )
 
                                 if (correoEnviado) {
                                     val pantallaIngresoCodigo = Intent(
                                         this@ingresarCorreoRecupContrasena,
                                         recoveryCode::class.java
-                                    ).apply {
-                                        putExtra("codigoRecuperacion", codigoRecupContrasena)
-                                        putExtra("correo", correoRecuperacion)
-                                    }
+                                    )
                                     startActivity(pantallaIngresoCodigo)
                                     finish()
                                 } else {
