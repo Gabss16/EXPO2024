@@ -1,6 +1,7 @@
 package com.example.expogbss
 
 import android.os.Bundle
+import android.view.Window
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -16,6 +17,7 @@ class Empleadores : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         binding = ActivityEmpleadoresBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -26,7 +28,7 @@ class Empleadores : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.homeEmpresa, R.id.busquedaEmpresa, R.id.perfilEmpresa,R.id.chatEmpresa
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
