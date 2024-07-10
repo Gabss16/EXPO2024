@@ -104,6 +104,7 @@ class registro_empresa : AppCompatActivity() {
         }
 
         btnCrearCuentaEmpleador.setOnClickListener {
+
             //mando a llamar a cada textview
             val nombreEmpleador = txtNombreEmpleador.text.toString()
             val CorreoEmpleador = txtCorreoEmpleador.text.toString()
@@ -115,7 +116,8 @@ class registro_empresa : AppCompatActivity() {
 
             val VerificarTelefono = Regex("^\\d{4}-\\d{4}\$")
             val verificarCorreo = Regex("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
-            val verificarContraseña = Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
+            val verificarContraseña =
+                Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
 
             //Validaciones de campos vacíos y cosas por ese estilo
             if (nombreEmpleador.isEmpty() || EmpresaEmpleador.isEmpty() || CorreoEmpleador.isEmpty() || ContrasenaEmpleador.isEmpty() || TelefoEmpleador.isEmpty() || DireccionEmpleador.isEmpty()) {
@@ -164,7 +166,7 @@ class registro_empresa : AppCompatActivity() {
                     crearUsuario.setString(8, spDepartamentos.selectedItem.toString())
                     crearUsuario.setString(9, contrasenaEncriptada)
                     crearUsuario.setString(10, "Pendiente")
-                    crearUsuario.setString(11,uuid )
+                    crearUsuario.setString(11, uuid)
 
                     crearUsuario.executeUpdate()
 
