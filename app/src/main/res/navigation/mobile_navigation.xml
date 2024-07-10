@@ -27,4 +27,9 @@
         android:name="com.example.expogbss.chat"
         android:label="fragment_chat"
         tools:layout="@layout/fragment_chat" />
+    <fragment
+        android:id="@+id/perfilSolicitante"
+        android:name="com.example.expogbss.perfilSolicitante"
+        android:label="fragment_perfil_solicitante"
+        tools:layout="@layout/fragment_perfil_solicitante" />
 </navigation>
