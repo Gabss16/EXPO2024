@@ -23,13 +23,10 @@ IdAreaDeTrabajo int PRIMARY KEY,
 NombreAreaDetrabajo varchar2(100));
 
 
-select * from empleador 
-
 CREATE TABLE TRABAJO (
     IdTrabajo NUMBER PRIMARY KEY, 
     Titulo VARCHAR2(50) NOT NULL,
     IdEmpleador VARCHAR2(50) NOT NULL,
-    IdEstadoTrabajo INT NOT NULL,
     IdAreaDeTrabajo INT NOT NULL,
     Descripcion VARCHAR2(150),
     Ubicacion VARCHAR2(100),
@@ -42,9 +39,6 @@ CREATE TABLE TRABAJO (
     CONSTRAINT FKEmpleadorTrabajo FOREIGN KEY (IdEmpleador) REFERENCES EMPLEADOR(IdEmpleador),
     CONSTRAINT FkAreadeTrabajotrabajo FOREIGN KEY (IdAreaDeTrabajo) REFERENCES AreaDeTrabajo(IdAreaDeTrabajo)
 );
-
-
-
 
 CREATE TABLE SOLICITANTE (
     IdSolicitante VARCHAR2(50) PRIMARY KEY, 
@@ -77,7 +71,7 @@ CREATE TABLE SOLICITUD (
 
 
 //Secuencias y triggers para auto incremento 
-CREATE SEQUENCE Trabajo
+CREATE SEQUENCE Trabajoseq
 START WITH 1
 INCREMENT BY 1;
 
@@ -85,22 +79,21 @@ CREATE TRIGGER TrigTrabajo
 BEFORE INSERT ON TRABAJO
 FOR EACH ROW 
 BEGIN 
-SELECT Trabajo.NEXTVAL INTO:NEW.IdTrabajo
+SELECT Trabajoseq.NEXTVAL INTO:NEW.IdTrabajo
 FROM DUAL;
 END;
 
-
 --insert para area de trabajo
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (1,'Trabajo domÃ©stico');
+insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (1,'Trabajo doméstico');
 insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (2,'Freelancers');
 insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (3,'Trabajos remotos');
 insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (4,'Servicios de entrega');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (5,'Sector de la construcciÃ³n');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (6,'Ã?rea de la salud');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (7,'Sector de la hostelerÃ­a');
+insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (5,'Sector de la construcción');
+insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (6,'Área de la salud');
+insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (7,'Sector de la hostelería');
 insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (8,'Servicios profesionales');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (9,'Ã?rea de ventas y atenciÃ³n al cliente');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (10,'EducaciÃ³n y enseÃ±anza');
+insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (9,'Área de ventas y atención al cliente');
+insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (10,'Educación y enseñanza');
 
 
 select * from empleador;

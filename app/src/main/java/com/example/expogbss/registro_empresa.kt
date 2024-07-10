@@ -32,7 +32,7 @@ class registro_empresa : AppCompatActivity() {
             insets
         }
 
-        //TODO: Falta que se puedan agregar fotografias, faltan los inserts en caso de no agregar sitio web o nombre de empresa.
+        //TODO: Faltan los inserts en caso de no agregar sitio web o nombre de empresa.
         //TODO: Ver cómo evitar que exista el mismo correo en ambas tablas, consultar con el profe
 
         //1-Mandar a llamar a todos los elementos de la vista
@@ -128,8 +128,8 @@ class registro_empresa : AppCompatActivity() {
                     //Creo una variable que contenga un PrepareStatement
 
                     val crearUsuario =
-                        objConexion?.prepareStatement("INSERT INTO EMPLEADOR (IdEmpleador, NombreEmpresa, CorreoElectronico, NumeroTelefono,Direccion,SitioWeb, NombreRepresentante, Departamento, Contrasena) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
-                    crearUsuario.setString(1, UUID.randomUUID().toString())
+                        objConexion?.prepareStatement("INSERT INTO EMPLEADOR (IdEmpleador, NombreEmpresa, CorreoElectronico, NumeroTelefono,Direccion,SitioWeb, NombreRepresentante, Departamento, Contrasena,Estado, Foto) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
+                    crearUsuario.setString(1, uuid)
                     crearUsuario.setString(2, txtEmpresaEmpleador.text.toString())
                     crearUsuario.setString(3, txtCorreoEmpleador.text.toString())
                     crearUsuario.setString(4, txtTelefonoEmpleador.text.toString())
@@ -138,6 +138,8 @@ class registro_empresa : AppCompatActivity() {
                     crearUsuario.setString(7, txtNombreEmpleador.text.toString())
                     crearUsuario.setString(8, spDepartamentos.selectedItem.toString())
                     crearUsuario.setString(9, contrasenaEncriptada)
+                    crearUsuario.setString(10, "Pendiente")
+                    crearUsuario.setString(11,uuid )
 
                     crearUsuario.executeUpdate()
 
