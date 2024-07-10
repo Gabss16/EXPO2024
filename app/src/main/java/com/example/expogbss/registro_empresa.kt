@@ -1,5 +1,41 @@
+package com.example.expogbss
+
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Bundle
+import android.provider.MediaStore
+import android.widget.*
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import modelo.ClaseConexion
+import java.io.ByteArrayOutputStream
+import java.security.MessageDigest
+import androidx.appcompat.app.AlertDialog
+import java.util.*
+
 class registro_empresa : AppCompatActivity() {
-    // ... código omitido por brevedad
+    private val codigo_opcion_galeria = 102
+    private val codigo_opcion_tomar_foto = 103
+    private val CAMERA_REQUEST_CODE = 0
+    private val STORAGE_REQUEST_CODE = 1
+
+    private lateinit var imgFotoDePerfilEmpleador: ImageView
+    private lateinit var miPathEmpresa: String
+    private val uuid = UUID.randomUUID().toString()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +103,7 @@ class registro_empresa : AppCompatActivity() {
             checkCameraPermission()
         }
 
-        btnCrearCuentaEmpleador.setOnClickListener() {
+        btnCrearCuentaEmpleador.setOnClickListener {
             //mando a llamar a cada textview
             val nombreEmpleador = txtNombreEmpleador.text.toString()
             val CorreoEmpleador = txtCorreoEmpleador.text.toString()
@@ -149,7 +185,7 @@ class registro_empresa : AppCompatActivity() {
         }
     }
 
-    fun checkCameraPermission() {
+    private fun checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(
                 this,
                 android.Manifest.permission.CAMERA
@@ -159,143 +195,91 @@ class registro_empresa : AppCompatActivity() {
             // El permiso no está aceptado, entonces se lo pedimos
             requestCameraPermission()
         } else {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(intent, codigo_opcion_tomar_foto)
+            // Si tiene permisos, llamamos a la función para abrir la cámara
+            openCamera()
         }
     }
 
-    fun checkStoragePermission() {
+    private fun requestCameraPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(android.Manifest.permission.CAMERA),
+            CAMERA_REQUEST_CODE
+        )
+    }
+
+    private fun checkStoragePermission() {
         if (ContextCompat.checkSelfPermission(
                 this,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
+            )
+            != PackageManager.PERMISSION_GRANTED
         ) {
             // El permiso no está aceptado, entonces se lo pedimos
             requestStoragePermission()
         } else {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, codigo_opcion_galeria)
+            // Si tiene permisos, llamamos a la función para abrir la galería
+            openGallery()
         }
     }
 
-    fun requestCameraPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(
-                this,
-                android.Manifest.permission.CAMERA
-            )
-        ) {
-            // El usuario ya ha rechazado el permiso anteriormente, debemos informarle que vaya a ajustes.
-        } else {
-            // El usuario nunca ha aceptado ni rechazado, así que le pedimos que acepte el permiso.
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.CAMERA),
-                CAMERA_REQUEST_CODE
-            )
-        }
+    private fun requestStoragePermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+            STORAGE_REQUEST_CODE
+        )
     }
 
-    fun requestStoragePermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(
-                this,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-        ) {
-            // El usuario ya ha rechazado el permiso anteriormente, debemos informarle que vaya a ajustes.
-        } else {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                STORAGE_REQUEST_CODE
-            )
-        }
+    private fun openCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, codigo_opcion_tomar_foto)
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>, grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            CAMERA_REQUEST_CODE -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    //El usuario ha aceptado el permiso, no tiene porqué darle de nuevo al botón, podemos lanzar la funcionalidad desde aquí.
-                    //Abrimos la camara:
-                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    startActivityForResult(intent, codigo_opcion_tomar_foto)
-                } else {
-                    //El usuario ha rechazado el permiso, podemos desactivar la funcionalidad o mostrar una vista/diálogo.
-                }
-
-                return
-            }
-
-            STORAGE_REQUEST_CODE -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    //Abrimos la galeria
-                    val intent = Intent(Intent.ACTION_PICK)
-                    intent.type = "image/*"
-                    startActivityForResult(intent, codigo_opcion_galeria)
-                } else {
-                    Toast.makeText(this, "Permiso de almacenamiento denegado", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-
-            else -> {
-                // Este else lo dejamos por si sale un permiso que no teníamos controlado.
-            }
-        }
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, codigo_opcion_galeria)
     }
 
-    // Esta función onActivityResult se encarga de capturar lo que pasa al abrir la geleria o la camara
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-
-                codigo_opcion_galeria -> {
-                    val imageUri: Uri? = data?.data
-                    imageUri?.let {
-                        val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
-                        subirimagenFirebase(imageBitmap) { url ->
-                            miPathEmpresa = url
-                            imgFotoDePerfilEmpleador.setImageURI(it)
-                        }
-                    }
-                }
-
                 codigo_opcion_tomar_foto -> {
-                    val imageBitmap = data?.extras?.get("data") as? Bitmap
-                    imageBitmap?.let {
-                        subirimagenFirebase(it) { url ->
-                            miPathEmpresa = url
-                            imgFotoDePerfilEmpleador.setImageBitmap(it)
-                        }
+                    val photo = data?.extras?.get("data") as Bitmap
+                    imgFotoDePerfilEmpleador.setImageBitmap(photo)
+                    // Llamar a la función para subir la foto
+                    uploadImage(photo)
+                }
+                codigo_opcion_galeria -> {
+                    val imageUri = data?.data
+                    imgFotoDePerfilEmpleador.setImageURI(imageUri)
+                    // Llamar a la función para subir la foto desde la URI
+                    imageUri?.let { uri ->
+                        val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
+                        uploadImage(bitmap)
                     }
                 }
             }
         }
     }
 
-    //Subir la imagen a Firebase Storage
-    private fun subirimagenFirebase(bitmap: Bitmap, onSuccess: (String) -> Unit) {
-        val storageRef = Firebase.storage.reference
-        val imageRef = storageRef.child("images/${uuid}.jpg")
+    private fun uploadImage(image: Bitmap) {
+        val storageRef = Firebase.storage.reference.child("profileImages/$uuid.jpg")
         val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
-        val uploadTask = imageRef.putBytes(data)
 
-        uploadTask.addOnFailureListener {
-            Toast.makeText(this@registro_empresa, "Error al subir la imagen", Toast.LENGTH_SHORT)
-                .show()
-
-        }.addOnSuccessListener { taskSnapshot ->
-            imageRef.downloadUrl.addOnSuccessListener { uri ->
-                onSuccess(uri.toString())
+        storageRef.putBytes(data)
+            .addOnSuccessListener {
+                storageRef.downloadUrl.addOnSuccessListener { uri ->
+                    miPathEmpresa = uri.toString()
+                    // Guardar el enlace de descarga de la imagen en tu base de datos si es necesario
+                }
             }
-        }
+            .addOnFailureListener {
+                // Manejar cualquier error
+            }
     }
-
+}
