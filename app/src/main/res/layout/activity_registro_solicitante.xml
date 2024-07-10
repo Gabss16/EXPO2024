@@ -216,8 +216,8 @@
 
             <ImageView
                 android:id="@+id/imgFotoDePerfilSolicitante"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="84dp"
+                android:layout_height="77dp"
                 android:layout_marginStart="26dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="188dp"

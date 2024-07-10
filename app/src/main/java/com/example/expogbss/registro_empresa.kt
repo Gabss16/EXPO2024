@@ -1,27 +1,42 @@
 package com.example.expogbss
 
-import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.EditText
+import android.app.Activity
 import android.content.Intent
-import android.widget.ImageView
-import android.widget.Spinner
-import android.widget.Toast
-import android.app.AlertDialog
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Bundle
+import android.provider.MediaStore
+import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
+import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
-import java.util.UUID
+import androidx.appcompat.app.AlertDialog
+import java.util.*
 
 class registro_empresa : AppCompatActivity() {
+    private val codigo_opcion_galeria = 102
+    private val codigo_opcion_tomar_foto = 103
+    private val CAMERA_REQUEST_CODE = 0
+    private val STORAGE_REQUEST_CODE = 1
+
+    private lateinit var imgFotoDePerfilEmpleador: ImageView
+    private lateinit var miPathEmpresa: String
+    private val uuid = UUID.randomUUID().toString()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,6 +59,9 @@ class registro_empresa : AppCompatActivity() {
         val txtDireccionEmpleador = findViewById<EditText>(R.id.txtDireccionEmpleador)
         val txtSitioWebEmpleador = findViewById<EditText>(R.id.txtSitioWebEmpleador)
         val spDepartamentos = findViewById<Spinner>(R.id.spDepartamento)
+        imgFotoDePerfilEmpleador = findViewById(R.id.imgFotoDePerfilEmpleador)
+        val btnSubirFotoEmpleador = findViewById<Button>(R.id.btnSubirFotoEmpleador)
+        val btnTomarFotoEmpleador = findViewById<Button>(R.id.btnTomarFotoEmpleador)
 
         val listadoDepartamentos = listOf(
             "Ahuachapán",
@@ -74,10 +92,18 @@ class registro_empresa : AppCompatActivity() {
             return bytes.joinToString("") { "%02x".format(it) }
         }
 
-        //Código para registrar a un empleador
+        imgFotoDePerfilEmpleador = findViewById(R.id.imgFotoDePerfilEmpleador)
+
+        btnSubirFotoEmpleador.setOnClickListener {
+            // Al darle clic al botón de la galería pedimos los permisos primero
+            checkStoragePermission()
+        }
+        btnTomarFotoEmpleador.setOnClickListener {
+            // Al darle clic al botón de la cámara pedimos los permisos primero
+            checkCameraPermission()
+        }
 
         btnCrearCuentaEmpleador.setOnClickListener {
-
             //mando a llamar a cada textview
             val nombreEmpleador = txtNombreEmpleador.text.toString()
             val CorreoEmpleador = txtCorreoEmpleador.text.toString()
@@ -89,8 +115,7 @@ class registro_empresa : AppCompatActivity() {
 
             val VerificarTelefono = Regex("^\\d{4}-\\d{4}\$")
             val verificarCorreo = Regex("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
-            val verificarContraseña =
-                Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
+            val verificarContraseña = Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
 
             //Validaciones de campos vacíos y cosas por ese estilo
             if (nombreEmpleador.isEmpty() || EmpresaEmpleador.isEmpty() || CorreoEmpleador.isEmpty() || ContrasenaEmpleador.isEmpty() || TelefoEmpleador.isEmpty() || DireccionEmpleador.isEmpty()) {
@@ -158,5 +183,103 @@ class registro_empresa : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.CAMERA
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            // El permiso no está aceptado, entonces se lo pedimos
+            requestCameraPermission()
+        } else {
+            // Si tiene permisos, llamamos a la función para abrir la cámara
+            openCamera()
+        }
+    }
+
+    private fun requestCameraPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(android.Manifest.permission.CAMERA),
+            CAMERA_REQUEST_CODE
+        )
+    }
+
+    private fun checkStoragePermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            // El permiso no está aceptado, entonces se lo pedimos
+            requestStoragePermission()
+        } else {
+            // Si tiene permisos, llamamos a la función para abrir la galería
+            openGallery()
+        }
+    }
+
+    private fun requestStoragePermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+            STORAGE_REQUEST_CODE
+        )
+    }
+
+    private fun openCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, codigo_opcion_tomar_foto)
+    }
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, codigo_opcion_galeria)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                codigo_opcion_tomar_foto -> {
+                    val photo = data?.extras?.get("data") as Bitmap
+                    imgFotoDePerfilEmpleador.setImageBitmap(photo)
+                    // Llamar a la función para subir la foto
+                    uploadImage(photo)
+                }
+                codigo_opcion_galeria -> {
+                    val imageUri = data?.data
+                    imgFotoDePerfilEmpleador.setImageURI(imageUri)
+                    // Llamar a la función para subir la foto desde la URI
+                    imageUri?.let { uri ->
+                        val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
+                        uploadImage(bitmap)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun uploadImage(image: Bitmap) {
+        val storageRef = Firebase.storage.reference.child("profileImages/$uuid.jpg")
+        val baos = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+
+        storageRef.putBytes(data)
+            .addOnSuccessListener {
+                storageRef.downloadUrl.addOnSuccessListener { uri ->
+                    miPathEmpresa = uri.toString()
+                    // Guardar el enlace de descarga de la imagen en tu base de datos si es necesario
+                }
+            }
+            .addOnFailureListener {
+                // Manejar cualquier error
+            }
     }
 }

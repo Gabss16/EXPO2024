@@ -33,6 +33,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.Firebase
+import com.google.firebase.storage.storage
+import java.io.ByteArrayOutputStream
 import java.util.UUID
 
 
@@ -204,7 +207,8 @@ class registroSolicitante : AppCompatActivity() {
             // El permiso no está aceptado, entonces se lo pedimos
             requestCameraPermission()
         } else {
-
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(intent, codigo_opcion_tomar_foto)
         }
     }
 
@@ -217,7 +221,9 @@ class registroSolicitante : AppCompatActivity() {
             // El permiso no está aceptado, entonces se lo pedimos
             requestStoragePermission()
         } else {
-
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, codigo_opcion_galeria)
         }
     }
 
@@ -289,34 +295,54 @@ class registroSolicitante : AppCompatActivity() {
             }
         }
     }
-    //Esta función onActivityResult se encarga de capturar lo que pasa al abrir la geleria o la camara
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (resultCode == Activity.RESULT_OK) {
-//            when (requestCode) {
-//
-//                codigo_opcion_galeria -> {
-//                    val imageUri: Uri? = data?.data
-//                    imageUri?.let {
-//                        val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
-//                        subirimagenFirebase(imageBitmap) { url gs://agalo-e4597.appspot.com
-//                            miPath = url
-//                            imgFotoDePerfilSolicitante.setImageURI(it)
-//                        }
-//                    }
-//                }
-//
-//
-//                codigo_opcion_tomar_foto -> {
-//                    val imageBitmap = data?.extras?.get("data") as? Bitmap
-//                    imageBitmap?.let {
-//                        subirimagenFirebase(it) { url ->
-//                            miPath = url
-//                            imageView.setImageBitmap(it)
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+   // Esta función onActivityResult se encarga de capturar lo que pasa al abrir la geleria o la camara
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+
+                codigo_opcion_galeria -> {
+                    val imageUri: Uri? = data?.data
+                    imageUri?.let {
+                        val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
+                        subirimagenFirebase(imageBitmap) { url ->
+                            miPath = url
+                            imgFotoDePerfilSolicitante.setImageURI(it)
+                        }
+                    }
+                }
+
+
+                codigo_opcion_tomar_foto -> {
+                    val imageBitmap = data?.extras?.get("data") as? Bitmap
+                    imageBitmap?.let {
+                        subirimagenFirebase(it) { url ->
+                            miPath = url
+                            imgFotoDePerfilSolicitante.setImageBitmap(it)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //Subir la imagen a Firebase Storage
+    private fun subirimagenFirebase(bitmap: Bitmap, onSuccess: (String) -> Unit) {
+        val storageRef = Firebase.storage.reference
+        val imageRef = storageRef.child("images/${uuid}.jpg")
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+        val uploadTask = imageRef.putBytes(data)
+
+        uploadTask.addOnFailureListener {
+            Toast.makeText(this@registroSolicitante, "Error al subir la imagen", Toast.LENGTH_SHORT).show()
+
+        }.addOnSuccessListener { taskSnapshot ->
+            imageRef.downloadUrl.addOnSuccessListener { uri ->
+                onSuccess(uri.toString())
+            }
+        }
+    }
+
 }
