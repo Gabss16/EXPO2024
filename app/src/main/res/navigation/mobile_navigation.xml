@@ -20,16 +20,11 @@
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.expogbss.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:label="navigation_perfil"
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/chat"
         android:name="com.example.expogbss.chat"
         android:label="fragment_chat"
         tools:layout="@layout/fragment_chat" />
-    <fragment
-        android:id="@+id/perfilSolicitante"
-        android:name="com.example.expogbss.perfilSolicitante"
-        android:label="fragment_perfil_solicitante"
-        tools:layout="@layout/fragment_perfil_solicitante" />
 </navigation>
