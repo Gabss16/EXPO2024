@@ -60,7 +60,83 @@
                     android:id="@+id/textView14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1000dp"
+                    tools:layout_editor_absoluteY="1000dp" />
+
+                <ImageView
+                    android:id="@+id/imgFotoEmpleador"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.056"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/textViewNombreEmpresa"
+                    android:layout_width="334dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Nombre Empleador"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.213"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewCorreoEmpresa" />
+
+                <TextView
+                    android:id="@+id/textViewCorreoEmpresa"
+                    android:layout_width="334dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Correo Empleador"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.213"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imgFotoEmpleador" />
+
+                <TextView
+                    android:id="@+id/textViewNumeroEmpleador"
+                    android:layout_width="116dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="96dp"
+                    android:text="7277 9865"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.054"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewNombreEmpresa" />
+
+                <TextView
+                    android:id="@+id/textViewDireccionEmpleador"
+                    android:layout_width="334dp"
+                    android:layout_height="39dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Direccion"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.213"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewNumeroEmpleador" />
+
+                <TextView
+                    android:id="@+id/textViewSitioWeb"
+                    android:layout_width="334dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="16dp"
+                    android:text="SitioWeb"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.213"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewDireccionEmpleador" />
+
+                <TextView
+                    android:id="@+id/textViewNombreEmpresa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="140dp"
+                    android:text="Nombre empresa"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.141"
+                    app:layout_constraintStart_toEndOf="@+id/imgFotoEmpleador"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
