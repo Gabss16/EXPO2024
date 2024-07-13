@@ -48,6 +48,8 @@ dependencies {
     implementation(files("libs\\activation.jar"))
     implementation(files("libs\\additionnal.jar"))
     implementation(files("libs\\mail.jar"))
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
