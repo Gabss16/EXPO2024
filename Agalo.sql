@@ -16,12 +16,16 @@ CREATE TABLE EMPLEADOR (
     Contrasena VARCHAR2(250) NOT NULL,
     Estado VARCHAR(10) CHECK (Estado IN ('Activo', 'Pendiente')),
     Foto varchar2(300));
+    
+    
+INSERT INTO EMPLEADOR (IdEmpleador, NombreEmpresa, CorreoElectronico, NumeroTelefono,Direccion,SitioWeb, NombreRepresentante, Departamento, Contrasena,Estado, Foto) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
 
 
 Create table AreaDeTrabajo(
 IdAreaDeTrabajo int PRIMARY KEY,
 NombreAreaDetrabajo varchar2(100));
 
+select * from empleador 
 
 CREATE TABLE TRABAJO (
     IdTrabajo NUMBER PRIMARY KEY, 
@@ -107,6 +111,7 @@ DROP SEQUENCE EstadoSolicitudSequence;
 DROP SEQUENCE EstadoSolicitanteSequence;
 DROP SEQUENCE TrabajoSequence;
 DROP SEQUENCE SolicitudSequence;
+
 
 -- Eliminar triggers
 DROP TRIGGER TrigEstadoTrabajo;
