@@ -7,16 +7,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="413dp"
-        android:layout_height="343dp"
+        android:layout_width="415dp"
+        android:layout_height="419dp"
         android:layout_margin="2dp"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="-3dp">
+        tools:layout_editor_absoluteX="-4dp">
 
         <ScrollView
-            android:layout_width="413dp"
-            android:layout_height="343dp"
-            tools:layout_editor_absoluteX="1dp"
+            android:layout_width="414dp"
+            android:layout_height="418dp"
+            tools:layout_editor_absoluteX="-1dp"
             tools:layout_editor_absoluteY="1dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -99,10 +99,11 @@
                     android:id="@+id/idBtnDismiss"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="600dp"
+                    android:layout_marginTop="890dp"
                     android:background="@drawable/boton_publicar_trabajo"
                     android:foreground="@drawable/boton_publicar_trabajo"
                     android:text="Button"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="91dp" />
 
@@ -159,6 +160,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.84" />
+
+                <Spinner
+                    android:id="@+id/spnTiposTrabajo"
+                    android:layout_width="239dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="119dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtSalarioJob" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
