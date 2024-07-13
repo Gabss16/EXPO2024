@@ -13,8 +13,6 @@
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 
     <application
@@ -25,14 +23,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.EXPOgbss"
+        android:theme="@style/Theme.Design.Light"
         tools:targetApi="31">
-        <activity
-            android:name=".MainActivity2"
-            android:exported="false"
-            android:label="@string/title_activity_main2" />
+
         <activity
             android:name=".registro_empresa"
+            android:exported="false" />
+        <activity
+            android:name=".cambio_de_contrasena"
             android:exported="false" />
         <activity
             android:name=".ingresarCorreoRecupContrasena"

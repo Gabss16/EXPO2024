@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.CoroutineScope
@@ -51,8 +51,7 @@ class homeEmpresa : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home_empresa, container, false)
 
         // initializing our variable for button with its id.
-        val btnShowBottomSheet = root.findViewById<Button>(R.id.idBtnShowBottomSheet)
-
+        val btnShowBottomSheet = root.findViewById<ImageButton>(R.id.idBtnShowBottomSheet)
 
         // adding on click listener for our button.
         btnShowBottomSheet.setOnClickListener {
@@ -118,8 +117,6 @@ class homeEmpresa : Fragment() {
                 }
             }
 
-
-
             // on below line we are adding on click listener
             // for our dismissing the dialog button.
             btnClose.setOnClickListener {
@@ -158,30 +155,29 @@ class homeEmpresa : Fragment() {
                 // on below line we are calling
                 // a show method to display a dialog.
                 dialog.show()
-            }}
-
-
-
-            return root
+            }
         }
 
-        companion object {
-            /**
-             * Use this factory method to create a new instance of
-             * this fragment using the provided parameters.
-             *
-             * @param param1 Parameter 1.
-             * @param param2 Parameter 2.
-             * @return A new instance of fragment homeEmpresa.
-             */
-            // TODO: Rename and change types and number of parameters
-            @JvmStatic
-            fun newInstance(param1: String, param2: String) =
-                homeEmpresa().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
-                }
-        }
+        return root
     }
+
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment homeEmpresa.
+         */
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            homeEmpresa().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
+                }
+            }
+    }
+}

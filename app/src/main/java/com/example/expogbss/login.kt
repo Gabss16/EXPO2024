@@ -12,21 +12,49 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.expogbss.ui.dashboard.DashboardFragment
+import com.example.expogbss.ui.home.HomeFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
+import modelo.Empleador
 import java.security.MessageDigest
+import java.util.Date
 
 class login : AppCompatActivity() {
+    companion object variablesGlobalesRecuperacionDeContrasena{
+        lateinit var correoLogin : String
+        lateinit var IdEmpleador : String
+        lateinit var nombresSolicitante: String
+        lateinit var correoSolicitante: String
+        lateinit var numeroSolicitante: String
+        lateinit var direccionSolicitante: String
+        lateinit var departamentoSolicitante: String
+        lateinit var fechaNacimiento: String
+        lateinit var generoSolicitante: String
+        lateinit var areaDeTrabajo: String
+        lateinit var habilidades: String
+        lateinit var fotoSolicitante: String
+        lateinit var nombreEmpresa: String
+        lateinit var correoEmpleador: String
+        lateinit var nombreEmpleador: String
+        lateinit var numeroEmpleador: String
+        lateinit var direccionEmpleador: String
+        lateinit var sitioWebEmpleador: String
+        lateinit var fotoEmpleador: String
+        //TODO: Añadir todos los campos que quiero llamar en los perfiles
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -62,6 +90,7 @@ class login : AppCompatActivity() {
         //Botones para ingresar al sistema
 
         btnSignIn.setOnClickListener {
+            correoLogin = txtCorreoLogin.text.toString()
 
             val correo = txtCorreoLogin.text.toString()
             val contrasena = txtcontrasenaLogin.text.toString()
@@ -79,7 +108,8 @@ class login : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                val pantallaPrincipal = Intent(this, ingresarCorreoRecupContrasena::class.java)
+                val pantallaEmpleador = Intent(this, Empleadores::class.java)
+                val pantallaSolicitante = Intent(this, solicitante::class.java)
 
                 CoroutineScope(Dispatchers.IO).launch {
 
@@ -105,12 +135,31 @@ class login : AppCompatActivity() {
 
                     //Si el usuario es Empleador, se le muestra su pantalla respectiva
                     if (esEmpleador.next()) {
-                        startActivity(pantallaPrincipal)
+                        nombreEmpresa = esEmpleador.getString("NombreEmpresa")
+                        nombreEmpleador = esEmpleador.getString("NombreRepresentante")
+                        correoEmpleador = esEmpleador.getString("CorreoElectronico")
+                        numeroEmpleador = esEmpleador.getString("NumeroTelefono")
+                        direccionEmpleador = esEmpleador.getString("Direccion")
+                        sitioWebEmpleador = esEmpleador.getString("SitioWeb")
+                        fotoEmpleador = esEmpleador.getString("Foto")
+                        withContext(Dispatchers.Main) {
+                            startActivity(pantallaEmpleador)
+                        }
                     } else if (
-
                     //Si el usuario es Solicitante, se le muestra su pantalla respectiva
                     esSolicitante.next()) {
-                        startActivity(pantallaPrincipal)
+                        nombresSolicitante = esSolicitante.getString("Nombre")
+                        correoSolicitante = esSolicitante.getString("CorreoElectronico")
+                        numeroSolicitante = esSolicitante.getString("Telefono")
+                        direccionSolicitante = esSolicitante.getString("Direccion")
+                        departamentoSolicitante = esSolicitante.getString("Departamento")
+                        fechaNacimiento = esSolicitante.getString("FechaDeNacimiento")
+                        generoSolicitante = esSolicitante.getString("Genero")
+                        areaDeTrabajo = esSolicitante.getString("IdAreaDeTrabajo")
+                        habilidades = esSolicitante.getString("Habilidades")
+                        fotoSolicitante = esSolicitante.getString("Foto")
+
+                        startActivity(pantallaSolicitante)
                     }else {
                         withContext(Dispatchers.Main) {
                             Toast.makeText(this@login, "Usuario no encontrado, verifique sus credenciales", Toast.LENGTH_LONG).show()

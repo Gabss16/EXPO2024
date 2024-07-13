@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.expogbss.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:label="navigation_perfil"
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/chat"

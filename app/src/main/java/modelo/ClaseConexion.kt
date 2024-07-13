@@ -11,11 +11,13 @@ class ClaseConexion {
             val usuario = "SYSTEM"
             val contrasena = "ITR2024"
 
+            // Attempt to establish a connection
             val conexion = DriverManager.getConnection(ip, usuario, contrasena)
-            return conexion
-        }catch (e: Exception){
+            conexion
+        } catch (e: Exception) {
+            // Print the error message if an exception occurs
             println("El error es este: $e")
-            return null
+            null
         }
     }
 }
