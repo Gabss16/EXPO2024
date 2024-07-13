@@ -7,16 +7,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="413dp"
-        android:layout_height="343dp"
+        android:layout_width="415dp"
+        android:layout_height="419dp"
         android:layout_margin="2dp"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="-3dp">
+        tools:layout_editor_absoluteX="-4dp">
 
         <ScrollView
-            android:layout_width="413dp"
-            android:layout_height="343dp"
-            tools:layout_editor_absoluteX="1dp"
+            android:layout_width="414dp"
+            android:layout_height="418dp"
+            tools:layout_editor_absoluteX="-1dp"
             tools:layout_editor_absoluteY="1dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout

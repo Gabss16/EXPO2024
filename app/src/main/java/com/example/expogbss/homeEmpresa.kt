@@ -17,8 +17,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import modelo.AreaDeTrabajo
 import modelo.ClaseConexion
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.UUID
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -72,50 +75,35 @@ class homeEmpresa : Fragment() {
             val txtHabilidadesJob = view.findViewById<EditText>(R.id.txtHabilidadesJob)
             val txtBeneficiosJob = view.findViewById<EditText>(R.id.txtBeneficiosJob)
             val txtSalarioJob = view.findViewById<EditText>(R.id.txtSalarioJob)
-            val spnTipoTrabajo = view.findViewById<Spinner>(R.id.spnTiposTrabajo)
 
-            fun obtenerAreasDeTrabajo(): List<AreaDeTrabajo> {
-                val listadoDeAreasDeTrabajo = mutableListOf<AreaDeTrabajo>()
-                val objConexion = ClaseConexion().cadenaConexion()
 
-                if (objConexion != null) {
-                    // Creo un Statement que me ejecutará el select
-                    val statement = objConexion.createStatement()
-                    val resultSet = statement?.executeQuery("select * from AreaDeTrabajo")
+            val uuid = UUID.randomUUID().toString()
+            val fechaDePublicacion = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            val spnTiposTrabajo = view.findViewById<Spinner>(R.id.spnTiposTrabajo)
+            val listadoAreas = listOf(
+                "Trabajo doméstico",
+                "Freelancers",
+                "Trabajos remotos",
+                "Servicios de entrega",
+                "Sector de la construcción",
+                "Área de la salud",
+                "Sector de la hostelería",
+                "Servicios profesionales",
+                "Área de ventas y atención al cliente",
+                "Educación y enseñanza"
+            )
+            val adaptadorAreasDeTrabajo =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listadoAreas)
+            spnTiposTrabajo.adapter = adaptadorAreasDeTrabajo
 
-                    if (resultSet != null) {
-                        while (resultSet.next()) {
-                            val IdArea = resultSet.getInt("IdAreaDeTrabajo")
-                            val NombreAreaDetrabajo = resultSet.getString("NombreAreaDetrabajo")
-                            val listadoCompleto = AreaDeTrabajo(IdArea, NombreAreaDetrabajo)
-                            listadoDeAreasDeTrabajo.add(listadoCompleto)
-                        }
-                        resultSet.close()
-                    }
-                    statement?.close()
-                    objConexion.close()
-                } else {
-                    Log.e("registroSolicitante", "Connection to database failed")
-                }
-
-                return listadoDeAreasDeTrabajo
+             fun obtenerIdEmpleador(): String {
+                return login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
             }
 
-            val spAreaDeTrabajoSolicitante = view.findViewById<Spinner>(R.id.spnTiposTrabajo)
-            CoroutineScope(Dispatchers.IO).launch {
-                val listadoDeAreasDeTrabajo = obtenerAreasDeTrabajo()
-                val AreasDeTrabajo = listadoDeAreasDeTrabajo.map { it.NombreAreaDetrabajo }
+            val idEmpleador = obtenerIdEmpleador()
 
-                withContext(Dispatchers.Main) {
-                    // Creo la configuración del adaptador
-                    // El Adaptador solicita tres cosas: contexto, layout y los datos
-                    val adapter = ArrayAdapter(requireContext(), // Usar el contexto adecuado
-                        android.R.layout.simple_spinner_dropdown_item,
-                        AreasDeTrabajo
-                    )
-                    spAreaDeTrabajoSolicitante.adapter = adapter
-                }
-            }
+
+
 
             // on below line we are adding on click listener
             // for our dismissing the dialog button.
@@ -127,15 +115,19 @@ class homeEmpresa : Fragment() {
 
                     //2-creo una variable que contenga un PrepareStatement
                     val addTrabajo =
-                        objConexion?.prepareStatement("insert into TRABAJO values (?, ?, ?,?,?,?,?,?,?,?,?")!!
-                    addTrabajo.setString(1, txtTituloJob.text.toString())
-                    addTrabajo.setString(2, txtUbicacionJob.text.toString())
-                    addTrabajo.setString(3, txtDescripcionJob.text.toString())
-                    addTrabajo.setString(4, txtExperienciaJob.text.toString())
-                    addTrabajo.setString(5, txtHabilidadesJob.text.toString())
-                    addTrabajo.setString(6, spnTipoTrabajo.toString())
-                    addTrabajo.setString(7, txtBeneficiosJob.text.toString())
-                    addTrabajo.setString(8, txtSalarioJob.text.toString())
+                        objConexion?.prepareStatement("INSERT INTO TRABAJO (IdTrabajoEmpleador , Titulo , IdEmpleador , AreaDeTrabajo,Descripcion ,Ubicacion , Experiencia , Requerimientos , Estado ,Salario , Beneficios ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
+                    addTrabajo.setString(1, uuid)
+                    addTrabajo.setString(2, txtTituloJob.text.toString())
+                    addTrabajo.setString(3, idEmpleador)
+                    addTrabajo.setString(4, spnTiposTrabajo.selectedItem.toString())
+                    addTrabajo.setString(5, txtDescripcionJob.text.toString())
+                    addTrabajo.setString(6, txtUbicacionJob.text.toString())
+                    addTrabajo.setString(7, txtExperienciaJob.text.toString())
+                    addTrabajo.setString(8, txtHabilidadesJob.text.toString())
+                    addTrabajo.setString(9, "Activo")
+                    addTrabajo.setString(10, txtSalarioJob.text.toString())
+                    addTrabajo.setString(11, txtBeneficiosJob.text.toString())
+
 
                     addTrabajo.executeUpdate()
                     Toast.makeText(requireContext(), "Trabajo Ingresado", Toast.LENGTH_LONG).show()
