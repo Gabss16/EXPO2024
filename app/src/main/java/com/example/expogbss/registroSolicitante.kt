@@ -26,11 +26,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import modelo.AreaDeTrabajo
 import modelo.ClaseConexion
 import java.security.MessageDigest
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.firebase.Firebase
@@ -38,7 +38,7 @@ import com.google.firebase.storage.storage
 import java.io.ByteArrayOutputStream
 import java.util.UUID
 
-
+//TODO Terminar insert cuando esté completo el diseño
 class registroSolicitante : AppCompatActivity() {
     val codigo_opcion_galeria = 102
     val codigo_opcion_tomar_foto = 103
@@ -48,6 +48,7 @@ class registroSolicitante : AppCompatActivity() {
     lateinit var imgFotoDePerfilSolicitante: ImageView
     lateinit var miPath: String
     val uuid = UUID.randomUUID().toString()
+    private var fotoSubida = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,13 +101,11 @@ class registroSolicitante : AppCompatActivity() {
             fechaMaxima.set(anio - 18, mes, dia)
 
             val datePickerDialog = DatePickerDialog(
-                this,
-                { _, anioSeleccionado, mesSeleccionado, diaSeleccionado ->
+                this, { _, anioSeleccionado, mesSeleccionado, diaSeleccionado ->
                     val fechaSeleccionada =
                         "$diaSeleccionado/${mesSeleccionado + 1}/$anioSeleccionado"
                     txtFechaSolicitante.setText(fechaSeleccionada)
-                },
-                anio, mes, dia
+                }, anio, mes, dia
             )
 
             // Configurar la fecha máxima a hace 18 años a partir de hoy
@@ -117,58 +116,29 @@ class registroSolicitante : AppCompatActivity() {
 
         val spGeneroSolicitante = findViewById<Spinner>(R.id.spGeneroSolicitante)
         val listadoGeneros = listOf(
-            "Masculino",
-            "Femenino",
-            "Prefiero no decirlo"
+            "Masculino", "Femenino", "Prefiero no decirlo"
         )
         val adaptadorDeGeneros =
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listadoGeneros)
         spGeneroSolicitante.adapter = adaptadorDeGeneros
 
-        // Función para hacer el select de las áreas de trabajo
-        fun obtenerAreasDeTrabajo(): List<AreaDeTrabajo> {
-            val listadoDeAreasDeTrabajo = mutableListOf<AreaDeTrabajo>()
-            val objConexion = ClaseConexion().cadenaConexion()
-
-            if (objConexion != null) {
-                // Creo un Statement que me ejecutará el select
-                val statement = objConexion.createStatement()
-                val resultSet = statement?.executeQuery("select * from AreaDeTrabajo")
-
-                if (resultSet != null) {
-                    while (resultSet.next()) {
-                        val IdArea = resultSet.getInt("IdAreaDeTrabajo")
-                        val NombreAreaDetrabajo = resultSet.getString("NombreAreaDetrabajo")
-                        val listadoCompleto = AreaDeTrabajo(IdArea, NombreAreaDetrabajo)
-                        listadoDeAreasDeTrabajo.add(listadoCompleto)
-                    }
-                    resultSet.close()
-                }
-                statement?.close()
-                objConexion.close()
-            } else {
-                Log.e("registroSolicitante", "Connection to database failed")
-            }
-            println("este es el listaod de aterasd faksjdflkashdfk $listadoDeAreasDeTrabajo")
-            return listadoDeAreasDeTrabajo
-        }
 
         val spAreaDeTrabajoSolicitante = findViewById<Spinner>(R.id.spAreaDeTrabajoSolicitante)
-        CoroutineScope(Dispatchers.IO).launch {
-            val listadoDeAreasDeTrabajo = obtenerAreasDeTrabajo()
-            val AreasDeTrabajo = listadoDeAreasDeTrabajo.map { it.NombreAreaDetrabajo }
-
-            withContext(Dispatchers.Main) {
-                // Creo la configuración del adaptador
-                // El Adaptador solicita tres cosas: contexto, layout y los datos
-                val adapter = ArrayAdapter(
-                    this@registroSolicitante, // Usar el contexto adecuado
-                    android.R.layout.simple_spinner_dropdown_item,
-                    AreasDeTrabajo
-                )
-                spAreaDeTrabajoSolicitante.adapter = adapter
-            }
-        }
+        val listadoAreas = listOf(
+            "Trabajo doméstico",
+            "Freelancers",
+            "Trabajos remotos",
+            "Servicios de entrega",
+            "Sector de la construcción",
+            "Área de la salud",
+            "Sector de la hostelería",
+            "Servicios profesionales",
+            "Área de ventas y atención al cliente",
+            "Educación y enseñanza"
+        )
+        val adaptadorAreasDeTrabajo =
+            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listadoAreas)
+        spAreaDeTrabajoSolicitante.adapter = adaptadorAreasDeTrabajo
 
         imgFotoDePerfilSolicitante = findViewById(R.id.imgFotoDePerfilSolicitante)
         val btnSubirDesdeGaleriaSolicitante =
@@ -183,26 +153,152 @@ class registroSolicitante : AppCompatActivity() {
             return bytes.joinToString("") { "%02x".format(it) }
         }
 
+        btnCrearCuentaSolicitante.setOnClickListener {
+
+            // mando a llamar a cada textview
+            val nombreSolicitante = txtNombreSolicitante.text.toString()
+            val correoSolicitante = txtCorreoSolicitante.text.toString()
+            val contrasenaSolicitante = txtConstrasenaSolicitante.text.toString()
+            val telefonoSolicitante = txtTelefonoSolicitante.text.toString()
+            val direccionSolicitante = txtDireccionSolicitante.text.toString()
+
+            val VerificarTelefono = Regex("^\\d{4}-\\d{4}\$")
+            val verificarCorreo = Regex("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
+            val verificarContraseña =
+                Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
+
+            // Validaciones de campos vacíos y cosas por ese estilo
+            if (nombreSolicitante.isEmpty() || correoSolicitante.isEmpty() || contrasenaSolicitante.isEmpty() || telefonoSolicitante.isEmpty() || direccionSolicitante.isEmpty()) {
+                Toast.makeText(
+                    this@registroSolicitante,
+                    "Por favor, llenar los espacios obligatorios",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (!VerificarTelefono.matches(telefonoSolicitante)) {
+                Toast.makeText(
+                    this@registroSolicitante,
+                    "Ingresar un número de teléfono válido.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (!verificarCorreo.matches(correoSolicitante)) {
+                Toast.makeText(
+                    this@registroSolicitante,
+                    "Ingresar un correo electrónico válido.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (!verificarContraseña.matches(contrasenaSolicitante)) {
+                Toast.makeText(
+                    this@registroSolicitante,
+                    "La contraseña debe contener al menos un caracter especial y tener más de 6 caracteres.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (!fotoSubida) {
+                Toast.makeText(
+                    this@registroSolicitante,
+                    "Por favor, sube una foto de perfil.",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            } else {
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        val objConexion = ClaseConexion().cadenaConexion()
+                        val comprobarSiExisteCorreo =
+                            objConexion?.prepareStatement("SELECT * FROM Empleador WHERE CorreoElectronico = ? ")!!
+                        comprobarSiExisteCorreo.setString(1, correoSolicitante)
+
+                        val existeCorreoSolicitante = comprobarSiExisteCorreo.executeQuery()
+
+                        if (existeCorreoSolicitante.next()) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@registroSolicitante,
+                                    "Ya existe alguien con ese correo electrónico, por favor, utiliza otro.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        } else {
+
+                            // Encripto la contraseña usando la función de encriptación
+                            val contrasenaEncriptada =
+                                hashSHA256(txtConstrasenaSolicitante.text.toString())
+
+                            // Creo una variable que contenga un PrepareStatement
+                            val crearUsuario = objConexion?.prepareStatement(
+                                "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono," +
+                                        "Direccion,Departamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
+                            )!!
+                            crearUsuario.setString(1, uuid)
+                            crearUsuario.setString(2, txtNombreSolicitante.text.toString())
+                            crearUsuario.setString(3, txtCorreoSolicitante.text.toString())
+                            crearUsuario.setString(4, txtTelefonoSolicitante.text.toString())
+                            crearUsuario.setString(5, txtDireccionSolicitante.text.toString())
+                            crearUsuario.setString(6, spDepartamentoSolicitante.selectedItem.toString()
+                            )
+                            crearUsuario.setString(7, txtFechaSolicitante.text.toString())
+                            crearUsuario.setString(8, "Desempleado") // agregar spinner de estado
+                            crearUsuario.setString(9, spGeneroSolicitante.selectedItem.toString())
+                            crearUsuario.setString(10, "Activo")
+                            crearUsuario.setString(
+                                11,
+                                spAreaDeTrabajoSolicitante.selectedItem.toString()
+                            )
+                            crearUsuario.setBlob(
+                                12,
+                                objConexion.createBlob()
+                            ); // Asignar un BLOB vacío
+                            crearUsuario.setString(13, uuid)
+                            crearUsuario.setString(14, contrasenaEncriptada)
+
+                            crearUsuario.executeUpdate()
+
+                            withContext(Dispatchers.Main) {
+                                AlertDialog.Builder(this@registroSolicitante)
+                                    .setTitle("Cuenta registrada")
+                                    .setMessage("Tu cuenta ha sido creada, puedes regresar al inicio de sesión.")
+                                    .setPositiveButton("Aceptar", null).show()
+                                txtNombreSolicitante.setText("")
+                                txtCorreoSolicitante.setText("")
+                                txtConstrasenaSolicitante.setText("")
+                                txtTelefonoSolicitante.setText("")
+                                txtDireccionSolicitante.setText("")
+                                txtFechaSolicitante.setText("")
+                                imgFotoDePerfilSolicitante.setImageDrawable(null)
+                            }
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                this@registroSolicitante,
+                                "Ocurrió un error al crear la cuenta. Por favor, intente nuevamente.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            println("Error: ${e.message}")
+                        }
+                    }
+                }
+            }
+        }
+
         btnSubirDesdeGaleriaSolicitante.setOnClickListener {
             // Al darle clic al botón de la galería pedimos los permisos primero
             checkStoragePermission()
         }
+
+
+
         btnTomarFotoSolicitante.setOnClickListener {
             // Al darle clic al botón de la cámara pedimos los permisos primero
             checkCameraPermission()
         }
 
-        btnCrearCuentaSolicitante.setOnClickListener {
-            // Mando a llamar a cada EditText
-        }
+
     }
 
     fun checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.CAMERA
-            )
-            != PackageManager.PERMISSION_GRANTED
+                this, android.Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             // El permiso no está aceptado, entonces se lo pedimos
             requestCameraPermission()
@@ -214,8 +310,7 @@ class registroSolicitante : AppCompatActivity() {
 
     fun checkStoragePermission() {
         if (ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
+                this, android.Manifest.permission.READ_EXTERNAL_STORAGE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             // El permiso no está aceptado, entonces se lo pedimos
@@ -229,8 +324,7 @@ class registroSolicitante : AppCompatActivity() {
 
     fun requestCameraPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(
-                this,
-                android.Manifest.permission.CAMERA
+                this, android.Manifest.permission.CAMERA
             )
         ) {
             // El usuario ya ha rechazado el permiso anteriormente, debemos informarle que vaya a ajustes.
@@ -246,8 +340,7 @@ class registroSolicitante : AppCompatActivity() {
 
     fun requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(
-                this,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
+                this, android.Manifest.permission.READ_EXTERNAL_STORAGE
             )
         ) {
             // El usuario ya ha rechazado el permiso anteriormente, debemos informarle que vaya a ajustes.
@@ -259,9 +352,9 @@ class registroSolicitante : AppCompatActivity() {
             )
         }
     }
+
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>, grantResults: IntArray
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
@@ -285,7 +378,11 @@ class registroSolicitante : AppCompatActivity() {
                     intent.type = "image/*"
                     startActivityForResult(intent, codigo_opcion_galeria)
                 } else {
-                    Toast.makeText(this, "Permiso de almacenamiento denegado", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this,
+                        "Permiso de almacenamiento denegado",
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
@@ -295,8 +392,13 @@ class registroSolicitante : AppCompatActivity() {
             }
         }
     }
-   // Esta función onActivityResult se encarga de capturar lo que pasa al abrir la geleria o la camara
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+    // Esta función onActivityResult se encarga de capturar lo que pasa al abrir la geleria o la camara
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
@@ -304,10 +406,12 @@ class registroSolicitante : AppCompatActivity() {
                 codigo_opcion_galeria -> {
                     val imageUri: Uri? = data?.data
                     imageUri?.let {
-                        val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
+                        val imageBitmap =
+                            MediaStore.Images.Media.getBitmap(contentResolver, it)
                         subirimagenFirebase(imageBitmap) { url ->
                             miPath = url
                             imgFotoDePerfilSolicitante.setImageURI(it)
+                            fotoSubida = true // Foto subida correctamente
                         }
                     }
                 }
@@ -319,6 +423,8 @@ class registroSolicitante : AppCompatActivity() {
                         subirimagenFirebase(it) { url ->
                             miPath = url
                             imgFotoDePerfilSolicitante.setImageBitmap(it)
+                            fotoSubida = true // Foto subida correctamente
+
                         }
                     }
                 }
@@ -336,7 +442,12 @@ class registroSolicitante : AppCompatActivity() {
         val uploadTask = imageRef.putBytes(data)
 
         uploadTask.addOnFailureListener {
-            Toast.makeText(this@registroSolicitante, "Error al subir la imagen", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this@registroSolicitante,
+                "Error al subir la imagen",
+                Toast.LENGTH_SHORT
+            )
+                .show()
 
         }.addOnSuccessListener { taskSnapshot ->
             imageRef.downloadUrl.addOnSuccessListener { uri ->
@@ -344,5 +455,4 @@ class registroSolicitante : AppCompatActivity() {
             }
         }
     }
-
 }

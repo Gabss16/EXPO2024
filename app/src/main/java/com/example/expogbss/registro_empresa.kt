@@ -49,9 +49,10 @@ class registro_empresa : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        //TODO: YA ESTÁ TERMINADO!!!!
 
-        //TODO: Faltan los inserts en caso de no agregar sitio web o nombre de empresa.
-        //TODO: Ver cómo evitar que exista el mismo correo en ambas tablas, consultar con el profe
+        //TODO: Ver si sirve la comprobación de existencia del correo
+        //TODO: Ver el error unique que salta sin razón aparente
 
         //1-Mandar a llamar a todos los elementos de la vista
         val txtNombreEmpleador = findViewById<EditText>(R.id.txtNombreEmpleador)

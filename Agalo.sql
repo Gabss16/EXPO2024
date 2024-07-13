@@ -3,35 +3,36 @@
 //Varchar2(50) para poder usar el UUID
 //Number para auto incremento
 
-
 CREATE TABLE EMPLEADOR (
-    IdEmpleador varchar2(50) PRIMARY KEY, 
-    NombreEmpresa VARCHAR2(50) UNIQUE,
+    IdEmpleador VARCHAR2(50) PRIMARY KEY, 
+    NombreEmpresa VARCHAR2(50),
     NombreRepresentante VARCHAR2(50) NOT NULL,
     CorreoElectronico VARCHAR2(50) NOT NULL UNIQUE,
     NumeroTelefono VARCHAR2(15) NOT NULL,
     Direccion VARCHAR2(100) NOT NULL,
     SitioWeb VARCHAR2(500),
     Departamento VARCHAR2(50) NOT NULL,
-    Contrasena VARCHAR2(250) NOT NULL,
     Estado VARCHAR(10) CHECK (Estado IN ('Activo', 'Pendiente')),
-    Foto varchar2(300));
-    
-    
-INSERT INTO EMPLEADOR (IdEmpleador, NombreEmpresa, CorreoElectronico, NumeroTelefono,Direccion,SitioWeb, NombreRepresentante, Departamento, Contrasena,Estado, Foto) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
-
-
-Create table AreaDeTrabajo(
-IdAreaDeTrabajo int PRIMARY KEY,
-NombreAreaDetrabajo varchar2(100));
-
-select * from empleador 
+    Foto VARCHAR2(300),
+    Contrasena VARCHAR2(250) NOT NULL
+);
 
 CREATE TABLE TRABAJO (
     IdTrabajo NUMBER PRIMARY KEY, 
     Titulo VARCHAR2(50) NOT NULL,
     IdEmpleador VARCHAR2(50) NOT NULL,
-    IdAreaDeTrabajo INT NOT NULL,
+    AreaDeTrabajo VARCHAR2(100) NOT NULL CHECK (AreaDeTrabajo IN (
+        'Trabajo doméstico', 
+        'Freelancers', 
+        'Trabajos remotos', 
+        'Servicios de entrega', 
+        'Sector de la construcción', 
+        'Área de la salud', 
+        'Sector de la hostelería', 
+        'Servicios profesionales', 
+        'Área de ventas y atención al cliente', 
+        'Educación y enseñanza'
+    )),
     Descripcion VARCHAR2(150),
     Ubicacion VARCHAR2(100),
     Experiencia VARCHAR2(50),
@@ -40,8 +41,7 @@ CREATE TABLE TRABAJO (
     Salario NUMBER(3,3),
     Beneficios VARCHAR2(100),
     FechaDePublicacion DATE,
-    CONSTRAINT FKEmpleadorTrabajo FOREIGN KEY (IdEmpleador) REFERENCES EMPLEADOR(IdEmpleador),
-    CONSTRAINT FkAreadeTrabajotrabajo FOREIGN KEY (IdAreaDeTrabajo) REFERENCES AreaDeTrabajo(IdAreaDeTrabajo)
+    CONSTRAINT FKEmpleadorTrabajo FOREIGN KEY (IdEmpleador) REFERENCES EMPLEADOR(IdEmpleador)
 );
 
 CREATE TABLE SOLICITANTE (
@@ -54,13 +54,22 @@ CREATE TABLE SOLICITANTE (
     FechaDeNacimiento DATE,
     Estado VARCHAR(11) CHECK (Estado IN ('Empleado', 'Desempleado')),
     Genero VARCHAR2(20) CHECK (Genero IN ('Masculino', 'Femenino', 'Prefiero no decirlo')),
-    IdAreaDeTrabajo INT,
-    Habilidades varchar2(250),
+    AreaDeTrabajo VARCHAR2(100) NOT NULL CHECK (AreaDeTrabajo IN (
+        'Trabajo doméstico', 
+        'Freelancers', 
+        'Trabajos remotos', 
+        'Servicios de entrega', 
+        'Sector de la construcción', 
+        'Área de la salud', 
+        'Sector de la hostelería', 
+        'Servicios profesionales', 
+        'Área de ventas y atención al cliente', 
+        'Educación y enseñanza'
+    )),
+    Habilidades VARCHAR2(250),
     Curriculum BLOB,
-    Foto varchar2(300),
-    Contrasena VARCHAR2(250) NOT NULL,
-    CONSTRAINT FkAreaDeTrabajoSolicitante FOREIGN KEY (IdAreaDeTrabajo) REFERENCES AreaDeTrabajo(IdAreaDeTrabajo)
-
+    Foto VARCHAR2(300),
+    Contrasena VARCHAR2(250) NOT NULL
 );
 
 CREATE TABLE SOLICITUD (
@@ -69,10 +78,9 @@ CREATE TABLE SOLICITUD (
     IdTrabajo NUMBER NOT NULL,
     FechaSolicitud DATE NOT NULL,
     Estado VARCHAR(10) CHECK (Estado IN ('Activa', 'Finalizada', 'Pendiente')),
-
     CONSTRAINT FKSolicitanteSolicitud FOREIGN KEY (IdSolicitante) REFERENCES SOLICITANTE(IdSolicitante),
-    CONSTRAINT FKEmpleadorSolicitud FOREIGN KEY (IdTrabajo) REFERENCES TRABAJO(IdTrabajo));
-
+    CONSTRAINT FKTrabajoSolicitud FOREIGN KEY (IdTrabajo) REFERENCES TRABAJO(IdTrabajo)
+);
 
 //Secuencias y triggers para auto incremento 
 CREATE SEQUENCE Trabajoseq
@@ -87,18 +95,6 @@ SELECT Trabajoseq.NEXTVAL INTO:NEW.IdTrabajo
 FROM DUAL;
 END;
 
---insert para area de trabajo
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (1,'Trabajo doméstico');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (2,'Freelancers');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (3,'Trabajos remotos');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (4,'Servicios de entrega');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (5,'Sector de la construcción');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (6,'Área de la salud');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (7,'Sector de la hostelería');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (8,'Servicios profesionales');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (9,'Área de ventas y atención al cliente');
-insert into AreaDeTrabajo (IdAreaDeTrabajo, NombreAreaDetrabajo) values (10,'Educación y enseñanza');
-
 
 select * from empleador;
 SELECT * FROM EMPLEADOR WHERE CorreoElectronico = 'contacto@innovaciones.com.sv' AND Contrasena = 'contraseÃ±a1';
@@ -109,7 +105,7 @@ SELECT * FROM ESTADOSOLICITANTE ;
 DROP SEQUENCE EstadoTrabajoSequence;
 DROP SEQUENCE EstadoSolicitudSequence;
 DROP SEQUENCE EstadoSolicitanteSequence;
-DROP SEQUENCE TrabajoSequence;
+DROP SEQUENCE TrabajoSeq;
 DROP SEQUENCE SolicitudSequence;
 
 
@@ -124,7 +120,10 @@ DROP TRIGGER TrigSolicitud;
 DROP TABLE SOLICITUD;
 DROP TABLE SOLICITANTE;
 DROP TABLE TRABAJO;
-DROP TABLE ESTADOSOLICITANTE;
-DROP TABLE ESTADOSOLICITUD;
-DROP TABLE ESTADOTRABAJO;
 DROP TABLE EMPLEADOR;
+DROP TABLE AREADETRABAJO;
+
+DROP INDEX UX_NombreEmpresa_Unique;
+
+CREATE UNIQUE INDEX UX_NombreEmpresa_Unique ON EMPLEADOR (NombreEmpresa);
+
