@@ -1,7 +1,7 @@
 package com.example.expogbss
 
+import RecicleViewHelpers.AdaptadorTrabajos
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +12,15 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
+import modelo.Trabajo
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -55,6 +58,54 @@ class homeEmpresa : Fragment() {
 
         // initializing our variable for button with its id.
         val btnShowBottomSheet = root.findViewById<ImageButton>(R.id.idBtnShowBottomSheet)
+        val rcvTrabajos = root.findViewById<RecyclerView>(R.id.rcvTrabajos)
+
+        rcvTrabajos.layoutManager = LinearLayoutManager(requireContext())
+
+        fun obtenerDatos() : List<Trabajo>{
+            //1- Creo un objeto de la clase conexión
+            val objConexion = ClaseConexion().cadenaConexion()
+
+            //2 - Creo un statement
+            //El símbolo de pregunta es pq los datos pueden ser nulos
+            val statement = objConexion?.createStatement()
+            val resultSet = statement?.executeQuery("SELECT * FROM TRABAJO")!!
+
+
+            //en esta variable se añaden TODOS los valores de mascotas
+            val listaTrabajos = mutableListOf<Trabajo>()
+
+            //Recorro todos los registros de la base de datos
+            //.next() significa que mientras haya un valor después de ese se va a repetir el proceso
+            while (resultSet.next()){
+                val IdTrabajo = resultSet.getInt("IdTrabajo")
+                val Titulo = resultSet.getString("Titulo")
+                val IdEmpleador = resultSet.getString("IdEmpleador")
+                val AreaDeTrabajo = resultSet.getString("AreaDeTrabajo")
+                val Descripcion = resultSet.getString("Descripcion")
+                val Ubicacion = resultSet.getString("Ubicacion")
+                val Experiencia = resultSet.getString("Experiencia")
+                val Requerimientos = resultSet.getString("Requerimientos")
+                val Estado = resultSet.getString("Estado")
+                val Salario = resultSet.getInt("Salario")
+                val Beneficios = resultSet.getString("fecha_finBeneficios_ticket")
+                val FechaDePublicacion = resultSet.getDate("FechaDePublicacion")
+
+                val trabajo = Trabajo(IdTrabajo,Titulo,IdEmpleador,AreaDeTrabajo,Descripcion,Ubicacion, Experiencia,Requerimientos,Estado,Salario,Beneficios,FechaDePublicacion)
+                listaTrabajos.add(trabajo)
+            }
+            return listaTrabajos
+
+
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val TrabajoDb = obtenerDatos()
+            withContext(Dispatchers.Main){
+                val adapter = AdaptadorTrabajos(TrabajoDb)
+                rcvTrabajos.adapter = adapter
+            }
+        }
 
         // adding on click listener for our button.
         btnShowBottomSheet.setOnClickListener {
@@ -64,6 +115,7 @@ class homeEmpresa : Fragment() {
 
             // on below line we are inflating a layout file which we have created.
             val view = layoutInflater.inflate(R.layout.bottom_sheet_dialog, null)
+
 
             // on below line we are creating a variable for our button
             // which we are using to dismiss our dialog.
@@ -75,6 +127,8 @@ class homeEmpresa : Fragment() {
             val txtHabilidadesJob = view.findViewById<EditText>(R.id.txtHabilidadesJob)
             val txtBeneficiosJob = view.findViewById<EditText>(R.id.txtBeneficiosJob)
             val txtSalarioJob = view.findViewById<EditText>(R.id.txtSalarioJob)
+
+
 
 
             val uuid = UUID.randomUUID().toString()
@@ -115,8 +169,7 @@ class homeEmpresa : Fragment() {
 
                     //2-creo una variable que contenga un PrepareStatement
                     val addTrabajo =
-                        objConexion?.prepareStatement("INSERT INTO TRABAJO (IdTrabajoEmpleador , Titulo , IdEmpleador , AreaDeTrabajo,Descripcion ,Ubicacion , Experiencia , Requerimientos , Estado ,Salario , Beneficios ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
-                    addTrabajo.setString(1, uuid)
+                        objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , AreaDeTrabajo,Descripcion ,Ubicacion , Experiencia , Requerimientos , Estado ,Salario , Beneficios ) VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
                     addTrabajo.setString(2, txtTituloJob.text.toString())
                     addTrabajo.setString(3, idEmpleador)
                     addTrabajo.setString(4, spnTiposTrabajo.selectedItem.toString())
