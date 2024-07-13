@@ -12,7 +12,7 @@
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="Solicitantes de Empleo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -178,7 +178,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spGeneroSolicitante" />
+                app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
             <Spinner
                 android:id="@+id/spAreaDeTrabajoSolicitante"
@@ -216,8 +216,8 @@
 
             <ImageView
                 android:id="@+id/imgFotoDePerfilSolicitante"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="84dp"
+                android:layout_height="77dp"
                 android:layout_marginStart="26dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="188dp"
@@ -277,6 +277,33 @@
                 app:layout_constraintHorizontal_bias="0.508"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtCorreoSolicitante" />
+
+            <EditText
+                android:id="@+id/editTextTextMultiLine"
+                android:layout_width="290dp"
+                android:layout_height="78dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="22dp"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/txt_registro"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="habilidades"
+                android:inputType="textMultiLine"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spGeneroSolicitante" />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="225dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="33dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="84dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

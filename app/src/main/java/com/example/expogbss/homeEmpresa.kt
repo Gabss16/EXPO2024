@@ -1,10 +1,27 @@
 package com.example.expogbss
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.Spinner
+import android.widget.Toast
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import modelo.ClaseConexion
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.UUID
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,8 +50,107 @@ class homeEmpresa : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_empresa, container, false)
+
+        val root = inflater.inflate(R.layout.fragment_home_empresa, container, false)
+
+        // initializing our variable for button with its id.
+        val btnShowBottomSheet = root.findViewById<ImageButton>(R.id.idBtnShowBottomSheet)
+
+        // adding on click listener for our button.
+        btnShowBottomSheet.setOnClickListener {
+
+            // on below line we are creating a new bottom sheet dialog.
+            val dialog = BottomSheetDialog(requireContext())
+
+            // on below line we are inflating a layout file which we have created.
+            val view = layoutInflater.inflate(R.layout.bottom_sheet_dialog, null)
+
+            // on below line we are creating a variable for our button
+            // which we are using to dismiss our dialog.
+            val btnClose = view.findViewById<Button>(R.id.idBtnDismiss)
+            val txtTituloJob = view.findViewById<EditText>(R.id.txtTituloJob)
+            val txtUbicacionJob = view.findViewById<EditText>(R.id.txtUbicacionJob)
+            val txtDescripcionJob = view.findViewById<EditText>(R.id.txtDescripcionJob)
+            val txtExperienciaJob = view.findViewById<EditText>(R.id.txtExperienciaJob)
+            val txtHabilidadesJob = view.findViewById<EditText>(R.id.txtHabilidadesJob)
+            val txtBeneficiosJob = view.findViewById<EditText>(R.id.txtBeneficiosJob)
+            val txtSalarioJob = view.findViewById<EditText>(R.id.txtSalarioJob)
+
+
+            val uuid = UUID.randomUUID().toString()
+            val fechaDePublicacion = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            val spnTiposTrabajo = view.findViewById<Spinner>(R.id.spnTiposTrabajo)
+            val listadoAreas = listOf(
+                "Trabajo doméstico",
+                "Freelancers",
+                "Trabajos remotos",
+                "Servicios de entrega",
+                "Sector de la construcción",
+                "Área de la salud",
+                "Sector de la hostelería",
+                "Servicios profesionales",
+                "Área de ventas y atención al cliente",
+                "Educación y enseñanza"
+            )
+            val adaptadorAreasDeTrabajo =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listadoAreas)
+            spnTiposTrabajo.adapter = adaptadorAreasDeTrabajo
+
+             fun obtenerIdEmpleador(): String {
+                return login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
+            }
+
+            val idEmpleador = obtenerIdEmpleador()
+
+
+
+
+            // on below line we are adding on click listener
+            // for our dismissing the dialog button.
+            btnClose.setOnClickListener {
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    //1-creo un objeto de la clse conexion
+                    val objConexion = ClaseConexion().cadenaConexion()
+
+                    //2-creo una variable que contenga un PrepareStatement
+                    val addTrabajo =
+                        objConexion?.prepareStatement("INSERT INTO TRABAJO (IdTrabajoEmpleador , Titulo , IdEmpleador , AreaDeTrabajo,Descripcion ,Ubicacion , Experiencia , Requerimientos , Estado ,Salario , Beneficios ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
+                    addTrabajo.setString(1, uuid)
+                    addTrabajo.setString(2, txtTituloJob.text.toString())
+                    addTrabajo.setString(3, idEmpleador)
+                    addTrabajo.setString(4, spnTiposTrabajo.selectedItem.toString())
+                    addTrabajo.setString(5, txtDescripcionJob.text.toString())
+                    addTrabajo.setString(6, txtUbicacionJob.text.toString())
+                    addTrabajo.setString(7, txtExperienciaJob.text.toString())
+                    addTrabajo.setString(8, txtHabilidadesJob.text.toString())
+                    addTrabajo.setString(9, "Activo")
+                    addTrabajo.setString(10, txtSalarioJob.text.toString())
+                    addTrabajo.setString(11, txtBeneficiosJob.text.toString())
+
+
+                    addTrabajo.executeUpdate()
+                    Toast.makeText(requireContext(), "Trabajo Ingresado", Toast.LENGTH_LONG).show()
+
+                    // on below line we are calling a dismiss
+                    // method to close our dialog.
+                    dialog.dismiss()
+                }
+                // below line is use to set cancelable to avoid
+                // closing of dialog box when clicking on the screen.
+                dialog.setCancelable(false)
+
+                // on below line we are setting
+                // content view to our view.
+                dialog.setContentView(view)
+
+                // on below line we are calling
+                // a show method to display a dialog.
+                dialog.show()
+            }
+        }
+
+        return root
     }
 
     companion object {
