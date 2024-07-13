@@ -21,9 +21,9 @@ import modelo.ClaseConexion
 
 class ingresarCorreoRecupContrasena : AppCompatActivity() {
 
-    companion object variablesGlobalesRecuperacionDeContrasena{
-        lateinit var correoIngresado : String
-        lateinit var codigo : String
+    companion object variablesGlobalesRecuperacionDeContrasena {
+        lateinit var correoIngresado: String
+        lateinit var codigo: String
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -44,81 +44,86 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
         val codigoRecupContrasena = (1000..9999).random()
 
 
-            btnEnviar.setOnClickListener {
+        btnEnviar.setOnClickListener {
 
-                val correo = txtcorreoRecuperacion.text.toString()
+            val correo = txtcorreoRecuperacion.text.toString()
 
-                //Validar que el Texview de correo no esté vacío
-                if (correo.isEmpty())
-                {
-                    Toast.makeText(
-                        this,
-                        "No dejar espacios en blanco.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                else{
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val objConexion = ClaseConexion().cadenaConexion()
-                         correoIngresado = txtcorreoRecuperacion.text.toString()
-                         codigo = codigoRecupContrasena.toString()
+            //Validar que el Texview de correo no esté vacío
+            if (correo.isEmpty()) {
+                Toast.makeText(
+                    this,
+                    "No dejar espacios en blanco.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val objConexion = ClaseConexion().cadenaConexion()
+                    correoIngresado = txtcorreoRecuperacion.text.toString()
+                    codigo = codigoRecupContrasena.toString()
 
-                        //Se ejecutan los select respectivos para verificar que el correo exista en alguna de las tablas existentes
-                        val comprobarCredencialesSiEsSolicitante =
-                            objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE CorreoElectronico = ?")!!
-                        comprobarCredencialesSiEsSolicitante.setString(1, correoIngresado)
+                    //Se ejecutan los select respectivos para verificar que el correo exista en alguna de las tablas existentes
+                    val comprobarCredencialesSiEsSolicitante =
+                        objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE CorreoElectronico = ?")!!
+                    comprobarCredencialesSiEsSolicitante.setString(1, correoIngresado)
 
-                        val comprobarCredencialesSiEsEmpleador =
-                            objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE CorreoElectronico = ?")!!
-                        comprobarCredencialesSiEsEmpleador.setString(1, correoIngresado)
+                    val comprobarCredencialesSiEsEmpleador =
+                        objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE CorreoElectronico = ?")!!
+                    comprobarCredencialesSiEsEmpleador.setString(1, correoIngresado)
 
-                        val esEmpleador = comprobarCredencialesSiEsEmpleador.executeQuery()
-                        val esSolicitante = comprobarCredencialesSiEsSolicitante.executeQuery()
+                    val esEmpleador = comprobarCredencialesSiEsEmpleador.executeQuery()
+                    val esSolicitante = comprobarCredencialesSiEsSolicitante.executeQuery()
 
-                        //Bloque de código que se ejecuta en caso de detectar el correo en la tabla de Empleador
-                        if (esEmpleador.next()) {
-                            CoroutineScope(Dispatchers.Main).launch {
-                                println("Es empleador kkk")
-                                val correoEnviado = recuperarContrasena(
-                                    correoIngresado,"Recuperación de contraseña","Hola este es su codigo de recuperacion: $codigo")
-                                if (correoEnviado) {
-                                    val pantallaIngresoCodigo = Intent(
-                                        this@ingresarCorreoRecupContrasena,recoveryCode::class.java)
-                                    startActivity(pantallaIngresoCodigo)
-                                    finish()
-                                } else {
-                                    println("PapuError")
-                                }
+                    //Bloque de código que se ejecuta en caso de detectar el correo en la tabla de Empleador
+                    if (esEmpleador.next()) {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            println("Es empleador kkk")
+                            val correoEnviado = recuperarContrasena(
+                                correoIngresado,
+                                "Recuperación de contraseña",
+                                "Hola este es su codigo de recuperacion: $codigo"
+                            )
+                            if (correoEnviado) {
+                                val pantallaIngresoCodigo = Intent(
+                                    this@ingresarCorreoRecupContrasena, recoveryCode::class.java
+                                )
+                                startActivity(pantallaIngresoCodigo)
+                                finish()
+                            } else {
+                                println("PapuError")
                             }
                         }
-                        else if (esSolicitante.next()) {
-                            CoroutineScope(Dispatchers.Main).launch {
-                                println("entra a la corrutina")
-                                val correoEnviado = recuperarContrasena(
-                                    correoIngresado,
-                                    "Recuperación de contraseña",
-                                    "Hola este es su codigo de recuperacion: $codigo"
-                                )
+                    } else if (esSolicitante.next()) {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            println("entra a la corrutina")
+                            val correoEnviado = recuperarContrasena(
+                                correoIngresado,
+                                "Recuperación de contraseña",
+                                "Hola este es su codigo de recuperacion: $codigo"
+                            )
 
-                                if (correoEnviado) {
-                                    val pantallaIngresoCodigo = Intent(
-                                        this@ingresarCorreoRecupContrasena,
-                                        recoveryCode::class.java
-                                    )
-                                    startActivity(pantallaIngresoCodigo)
-                                    finish()
-                                } else {
-                                    println("PapuError")
-                                }
+                            if (correoEnviado) {
+                                val pantallaIngresoCodigo = Intent(
+                                    this@ingresarCorreoRecupContrasena,
+                                    recoveryCode::class.java
+                                )
+                                startActivity(pantallaIngresoCodigo)
+                                finish()
+                            } else {
+                                println("PapuError")
                             }
-                        } else {
-                            //Toast para indicar a usuario que el correo no existe
-                            withContext(Dispatchers.Main) {
-                                Toast.makeText(this@ingresarCorreoRecupContrasena, "Correo electrónico no encontrado, ingrese un correo válido", Toast.LENGTH_LONG).show()
-                            }
+                        }
+                    } else {
+                        //Toast para indicar a usuario que el correo no existe
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                this@ingresarCorreoRecupContrasena,
+                                "Correo electrónico no encontrado, ingrese un correo válido",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     }
                 }
+            }
         }
     }
 }
