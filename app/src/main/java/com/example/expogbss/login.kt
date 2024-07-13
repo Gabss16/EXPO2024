@@ -91,6 +91,15 @@ class login : AppCompatActivity() {
 
         btnSignIn.setOnClickListener {
             correoLogin = txtCorreoLogin.text.toString()
+            GlobalScope.launch (Dispatchers.IO){
+                 val objConexion = ClaseConexion().cadenaConexion()
+                 val resultSet = objConexion?.prepareStatement("SELECT IdEmpleador FROM EMPLEADOR WHERE CorreoElectronico = ?")!!
+                 resultSet.setString(1, correoLogin)
+                val resultado = resultSet.executeQuery()
+                IdEmpleador + resultado
+
+            }
+
 
             val correo = txtCorreoLogin.text.toString()
             val contrasena = txtcontrasenaLogin.text.toString()
