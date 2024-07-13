@@ -18,34 +18,6 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/lineas_decoracion1" />
 
-    <EditText
-        android:id="@+id/txtBarraBusqueda"
-        android:layout_width="350dp"
-        android:layout_height="43dp"
-        android:background="@drawable/barra_busqueda"
-        android:ems="10"
-        android:hint="Buscar"
-        android:inputType="text"
-        android:paddingLeft="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.045" />
-
-    <ImageView
-        android:id="@+id/imgBuscar"
-        android:layout_width="40dp"
-        android:layout_height="42dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.894"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.046"
-        app:srcCompat="@drawable/buscar" />
-
     <TextView
         android:id="@+id/recomendaciones"
         android:layout_width="wrap_content"
@@ -62,7 +34,7 @@
         app:layout_constraintVertical_bias="0.308" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/rcvEmpleos"
         android:layout_width="341dp"
         android:layout_height="407dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -72,6 +44,7 @@
         app:layout_constraintVertical_bias="0.799" />
 
     <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
         android:layout_width="380dp"
         android:layout_height="81dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -189,4 +162,17 @@
                 tools:layout_editor_absoluteY="62dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </HorizontalScrollView>
+
+    <SearchView
+        android:id="@+id/srchBuscarEmpleo"
+        android:layout_width="349dp"
+        android:layout_height="42dp"
+        android:background="@drawable/barra_busqueda"
+        android:queryHint="Buscar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.564"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.047" />
 </androidx.constraintlayout.widget.ConstraintLayout>
