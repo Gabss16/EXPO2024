@@ -120,15 +120,12 @@ class login : AppCompatActivity() {
 
                     //Se ejecutan los select respectivos para verificar que el correo exista en alguna de las tablas existentes
                     val comprobarCredencialesSiEsEmpleador =
-                        objConexion?.prepareStatement("SELECT NombreEmpresa, NombreRepresentante, CorreoElectronico," +
-                                "NumeroTelefono, Direccion, SitioWeb, Departamento,Contrasena, Foto FROM EMPLEADOR WHERE CorreoElectronico = ? AND Contrasena = ?")!!
+                        objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE CorreoElectronico = ? AND Contrasena = ?")!!
                     comprobarCredencialesSiEsEmpleador.setString(1, correo)
                     comprobarCredencialesSiEsEmpleador.setString(2, contrasenaEncriptada)
 
                     val comprobarCredencialesSiEsSolicitante =
-                        objConexion?.prepareStatement("SELECT Nombre, CorreoElectronico, Telefono, Direccion, Departamento," +
-                                "FechaDeNacimiento, Estado, Genero, IdAreaDeTrabajo" +
-                                "Habilidades, Curriculum, Foto, Contrasena FROM SOLICITANTE WHERE CorreoElectronico = ? AND Contrasena = ?")!!
+                        objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE CorreoElectronico = ? AND Contrasena = ?")!!
                     comprobarCredencialesSiEsSolicitante.setString(1, correo)
                     comprobarCredencialesSiEsSolicitante.setString(2, contrasenaEncriptada)
 
