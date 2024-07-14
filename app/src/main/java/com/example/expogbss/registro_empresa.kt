@@ -26,6 +26,7 @@ import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
 import java.util.*
 import android.net.Uri
+import android.view.Window
 import androidx.appcompat.app.AlertDialog
 import java.sql.SQLException
 
@@ -46,6 +47,7 @@ class registro_empresa : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
         setContentView(R.layout.activity_registro_empresa)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

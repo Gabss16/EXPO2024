@@ -64,7 +64,6 @@ class registroSolicitante : AppCompatActivity() {
         }
 
 
-
         //1 Mandar a llamar a todos los elementos en pantalla
         val txtNombreSolicitante = findViewById<EditText>(R.id.txtNombreSolicitante)
         val txtCorreoSolicitante = findViewById<EditText>(R.id.txtCorreoSolicitante)
@@ -108,7 +107,8 @@ class registroSolicitante : AppCompatActivity() {
 
             val datePickerDialog = DatePickerDialog(
                 this, { _, anioSeleccionado, mesSeleccionado, diaSeleccionado ->
-                    val fechaSeleccionada = "$diaSeleccionado/${mesSeleccionado + 1}/$anioSeleccionado"
+                    val fechaSeleccionada =
+                        "$diaSeleccionado/${mesSeleccionado + 1}/$anioSeleccionado"
                     txtFechaSolicitante.setText(fechaSeleccionada)
                     fechaNacimientoSeleccionada = fechaSeleccionada
                 }, anio, mes, dia
@@ -119,7 +119,6 @@ class registroSolicitante : AppCompatActivity() {
 
             datePickerDialog.show()
         }
-
 
 
         val spGeneroSolicitante = findViewById<Spinner>(R.id.spGeneroSolicitante)
@@ -190,7 +189,7 @@ class registroSolicitante : AppCompatActivity() {
                 Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
 
             // Validaciones de campos vacíos y cosas por ese estilo
-            if (nombreSolicitante.isEmpty() || correoSolicitante.isEmpty() || contrasenaSolicitante.isEmpty() || telefonoSolicitante.isEmpty() || direccionSolicitante.isEmpty()) {
+            if (nombreSolicitante.isEmpty() || correoSolicitante.isEmpty() || contrasenaSolicitante.isEmpty() || telefonoSolicitante.isEmpty() || direccionSolicitante.isEmpty() || fechaSolicitante.isEmpty()) {
                 Toast.makeText(
                     this@registroSolicitante,
                     "Por favor, llenar los espacios obligatorios",
