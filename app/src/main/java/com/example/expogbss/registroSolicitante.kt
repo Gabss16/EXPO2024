@@ -29,6 +29,7 @@ import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
 import java.security.MessageDigest
 import android.util.Log
+import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -49,9 +50,11 @@ class registroSolicitante : AppCompatActivity() {
     lateinit var miPath: String
     val uuid = UUID.randomUUID().toString()
     private var fotoSubida = false
+    private var fechaNacimientoSeleccionada: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
         setContentView(R.layout.activity_registro_solicitante)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -60,14 +63,17 @@ class registroSolicitante : AppCompatActivity() {
             insets
         }
 
+
+
         //1 Mandar a llamar a todos los elementos en pantalla
         val txtNombreSolicitante = findViewById<EditText>(R.id.txtNombreSolicitante)
         val txtCorreoSolicitante = findViewById<EditText>(R.id.txtCorreoSolicitante)
         val txtConstrasenaSolicitante = findViewById<EditText>(R.id.txtContrasenaSolicitante)
         val txtTelefonoSolicitante = findViewById<EditText>(R.id.txtTelefonoSolicitante)
         val txtDireccionSolicitante = findViewById<EditText>(R.id.txtDireccionSolicitante)
-        val spDepartamentoSolicitante = findViewById<Spinner>(R.id.spDepartamentoSolicitante)
+        val txtHabilidadesSolicitante = findViewById<EditText>(R.id.txtHabilidadesLaborales)
 
+        val spDepartamentoSolicitante = findViewById<Spinner>(R.id.spDepartamentoSolicitante)
         val listadoDepartamentos = listOf(
             "Ahuachapán",
             "Cabañas",
@@ -102,9 +108,9 @@ class registroSolicitante : AppCompatActivity() {
 
             val datePickerDialog = DatePickerDialog(
                 this, { _, anioSeleccionado, mesSeleccionado, diaSeleccionado ->
-                    val fechaSeleccionada =
-                        "$diaSeleccionado/${mesSeleccionado + 1}/$anioSeleccionado"
+                    val fechaSeleccionada = "$diaSeleccionado/${mesSeleccionado + 1}/$anioSeleccionado"
                     txtFechaSolicitante.setText(fechaSeleccionada)
+                    fechaNacimientoSeleccionada = fechaSeleccionada
                 }, anio, mes, dia
             )
 
@@ -113,6 +119,8 @@ class registroSolicitante : AppCompatActivity() {
 
             datePickerDialog.show()
         }
+
+
 
         val spGeneroSolicitante = findViewById<Spinner>(R.id.spGeneroSolicitante)
         val listadoGeneros = listOf(
@@ -140,6 +148,19 @@ class registroSolicitante : AppCompatActivity() {
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listadoAreas)
         spAreaDeTrabajoSolicitante.adapter = adaptadorAreasDeTrabajo
 
+        val spEstadoSolicitante = findViewById<Spinner>(R.id.spSituacionLaboralSolicitante)
+        val listadoSituacionLaboral = listOf(
+            "Empleado", "Desempleado"
+        )
+        val adaptadorDeEstado =
+            ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_dropdown_item,
+                listadoSituacionLaboral
+            )
+        spEstadoSolicitante.adapter = adaptadorDeEstado
+
+
         imgFotoDePerfilSolicitante = findViewById(R.id.imgFotoDePerfilSolicitante)
         val btnSubirDesdeGaleriaSolicitante =
             findViewById<Button>(R.id.btnSubirDesdeGaleriaSolicitante)
@@ -161,6 +182,7 @@ class registroSolicitante : AppCompatActivity() {
             val contrasenaSolicitante = txtConstrasenaSolicitante.text.toString()
             val telefonoSolicitante = txtTelefonoSolicitante.text.toString()
             val direccionSolicitante = txtDireccionSolicitante.text.toString()
+            val fechaSolicitante = txtFechaSolicitante.text.toString()
 
             val VerificarTelefono = Regex("^\\d{4}-\\d{4}\$")
             val verificarCorreo = Regex("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
@@ -218,6 +240,7 @@ class registroSolicitante : AppCompatActivity() {
                                 ).show()
                             }
                         } else {
+                            println("Esto sale en la fecha: $fechaNacimientoSeleccionada")
 
                             // Encripto la contraseña usando la función de encriptación
                             val contrasenaEncriptada =
@@ -225,23 +248,26 @@ class registroSolicitante : AppCompatActivity() {
 
                             // Creo una variable que contenga un PrepareStatement
                             val crearUsuario = objConexion?.prepareStatement(
-                                "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono," +
-                                        "Direccion,Departamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
+                                "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion,Departamento, FechaDeNacimiento, Estado, Genero ,AreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
                             )!!
                             crearUsuario.setString(1, uuid)
                             crearUsuario.setString(2, txtNombreSolicitante.text.toString())
                             crearUsuario.setString(3, txtCorreoSolicitante.text.toString())
                             crearUsuario.setString(4, txtTelefonoSolicitante.text.toString())
                             crearUsuario.setString(5, txtDireccionSolicitante.text.toString())
-                            crearUsuario.setString(6, spDepartamentoSolicitante.selectedItem.toString()
+                            crearUsuario.setString(
+                                6, spDepartamentoSolicitante.selectedItem.toString()
                             )
-                            crearUsuario.setString(7, txtFechaSolicitante.text.toString())
-                            crearUsuario.setString(8, "Desempleado") // agregar spinner de estado
+                            crearUsuario.setString(7, fechaNacimientoSeleccionada)
+                            crearUsuario.setString(8, spEstadoSolicitante.selectedItem.toString())
                             crearUsuario.setString(9, spGeneroSolicitante.selectedItem.toString())
-                            crearUsuario.setString(10, "Activo")
+                            crearUsuario.setString(
+                                10,
+                                spAreaDeTrabajoSolicitante.selectedItem.toString()
+                            )
                             crearUsuario.setString(
                                 11,
-                                spAreaDeTrabajoSolicitante.selectedItem.toString()
+                                txtHabilidadesSolicitante.text.toString()
                             )
                             crearUsuario.setBlob(
                                 12,
@@ -274,6 +300,7 @@ class registroSolicitante : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
                             println("Error: ${e.message}")
+
                         }
                     }
                 }

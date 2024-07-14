@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -25,9 +26,9 @@ import java.security.MessageDigest
 import java.util.Date
 
 class login : AppCompatActivity() {
-    companion object variablesGlobalesRecuperacionDeContrasena{
-        lateinit var correoLogin : String
-        lateinit var IdEmpleador : String
+    companion object variablesGlobalesRecuperacionDeContrasena {
+        lateinit var correoLogin: String
+        lateinit var IdEmpleador: String
         lateinit var nombresSolicitante: String
         lateinit var correoSolicitante: String
         lateinit var numeroSolicitante: String
@@ -52,6 +53,7 @@ class login : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
 
@@ -64,7 +66,7 @@ class login : AppCompatActivity() {
         val txtcontrasenaLogin = findViewById<EditText>(R.id.txtPasswordLogin)
         val btnSignIn = findViewById<ImageButton>(R.id.btnSignInLogin)
 
-        val validarCorreo = Regex ("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
+        val validarCorreo = Regex("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
 
         val txtforgotPassword = findViewById<TextView>(R.id.txtForgotYourPassword)
         val txtRegistrarse = findViewById<TextView>(R.id.btnRegistrarse)
@@ -91,10 +93,11 @@ class login : AppCompatActivity() {
 
         btnSignIn.setOnClickListener {
             correoLogin = txtCorreoLogin.text.toString()
-            GlobalScope.launch (Dispatchers.IO){
-                 val objConexion = ClaseConexion().cadenaConexion()
-                 val resultSet = objConexion?.prepareStatement("SELECT IdEmpleador FROM EMPLEADOR WHERE CorreoElectronico = ?")!!
-                 resultSet.setString(1, correoLogin)
+            GlobalScope.launch(Dispatchers.IO) {
+                val objConexion = ClaseConexion().cadenaConexion()
+                val resultSet =
+                    objConexion?.prepareStatement("SELECT IdEmpleador FROM EMPLEADOR WHERE CorreoElectronico = ?")!!
+                resultSet.setString(1, correoLogin)
                 val resultado = resultSet.executeQuery()
                 IdEmpleador + resultado
 
@@ -156,7 +159,7 @@ class login : AppCompatActivity() {
                         }
                     } else if (
                     //Si el usuario es Solicitante, se le muestra su pantalla respectiva
-                    esSolicitante.next()) {
+                        esSolicitante.next()) {
                         nombresSolicitante = esSolicitante.getString("Nombre")
                         correoSolicitante = esSolicitante.getString("CorreoElectronico")
                         numeroSolicitante = esSolicitante.getString("Telefono")
@@ -169,9 +172,13 @@ class login : AppCompatActivity() {
                         fotoSolicitante = esSolicitante.getString("Foto")
 
                         startActivity(pantallaSolicitante)
-                    }else {
+                    } else {
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(this@login, "Usuario no encontrado, verifique sus credenciales", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                this@login,
+                                "Usuario no encontrado, verifique sus credenciales",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     }
                 }

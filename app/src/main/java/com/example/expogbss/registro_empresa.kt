@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.Window
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +29,7 @@ import androidx.appcompat.app.AlertDialog
 import com.example.expogbss.ingresarCorreoRecupContrasena.variablesGlobalesRecuperacionDeContrasena.codigo
 import com.example.expogbss.ingresarCorreoRecupContrasena.variablesGlobalesRecuperacionDeContrasena.correoIngresado
 import java.util.*
+import java.sql.SQLException
 
 class registro_empresa : AppCompatActivity() {
     private val codigo_opcion_galeria = 102
@@ -42,6 +44,7 @@ class registro_empresa : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
         setContentView(R.layout.activity_registro_empresa)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -224,7 +227,28 @@ class registro_empresa : AppCompatActivity() {
                                 println("Error al crear el usuario.")
                             }
                         }
-                    } catch (e: Exception) {
+                    } catch (e: SQLException) {
+                        when (e.errorCode) {
+                            1 -> { // ORA-00001: unique constraint violated
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(
+                                        this@registro_empresa,
+                                        "Ya existe un usuario con ese correo electrónico, por favor ingresa uno distinto.",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
+                            else -> {
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(
+                                        this@registro_empresa,
+                                        "Error SQL: ${e.message}",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
+                        }
+                    }catch (e: Exception) {
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 this@registro_empresa,
@@ -293,6 +317,27 @@ class registro_empresa : AppCompatActivity() {
                         txtDireccionEmpleador.setText("")
                         txtSitioWebEmpleador.setText("")
                         imgFotoDePerfilEmpleador.setImageDrawable(null)
+                    }
+                }catch (e: SQLException) {
+                    when (e.errorCode) {
+                        1 -> { // ORA-00001: unique constraint violated
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@registro_empresa,
+                                    "Ya existe un usuario con ese correo electrónico, por favor ingresa uno distinto.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                        else -> {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@registro_empresa,
+                                    "Error SQL: ${e.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {

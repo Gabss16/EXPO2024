@@ -82,6 +82,14 @@ CREATE TABLE SOLICITUD (
     CONSTRAINT FKTrabajoSolicitud FOREIGN KEY (IdTrabajo) REFERENCES TRABAJO(IdTrabajo)
 );
 
+
+create table tablaPrueba(
+fecha date );
+
+select * from empleador
+
+INSERT INTO tablaPrueba (fecha) VALUES ('13/7/2006')
+
 //Secuencias y triggers para auto incremento 
 CREATE SEQUENCE Trabajoseq
 START WITH 1
