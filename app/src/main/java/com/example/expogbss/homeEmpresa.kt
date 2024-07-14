@@ -2,6 +2,7 @@ package com.example.expogbss
 
 import RecicleViewHelpers.AdaptadorTrabajos
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -62,7 +63,7 @@ class homeEmpresa : Fragment() {
 
         rcvTrabajos.layoutManager = LinearLayoutManager(requireContext())
 
-        fun obtenerDatos() : List<Trabajo>{
+        fun obtenerDatos(): List<Trabajo> {
             //1- Creo un objeto de la clase conexión
             val objConexion = ClaseConexion().cadenaConexion()
 
@@ -77,7 +78,7 @@ class homeEmpresa : Fragment() {
 
             //Recorro todos los registros de la base de datos
             //.next() significa que mientras haya un valor después de ese se va a repetir el proceso
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
                 val IdEmpleador = resultSet.getString("IdEmpleador")
@@ -91,7 +92,20 @@ class homeEmpresa : Fragment() {
                 val Beneficios = resultSet.getString("fecha_finBeneficios_ticket")
                 val FechaDePublicacion = resultSet.getDate("FechaDePublicacion")
 
-                val trabajo = Trabajo(IdTrabajo,Titulo,IdEmpleador,AreaDeTrabajo,Descripcion,Ubicacion, Experiencia,Requerimientos,Estado,Salario,Beneficios,FechaDePublicacion)
+                val trabajo = Trabajo(
+                    IdTrabajo,
+                    Titulo,
+                    IdEmpleador,
+                    AreaDeTrabajo,
+                    Descripcion,
+                    Ubicacion,
+                    Experiencia,
+                    Requerimientos,
+                    Estado,
+                    Salario,
+                    Beneficios,
+                    FechaDePublicacion
+                )
                 listaTrabajos.add(trabajo)
             }
             return listaTrabajos
@@ -101,7 +115,7 @@ class homeEmpresa : Fragment() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val TrabajoDb = obtenerDatos()
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 val adapter = AdaptadorTrabajos(TrabajoDb)
                 rcvTrabajos.adapter = adapter
             }
@@ -129,10 +143,10 @@ class homeEmpresa : Fragment() {
             val txtSalarioJob = view.findViewById<EditText>(R.id.txtSalarioJob)
 
 
-
-
-            val uuid = UUID.randomUUID().toString()
-            val fechaDePublicacion = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            val fechaDePublicacion =
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            //convierto el salario a double
+            val salario = txtSalarioJob.text.toString().toDouble()
             val spnTiposTrabajo = view.findViewById<Spinner>(R.id.spnTiposTrabajo)
             val listadoAreas = listOf(
                 "Trabajo doméstico",
@@ -147,16 +161,18 @@ class homeEmpresa : Fragment() {
                 "Educación y enseñanza"
             )
             val adaptadorAreasDeTrabajo =
-                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listadoAreas)
+                ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    listadoAreas
+                )
             spnTiposTrabajo.adapter = adaptadorAreasDeTrabajo
 
-             fun obtenerIdEmpleador(): String {
+            fun obtenerIdEmpleador(): String {
                 return login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
             }
 
             val idEmpleador = obtenerIdEmpleador()
-
-
 
 
             // on below line we are adding on click listener
@@ -164,30 +180,51 @@ class homeEmpresa : Fragment() {
             btnClose.setOnClickListener {
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    //1-creo un objeto de la clse conexion
-                    val objConexion = ClaseConexion().cadenaConexion()
+                    try {
+                        //1-creo un objeto de la clse conexion
+                        val objConexion = ClaseConexion().cadenaConexion()
 
-                    //2-creo una variable que contenga un PrepareStatement
-                    val addTrabajo =
-                        objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , AreaDeTrabajo,Descripcion ,Ubicacion , Experiencia , Requerimientos , Estado ,Salario , Beneficios ) VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
-                    addTrabajo.setString(2, txtTituloJob.text.toString())
-                    addTrabajo.setString(3, idEmpleador)
-                    addTrabajo.setString(4, spnTiposTrabajo.selectedItem.toString())
-                    addTrabajo.setString(5, txtDescripcionJob.text.toString())
-                    addTrabajo.setString(6, txtUbicacionJob.text.toString())
-                    addTrabajo.setString(7, txtExperienciaJob.text.toString())
-                    addTrabajo.setString(8, txtHabilidadesJob.text.toString())
-                    addTrabajo.setString(9, "Activo")
-                    addTrabajo.setString(10, txtSalarioJob.text.toString())
-                    addTrabajo.setString(11, txtBeneficiosJob.text.toString())
+                        //2-creo una variable que contenga un PrepareStatement
+                        val addTrabajo =
+                            objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , AreaDeTrabajo,Descripcion ,Ubicacion , Experiencia , Requerimientos , Estado ,Salario , Beneficios, FechaDePublicacion ) VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,? )")!!
+                        addTrabajo.setString(1, txtTituloJob.text.toString())
+                        addTrabajo.setString(2, idEmpleador)
+                        addTrabajo.setString(3, spnTiposTrabajo.selectedItem.toString())
+                        addTrabajo.setString(4, txtDescripcionJob.text.toString())
+                        addTrabajo.setString(5, txtUbicacionJob.text.toString())
+                        addTrabajo.setString(6, txtExperienciaJob.text.toString())
+                        addTrabajo.setString(7, txtHabilidadesJob.text.toString())
+                        addTrabajo.setString(8, "Activo")
+                        addTrabajo.setDouble(9, salario)
+                        addTrabajo.setString(10, txtBeneficiosJob.text.toString())
+                        addTrabajo.setString(11, fechaDePublicacion)
 
 
-                    addTrabajo.executeUpdate()
-                    Toast.makeText(requireContext(), "Trabajo Ingresado", Toast.LENGTH_LONG).show()
 
-                    // on below line we are calling a dismiss
-                    // method to close our dialog.
-                    dialog.dismiss()
+                        Log.d(
+                            "InsertJob",
+                            "Datos a insertar: Titulo=${txtTituloJob.text}, IdEmpleador=$idEmpleador, AreaDeTrabajo=${spnTiposTrabajo.selectedItem}, Descripcion=${txtDescripcionJob.text}, Ubicacion=${txtUbicacionJob.text}, Experiencia=${txtExperienciaJob.text}, Requerimientos=${txtHabilidadesJob.text}, Estado=Activo, Salario=$salario, Beneficios=${txtBeneficiosJob.text}, FechaDePublicacion=$fechaDePublicacion"
+                        )
+
+                        addTrabajo.executeUpdate()
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(requireContext(), "Trabajo Ingresado", Toast.LENGTH_LONG)
+                                .show()
+                            dialog.dismiss()
+                        }
+                    } catch (e: Exception) {
+                        Log.e("InsertJob", "Error al insertar trabajo", e)
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Error al insertar trabajo",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        //aqui estaban antes
+                    }
+
+
                 }
                 // below line is use to set cancelable to avoid
                 // closing of dialog box when clicking on the screen.
@@ -200,10 +237,11 @@ class homeEmpresa : Fragment() {
                 // on below line we are calling
                 // a show method to display a dialog.
                 dialog.show()
+
             }
         }
-
         return root
+
     }
 
     companion object {
@@ -224,5 +262,6 @@ class homeEmpresa : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+
     }
 }
