@@ -97,6 +97,10 @@ END;
 
 
 select * from empleador;
+select * from solicitante;
+
+delete from Empleador where idEmpleador = 'fdc019cf-6449-4655-8913-685ffbb9bf1b';
+
 SELECT * FROM EMPLEADOR WHERE CorreoElectronico = 'contacto@innovaciones.com.sv' AND Contrasena = 'contraseña1';
 SELECT * FROM SOLICITANTE WHERE CorreoElectronico =  'ana.martinez@example.com' AND Contrasena = 'contraseña1';
 SELECT * FROM ESTADOSOLICITANTE ;
