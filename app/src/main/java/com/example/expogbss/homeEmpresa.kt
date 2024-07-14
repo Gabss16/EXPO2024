@@ -69,20 +69,27 @@ class homeEmpresa : Fragment() {
             val objConexion = ClaseConexion().cadenaConexion()
 
             //2 - Creo un statement
+            fun obtenerIdEmpleador(): String {
+                return login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
+            }
+            val idEmpleador = obtenerIdEmpleador()
+
             //El símbolo de pregunta es pq los datos pueden ser nulos
-            val statement = objConexion?.createStatement()
-            val resultSet = statement?.executeQuery("SELECT * FROM TRABAJO")!!
+            val statement = objConexion?.prepareStatement("SELECT * FROM TRABAJO WHERE IdEmpleador = ?")
+            statement?.setString(1, idEmpleador)
+            val resultSet = statement?.executeQuery()!!
 
 
             //en esta variable se añaden TODOS los valores de mascotas
             val listaTrabajos = mutableListOf<Trabajo>()
+
+
 
             //Recorro todos los registros de la base de datos
             //.next() significa que mientras haya un valor después de ese se va a repetir el proceso
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
-                val IdEmpleador = resultSet.getString("IdEmpleador")
                 val AreaDeTrabajo = resultSet.getString("AreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Ubicacion = resultSet.getString("Ubicacion")
@@ -96,7 +103,7 @@ class homeEmpresa : Fragment() {
                 val trabajo = Trabajo(
                     IdTrabajo,
                     Titulo,
-                    IdEmpleador,
+                    idEmpleador,
                     AreaDeTrabajo,
                     Descripcion,
                     Ubicacion,
@@ -211,7 +218,10 @@ class homeEmpresa : Fragment() {
                         )
 
                         addTrabajo.executeUpdate()
+                        val TrabajoDb = obtenerDatos()
+
                         withContext(Dispatchers.Main) {
+                            (rcvTrabajos.adapter as? AdaptadorTrabajos)?.actualizarDatos(TrabajoDb)
                             Toast.makeText(requireContext(), "Trabajo Ingresado", Toast.LENGTH_LONG)
                                 .show()
                             dialog.dismiss()
