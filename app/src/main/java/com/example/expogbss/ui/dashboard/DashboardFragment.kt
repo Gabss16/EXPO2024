@@ -13,7 +13,7 @@ import com.example.expogbss.R
 import com.example.expogbss.databinding.FragmentBuscarBinding
 import com.google.android.material.tabs.TabLayout
 
-class dddDashboardFragment : Fragment() {
+class DashboardFragment : Fragment() {
 
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
