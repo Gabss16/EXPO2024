@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 
 class perfilEmpresa : Fragment() {
 
@@ -36,8 +37,8 @@ class perfilEmpresa : Fragment() {
         textViewNumeroEmpleador.text = login.numeroEmpleador
         textViewDireccionEmpleador.text = login.direccionEmpleador
         textViewSitioWeb.text = login.sitioWebEmpleador
-        imgFotoEmpleador.setImageDrawable(BitmapDrawable.createFromPath(login.fotoEmpleador))
-
+        //imgFotoEmpleador.setImageDrawable(BitmapDrawable.createFromPath(login.fotoEmpleador))
+        Glide.with(this).load(login.fotoEmpleador).into(imgFotoEmpleador)
         return root
 
     }
