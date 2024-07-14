@@ -13,8 +13,8 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+        setContentView(R.layout.activity_main)
         GlobalScope.launch (Dispatchers.Main){
             delay(3000)
             val pantallaLogin = Intent(this@MainActivity, login::class.java)
