@@ -16,7 +16,7 @@ class solicitante : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+
         binding = ActivitySolicitanteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
