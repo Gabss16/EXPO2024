@@ -5,6 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import modelo.AdaptadorBuscarEmpleo
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +24,8 @@ class busquedaEmpresa : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var adapter: AdaptadorBuscarEmpleo
+    private lateinit var itemList: List<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +39,31 @@ class busquedaEmpresa : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_busqueda_empresa, container, false)
+
+        val view = inflater.inflate(R.layout.fragment_busqueda_empresa, container, false)
+
+        val searchView = view.findViewById<SearchView>(R.id.srchBuscarEmpleo)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.rcvEmpleos)
+
+        //Esto esta al 50%, necesito las cards para esto y aparte que funcionen para comprobar y corregir todo xd
+
+        itemList = listOf("Empresa 1", "Empresa 2", "Empresa 3")
+        adapter = AdaptadorBuscarEmpleo(itemList)
+        //recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                //adapter.filter(newText ?: "")
+                return true
+            }
+        })
+
+        return view
     }
 
     companion object {
