@@ -51,7 +51,7 @@ CREATE TABLE SOLICITANTE (
     Telefono VARCHAR2(15) NOT NULL UNIQUE,
     Direccion VARCHAR2(100) NOT NULL,
     Departamento VARCHAR2(50) NOT NULL,
-    FechaDeNacimiento DATE,
+    FechaDeNacimiento VARCHAR2(20),
     Estado VARCHAR(11) CHECK (Estado IN ('Empleado', 'Desempleado')),
     Genero VARCHAR2(20) CHECK (Genero IN ('Masculino', 'Femenino', 'Prefiero no decirlo')),
     AreaDeTrabajo VARCHAR2(100) NOT NULL CHECK (AreaDeTrabajo IN (
@@ -81,14 +81,6 @@ CREATE TABLE SOLICITUD (
     CONSTRAINT FKSolicitanteSolicitud FOREIGN KEY (IdSolicitante) REFERENCES SOLICITANTE(IdSolicitante),
     CONSTRAINT FKTrabajoSolicitud FOREIGN KEY (IdTrabajo) REFERENCES TRABAJO(IdTrabajo)
 );
-
-
-create table tablaPrueba(
-fecha date );
-
-select * from empleador
-
-INSERT INTO tablaPrueba (fecha) VALUES ('13/7/2006')
 
 //Secuencias y triggers para auto incremento 
 CREATE SEQUENCE Trabajoseq
