@@ -3,6 +3,7 @@ package com.example.expogbss
 import android.content.Intent
 import android.media.Image
 import android.os.Bundle
+import android.view.Window
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 class forgotPassword : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
         setContentView(R.layout.activity_forgot_password)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
