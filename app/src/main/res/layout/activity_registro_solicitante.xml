@@ -150,7 +150,7 @@
                 android:layout_marginStart="36dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="261dp"
-                android:text="Genero"
+                android:text="Género"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -174,11 +174,11 @@
                 android:layout_marginStart="36dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="194dp"
-                android:text="Area de trabajo "
+                android:text="Área de trabajo "
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner" />
+                app:layout_constraintTop_toBottomOf="@+id/spSituacionLaboralSolicitante" />
 
             <Spinner
                 android:id="@+id/spAreaDeTrabajoSolicitante"
@@ -271,6 +271,8 @@
                 android:layout_marginTop="24dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:hint="Contraseña"
                 android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -279,7 +281,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/txtCorreoSolicitante" />
 
             <EditText
-                android:id="@+id/editTextTextMultiLine"
+                android:id="@+id/txtHabilidadesLaborales"
                 android:layout_width="290dp"
                 android:layout_height="78dp"
                 android:layout_marginStart="28dp"
@@ -287,15 +289,17 @@
                 android:layout_marginEnd="28dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:gravity="start|top"
-                android:hint="habilidades"
+                android:hint="Realiza una breve descripción de tus habilidades laborales."
                 android:inputType="textMultiLine"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spGeneroSolicitante" />
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/spSituacionLaboralSolicitante"
                 android:layout_width="225dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="33dp"
@@ -303,7 +307,18 @@
                 android:layout_marginEnd="84dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+                app:layout_constraintTop_toBottomOf="@+id/txtHabilidadesLaborales" />
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Tu situación laboral actual"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.184"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtHabilidadesLaborales" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

@@ -7,6 +7,7 @@ import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import android.text.TextWatcher;
 import android.text.Editable;
+import android.view.Window
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -23,6 +24,8 @@ class recoveryCode : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_recovery_code)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

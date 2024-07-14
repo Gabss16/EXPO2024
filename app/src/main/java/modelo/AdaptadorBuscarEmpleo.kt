@@ -1,11 +1,5 @@
 package modelo
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.example.expogbss.R
-
 class AdaptadorBuscarEmpleo (private var itemList: List<String>)// : RecyclerView.Adapter<AdaptadorBuscarEmpleo.ViewHolder>() {
 
 //    private var filteredItemList: List<String> = itemList
