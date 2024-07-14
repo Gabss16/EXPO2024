@@ -100,7 +100,6 @@ class registro_empresa : AppCompatActivity() {
                 checkStoragePermission()
             }
         }
-
         btnTomarFotoEmpleador.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
                     this,
@@ -116,6 +115,9 @@ class registro_empresa : AppCompatActivity() {
         }
 
         btnCrearCuentaEmpleador.setOnClickListener {
+            // Deshabilitar el botón para evitar múltiples clicks
+            btnCrearCuentaEmpleador.isEnabled = false
+
             // Mando a llamar a cada textview
             val nombreEmpleador = txtNombreEmpleador.text.toString()
             val CorreoEmpleador = txtCorreoEmpleador.text.toString()
@@ -130,37 +132,42 @@ class registro_empresa : AppCompatActivity() {
             val verificarContraseña =
                 Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
 
-            //Validaciones de campos vacíos y cosas por ese estilo
+            // Validaciones de campos vacíos y cosas por ese estilo
             if (nombreEmpleador.isEmpty() || CorreoEmpleador.isEmpty() || ContrasenaEmpleador.isEmpty() || TelefoEmpleador.isEmpty() || DireccionEmpleador.isEmpty()) {
                 Toast.makeText(
                     this@registro_empresa,
                     "Por favor, llenar los espacios obligatorios",
                     Toast.LENGTH_SHORT
                 ).show()
+                btnCrearCuentaEmpleador.isEnabled = true
             } else if (!VerificarTelefono.matches(TelefoEmpleador)) {
                 Toast.makeText(
                     this@registro_empresa,
                     "Ingresar un número de teléfono válido.",
                     Toast.LENGTH_SHORT
                 ).show()
+                btnCrearCuentaEmpleador.isEnabled = true
             } else if (!verificarCorreo.matches(CorreoEmpleador)) {
                 Toast.makeText(
                     this@registro_empresa,
                     "Ingresar un correo electrónico válido.",
                     Toast.LENGTH_SHORT
                 ).show()
+                btnCrearCuentaEmpleador.isEnabled = true
             } else if (!verificarContraseña.matches(ContrasenaEmpleador)) {
                 Toast.makeText(
                     this@registro_empresa,
                     "La contraseña debe contener al menos un caracter especial y tener más de 6 caracteres.",
                     Toast.LENGTH_SHORT
                 ).show()
+                btnCrearCuentaEmpleador.isEnabled = true
             } else if (!fotoSubida) {
                 Toast.makeText(
                     this@registro_empresa,
                     "Por favor, sube una foto de perfil.",
                     Toast.LENGTH_SHORT
                 ).show()
+                btnCrearCuentaEmpleador.isEnabled = true
             } else if (EmpresaEmpleador.isNotEmpty()) {
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
@@ -169,66 +176,111 @@ class registro_empresa : AppCompatActivity() {
                             objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE CorreoElectronico = ? ")!!
                         comprobarSiExisteCorreo.setString(1, CorreoEmpleador)
 
+                        val comprobarSiExistetelefonoSolicitante =
+                            objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE Telefono = ? ")!!
+                        comprobarSiExistetelefonoSolicitante.setString(1, TelefoEmpleador)
+
                         val existeCorreoSolicitante = comprobarSiExisteCorreo.executeQuery()
-
+                        val existeTelefonoSolicitante =
+                            comprobarSiExistetelefonoSolicitante.executeQuery()
                         if (existeCorreoSolicitante.next()) {
-                            Toast.makeText(
-                                this@registro_empresa,
-                                "Ya existe alguien con ese correo electrónico, por favor, utiliza otro.",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@registro_empresa,
+                                    "Ya existe alguien con ese correo electrónico, por favor, utiliza otro.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                btnCrearCuentaEmpleador.isEnabled = true
+                            }
+                        } else if (existeTelefonoSolicitante.next()) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@registro_empresa,
+                                    "Ya existe alguien con ese número de teléfono, por favor, utiliza otro.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                btnCrearCuentaEmpleador.isEnabled = true
+                            }
                         } else {
-
-                            //Encripto la contraseña usando la función de encriptación
+                            // Encripto la contraseña usando la función de encriptación
                             val contrasenaEncriptada =
                                 hashSHA256(txtContrasenaEmpleador.text.toString())
+                            withContext(Dispatchers.Main) {
+                                val bitmap =
+                                    (imgFotoDePerfilEmpleador.drawable as BitmapDrawable).bitmap
+                                subirimagenFirebase(bitmap) { imageUrl ->
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        val crearUsuario = objConexion?.prepareStatement(
+                                            "INSERT INTO EMPLEADOR (IdEmpleador, NombreEmpresa, CorreoElectronico, NumeroTelefono, Direccion, SitioWeb, NombreRepresentante, Departamento, Contrasena, Estado, Foto) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
+                                        )!!
+                                        crearUsuario.setString(1, uuid)
+                                        crearUsuario.setString(
+                                            2,
+                                            txtEmpresaEmpleador.text.toString()
+                                        )
+                                        crearUsuario.setString(
+                                            3,
+                                            txtCorreoEmpleador.text.toString()
+                                        )
+                                        crearUsuario.setString(
+                                            4,
+                                            TelefoEmpleador
+                                        )
+                                        crearUsuario.setString(
+                                            5,
+                                            txtDireccionEmpleador.text.toString()
+                                        )
+                                        crearUsuario.setString(6, SitioWebEmpleador)
+                                        crearUsuario.setString(
+                                            7,
+                                            txtNombreEmpleador.text.toString()
+                                        )
+                                        crearUsuario.setString(
+                                            8,
+                                            spDepartamentos.selectedItem.toString()
+                                        )
+                                        crearUsuario.setString(9, contrasenaEncriptada)
+                                        crearUsuario.setString(10, "Pendiente")
+                                        crearUsuario.setString(11, imageUrl)
 
-                            //Creo una variable que contenga un PrepareStatement
-                            val crearUsuario = objConexion?.prepareStatement(
-                                "INSERT INTO EMPLEADOR (IdEmpleador, NombreEmpresa, CorreoElectronico, NumeroTelefono,Direccion,SitioWeb, NombreRepresentante, Departamento, Contrasena,Estado, Foto) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
-                            )!!
-                            crearUsuario.setString(1, uuid)
-                            crearUsuario.setString(2, txtEmpresaEmpleador.text.toString())
-                            crearUsuario.setString(3, txtCorreoEmpleador.text.toString())
-                            crearUsuario.setString(4, txtTelefonoEmpleador.text.toString())
-                            crearUsuario.setString(5, txtDireccionEmpleador.text.toString())
-                            crearUsuario.setString(6, SitioWebEmpleador)
-                            crearUsuario.setString(7, txtNombreEmpleador.text.toString())
-                            crearUsuario.setString(8, spDepartamentos.selectedItem.toString())
-                            crearUsuario.setString(9, contrasenaEncriptada)
-                            crearUsuario.setString(10, "Pendiente")
-                            crearUsuario.setString(11, uuid)
+                                        val filasAfectadas = crearUsuario.executeUpdate()
 
-                            val filasAfectadas = crearUsuario.executeUpdate()
+                                        if (filasAfectadas > 0) {
+                                            // La inserción fue exitosa
+                                            withContext(Dispatchers.Main) {
+                                                val correoEnviado = recuperarContrasena(
+                                                    CorreoEmpleador,
+                                                    "Creación de cuenta",
+                                                    "Su cuenta ha sido creada. Sin embargo, no podrá utilizar su cuenta hasta nuevo aviso. Primero, debemos asegurarnos de la autenticidad de sus datos, ya que se ha registrado en nombre de una empresa. Le informaremos tan pronto como la verificación se haya completado."
+                                                )
 
-                            if (filasAfectadas > 0) {
-                                // La inserción fue exitosa
-                                withContext(Dispatchers.Main) {
-                                    val correoEnviado = recuperarContrasena(
-                                        CorreoEmpleador,
-                                        "Creación de cuenta",
-                                        "Su cuenta ha sido creada. Sin embargo, no podrá utilizar su cuenta hasta nuevo aviso. Primero, debemos asegurarnos de la autenticidad de sus datos, ya que se ha registrado en nombre de una empresa. Le informaremos tan pronto como la verificación se haya completado."
-                                    )
-
-                                    if (correoEnviado) {
-                                        AlertDialog.Builder(this@registro_empresa)
-                                            .setTitle("Cuenta registrada")
-                                            .setMessage("Tu cuenta ha sido creada, puedes regresar al inicio de sesión.")
-                                            .setPositiveButton("Aceptar", null)
-                                            .show()
-                                        txtNombreEmpleador.setText("")
-                                        txtEmpresaEmpleador.setText("")
-                                        txtCorreoEmpleador.setText("")
-                                        txtContrasenaEmpleador.setText("")
-                                        txtTelefonoEmpleador.setText("")
-                                        txtDireccionEmpleador.setText("")
-                                        txtSitioWebEmpleador.setText("")
-                                        imgFotoDePerfilEmpleador.setImageDrawable(null)
+                                                if (correoEnviado) {
+                                                    AlertDialog.Builder(this@registro_empresa)
+                                                        .setTitle("Cuenta registrada")
+                                                        .setMessage("Tu cuenta ha sido creada, puedes regresar al inicio de sesión.")
+                                                        .setPositiveButton("Aceptar", null)
+                                                        .show()
+                                                    txtNombreEmpleador.setText("")
+                                                    txtEmpresaEmpleador.setText("")
+                                                    txtCorreoEmpleador.setText("")
+                                                    txtContrasenaEmpleador.setText("")
+                                                    txtTelefonoEmpleador.setText("")
+                                                    txtDireccionEmpleador.setText("")
+                                                    txtSitioWebEmpleador.setText("")
+                                                    imgFotoDePerfilEmpleador.setImageDrawable(null)
+                                                }
+                                            }
+                                        } else {
+                                            withContext(Dispatchers.Main) {
+                                                Toast.makeText(
+                                                    this@registro_empresa,
+                                                    "Error al crear el usuario.",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
+                                        }
                                     }
                                 }
-                            } else {
-                                // La inserción no fue exitosa
-                                println("Error al crear el usuario.")
                             }
                         }
                     } catch (e: SQLException) {
@@ -242,97 +294,7 @@ class registro_empresa : AppCompatActivity() {
                                     ).show()
                                 }
                             }
-                            else -> {
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        this@registro_empresa,
-                                        "Error SQL: ${e.message}",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            }
-                        }
-                    }catch (e: Exception) {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(
-                                this@registro_empresa,
-                                "Ocurrió un error al crear la cuenta. Por favor, intente nuevamente.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            println("Error: ${e.message}")
-                        }
-                    }
-                }
 
-            } else {
-                CoroutineScope(Dispatchers.IO).launch {
-
-                    try {
-                        val objConexion = ClaseConexion().cadenaConexion()
-                        val comprobarSiExisteCorreo =
-                            objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE CorreoElectronico = ? ")!!
-                        comprobarSiExisteCorreo.setString(1, CorreoEmpleador)
-
-                        val existeCorreoSolicitante = comprobarSiExisteCorreo.executeQuery()
-
-                        if (existeCorreoSolicitante.next()) {
-                            withContext(Dispatchers.Main) {
-                                Toast.makeText(
-                                    this@registro_empresa,
-                                    "Ya existe alguien con ese correo electrónico, por favor, utiliza otro.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-
-                        //Encripto la contraseña usando la función de encriptación
-                        val contrasenaEncriptada =
-                            hashSHA256(txtContrasenaEmpleador.text.toString())
-
-                        //Creo una variable que contenga un PrepareStatement
-                        val crearUsuario = objConexion?.prepareStatement(
-                            "INSERT INTO EMPLEADOR (IdEmpleador, NombreEmpresa, CorreoElectronico, NumeroTelefono,Direccion,SitioWeb, NombreRepresentante, Departamento, Contrasena,Estado, Foto) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
-                        )!!
-                        crearUsuario.setString(1, uuid)
-                        crearUsuario.setString(2, txtEmpresaEmpleador.text.toString())
-                        crearUsuario.setString(3, txtCorreoEmpleador.text.toString())
-                        crearUsuario.setString(4, txtTelefonoEmpleador.text.toString())
-                        crearUsuario.setString(5, txtDireccionEmpleador.text.toString())
-                        crearUsuario.setString(6, SitioWebEmpleador)
-                        crearUsuario.setString(7, txtNombreEmpleador.text.toString())
-                        crearUsuario.setString(8, spDepartamentos.selectedItem.toString())
-                        crearUsuario.setString(9, contrasenaEncriptada)
-                        crearUsuario.setString(10, "Activo")
-                        crearUsuario.setString(11, uuid)
-
-                        crearUsuario.executeUpdate()
-
-                        withContext(Dispatchers.Main) {
-                            AlertDialog.Builder(this@registro_empresa)
-                                .setTitle("Cuenta registrada")
-                                .setMessage("Tu cuenta ha sido creada, puedes regresar al inicio de sesión.")
-                                .setPositiveButton("Aceptar", null)
-                                .show()
-                            txtNombreEmpleador.setText("")
-                            txtEmpresaEmpleador.setText("")
-                            txtCorreoEmpleador.setText("")
-                            txtContrasenaEmpleador.setText("")
-                            txtTelefonoEmpleador.setText("")
-                            txtDireccionEmpleador.setText("")
-                            txtSitioWebEmpleador.setText("")
-                            imgFotoDePerfilEmpleador.setImageDrawable(null)
-                        }
-                    }catch (e: SQLException) {
-                        when (e.errorCode) {
-                            1 -> { // ORA-00001: unique constraint violated
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        this@registro_empresa,
-                                        "Ya existe un usuario con ese correo electrónico, por favor ingresa uno distinto.",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            }
                             else -> {
                                 withContext(Dispatchers.Main) {
                                     Toast.makeText(
@@ -352,12 +314,191 @@ class registro_empresa : AppCompatActivity() {
                             ).show()
                             println("Error: ${e.message}")
                         }
+                    } finally {
+                        // Habilitar el botón nuevamente después de completar la coroutine
+                        withContext(Dispatchers.Main) {
+                            btnCrearCuentaEmpleador.isEnabled = true
+                        }
+                    }
+                }
+            } else {
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        val objConexion = ClaseConexion().cadenaConexion()
+                        val comprobarSiExisteCorreo =
+                            objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE CorreoElectronico = ? ")!!
+                        comprobarSiExisteCorreo.setString(1, CorreoEmpleador)
+
+                        val comprobarSiExistetelefonoSolicitante =
+                            objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE Telefono = ? ")!!
+                        comprobarSiExistetelefonoSolicitante.setString(1, TelefoEmpleador)
+
+                        val existeTelefonoSolicitante =
+                            comprobarSiExistetelefonoSolicitante.executeQuery()
+                        val existeCorreoSolicitante = comprobarSiExisteCorreo.executeQuery()
+
+                        if (existeCorreoSolicitante.next()) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@registro_empresa,
+                                    "Ya existe alguien con ese correo electrónico, por favor, utiliza otro.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                btnCrearCuentaEmpleador.isEnabled = true
+                            }
+                        } else if (existeTelefonoSolicitante.next()) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@registro_empresa,
+                                    "Ya existe alguien con ese número de teléfono, por favor, utiliza otro.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                btnCrearCuentaEmpleador.isEnabled = true
+                            }
+                        } else {
+                            // Encripto la contraseña usando la función de encriptación
+                            val contrasenaEncriptada =
+                                hashSHA256(txtContrasenaEmpleador.text.toString())
+
+                            withContext(Dispatchers.Main) {
+                                val bitmap =
+                                    (imgFotoDePerfilEmpleador.drawable as BitmapDrawable).bitmap
+                                subirimagenFirebase(bitmap) { imageUrl ->
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        try {
+                                            val crearUsuario = objConexion?.prepareStatement(
+                                                "INSERT INTO EMPLEADOR (IdEmpleador, NombreEmpresa, CorreoElectronico, NumeroTelefono, Direccion, SitioWeb, NombreRepresentante, Departamento, Contrasena, Estado, Foto) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
+                                            )!!
+                                            crearUsuario.setString(1, uuid)
+                                            crearUsuario.setString(
+                                                2,
+                                                txtEmpresaEmpleador.text.toString()
+                                            )
+                                            crearUsuario.setString(
+                                                3,
+                                                txtCorreoEmpleador.text.toString()
+                                            )
+                                            crearUsuario.setString(
+                                                4,
+                                                TelefoEmpleador
+                                            )
+                                            crearUsuario.setString(
+                                                5,
+                                                txtDireccionEmpleador.text.toString()
+                                            )
+                                            crearUsuario.setString(6, SitioWebEmpleador)
+                                            crearUsuario.setString(
+                                                7,
+                                                txtNombreEmpleador.text.toString()
+                                            )
+                                            crearUsuario.setString(
+                                                8,
+                                                spDepartamentos.selectedItem.toString()
+                                            )
+                                            crearUsuario.setString(9, contrasenaEncriptada)
+                                            crearUsuario.setString(10, "Activo")
+                                            crearUsuario.setString(11, imageUrl)
+
+                                            crearUsuario.executeUpdate()
+
+                                            withContext(Dispatchers.Main) {
+                                                AlertDialog.Builder(this@registro_empresa)
+                                                    .setTitle("Cuenta registrada")
+                                                    .setMessage("Tu cuenta ha sido creada, puedes regresar al inicio de sesión.")
+                                                    .setPositiveButton("Aceptar", null)
+                                                    .show()
+                                                txtNombreEmpleador.setText("")
+                                                txtEmpresaEmpleador.setText("")
+                                                txtCorreoEmpleador.setText("")
+                                                txtContrasenaEmpleador.setText("")
+                                                txtTelefonoEmpleador.setText("")
+                                                txtDireccionEmpleador.setText("")
+                                                txtSitioWebEmpleador.setText("")
+                                                imgFotoDePerfilEmpleador.setImageDrawable(null)
+                                            }
+                                        } catch (e: SQLException) {
+                                            when (e.errorCode) {
+                                                1 -> { // ORA-00001: unique constraint violated
+                                                    withContext(Dispatchers.Main) {
+                                                        Toast.makeText(
+                                                            this@registro_empresa,
+                                                            "Ya existe un usuario con ese correo electrónico, por favor ingresa uno distinto.",
+                                                            Toast.LENGTH_LONG
+                                                        ).show()
+                                                    }
+                                                }
+
+                                                else -> {
+                                                    withContext(Dispatchers.Main) {
+                                                        Toast.makeText(
+                                                            this@registro_empresa,
+                                                            "Error SQL: ${e.message}",
+                                                            Toast.LENGTH_LONG
+                                                        ).show()
+                                                    }
+                                                }
+                                            }
+                                        } catch (e: Exception) {
+                                            withContext(Dispatchers.Main) {
+                                                Toast.makeText(
+                                                    this@registro_empresa,
+                                                    "Ocurrió un error al crear la cuenta. Por favor, intente nuevamente.",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                println("Error: ${e.message}")
+                                            }
+                                        } finally {
+                                            // Habilitar el botón nuevamente después de completar la coroutine
+                                            withContext(Dispatchers.Main) {
+                                                btnCrearCuentaEmpleador.isEnabled = true
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } catch (e: SQLException) {
+                        when (e.errorCode) {
+                            1 -> { // ORA-00001: unique constraint violated
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(
+                                        this@registro_empresa,
+                                        "Ya existe un usuario con ese correo electrónico, por favor ingresa uno distinto.",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
+
+                            else -> {
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(
+                                        this@registro_empresa,
+                                        "Error SQL: ${e.message}",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                this@registro_empresa,
+                                "Ocurrió un error al crear la cuenta. Por favor, intente nuevamente.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            println("Error: ${e.message}")
+                        }
+                    } finally {
+                        // Habilitar el botón nuevamente después de completar la coroutine
+                        withContext(Dispatchers.Main) {
+                            btnCrearCuentaEmpleador.isEnabled = true
+                        }
                     }
                 }
             }
         }
-    }
 
+    }
     private fun checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -402,11 +543,19 @@ class registro_empresa : AppCompatActivity() {
     }
 
     private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        val intent =
+            Intent(
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            )
         startActivityForResult(intent, codigo_opcion_galeria)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK) {
@@ -426,7 +575,10 @@ class registro_empresa : AppCompatActivity() {
         }
     }
 
-    private fun subirimagenFirebase(bitmap: Bitmap, onSuccess: (String) -> Unit) {
+    private fun subirimagenFirebase(
+        bitmap: Bitmap,
+        onSuccess: (String) -> Unit
+    ) {
         val storageRef = Firebase.storage.reference
         val imageRef = storageRef.child("images/${UUID.randomUUID()}.jpg")
         val baos = ByteArrayOutputStream()
@@ -447,4 +599,3 @@ class registro_empresa : AppCompatActivity() {
         }
     }
 }
-
