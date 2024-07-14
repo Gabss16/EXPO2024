@@ -322,7 +322,7 @@ class registroSolicitante : AppCompatActivity() {
 
     }
 
-    fun checkCameraPermission() {
+    private fun checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(
                 this, android.Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED
@@ -335,7 +335,8 @@ class registroSolicitante : AppCompatActivity() {
         }
     }
 
-    fun checkStoragePermission() {
+
+    private fun checkStoragePermission() {
         if (ContextCompat.checkSelfPermission(
                 this, android.Manifest.permission.READ_EXTERNAL_STORAGE
             ) != PackageManager.PERMISSION_GRANTED
