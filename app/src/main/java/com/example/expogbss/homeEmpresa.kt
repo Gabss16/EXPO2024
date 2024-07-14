@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
 import modelo.Trabajo
+import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -68,34 +69,41 @@ class homeEmpresa : Fragment() {
             val objConexion = ClaseConexion().cadenaConexion()
 
             //2 - Creo un statement
+            fun obtenerIdEmpleador(): String {
+                return login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
+            }
+            val idEmpleador = obtenerIdEmpleador()
+
             //El símbolo de pregunta es pq los datos pueden ser nulos
-            val statement = objConexion?.createStatement()
-            val resultSet = statement?.executeQuery("SELECT * FROM TRABAJO")!!
+            val statement = objConexion?.prepareStatement("SELECT * FROM TRABAJO WHERE IdEmpleador = ?")
+            statement?.setString(1, idEmpleador)
+            val resultSet = statement?.executeQuery()!!
 
 
             //en esta variable se añaden TODOS los valores de mascotas
             val listaTrabajos = mutableListOf<Trabajo>()
+
+
 
             //Recorro todos los registros de la base de datos
             //.next() significa que mientras haya un valor después de ese se va a repetir el proceso
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
-                val IdEmpleador = resultSet.getString("IdEmpleador")
                 val AreaDeTrabajo = resultSet.getString("AreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Ubicacion = resultSet.getString("Ubicacion")
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
                 val Estado = resultSet.getString("Estado")
-                val Salario = resultSet.getInt("Salario")
-                val Beneficios = resultSet.getString("fecha_finBeneficios_ticket")
+                val Salario = resultSet.getBigDecimal("Salario")
+                val Beneficios = resultSet.getString("Beneficios")
                 val FechaDePublicacion = resultSet.getDate("FechaDePublicacion")
 
                 val trabajo = Trabajo(
                     IdTrabajo,
                     Titulo,
-                    IdEmpleador,
+                    idEmpleador,
                     AreaDeTrabajo,
                     Descripcion,
                     Ubicacion,
@@ -145,8 +153,7 @@ class homeEmpresa : Fragment() {
 
             val fechaDePublicacion =
                 SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-            //convierto el salario a double
-            val salario = txtSalarioJob.text.toString().toDouble()
+
             val spnTiposTrabajo = view.findViewById<Spinner>(R.id.spnTiposTrabajo)
             val listadoAreas = listOf(
                 "Trabajo doméstico",
@@ -173,6 +180,7 @@ class homeEmpresa : Fragment() {
             }
 
             val idEmpleador = obtenerIdEmpleador()
+            Log.d("InsertJob", "IdEmpleador obtenido: $idEmpleador")
 
 
             // on below line we are adding on click listener
@@ -195,7 +203,10 @@ class homeEmpresa : Fragment() {
                         addTrabajo.setString(6, txtExperienciaJob.text.toString())
                         addTrabajo.setString(7, txtHabilidadesJob.text.toString())
                         addTrabajo.setString(8, "Activo")
-                        addTrabajo.setDouble(9, salario)
+
+                        val salario = BigDecimal(txtSalarioJob.text.toString())
+                        addTrabajo.setBigDecimal(9, salario)
+
                         addTrabajo.setString(10, txtBeneficiosJob.text.toString())
                         addTrabajo.setString(11, fechaDePublicacion)
 
@@ -207,7 +218,10 @@ class homeEmpresa : Fragment() {
                         )
 
                         addTrabajo.executeUpdate()
+                        val TrabajoDb = obtenerDatos()
+
                         withContext(Dispatchers.Main) {
+                            (rcvTrabajos.adapter as? AdaptadorTrabajos)?.actualizarDatos(TrabajoDb)
                             Toast.makeText(requireContext(), "Trabajo Ingresado", Toast.LENGTH_LONG)
                                 .show()
                             dialog.dismiss()
@@ -226,19 +240,19 @@ class homeEmpresa : Fragment() {
 
 
                 }
-                // below line is use to set cancelable to avoid
-                // closing of dialog box when clicking on the screen.
-                dialog.setCancelable(false)
-
-                // on below line we are setting
-                // content view to our view.
-                dialog.setContentView(view)
-
-                // on below line we are calling
-                // a show method to display a dialog.
-                dialog.show()
 
             }
+            // below line is use to set cancelable to avoid
+            // closing of dialog box when clicking on the screen.
+            dialog.setCancelable(false)
+
+            // on below line we are setting
+            // content view to our view.
+            dialog.setContentView(view)
+
+            // on below line we are calling
+            // a show method to display a dialog.
+            dialog.show()
         }
         return root
 
