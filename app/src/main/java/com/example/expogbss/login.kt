@@ -96,7 +96,7 @@ class login : AppCompatActivity() {
                  val resultSet = objConexion?.prepareStatement("SELECT IdEmpleador FROM EMPLEADOR WHERE CorreoElectronico = ?")!!
                  resultSet.setString(1, correoLogin)
                 val resultado = resultSet.executeQuery()
-                IdEmpleador + resultado
+                IdEmpleador = resultado.toString()
 
             }
 
