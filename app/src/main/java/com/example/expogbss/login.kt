@@ -53,8 +53,6 @@ class login : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_login)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -95,12 +93,28 @@ class login : AppCompatActivity() {
             correoLogin = txtCorreoLogin.text.toString()
             GlobalScope.launch(Dispatchers.IO) {
                 val objConexion = ClaseConexion().cadenaConexion()
-                val resultSet =
-                    objConexion?.prepareStatement("SELECT IdEmpleador FROM EMPLEADOR WHERE CorreoElectronico = ?")!!
-                resultSet.setString(1, correoLogin)
-                val resultado = resultSet.executeQuery()
-                IdEmpleador = resultado.toString()
 
+                // Preparar la consulta para obtener IdEmpleador
+                val resultSet =
+                    objConexion?.prepareStatement("SELECT IdEmpleador FROM EMPLEADOR WHERE CorreoElectronico = ?")
+                resultSet?.setString(1, correoLogin)
+
+                // Ejecutar la consulta y obtener el resultado
+                val resultado = resultSet?.executeQuery()
+
+                // Verificar si se encontró un resultado
+                if (resultado?.next() == true) {
+                    IdEmpleador = resultado.getString("IdEmpleador")
+                    // Ahora IdEmpleador tiene el valor obtenido de la base de datos
+                } else {
+                    // Manejar caso donde no se encontró IdEmpleador (correo no existe)
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@login, "Correo no encontrado", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    return@launch  // Salir del bloque de código si no se encontró el correo
+
+                }
             }
 
 
