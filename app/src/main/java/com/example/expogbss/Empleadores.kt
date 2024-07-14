@@ -16,7 +16,7 @@ class Empleadores : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+
         binding = ActivityEmpleadoresBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
