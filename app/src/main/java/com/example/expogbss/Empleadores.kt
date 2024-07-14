@@ -16,8 +16,7 @@ class Empleadores : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         binding = ActivityEmpleadoresBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -26,12 +25,13 @@ class Empleadores : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_empleadores)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+        navView.setupWithNavController(navController)
+
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.homeEmpresa, R.id.busquedaEmpresa, R.id.perfilEmpresa,R.id.chatEmpresa
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
     }
 }

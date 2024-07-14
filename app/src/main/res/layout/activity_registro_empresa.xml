@@ -116,7 +116,7 @@
                 android:background="@drawable/txt_registro"
                 android:ems="10"
                 android:hint="Contraseña"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"

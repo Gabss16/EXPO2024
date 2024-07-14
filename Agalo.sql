@@ -33,14 +33,14 @@ CREATE TABLE TRABAJO (
         'Área de ventas y atención al cliente', 
         'Educación y enseñanza'
     )),
-    Descripcion VARCHAR2(150),
+    Descripcion VARCHAR2(150),  
     Ubicacion VARCHAR2(100),
     Experiencia VARCHAR2(50),
     Requerimientos VARCHAR2(150),
     Estado VARCHAR(10) CHECK (Estado IN ('Activo', 'Inactivo')),
-    Salario NUMBER(3,3),
+    Salario NUMBER,
     Beneficios VARCHAR2(100),
-    FechaDePublicacion DATE,
+    FechaDePublicacion  VARCHAR2(20),
     CONSTRAINT FKEmpleadorTrabajo FOREIGN KEY (IdEmpleador) REFERENCES EMPLEADOR(IdEmpleador)
 );
 
@@ -51,7 +51,7 @@ CREATE TABLE SOLICITANTE (
     Telefono VARCHAR2(15) NOT NULL UNIQUE,
     Direccion VARCHAR2(100) NOT NULL,
     Departamento VARCHAR2(50) NOT NULL,
-    FechaDeNacimiento DATE,
+    FechaDeNacimiento VARCHAR2(20),
     Estado VARCHAR(11) CHECK (Estado IN ('Empleado', 'Desempleado')),
     Genero VARCHAR2(20) CHECK (Genero IN ('Masculino', 'Femenino', 'Prefiero no decirlo')),
     AreaDeTrabajo VARCHAR2(100) NOT NULL CHECK (AreaDeTrabajo IN (
@@ -76,7 +76,7 @@ CREATE TABLE SOLICITUD (
     IdSolicitud NUMBER PRIMARY KEY , 
     IdSolicitante VARCHAR2(50) NOT NULL,
     IdTrabajo NUMBER NOT NULL,
-    FechaSolicitud DATE NOT NULL,
+    FechaSolicitud VARCHAR2(20) NOT NULL,
     Estado VARCHAR(10) CHECK (Estado IN ('Activa', 'Finalizada', 'Pendiente')),
     CONSTRAINT FKSolicitanteSolicitud FOREIGN KEY (IdSolicitante) REFERENCES SOLICITANTE(IdSolicitante),
     CONSTRAINT FKTrabajoSolicitud FOREIGN KEY (IdTrabajo) REFERENCES TRABAJO(IdTrabajo)
