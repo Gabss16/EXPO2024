@@ -2,6 +2,7 @@ package com.example.expogbss
 
 import RecicleViewHelpers.AdaptadorTrabajos
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -142,9 +143,10 @@ class homeEmpresa : Fragment() {
             val txtSalarioJob = view.findViewById<EditText>(R.id.txtSalarioJob)
 
 
-            val uuid = UUID.randomUUID().toString()
             val fechaDePublicacion =
                 SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            //convierto el salario a double
+            val salario = txtSalarioJob.text.toString().toDouble()
             val spnTiposTrabajo = view.findViewById<Spinner>(R.id.spnTiposTrabajo)
             val listadoAreas = listOf(
                 "Trabajo doméstico",
@@ -178,52 +180,65 @@ class homeEmpresa : Fragment() {
             btnClose.setOnClickListener {
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    //1-creo un objeto de la clse conexion
-                    val objConexion = ClaseConexion().cadenaConexion()
+                    try {
+                        //1-creo un objeto de la clse conexion
+                        val objConexion = ClaseConexion().cadenaConexion()
 
-                    //2-creo una variable que contenga un PrepareStatement
-                    val addTrabajo =
-                        objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , AreaDeTrabajo,Descripcion ,Ubicacion , Experiencia , Requerimientos , Estado ,Salario , Beneficios ) VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
-                    addTrabajo.setString(1, txtTituloJob.text.toString())
-                    addTrabajo.setString(2, idEmpleador)
-                    addTrabajo.setString(3, spnTiposTrabajo.selectedItem.toString())
-                    addTrabajo.setString(4, txtDescripcionJob.text.toString())
-                    addTrabajo.setString(5, txtUbicacionJob.text.toString())
-                    addTrabajo.setString(6, txtExperienciaJob.text.toString())
-                    addTrabajo.setString(7, txtHabilidadesJob.text.toString())
-                    addTrabajo.setString(8, "Activo")
-
-                    //convierto el salario a double
-                    val salario = txtSalarioJob.text.toString().toDouble()
-                    addTrabajo.setDouble(9, salario)
-                    addTrabajo.setString(10, txtBeneficiosJob.text.toString())
+                        //2-creo una variable que contenga un PrepareStatement
+                        val addTrabajo =
+                            objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , AreaDeTrabajo,Descripcion ,Ubicacion , Experiencia , Requerimientos , Estado ,Salario , Beneficios, FechaDePublicacion ) VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,? )")!!
+                        addTrabajo.setString(1, txtTituloJob.text.toString())
+                        addTrabajo.setString(2, idEmpleador)
+                        addTrabajo.setString(3, spnTiposTrabajo.selectedItem.toString())
+                        addTrabajo.setString(4, txtDescripcionJob.text.toString())
+                        addTrabajo.setString(5, txtUbicacionJob.text.toString())
+                        addTrabajo.setString(6, txtExperienciaJob.text.toString())
+                        addTrabajo.setString(7, txtHabilidadesJob.text.toString())
+                        addTrabajo.setString(8, "Activo")
+                        addTrabajo.setDouble(9, salario)
+                        addTrabajo.setString(10, txtBeneficiosJob.text.toString())
+                        addTrabajo.setString(11, fechaDePublicacion)
 
 
-                    addTrabajo.executeUpdate()
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "Trabajo Ingresado", Toast.LENGTH_LONG)
-                            .show()
-                        // on below line we are calling a dismiss
-                        // method to close our dialog.
-                        dialog.dismiss()
+
+                        Log.d(
+                            "InsertJob",
+                            "Datos a insertar: Titulo=${txtTituloJob.text}, IdEmpleador=$idEmpleador, AreaDeTrabajo=${spnTiposTrabajo.selectedItem}, Descripcion=${txtDescripcionJob.text}, Ubicacion=${txtUbicacionJob.text}, Experiencia=${txtExperienciaJob.text}, Requerimientos=${txtHabilidadesJob.text}, Estado=Activo, Salario=$salario, Beneficios=${txtBeneficiosJob.text}, FechaDePublicacion=$fechaDePublicacion"
+                        )
+
+                        addTrabajo.executeUpdate()
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(requireContext(), "Trabajo Ingresado", Toast.LENGTH_LONG)
+                                .show()
+                            dialog.dismiss()
+                        }
+                    } catch (e: Exception) {
+                        Log.e("InsertJob", "Error al insertar trabajo", e)
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Error al insertar trabajo",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        //aqui estaban antes
                     }
-                    //aqui estaban antes
-                }
 
+
+                }
+                // below line is use to set cancelable to avoid
+                // closing of dialog box when clicking on the screen.
+                dialog.setCancelable(false)
+
+                // on below line we are setting
+                // content view to our view.
+                dialog.setContentView(view)
+
+                // on below line we are calling
+                // a show method to display a dialog.
+                dialog.show()
 
             }
-            // below line is use to set cancelable to avoid
-            // closing of dialog box when clicking on the screen.
-            dialog.setCancelable(false)
-
-            // on below line we are setting
-            // content view to our view.
-            dialog.setContentView(view)
-
-            // on below line we are calling
-            // a show method to display a dialog.
-            dialog.show()
-
         }
         return root
 
