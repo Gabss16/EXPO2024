@@ -41,7 +41,7 @@ CREATE TABLE TRABAJO (
     Salario NUMBER,
     Beneficios VARCHAR2(100),
     FechaDePublicacion  VARCHAR2(20),
-    CONSTRAINT FKEmpleadorTrabajo FOREIGN KEY (IdEmpleador) REFERENCES EMPLEADOR(IdEmpleador)
+    CONSTRAINT FKEmpleadorTrabajo FOREIGN KEY (IdEmpleador) REFERENCES EMPLEADOR(IdEmpleador) ON DELETE CASCADE
 );
 
 CREATE TABLE SOLICITANTE (
@@ -78,8 +78,8 @@ CREATE TABLE SOLICITUD (
     IdTrabajo NUMBER NOT NULL,
     FechaSolicitud VARCHAR2(20) NOT NULL,
     Estado VARCHAR(10) CHECK (Estado IN ('Activa', 'Finalizada', 'Pendiente')),
-    CONSTRAINT FKSolicitanteSolicitud FOREIGN KEY (IdSolicitante) REFERENCES SOLICITANTE(IdSolicitante),
-    CONSTRAINT FKTrabajoSolicitud FOREIGN KEY (IdTrabajo) REFERENCES TRABAJO(IdTrabajo)
+    CONSTRAINT FKSolicitanteSolicitud FOREIGN KEY (IdSolicitante) REFERENCES SOLICITANTE(IdSolicitante) ON DELETE CASCADE,
+    CONSTRAINT FKTrabajoSolicitud FOREIGN KEY (IdTrabajo) REFERENCES TRABAJO(IdTrabajo) ON DELETE CASCADE
 );
 
 //Secuencias y triggers para auto incremento 
@@ -97,6 +97,10 @@ END;
 
 
 select * from empleador;
+select * from solicitante;
+
+delete from Empleador where idEmpleador = 'fdc019cf-6449-4655-8913-685ffbb9bf1b';
+
 SELECT * FROM EMPLEADOR WHERE CorreoElectronico = 'contacto@innovaciones.com.sv' AND Contrasena = 'contraseña1';
 SELECT * FROM SOLICITANTE WHERE CorreoElectronico =  'ana.martinez@example.com' AND Contrasena = 'contraseña1';
 SELECT * FROM ESTADOSOLICITANTE ;
