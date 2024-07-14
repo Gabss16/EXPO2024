@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
 import modelo.Trabajo
+import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -88,8 +89,8 @@ class homeEmpresa : Fragment() {
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
                 val Estado = resultSet.getString("Estado")
-                val Salario = resultSet.getInt("Salario")
-                val Beneficios = resultSet.getString("fecha_finBeneficios_ticket")
+                val Salario = resultSet.getBigDecimal("Salario")
+                val Beneficios = resultSet.getString("Beneficios")
                 val FechaDePublicacion = resultSet.getDate("FechaDePublicacion")
 
                 val trabajo = Trabajo(
@@ -145,8 +146,7 @@ class homeEmpresa : Fragment() {
 
             val fechaDePublicacion =
                 SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-            //convierto el salario a double
-            val salario = txtSalarioJob.text.toString().toDouble()
+
             val spnTiposTrabajo = view.findViewById<Spinner>(R.id.spnTiposTrabajo)
             val listadoAreas = listOf(
                 "Trabajo doméstico",
@@ -173,6 +173,7 @@ class homeEmpresa : Fragment() {
             }
 
             val idEmpleador = obtenerIdEmpleador()
+            Log.d("InsertJob", "IdEmpleador obtenido: $idEmpleador")
 
 
             // on below line we are adding on click listener
@@ -195,7 +196,10 @@ class homeEmpresa : Fragment() {
                         addTrabajo.setString(6, txtExperienciaJob.text.toString())
                         addTrabajo.setString(7, txtHabilidadesJob.text.toString())
                         addTrabajo.setString(8, "Activo")
-                        addTrabajo.setDouble(9, salario)
+
+                        val salario = BigDecimal(txtSalarioJob.text.toString())
+                        addTrabajo.setBigDecimal(9, salario)
+
                         addTrabajo.setString(10, txtBeneficiosJob.text.toString())
                         addTrabajo.setString(11, fechaDePublicacion)
 
@@ -226,19 +230,19 @@ class homeEmpresa : Fragment() {
 
 
                 }
-                // below line is use to set cancelable to avoid
-                // closing of dialog box when clicking on the screen.
-                dialog.setCancelable(false)
-
-                // on below line we are setting
-                // content view to our view.
-                dialog.setContentView(view)
-
-                // on below line we are calling
-                // a show method to display a dialog.
-                dialog.show()
 
             }
+            // below line is use to set cancelable to avoid
+            // closing of dialog box when clicking on the screen.
+            dialog.setCancelable(false)
+
+            // on below line we are setting
+            // content view to our view.
+            dialog.setContentView(view)
+
+            // on below line we are calling
+            // a show method to display a dialog.
+            dialog.show()
         }
         return root
 
