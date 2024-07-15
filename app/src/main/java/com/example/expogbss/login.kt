@@ -183,7 +183,7 @@ class login : AppCompatActivity() {
                             departamentoSolicitante = esSolicitante.getString("Departamento")
                             fechaNacimiento = esSolicitante.getString("FechaDeNacimiento")
                             generoSolicitante = esSolicitante.getString("Genero")
-                            areaDeTrabajo = esSolicitante.getString("IdAreaDeTrabajo")
+                            areaDeTrabajo = esSolicitante.getString("AreaDeTrabajo")
                             habilidades = esSolicitante.getString("Habilidades")
                             fotoSolicitante = esSolicitante.getString("Foto")
 
