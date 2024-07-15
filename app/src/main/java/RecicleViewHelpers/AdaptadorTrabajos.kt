@@ -12,6 +12,11 @@ import com.example.expogbss.R
 import modelo.Trabajo
 
 class AdaptadorTrabajos(var Datos : List<Trabajo>) : RecyclerView.Adapter<ViewHolderTrabajos>() {
+
+    fun actualizarDatos(nuevosDatos: List<Trabajo>) {
+        Datos= nuevosDatos
+        notifyDataSetChanged()}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderTrabajos {
         val vista = LayoutInflater.from(parent.context).inflate(R.layout.activity_card_trabajos_empresa, parent, false)
         return ViewHolderTrabajos(vista)
