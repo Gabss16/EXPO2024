@@ -24,6 +24,8 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
     companion object variablesGlobalesRecuperacionDeContrasena {
         lateinit var correoIngresado: String
         lateinit var codigo: String
+        var CambiarContraEmpleador: Boolean = false
+        var CambiarContraSolicitante: Boolean = false
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -43,9 +45,7 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
         val txtcorreoRecuperacion = findViewById<EditText>(R.id.txtIngresarCorreoRecuperacion)
         val codigoRecupContrasena = (1000..9999).random()
 
-
         btnEnviar.setOnClickListener {
-
             val correo = txtcorreoRecuperacion.text.toString()
 
             //Validar que el Texview de correo no esté vacío
@@ -57,70 +57,83 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
                 ).show()
             } else {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val objConexion = ClaseConexion().cadenaConexion()
-                    correoIngresado = txtcorreoRecuperacion.text.toString()
-                    codigo = codigoRecupContrasena.toString()
+                    try {
+                        val objConexion = ClaseConexion().cadenaConexion()
+                        correoIngresado = txtcorreoRecuperacion.text.toString()
+                        codigo = codigoRecupContrasena.toString()
 
-                    //Se ejecutan los select respectivos para verificar que el correo exista en alguna de las tablas existentes
-                    val comprobarCredencialesSiEsSolicitante =
-                        objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE CorreoElectronico = ?")!!
-                    comprobarCredencialesSiEsSolicitante.setString(1, correoIngresado)
+                        //Se ejecutan los select respectivos para verificar que el correo exista en alguna de las tablas existentes
+                        val comprobarCredencialesSiEsSolicitante =
+                            objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE CorreoElectronico = ?")!!
+                        comprobarCredencialesSiEsSolicitante.setString(1, correoIngresado)
 
-                    val comprobarCredencialesSiEsEmpleador =
-                        objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE CorreoElectronico = ?")!!
-                    comprobarCredencialesSiEsEmpleador.setString(1, correoIngresado)
+                        val comprobarCredencialesSiEsEmpleador =
+                            objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE CorreoElectronico = ?")!!
+                        comprobarCredencialesSiEsEmpleador.setString(1, correoIngresado)
 
-                    val esEmpleador = comprobarCredencialesSiEsEmpleador.executeQuery()
-                    val esSolicitante = comprobarCredencialesSiEsSolicitante.executeQuery()
+                        val esEmpleador = comprobarCredencialesSiEsEmpleador.executeQuery()
+                        val esSolicitante = comprobarCredencialesSiEsSolicitante.executeQuery()
 
-                    //Bloque de código que se ejecuta en caso de detectar el correo en la tabla de Empleador
-                    if (esEmpleador.next()) {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            println("Es empleador kkk")
-                            val correoEnviado = recuperarContrasena(
-                                correoIngresado,
-                                "Recuperación de contraseña",
-                                "Hola este es su codigo de recuperacion: $codigo"
-                            )
-                            if (correoEnviado) {
-                                val pantallaIngresoCodigo = Intent(
-                                    this@ingresarCorreoRecupContrasena, recoveryCode::class.java
+                        //Bloque de código que se ejecuta en caso de detectar el correo en la tabla de Empleador
+                        if (esEmpleador.next()) {
+                            withContext(Dispatchers.Main) {
+                                CambiarContraEmpleador = true
+                                println("Es empleador kkk")
+                                val correoEnviado = recuperarContrasena(
+                                    correoIngresado,
+                                    "Recuperación de contraseña",
+                                    "Hola este es su codigo de recuperacion: $codigo"
                                 )
-                                startActivity(pantallaIngresoCodigo)
-                                finish()
-                            } else {
-                                println("PapuError")
+                                if (correoEnviado) {
+                                    val pantallaIngresoCodigo = Intent(
+                                        this@ingresarCorreoRecupContrasena, recoveryCode::class.java
+                                    )
+                                    startActivity(pantallaIngresoCodigo)
+                                    finish()
+                                } else {
+                                    println("PapuError")
+                                }
                             }
-                        }
-                    } else if (esSolicitante.next()) {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            println("entra a la corrutina")
-                            val correoEnviado = recuperarContrasena(
-                                correoIngresado,
-                                "Recuperación de contraseña",
-                                "Hola este es su codigo de recuperacion: $codigo"
-                            )
+                        } else if (esSolicitante.next()) {
+                            withContext(Dispatchers.Main) {
+                                CambiarContraSolicitante = true
+                                println("entra a la corrutina")
+                                val correoEnviado = recuperarContrasena(
+                                    correoIngresado,
+                                    "Recuperación de contraseña",
+                                    "Hola este es su codigo de recuperacion: $codigo"
+                                )
 
-                            if (correoEnviado) {
-                                val pantallaIngresoCodigo = Intent(
+                                if (correoEnviado) {
+                                    val pantallaIngresoCodigo = Intent(
+                                        this@ingresarCorreoRecupContrasena,
+                                        recoveryCode::class.java
+                                    )
+                                    startActivity(pantallaIngresoCodigo)
+                                    finish()
+                                } else {
+                                    println("PapuError")
+                                }
+                            }
+                        } else {
+                            //Toast para indicar a usuario que el correo no existe
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
                                     this@ingresarCorreoRecupContrasena,
-                                    recoveryCode::class.java
-                                )
-                                startActivity(pantallaIngresoCodigo)
-                                finish()
-                            } else {
-                                println("PapuError")
+                                    "Correo electrónico no encontrado, ingrese un correo válido",
+                                    Toast.LENGTH_LONG
+                                ).show()
                             }
                         }
-                    } else {
-                        //Toast para indicar a usuario que el correo no existe
+                    } catch (e: Exception) {
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 this@ingresarCorreoRecupContrasena,
-                                "Correo electrónico no encontrado, ingrese un correo válido",
+                                "Ha ocurrido un error: ${e.message}",
                                 Toast.LENGTH_LONG
                             ).show()
                         }
+                        e.printStackTrace()
                     }
                 }
             }
