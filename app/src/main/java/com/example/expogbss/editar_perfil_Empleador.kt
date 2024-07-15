@@ -271,14 +271,14 @@ class editar_perfil_Empleador : AppCompatActivity() {
                                             .show()
 
                                         // Limpiar campos si es necesario
-                                        txtNombreEmpleador.text.clear()
-                                        txtEmpresaEmpleador.text.clear()
-                                        txtCorreoEmpleador.text.clear()
-                                        txtContrasenaEmpleador.text.clear()
-                                        txtTelefonoEmpleador.text.clear()
-                                        txtDireccionEmpleador.text.clear()
-                                        txtSitioWebEmpleador.text.clear()
-                                        imgFotoDePerfilEmpleador.setImageDrawable(null)
+//                                        txtNombreEmpleador.text.clear()
+//                                        txtEmpresaEmpleador.text.clear()
+//                                        txtCorreoEmpleador.text.clear()
+//                                        txtContrasenaEmpleador.text.clear()
+//                                        txtTelefonoEmpleador.text.clear()
+//                                        txtDireccionEmpleador.text.clear()
+//                                        txtSitioWebEmpleador.text.clear()
+//                                        imgFotoDePerfilEmpleador.setImageDrawable(null)
                                     }
                                 } else {
                                     withContext(Dispatchers.Main) {
