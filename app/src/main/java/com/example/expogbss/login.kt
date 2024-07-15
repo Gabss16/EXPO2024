@@ -46,6 +46,7 @@ class login : AppCompatActivity() {
         lateinit var direccionEmpleador: String
         lateinit var sitioWebEmpleador: String
         lateinit var fotoEmpleador: String
+        lateinit var IdSolicitante: String
         //TODO: Añadir todos los campos que quiero llamar en los perfiles
     }
 
@@ -90,7 +91,7 @@ class login : AppCompatActivity() {
         //Botones para ingresar al sistema
         btnSignIn.setOnClickListener {
             correoLogin = txtCorreoLogin.text.toString()
-            //obtener idSolicitante
+            //obtener idEmpleador
             GlobalScope.launch(Dispatchers.IO) {
                 try {
                     val objConexion = ClaseConexion().cadenaConexion()
@@ -114,6 +115,36 @@ class login : AppCompatActivity() {
                                 .show()
                         }
                         return@launch  // Salir del bloque de código si no se encontró el correo
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            this@login,
+                            "Error al consultar la base de datos",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            //obtener idSolicitante
+            GlobalScope.launch(Dispatchers.IO) {
+                try {
+                    val objConexion = ClaseConexion().cadenaConexion()
+
+                    // Preparar la consulta para obtener IdSolicitante
+                    val resultSetSolicitante =
+                        objConexion?.prepareStatement("SELECT IdSolicitante FROM SOLICITANTE WHERE CorreoElectronico = ?")
+                    resultSetSolicitante?.setString(1, correoLogin)
+
+                    // Ejecutar la consulta y obtener el resultado
+                    val resultadoSolicitante = resultSetSolicitante?.executeQuery()
+
+                    // Verificar si se encontró un resultado
+                    if (resultadoSolicitante?.next() == true) {
+                        IdSolicitante = resultadoSolicitante.getString("IdSolicitante")
+                    } else {
+                        IdSolicitante = ""
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
