@@ -90,6 +90,7 @@ class login : AppCompatActivity() {
         //Botones para ingresar al sistema
         btnSignIn.setOnClickListener {
             correoLogin = txtCorreoLogin.text.toString()
+            //obtener idSolicitante
             GlobalScope.launch(Dispatchers.IO) {
                 try {
                     val objConexion = ClaseConexion().cadenaConexion()
@@ -109,13 +110,18 @@ class login : AppCompatActivity() {
                     } else {
                         // Manejar caso donde no se encontró IdEmpleador (correo no existe)
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(this@login, "Correo no encontrado", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@login, "Correo no encontrado", Toast.LENGTH_SHORT)
+                                .show()
                         }
                         return@launch  // Salir del bloque de código si no se encontró el correo
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(this@login, "Error al consultar la base de datos", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@login,
+                            "Error al consultar la base de datos",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -126,7 +132,8 @@ class login : AppCompatActivity() {
             if (correo.isEmpty() || contrasena.isEmpty()) {
                 Toast.makeText(this, "No dejar espacios en blanco.", Toast.LENGTH_SHORT).show()
             } else if (!validarCorreo.matches(correo)) {
-                Toast.makeText(this, "Ingresar un correo electrónico válido.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Ingresar un correo electrónico válido.", Toast.LENGTH_SHORT)
+                    .show()
             } else {
                 val pantallaEmpleador = Intent(this, Empleadores::class.java)
                 val pantallaSolicitante = Intent(this, solicitante::class.java)
@@ -183,7 +190,7 @@ class login : AppCompatActivity() {
                             departamentoSolicitante = esSolicitante.getString("Departamento")
                             fechaNacimiento = esSolicitante.getString("FechaDeNacimiento")
                             generoSolicitante = esSolicitante.getString("Genero")
-                            areaDeTrabajo = esSolicitante.getString("IdAreaDeTrabajo")
+                            areaDeTrabajo = esSolicitante.getString("AreaDeTrabajo")
                             habilidades = esSolicitante.getString("Habilidades")
                             fotoSolicitante = esSolicitante.getString("Foto")
 
@@ -201,7 +208,11 @@ class login : AppCompatActivity() {
                         }
                     } catch (e: Exception) {
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(this@login, "Error al consultar la base de datos", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@login,
+                                "Error al consultar la base de datos",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 }

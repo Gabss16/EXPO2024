@@ -187,6 +187,20 @@ class homeEmpresa : Fragment() {
             // for our dismissing the dialog button.
             btnClose.setOnClickListener {
 
+                if (txtTituloJob.text.isEmpty() || txtUbicacionJob.text.isEmpty() || txtDescripcionJob.text.isEmpty() ||
+                    txtExperienciaJob.text.isEmpty() || txtHabilidadesJob.text.isEmpty() || txtBeneficiosJob.text.isEmpty() ||
+                    txtSalarioJob.text.isEmpty()) {
+
+                    Toast.makeText(requireContext(), "Todos los campos deben estar llenos", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
+
+                val salarioText = txtSalarioJob.text.toString()
+                if (!salarioText.matches(Regex("^\\d+(\\.\\d+)?$"))) {
+                    Toast.makeText(requireContext(), "El salario debe ser un número válido", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
+
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
                         //1-creo un objeto de la clse conexion
