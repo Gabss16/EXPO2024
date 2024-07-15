@@ -112,9 +112,9 @@ class Detalle_Puesto : AppCompatActivity() {
         }
     }
     fun obtenerIdSolicitante(): String {
-        return login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
+        return login.variablesGlobalesRecuperacionDeContrasena.IdSolicitante
     }
 
-    val idEmpleador = obtenerIdSolicitante()
+    val IdSolicitante = obtenerIdSolicitante()
     
 }
