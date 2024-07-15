@@ -142,6 +142,21 @@
                     app:layout_constraintHorizontal_bias="0.055"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewCorreoEmpresa" />
+
+                <ImageView
+                    android:id="@+id/btnEditarPerfil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/editar_perfil"
+                    app:layout_constraintBottom_toTopOf="@+id/textViewCorreoEmpresa"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewNombreEmpresa"
+                    app:layout_constraintHorizontal_bias="0.6"
+                    app:layout_constraintStart_toEndOf="@+id/imgFotoEmpleador"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.256" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
