@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/registro"
-    tools:context=".registroSolicitante" >
+    tools:context=".editar_perfil_Empleador">
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/txtEditarInfotexto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Empresas"
+        android:text="Edita tu información de perfil"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +20,7 @@
         app:layout_constraintVertical_bias="0.073" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
+        android:id="@+id/constraintLayoutNoSeCuanto"
         android:layout_width="328dp"
         android:layout_height="75dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -31,7 +31,7 @@
         app:layout_constraintVertical_bias="0.979">
 
         <ImageButton
-            android:id="@+id/btnCrearCuentaEmpleador"
+            android:id="@+id/btnEditarPerfilEmpleador"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#FFFEFE"
@@ -40,7 +40,7 @@
             app:layout_constraintHorizontal_bias="0.466"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/crea_cuenta" />
+            app:srcCompat="@drawable/editar_informacion" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textView19"
+                android:id="@+id/textViewNoseasbdas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -64,10 +64,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.186"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtSitioWebEmpleador" />
+                app:layout_constraintTop_toBottomOf="@+id/txtSitioWebEmpleadorEditar" />
 
             <Button
-                android:id="@+id/btnSubirFotoEmpleador"
+                android:id="@+id/btnSubirFotoEmpleadorEditar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="48dp"
@@ -77,19 +77,19 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <Button
-                android:id="@+id/btnTomarFotoEmpleador"
+                android:id="@+id/btnTomarFotoEmpleadorEditar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="44dp"
                 android:text="tomar foto"
-                app:layout_constraintBottom_toTopOf="@+id/btnSubirFotoEmpleador"
+                app:layout_constraintBottom_toTopOf="@+id/btnSubirFotoEmpleadorEditar"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtSitioWebEmpleador"
+                app:layout_constraintTop_toBottomOf="@+id/txtSitioWebEmpleadorEditar"
                 app:layout_constraintVertical_bias="0.545" />
 
             <EditText
-                android:id="@+id/txtTelefonoEmpleador"
+                android:id="@+id/txtTelefonoEmpleadorEditar"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
@@ -104,10 +104,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtContrasenaEmpleador" />
+                app:layout_constraintTop_toBottomOf="@+id/txtContrasenaEmpleadorEditar" />
 
             <EditText
-                android:id="@+id/txtContrasenaEmpleador"
+                android:id="@+id/txtContrasenaEmpleadorEditar"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
@@ -121,10 +121,10 @@
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtCorreoEmpleador" />
+                app:layout_constraintTop_toBottomOf="@+id/txtCorreoEmpleadorEditar" />
 
             <EditText
-                android:id="@+id/txtNombreEmpleador"
+                android:id="@+id/txtNombreEmpleadorEditar"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
@@ -141,7 +141,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/txtNombreEmpresaEmpleador"
+                android:id="@+id/txtNombreEmpresaEmpleadorEditar"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
@@ -155,10 +155,10 @@
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtNombreEmpleador" />
+                app:layout_constraintTop_toBottomOf="@+id/txtNombreEmpleadorEditar" />
 
             <EditText
-                android:id="@+id/txtCorreoEmpleador"
+                android:id="@+id/txtCorreoEmpleadorEditar"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
@@ -172,10 +172,10 @@
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtNombreEmpresaEmpleador" />
+                app:layout_constraintTop_toBottomOf="@+id/txtNombreEmpresaEmpleadorEditar" />
 
             <EditText
-                android:id="@+id/txtDireccionEmpleador"
+                android:id="@+id/txtDireccionEmpleadorEditar"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
@@ -189,10 +189,10 @@
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtTelefonoEmpleador" />
+                app:layout_constraintTop_toBottomOf="@+id/txtTelefonoEmpleadorEditar" />
 
             <EditText
-                android:id="@+id/txtSitioWebEmpleador"
+                android:id="@+id/txtSitioWebEmpleadorEditar"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
@@ -207,10 +207,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spDepartamento" />
+                app:layout_constraintTop_toBottomOf="@+id/spDepartamentoEditar" />
 
             <Spinner
-                android:id="@+id/spDepartamento"
+                android:id="@+id/spDepartamentoEditar"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
@@ -219,16 +219,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.533"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtDireccionEmpleador" />
+                app:layout_constraintTop_toBottomOf="@+id/txtDireccionEmpleadorEditar" />
 
             <ImageView
                 android:id="@+id/imgFotoDePerfilEmpleador"
                 android:layout_width="84dp"
                 android:layout_height="77dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnSubirFotoEmpleador"
+                app:layout_constraintEnd_toStartOf="@+id/btnSubirFotoEmpleadorEditar"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView19"
+                app:layout_constraintTop_toBottomOf="@+id/textViewNoseasbdas"
                 tools:srcCompat="@tools:sample/avatars" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

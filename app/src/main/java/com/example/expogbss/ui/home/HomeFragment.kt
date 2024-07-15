@@ -1,5 +1,6 @@
 package com.example.expogbss.ui.home
 
+import RecicleViewHelpers.AdaptadorTrabajos
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.expogbss.R
 import com.example.expogbss.databinding.FragmentHomeBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import modelo.ClaseConexion
+import modelo.Trabajo
 
 class HomeFragment : Fragment() {
 
@@ -27,6 +37,69 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        val rcvTrabajosPublicados = root.findViewById<RecyclerView>(R.id.rcvTrabajosPublicados)
+        rcvTrabajosPublicados.layoutManager = LinearLayoutManager(requireContext())
+
+        fun obtenerDatos(): List<Trabajo> {
+            //1- Creo un objeto de la clase conexión
+            val objConexion = ClaseConexion().cadenaConexion()
+
+            //2 - Creo un statement
+            //El símbolo de pregunta es pq los datos pueden ser nulos
+            val statement = objConexion?.createStatement()
+            val resultSet = statement?.executeQuery("SELECT * FROM TRABAJO")!!
+
+
+            //en esta variable se añaden TODOS los valores de mascotas
+            val listaTrabajos = mutableListOf<Trabajo>()
+
+            //Recorro todos los registros de la base de datos
+            //.next() significa que mientras haya un valor después de ese se va a repetir el proceso
+            while (resultSet.next()) {
+                val IdTrabajo = resultSet.getInt("IdTrabajo")
+                val Titulo = resultSet.getString("Titulo")
+                val IdEmpleador = resultSet.getString("IdEmpleador")
+                val AreaDeTrabajo = resultSet.getString("AreaDeTrabajo")
+                val Descripcion = resultSet.getString("Descripcion")
+                val Ubicacion = resultSet.getString("Ubicacion")
+                val Experiencia = resultSet.getString("Experiencia")
+                val Requerimientos = resultSet.getString("Requerimientos")
+                val Estado = resultSet.getString("Estado")
+                val Salario = resultSet.getBigDecimal("Salario")
+                val Beneficios = resultSet.getString("Beneficios")
+                val FechaDePublicacion = resultSet.getDate("FechaDePublicacion")
+
+                val trabajo = Trabajo(
+                    IdTrabajo,
+                    Titulo,
+                    IdEmpleador,
+                    AreaDeTrabajo,
+                    Descripcion,
+                    Ubicacion,
+                    Experiencia,
+                    Requerimientos,
+                    Estado,
+                    Salario,
+                    Beneficios,
+                    FechaDePublicacion
+                )
+                listaTrabajos.add(trabajo)
+            }
+            return listaTrabajos
+
+
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val TrabajoDb = obtenerDatos()
+            withContext(Dispatchers.Main) {
+                val adapter = AdaptadorTrabajos(TrabajoDb)
+                rcvTrabajosPublicados.adapter = adapter
+            }
+        }
+
+
 
 
         return root

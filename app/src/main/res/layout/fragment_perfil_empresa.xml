@@ -64,14 +64,18 @@
 
                 <ImageView
                     android:id="@+id/imgFotoEmpleador"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_width="82dp"
+                    android:layout_height="83dp"
+                    android:layout_marginEnd="304dp"
+                    android:background="@drawable/imagencircular"
+                    android:clipToOutline="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/fotoperfil"
+                    app:layout_constraintBottom_toBottomOf="parent"
+
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.056"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@tools:sample/avatars" />
+                    app:layout_constraintVertical_bias="0.038" />
 
                 <TextView
                     android:id="@+id/textViewCorreoEmpresa"
@@ -121,10 +125,10 @@
                     android:id="@+id/textViewNombreEmpresa"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="140dp"
+                    android:layout_marginTop="92dp"
                     android:text="Nombre empresa"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.141"
+                    app:layout_constraintHorizontal_bias="0.169"
                     app:layout_constraintStart_toEndOf="@+id/imgFotoEmpleador"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -138,6 +142,21 @@
                     app:layout_constraintHorizontal_bias="0.055"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewCorreoEmpresa" />
+
+                <ImageView
+                    android:id="@+id/btnEditarPerfil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/editar_perfil"
+                    app:layout_constraintBottom_toTopOf="@+id/textViewCorreoEmpresa"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewNombreEmpresa"
+                    app:layout_constraintHorizontal_bias="0.6"
+                    app:layout_constraintStart_toEndOf="@+id/imgFotoEmpleador"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.256" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 

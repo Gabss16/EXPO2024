@@ -1,5 +1,6 @@
 package com.example.expogbss
 
+import RecicleViewHelpers.AdaptadorTrabajos
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,12 +13,16 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
+import modelo.Trabajo
+import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -55,6 +60,74 @@ class homeEmpresa : Fragment() {
 
         // initializing our variable for button with its id.
         val btnShowBottomSheet = root.findViewById<ImageButton>(R.id.idBtnShowBottomSheet)
+        val rcvTrabajos = root.findViewById<RecyclerView>(R.id.rcvTrabajos)
+
+        rcvTrabajos.layoutManager = LinearLayoutManager(requireContext())
+
+        fun obtenerDatos(): List<Trabajo> {
+            //1- Creo un objeto de la clase conexión
+            val objConexion = ClaseConexion().cadenaConexion()
+
+            //2 - Creo un statement
+            fun obtenerIdEmpleador(): String {
+                return login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
+            }
+            val idEmpleador = obtenerIdEmpleador()
+
+            //El símbolo de pregunta es pq los datos pueden ser nulos
+            val statement = objConexion?.prepareStatement("SELECT * FROM TRABAJO WHERE IdEmpleador = ?")
+            statement?.setString(1, idEmpleador)
+            val resultSet = statement?.executeQuery()!!
+
+
+            //en esta variable se añaden TODOS los valores de mascotas
+            val listaTrabajos = mutableListOf<Trabajo>()
+
+
+
+            //Recorro todos los registros de la base de datos
+            //.next() significa que mientras haya un valor después de ese se va a repetir el proceso
+            while (resultSet.next()) {
+                val IdTrabajo = resultSet.getInt("IdTrabajo")
+                val Titulo = resultSet.getString("Titulo")
+                val AreaDeTrabajo = resultSet.getString("AreaDeTrabajo")
+                val Descripcion = resultSet.getString("Descripcion")
+                val Ubicacion = resultSet.getString("Ubicacion")
+                val Experiencia = resultSet.getString("Experiencia")
+                val Requerimientos = resultSet.getString("Requerimientos")
+                val Estado = resultSet.getString("Estado")
+                val Salario = resultSet.getBigDecimal("Salario")
+                val Beneficios = resultSet.getString("Beneficios")
+                val FechaDePublicacion = resultSet.getDate("FechaDePublicacion")
+
+                val trabajo = Trabajo(
+                    IdTrabajo,
+                    Titulo,
+                    idEmpleador,
+                    AreaDeTrabajo,
+                    Descripcion,
+                    Ubicacion,
+                    Experiencia,
+                    Requerimientos,
+                    Estado,
+                    Salario,
+                    Beneficios,
+                    FechaDePublicacion
+                )
+                listaTrabajos.add(trabajo)
+            }
+            return listaTrabajos
+
+
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val TrabajoDb = obtenerDatos()
+            withContext(Dispatchers.Main) {
+                val adapter = AdaptadorTrabajos(TrabajoDb)
+                rcvTrabajos.adapter = adapter
+            }
+        }
 
         // adding on click listener for our button.
         btnShowBottomSheet.setOnClickListener {
@@ -64,6 +137,7 @@ class homeEmpresa : Fragment() {
 
             // on below line we are inflating a layout file which we have created.
             val view = layoutInflater.inflate(R.layout.bottom_sheet_dialog, null)
+
 
             // on below line we are creating a variable for our button
             // which we are using to dismiss our dialog.
@@ -77,8 +151,9 @@ class homeEmpresa : Fragment() {
             val txtSalarioJob = view.findViewById<EditText>(R.id.txtSalarioJob)
 
 
-            val uuid = UUID.randomUUID().toString()
-            val fechaDePublicacion = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            val fechaDePublicacion =
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
             val spnTiposTrabajo = view.findViewById<Spinner>(R.id.spnTiposTrabajo)
             val listadoAreas = listOf(
                 "Trabajo doméstico",
@@ -93,64 +168,108 @@ class homeEmpresa : Fragment() {
                 "Educación y enseñanza"
             )
             val adaptadorAreasDeTrabajo =
-                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listadoAreas)
+                ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    listadoAreas
+                )
             spnTiposTrabajo.adapter = adaptadorAreasDeTrabajo
 
-             fun obtenerIdEmpleador(): String {
+            fun obtenerIdEmpleador(): String {
                 return login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
             }
 
             val idEmpleador = obtenerIdEmpleador()
-
-
+            Log.d("InsertJob", "IdEmpleador obtenido: $idEmpleador")
 
 
             // on below line we are adding on click listener
             // for our dismissing the dialog button.
             btnClose.setOnClickListener {
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    //1-creo un objeto de la clse conexion
-                    val objConexion = ClaseConexion().cadenaConexion()
+                if (txtTituloJob.text.isEmpty() || txtUbicacionJob.text.isEmpty() || txtDescripcionJob.text.isEmpty() ||
+                    txtExperienciaJob.text.isEmpty() || txtHabilidadesJob.text.isEmpty() || txtBeneficiosJob.text.isEmpty() ||
+                    txtSalarioJob.text.isEmpty()) {
 
-                    //2-creo una variable que contenga un PrepareStatement
-                    val addTrabajo =
-                        objConexion?.prepareStatement("INSERT INTO TRABAJO (IdTrabajoEmpleador , Titulo , IdEmpleador , AreaDeTrabajo,Descripcion ,Ubicacion , Experiencia , Requerimientos , Estado ,Salario , Beneficios ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
-                    addTrabajo.setString(1, uuid)
-                    addTrabajo.setString(2, txtTituloJob.text.toString())
-                    addTrabajo.setString(3, idEmpleador)
-                    addTrabajo.setString(4, spnTiposTrabajo.selectedItem.toString())
-                    addTrabajo.setString(5, txtDescripcionJob.text.toString())
-                    addTrabajo.setString(6, txtUbicacionJob.text.toString())
-                    addTrabajo.setString(7, txtExperienciaJob.text.toString())
-                    addTrabajo.setString(8, txtHabilidadesJob.text.toString())
-                    addTrabajo.setString(9, "Activo")
-                    addTrabajo.setString(10, txtSalarioJob.text.toString())
-                    addTrabajo.setString(11, txtBeneficiosJob.text.toString())
-
-
-                    addTrabajo.executeUpdate()
-                    Toast.makeText(requireContext(), "Trabajo Ingresado", Toast.LENGTH_LONG).show()
-
-                    // on below line we are calling a dismiss
-                    // method to close our dialog.
-                    dialog.dismiss()
+                    Toast.makeText(requireContext(), "Todos los campos deben estar llenos", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
                 }
-                // below line is use to set cancelable to avoid
-                // closing of dialog box when clicking on the screen.
-                dialog.setCancelable(false)
 
-                // on below line we are setting
-                // content view to our view.
-                dialog.setContentView(view)
+                val salarioText = txtSalarioJob.text.toString()
+                if (!salarioText.matches(Regex("^\\d+(\\.\\d+)?$"))) {
+                    Toast.makeText(requireContext(), "El salario debe ser un número válido", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
 
-                // on below line we are calling
-                // a show method to display a dialog.
-                dialog.show()
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        //1-creo un objeto de la clse conexion
+                        val objConexion = ClaseConexion().cadenaConexion()
+
+                        //2-creo una variable que contenga un PrepareStatement
+                        val addTrabajo =
+                            objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , AreaDeTrabajo,Descripcion ,Ubicacion , Experiencia , Requerimientos , Estado ,Salario , Beneficios, FechaDePublicacion ) VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,? )")!!
+                        addTrabajo.setString(1, txtTituloJob.text.toString())
+                        addTrabajo.setString(2, idEmpleador)
+                        addTrabajo.setString(3, spnTiposTrabajo.selectedItem.toString())
+                        addTrabajo.setString(4, txtDescripcionJob.text.toString())
+                        addTrabajo.setString(5, txtUbicacionJob.text.toString())
+                        addTrabajo.setString(6, txtExperienciaJob.text.toString())
+                        addTrabajo.setString(7, txtHabilidadesJob.text.toString())
+                        addTrabajo.setString(8, "Activo")
+
+                        val salario = BigDecimal(txtSalarioJob.text.toString())
+                        addTrabajo.setBigDecimal(9, salario)
+
+                        addTrabajo.setString(10, txtBeneficiosJob.text.toString())
+                        addTrabajo.setString(11, fechaDePublicacion)
+
+
+
+                        Log.d(
+                            "InsertJob",
+                            "Datos a insertar: Titulo=${txtTituloJob.text}, IdEmpleador=$idEmpleador, AreaDeTrabajo=${spnTiposTrabajo.selectedItem}, Descripcion=${txtDescripcionJob.text}, Ubicacion=${txtUbicacionJob.text}, Experiencia=${txtExperienciaJob.text}, Requerimientos=${txtHabilidadesJob.text}, Estado=Activo, Salario=$salario, Beneficios=${txtBeneficiosJob.text}, FechaDePublicacion=$fechaDePublicacion"
+                        )
+
+                        addTrabajo.executeUpdate()
+                        val TrabajoDb = obtenerDatos()
+
+                        withContext(Dispatchers.Main) {
+                            (rcvTrabajos.adapter as? AdaptadorTrabajos)?.actualizarDatos(TrabajoDb)
+                            Toast.makeText(requireContext(), "Trabajo Ingresado", Toast.LENGTH_LONG)
+                                .show()
+                            dialog.dismiss()
+                        }
+                    } catch (e: Exception) {
+                        Log.e("InsertJob", "Error al insertar trabajo", e)
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Error al insertar trabajo",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        //aqui estaban antes
+                    }
+
+
+                }
+
             }
-        }
+            // below line is use to set cancelable to avoid
+            // closing of dialog box when clicking on the screen.
+            dialog.setCancelable(false)
 
+            // on below line we are setting
+            // content view to our view.
+            dialog.setContentView(view)
+
+            // on below line we are calling
+            // a show method to display a dialog.
+            dialog.show()
+        }
         return root
+
     }
 
     companion object {
@@ -171,5 +290,6 @@ class homeEmpresa : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+
     }
 }
