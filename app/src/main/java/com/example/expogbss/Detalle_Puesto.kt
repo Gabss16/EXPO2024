@@ -2,11 +2,21 @@ package com.example.expogbss
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import modelo.ClaseConexion
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class Detalle_Puesto : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +71,50 @@ class Detalle_Puesto : AppCompatActivity() {
         // Convertir el salario a cadena y establecerlo en el TextView
         txtSalarioDetalle.text = SalarioRecibido ?: "No disponible"
 
+        //btnSolicitud
+        val btnSolicitar = findViewById<ImageButton>(R.id.btnSolicitar)
+        btnSolicitar.setOnClickListener {
+            enviarSolicitud()
+
 
     }
+
+    }
+    private fun enviarSolicitud(){
+        val idTrabajo = intent.getIntExtra("IdTrabajo", -1) // Obtener el IdTrabajo si es necesario
+        val idSolicitante = obtenerIdSolicitante()
+        val fechaSolicitud = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        val estado = "Pendiente"
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val objConexion = ClaseConexion().cadenaConexion()
+                val insertSolicitud = objConexion?.prepareStatement(
+                    "INSERT INTO SOLICITUD (IdSolicitante, IdTrabajo, FechaSolicitud, Estado) VALUES (?, ?, ?, ?)"
+                )
+
+                insertSolicitud?.setString(1, idSolicitante)
+                insertSolicitud?.setInt(2, idTrabajo) // Puedes añadir esto si pasas el IdTrabajo desde el RecyclerView
+                insertSolicitud?.setString(3, fechaSolicitud)
+                insertSolicitud?.setString(4, estado)
+
+                insertSolicitud?.executeUpdate()
+
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@Detalle_Puesto, "Solicitud enviada", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                Log.e("InsertSolicitud", "Error al insertar solicitud", e)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@Detalle_Puesto, "Error al enviar solicitud", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+    fun obtenerIdSolicitante(): String {
+        return login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
+    }
+
+    val idEmpleador = obtenerIdSolicitante()
+    
 }
