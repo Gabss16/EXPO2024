@@ -272,7 +272,7 @@ class registroSolicitante : AppCompatActivity() {
                                 12,
                                 objConexion.createBlob()
                             ); // Asignar un BLOB vacío
-                            crearUsuario.setString(13, uuid)
+                            crearUsuario.setString(13, miPath)
                             crearUsuario.setString(14, contrasenaEncriptada)
 
                             crearUsuario.executeUpdate()
@@ -421,11 +421,7 @@ class registroSolicitante : AppCompatActivity() {
     }
 
     // Esta función onActivityResult se encarga de capturar lo que pasa al abrir la geleria o la camara
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
