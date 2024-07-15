@@ -37,7 +37,7 @@ class NotificationsFragment : Fragment() {
         textViewNombreSolicitante.text = login.nombresSolicitante
         textViewCorreoSolicitante.text = login.correoSolicitante
         textViewNumeroSolicitante.text = login.numeroSolicitante
-        textViewDireccionSolicitante.text = login.direccionEmpleador
+        textViewDireccionSolicitante.text = login.direccionSolicitante
         textViewDepartamento.text = login.departamentoSolicitante
         textViewFechaSolicitante.text = login.fechaNacimiento
         textViewGeneroSolicitante.text = login.generoSolicitante

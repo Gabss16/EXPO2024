@@ -112,6 +112,8 @@ DROP SEQUENCE EstadoSolicitanteSequence;
 DROP SEQUENCE TrabajoSeq;
 DROP SEQUENCE SolicitudSequence;
 
+select * from Empleador;
+select * from solicitante;
 
 -- Eliminar triggers
 DROP TRIGGER TrigEstadoTrabajo;
