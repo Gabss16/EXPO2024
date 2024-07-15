@@ -75,7 +75,7 @@
         android:layout_height="51dp"
         android:background="@drawable/txt"
         android:ems="10"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
