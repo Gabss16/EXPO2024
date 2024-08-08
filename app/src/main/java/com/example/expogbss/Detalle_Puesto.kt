@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
+import java.sql.Connection
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -80,21 +81,22 @@ class Detalle_Puesto : AppCompatActivity() {
     }
 
     }
-    private fun enviarSolicitud(){
-        val idTrabajo = intent.getIntExtra("IdTrabajo", -1) // Obtener el IdTrabajo si es necesario
+    private fun enviarSolicitud() {
+        val idTrabajo = intent.getIntExtra("IdTrabajo", 1)
         val idSolicitante = obtenerIdSolicitante()
         val fechaSolicitud = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val estado = "Pendiente"
 
         CoroutineScope(Dispatchers.IO).launch {
+            var objConexion: Connection? = null
             try {
-                val objConexion = ClaseConexion().cadenaConexion()
+                objConexion = ClaseConexion().cadenaConexion()
                 val insertSolicitud = objConexion?.prepareStatement(
                     "INSERT INTO SOLICITUD (IdSolicitante, IdTrabajo, FechaSolicitud, Estado) VALUES (?, ?, ?, ?)"
                 )
 
                 insertSolicitud?.setString(1, idSolicitante)
-                insertSolicitud?.setInt(2, idTrabajo) // Puedes añadir esto si pasas el IdTrabajo desde el RecyclerView
+                insertSolicitud?.setInt(2, idTrabajo)
                 insertSolicitud?.setString(3, fechaSolicitud)
                 insertSolicitud?.setString(4, estado)
 
@@ -108,9 +110,12 @@ class Detalle_Puesto : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@Detalle_Puesto, "Error al enviar solicitud", Toast.LENGTH_LONG).show()
                 }
+            } finally {
+                objConexion?.close()
             }
         }
     }
+
     fun obtenerIdSolicitante(): String {
         return login.variablesGlobalesRecuperacionDeContrasena.IdSolicitante
     }
