@@ -95,9 +95,25 @@ SELECT Trabajoseq.NEXTVAL INTO:NEW.IdTrabajo
 FROM DUAL;
 END;
 
+//Secuencia y trigger para las solicitudes
+
+CREATE SEQUENCE SolicitudSeq 
+START WITH 1 
+INCREMENT BY 1;
+
+CREATE OR REPLACE TRIGGER TrigSolicitud
+BEFORE INSERT ON SOLICITUD
+FOR EACH ROW 
+BEGIN 
+    SELECT SolicitudSeq.NEXTVAL
+    INTO :NEW.IdSolicitud
+    FROM DUAL;
+END;
 
 select * from empleador;
 select * from solicitante;
+select * from solicitud;
+select * from trabajo;
 
 delete from Empleador where idEmpleador = 'fdc019cf-6449-4655-8913-685ffbb9bf1b';
 
@@ -110,14 +126,14 @@ DROP SEQUENCE EstadoTrabajoSequence;
 DROP SEQUENCE EstadoSolicitudSequence;
 DROP SEQUENCE EstadoSolicitanteSequence;
 DROP SEQUENCE TrabajoSeq;
-DROP SEQUENCE SolicitudSequence;
+DROP SEQUENCE SolicitudSeq;
 
 select * from Empleador;
 select * from solicitante;
 
 -- Eliminar triggers
 DROP TRIGGER TrigEstadoTrabajo;
-DROP TRIGGER TrigEstadoSolicitud;
+DROP TRIGGER TrigSolicitud;
 DROP TRIGGER TrigEstadoSolicitante;
 DROP TRIGGER TrigTrabajo;
 DROP TRIGGER TrigSolicitud;
