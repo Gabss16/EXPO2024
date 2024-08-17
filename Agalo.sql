@@ -3,74 +3,71 @@
 //Varchar2(50) para poder usar el UUID
 //Number para auto incremento
 
+
+CREATE TABLE DEPARTAMENTO(
+IdDepartamento number GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+Nombre varchar2(50)
+);
+
+CREATE TABLE DIRECCIONES(
+IdDirecciones number GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+Direccion varchar2(50),
+IdDepartamento number,
+CONSTRAINT FkDireccionDepartamento FOREIGN KEY (IdDepartamento) REFERENCES DEPARTAMENTO(IdDepartamento) ON DELETE CASCADE);
+
+Create table AreaDeTrabajo(
+IdAreaDeTrabajo number GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+NombreAreaDetrabajo varchar2(100));
+  
+
 CREATE TABLE EMPLEADOR (
     IdEmpleador VARCHAR2(50) PRIMARY KEY, 
     NombreEmpresa VARCHAR2(50),
     NombreRepresentante VARCHAR2(50) NOT NULL,
     CorreoElectronico VARCHAR2(50) NOT NULL UNIQUE,
     NumeroTelefono VARCHAR2(15) NOT NULL,
-    Direccion VARCHAR2(100) NOT NULL,
+    IdDirecciones number,
     SitioWeb VARCHAR2(500),
-    Departamento VARCHAR2(50) NOT NULL,
     Estado VARCHAR(10) CHECK (Estado IN ('Activo', 'Pendiente')),
     Foto VARCHAR2(300),
-    Contrasena VARCHAR2(250) NOT NULL
-);
+    Contrasena VARCHAR2(250) NOT NULL,
+    CONSTRAINT FkDireccionEmpleador FOREIGN KEY (IdDirecciones) REFERENCES DIRECCIONES(IdDirecciones) ON DELETE CASCADE);
 
 CREATE TABLE TRABAJO (
     IdTrabajo NUMBER PRIMARY KEY, 
     Titulo VARCHAR2(50) NOT NULL,
     IdEmpleador VARCHAR2(50) NOT NULL,
-    AreaDeTrabajo VARCHAR2(100) NOT NULL CHECK (AreaDeTrabajo IN (
-        'Trabajo doméstico', 
-        'Freelancers', 
-        'Trabajos remotos', 
-        'Servicios de entrega', 
-        'Sector de la construcción', 
-        'Área de la salud', 
-        'Sector de la hostelería', 
-        'Servicios profesionales', 
-        'Área de ventas y atención al cliente', 
-        'Educación y enseñanza'
-    )),
+    IdAreaDeTrabajo number,
     Descripcion VARCHAR2(150),  
-    Ubicacion VARCHAR2(100),
+    IdDirecciones number,
     Experiencia VARCHAR2(50),
     Requerimientos VARCHAR2(150),
     Estado VARCHAR(10) CHECK (Estado IN ('Activo', 'Inactivo')),
     Salario NUMBER,
     Beneficios VARCHAR2(100),
     FechaDePublicacion  VARCHAR2(20),
-    CONSTRAINT FKEmpleadorTrabajo FOREIGN KEY (IdEmpleador) REFERENCES EMPLEADOR(IdEmpleador) ON DELETE CASCADE
-);
+    CONSTRAINT FKEmpleadorTrabajo FOREIGN KEY (IdEmpleador) REFERENCES EMPLEADOR(IdEmpleador) ON DELETE CASCADE,
+    CONSTRAINT FkAreaDeTrabajoTrabajo FOREIGN KEY (IdAreaDeTrabajo) REFERENCES AreaDeTrabajo(IdAreaDeTrabajo) ON DELETE CASCADE,
+    CONSTRAINT FkDireccionTrabajo FOREIGN KEY (IdDirecciones) REFERENCES DIRECCIONES(IdDirecciones) ON DELETE CASCADE);
+
 
 CREATE TABLE SOLICITANTE (
     IdSolicitante VARCHAR2(50) PRIMARY KEY, 
     Nombre VARCHAR2(50) NOT NULL,
     CorreoElectronico VARCHAR2(50) NOT NULL UNIQUE,
     Telefono VARCHAR2(15) NOT NULL UNIQUE,
-    Direccion VARCHAR2(100) NOT NULL,
-    Departamento VARCHAR2(50) NOT NULL,
+    IdDirecciones number,
     FechaDeNacimiento VARCHAR2(20),
     Estado VARCHAR(11) CHECK (Estado IN ('Empleado', 'Desempleado')),
     Genero VARCHAR2(20) CHECK (Genero IN ('Masculino', 'Femenino', 'Prefiero no decirlo')),
-    AreaDeTrabajo VARCHAR2(100) NOT NULL CHECK (AreaDeTrabajo IN (
-        'Trabajo doméstico', 
-        'Freelancers', 
-        'Trabajos remotos', 
-        'Servicios de entrega', 
-        'Sector de la construcción', 
-        'Área de la salud', 
-        'Sector de la hostelería', 
-        'Servicios profesionales', 
-        'Área de ventas y atención al cliente', 
-        'Educación y enseñanza'
-    )),
+    IdAreaDeTrabajo number,
     Habilidades VARCHAR2(250),
     Curriculum BLOB,
     Foto VARCHAR2(300),
-    Contrasena VARCHAR2(250) NOT NULL
-);
+    Contrasena VARCHAR2(250) NOT NULL,
+    CONSTRAINT FkAreaDeTrabajoSolicitante FOREIGN KEY (IdAreaDeTrabajo) REFERENCES AreaDeTrabajo(IdAreaDeTrabajo) ON DELETE CASCADE,
+    CONSTRAINT FkDIreccionSolicitante FOREIGN KEY (IdDirecciones) REFERENCES DIRECCIONES(IdDirecciones) ON DELETE CASCADE);
+
 
 CREATE TABLE SOLICITUD (
     IdSolicitud NUMBER PRIMARY KEY , 
@@ -110,6 +107,33 @@ BEGIN
     FROM DUAL;
 END;
 
+// INSERTS a tablas normalizadas por datos repetidos
+INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Trabajo doméstico');
+INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Freelancers');
+INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Trabajos remotos');
+INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Servicios de entrega');
+INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Sector de la construcción');
+INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Área de la salud');
+INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Sector de la hostelería');
+INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Servicios profesionales');
+INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Área de ventas y atención al cliente');
+INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Educación y enseñanza');  
+
+Insert into DEPARTAMENTO(Nombre) values ('Ahuachapán');
+Insert into DEPARTAMENTO(Nombre) values ('Cabañas');
+Insert into DEPARTAMENTO(Nombre) values ('Chalatenango');
+Insert into DEPARTAMENTO(Nombre) values ('Cuscatlán');
+Insert into DEPARTAMENTO(Nombre) values ('La Libertad');
+Insert into DEPARTAMENTO(Nombre) values ('Morazán');
+Insert into DEPARTAMENTO(Nombre) values ('La Paz');
+Insert into DEPARTAMENTO(Nombre) values ('Santa Ana');
+Insert into DEPARTAMENTO(Nombre) values ('San Miguel');
+Insert into DEPARTAMENTO(Nombre) values ('San Vicente');
+Insert into DEPARTAMENTO(Nombre) values ('San Salvador');
+Insert into DEPARTAMENTO(Nombre) values ('Sonsonate');
+Insert into DEPARTAMENTO(Nombre) values ('La Unión');
+Insert into DEPARTAMENTO(Nombre) values ('Usulután');
+
 select * from empleador;
 select * from solicitante;
 select * from solicitud;
@@ -128,8 +152,6 @@ DROP SEQUENCE EstadoSolicitanteSequence;
 DROP SEQUENCE TrabajoSeq;
 DROP SEQUENCE SolicitudSeq;
 
-select * from Empleador;
-select * from solicitante;
 
 -- Eliminar triggers
 DROP TRIGGER TrigEstadoTrabajo;
@@ -145,7 +167,4 @@ DROP TABLE TRABAJO;
 DROP TABLE EMPLEADOR;
 DROP TABLE AREADETRABAJO;
 
-DROP INDEX UX_NombreEmpresa_Unique;
-
-CREATE UNIQUE INDEX UX_NombreEmpresa_Unique ON EMPLEADOR (NombreEmpresa);
 
