@@ -78,6 +78,21 @@ CREATE TABLE SOLICITUD (
     CONSTRAINT FKSolicitanteSolicitud FOREIGN KEY (IdSolicitante) REFERENCES SOLICITANTE(IdSolicitante) ON DELETE CASCADE,
     CONSTRAINT FKTrabajoSolicitud FOREIGN KEY (IdTrabajo) REFERENCES TRABAJO(IdTrabajo) ON DELETE CASCADE
 );
+CREATE TABLE ROLESCRITORIO(
+IdRol INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+Rol Varchar2(50))
+
+CREATE TABLE UsuarioEscritorio(
+IdAdmin VARCHAR PRIMARY KEY,
+Nombre Varchar2(50) NOT NULL,
+Usuario Varchar2(50) NOT NULL,
+Contrasena Varchar2(250) NOT NULL,
+Foto VARCHAR2(300),
+CorreoElectronico VARCHAR2(50) NOT NULL UNIQUE,
+IdRol INT,
+CONSTRAINT FKRol FOREIGN KEY (IdSolicitante) REFERENCES SOLICITANTE(IdSolicitante) ON DELETE CASCADE,
+
+);
 
 //Secuencias y triggers para auto incremento 
 CREATE SEQUENCE Trabajoseq
@@ -92,20 +107,6 @@ SELECT Trabajoseq.NEXTVAL INTO:NEW.IdTrabajo
 FROM DUAL;
 END;
 
-//Secuencia y trigger para las solicitudes
-
-CREATE SEQUENCE SolicitudSeq 
-START WITH 1 
-INCREMENT BY 1;
-
-CREATE OR REPLACE TRIGGER TrigSolicitud
-BEFORE INSERT ON SOLICITUD
-FOR EACH ROW 
-BEGIN 
-    SELECT SolicitudSeq.NEXTVAL
-    INTO :NEW.IdSolicitud
-    FROM DUAL;
-END;
 
 // INSERTS a tablas normalizadas por datos repetidos
 INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Trabajo doméstico');
@@ -134,6 +135,21 @@ Insert into DEPARTAMENTO(Nombre) values ('Sonsonate');
 Insert into DEPARTAMENTO(Nombre) values ('La Unión');
 Insert into DEPARTAMENTO(Nombre) values ('Usulután');
 
+//Secuencia y trigger para las solicitudes
+
+CREATE SEQUENCE SolicitudSeq 
+START WITH 1 
+INCREMENT BY 1;
+
+CREATE OR REPLACE TRIGGER TrigSolicitud
+BEFORE INSERT ON SOLICITUD
+FOR EACH ROW 
+BEGIN 
+    SELECT SolicitudSeq.NEXTVAL
+    INTO :NEW.IdSolicitud
+    FROM DUAL;
+END;
+
 select * from empleador;
 select * from solicitante;
 select * from solicitud;
@@ -146,18 +162,10 @@ SELECT * FROM SOLICITANTE WHERE CorreoElectronico =  'ana.martinez@example.com' 
 SELECT * FROM ESTADOSOLICITANTE ;
 
 -- Eliminar secuencias
-DROP SEQUENCE EstadoTrabajoSequence;
-DROP SEQUENCE EstadoSolicitudSequence;
-DROP SEQUENCE EstadoSolicitanteSequence;
-DROP SEQUENCE TrabajoSeq;
 DROP SEQUENCE SolicitudSeq;
 
 
 -- Eliminar triggers
-DROP TRIGGER TrigEstadoTrabajo;
-DROP TRIGGER TrigSolicitud;
-DROP TRIGGER TrigEstadoSolicitante;
-DROP TRIGGER TrigTrabajo;
 DROP TRIGGER TrigSolicitud;
 
 -- Eliminar tablas
@@ -166,5 +174,3 @@ DROP TABLE SOLICITANTE;
 DROP TABLE TRABAJO;
 DROP TABLE EMPLEADOR;
 DROP TABLE AREADETRABAJO;
-
-
