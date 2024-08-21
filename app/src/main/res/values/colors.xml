@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+    <color name="black">#FBF8F8</color>
     <color name="white">#FFFFFFFF</color>
+
+        <!-- Define the color for the icon tint -->
+        <color name="colorIconTint">#FBFBFB</color> <!-- Negro (Black) -->
+
+        <!-- Define the color for the ripple effect -->
+        <color name="colorRipple">#80CBC4</color>   <!-- Azul claro (Light Blue) -->
+
+        <!-- Define the color for the text (if labels are used) -->
+        <color name="colorText">#FAF8F8</color>     <!-- Negro (Black) -->
+
 </resources>
