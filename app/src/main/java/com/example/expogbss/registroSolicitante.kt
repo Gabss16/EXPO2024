@@ -36,6 +36,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.firebase.Firebase
 import com.google.firebase.storage.storage
+import modelo.AreaDeTrabajo
+import modelo.Departamento
 import java.io.ByteArrayOutputStream
 import java.util.UUID
 
@@ -73,25 +75,47 @@ class registroSolicitante : AppCompatActivity() {
         val txtHabilidadesSolicitante = findViewById<EditText>(R.id.txtHabilidadesLaborales)
 
         val spDepartamentoSolicitante = findViewById<Spinner>(R.id.spDepartamentoSolicitante)
-        val listadoDepartamentos = listOf(
-            "Ahuachapán",
-            "Cabañas",
-            "Chalatenango",
-            "Cuscatlán",
-            "La Libertad",
-            "Morazán",
-            "La Paz",
-            "Santa Ana",
-            "San Miguel",
-            "San Vicente",
-            "San Salvador",
-            "Sonsonate",
-            "La Unión",
-            "Usulután"
-        )
-        val adaptadorDeLinea =
-            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listadoDepartamentos)
-        spDepartamentoSolicitante.adapter = adaptadorDeLinea
+
+        // Función para hacer el select de los Departamentos
+        fun obtenerDepartamentos(): List<Departamento> {
+            val listadoDepartamento = mutableListOf<Departamento>()
+            val objConexion = ClaseConexion().cadenaConexion()
+
+            if (objConexion != null) {
+                // Creo un Statement que me ejecutará el select
+                val statement = objConexion.createStatement()
+                val resultSet = statement?.executeQuery("select * from DEPARTAMENTO")
+
+                if (resultSet != null) {
+                    while (resultSet.next()) {
+                        val idDepartamento = resultSet.getInt("idDepartamento")
+                        val Nombre = resultSet.getString("Nombre")
+                        val listadoCompleto = Departamento(idDepartamento, Nombre)
+                        listadoDepartamento.add(listadoCompleto)
+                    }
+                    resultSet.close()
+                }
+                statement?.close()
+                objConexion.close()
+            } else {
+                Log.e("registroSolicitante", "Connection to database failed")
+            }
+            return listadoDepartamento
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            val listadoDepartamentos = obtenerDepartamentos()
+            val Departamento = listadoDepartamentos.map { it.Nombre }
+
+            withContext(Dispatchers.Main) {
+                // Configuración del adaptador
+                val adapter = ArrayAdapter(
+                    this@registroSolicitante, // Usar el contexto adecuado
+                    android.R.layout.simple_spinner_dropdown_item,
+                    Departamento
+                )
+                spDepartamentoSolicitante.adapter = adapter
+            }
+        }
 
         val txtFechaSolicitante = findViewById<EditText>(R.id.txtFechaSolicitante)
         // Mostrar el calendario al hacer click en el EditText txtFechaNacimientoPaciente
@@ -131,21 +155,47 @@ class registroSolicitante : AppCompatActivity() {
 
 
         val spAreaDeTrabajoSolicitante = findViewById<Spinner>(R.id.spAreaDeTrabajoSolicitante)
-        val listadoAreas = listOf(
-            "Trabajo doméstico",
-            "Freelancers",
-            "Trabajos remotos",
-            "Servicios de entrega",
-            "Sector de la construcción",
-            "Área de la salud",
-            "Sector de la hostelería",
-            "Servicios profesionales",
-            "Área de ventas y atención al cliente",
-            "Educación y enseñanza"
-        )
-        val adaptadorAreasDeTrabajo =
-            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listadoAreas)
-        spAreaDeTrabajoSolicitante.adapter = adaptadorAreasDeTrabajo
+
+        // Función para hacer el select del Area de trabajo
+        fun obtenerAreasDeTrabajo(): List<AreaDeTrabajo> {
+            val listadoAreaDeTrabajo = mutableListOf<AreaDeTrabajo>()
+            val objConexion = ClaseConexion().cadenaConexion()
+
+            if (objConexion != null) {
+                // Creo un Statement que me ejecutará el select
+                val statement = objConexion.createStatement()
+                val resultSet = statement?.executeQuery("select * from AreaDeTrabajo")
+
+                if (resultSet != null) {
+                    while (resultSet.next()) {
+                        val idAreaDeTrabajo = resultSet.getInt("IdAreaDeTrabajo")
+                        val NombreAreaDetrabajo = resultSet.getString("NombreAreaDetrabajo")
+                        val listadoCompleto = AreaDeTrabajo(idAreaDeTrabajo, NombreAreaDetrabajo)
+                        listadoAreaDeTrabajo.add(listadoCompleto)
+                    }
+                    resultSet.close()
+                }
+                statement?.close()
+                objConexion.close()
+            } else {
+                Log.e("registroSolicitante", "Connection to database failed")
+            }
+            return listadoAreaDeTrabajo
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            val listadoAreaDeTrabajo = obtenerAreasDeTrabajo()
+            val AreaDeTrabajo = listadoAreaDeTrabajo.map { it.NombreAreaDetrabajo }
+
+            withContext(Dispatchers.Main) {
+                // Configuración del adaptador
+                val adapter = ArrayAdapter(
+                    this@registroSolicitante, // Usar el contexto adecuado
+                    android.R.layout.simple_spinner_dropdown_item,
+                    AreaDeTrabajo
+                )
+                spAreaDeTrabajoSolicitante.adapter = adapter
+            }
+        }
 
         val spEstadoSolicitante = findViewById<Spinner>(R.id.spSituacionLaboralSolicitante)
         val listadoSituacionLaboral = listOf(
@@ -245,24 +295,44 @@ class registroSolicitante : AppCompatActivity() {
                             val contrasenaEncriptada =
                                 hashSHA256(txtConstrasenaSolicitante.text.toString())
 
+                            val DepartamentoNombre =
+                                spDepartamentoSolicitante.selectedItem.toString()
+
+                            // Obtener el id_medicamento desde el Spinner
+                            val Departamento =
+                                obtenerDepartamentos() // Se asume que puedes obtener la lista de medicamentos aquí
+                            val DepartamentoSeleccionado =
+                                Departamento.find { it.Nombre == DepartamentoNombre }
+                            val idDepartamento = DepartamentoSeleccionado!!.Id_departamento
+
+                            val AreadetrabajoNombre =
+                                spAreaDeTrabajoSolicitante.selectedItem.toString()
+
+                            // Obtener el id_medicamento desde el Spinner
+                            val AreaDeTrabajo =
+                                obtenerAreasDeTrabajo() // Se asume que puedes obtener la lista de medicamentos aquí
+                            val AreaDeTrabajoSeleccionada =
+                                AreaDeTrabajo.find { it.NombreAreaDetrabajo == AreadetrabajoNombre }
+                            val idAreaDeTrabajo = AreaDeTrabajoSeleccionada!!.idAreaDeTrabajo
+
                             // Creo una variable que contenga un PrepareStatement
                             val crearUsuario = objConexion?.prepareStatement(
-                                "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion,Departamento, FechaDeNacimiento, Estado, Genero ,AreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
+                                "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion,IdDepartamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
                             )!!
                             crearUsuario.setString(1, uuid)
                             crearUsuario.setString(2, txtNombreSolicitante.text.toString())
                             crearUsuario.setString(3, txtCorreoSolicitante.text.toString())
                             crearUsuario.setString(4, txtTelefonoSolicitante.text.toString())
                             crearUsuario.setString(5, txtDireccionSolicitante.text.toString())
-                            crearUsuario.setString(
-                                6, spDepartamentoSolicitante.selectedItem.toString()
+                            crearUsuario.setInt(
+                                6, idDepartamento
                             )
                             crearUsuario.setString(7, fechaNacimientoSeleccionada)
                             crearUsuario.setString(8, spEstadoSolicitante.selectedItem.toString())
                             crearUsuario.setString(9, spGeneroSolicitante.selectedItem.toString())
-                            crearUsuario.setString(
+                            crearUsuario.setInt(
                                 10,
-                                spAreaDeTrabajoSolicitante.selectedItem.toString()
+                                idAreaDeTrabajo
                             )
                             crearUsuario.setString(
                                 11,

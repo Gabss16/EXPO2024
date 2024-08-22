@@ -228,14 +228,6 @@ class login : AppCompatActivity() {
                             withContext(Dispatchers.Main) {
                                 startActivity(pantallaSolicitante)
                             }
-                        } else {
-                            withContext(Dispatchers.Main) {
-                                Toast.makeText(
-                                    this@login,
-                                    "Usuario no encontrado, verifique sus credenciales",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
                         }
                     } catch (e: Exception) {
                         withContext(Dispatchers.Main) {
