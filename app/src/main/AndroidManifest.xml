@@ -29,6 +29,9 @@
         android:theme="@style/Theme.Design.Light"
         tools:targetApi="31">
         <activity
+            android:name=".cardSolicitudes"
+            android:exported="false" />
+        <activity
             android:name=".editar_perfil_Empleador"
             android:exported="false" />
         <activity

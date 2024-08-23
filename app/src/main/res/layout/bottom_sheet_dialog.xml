@@ -23,6 +23,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <Spinner
+                    android:id="@+id/spnDepartamentos"
+                    android:layout_width="331dp"
+                    android:layout_height="75dp"
+                    android:layout_marginTop="204dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.53"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <EditText
                     android:id="@+id/txtTituloJob"
                     android:layout_width="wrap_content"
@@ -36,10 +46,9 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.505"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.1" />
+                    app:layout_constraintVertical_bias="0.046" />
 
                 <EditText
                     android:id="@+id/txtUbicacionJob"
@@ -75,7 +84,7 @@
                     app:layout_constraintHorizontal_bias="0.494"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.21" />
+                    app:layout_constraintVertical_bias="0.139" />
 
                 <EditText
                     android:id="@+id/txtExperienciaJob"
