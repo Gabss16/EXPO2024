@@ -26,8 +26,10 @@ import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
 import java.util.*
 import android.net.Uri
+import android.util.Log
 import android.view.Window
 import androidx.appcompat.app.AlertDialog
+import modelo.Departamento
 import java.sql.SQLException
 
 
@@ -69,14 +71,47 @@ class registro_empresa : AppCompatActivity() {
         val btnSubirFotoEmpleador = findViewById<Button>(R.id.btnSubirFotoEmpleador)
         val btnTomarFotoEmpleador = findViewById<Button>(R.id.btnTomarFotoEmpleador)
 
-        val listadoDepartamentos = listOf(
-            "Ahuachapán", "Cabañas", "Chalatenango", "Cuscatlán", "La Libertad", "Morazán",
-            "La Paz", "Santa Ana", "San Miguel", "San Vicente", "San Salvador", "Sonsonate",
-            "La Unión", "Usulután"
-        )
-        val adaptadorDeLinea =
-            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listadoDepartamentos)
-        spDepartamentos.adapter = adaptadorDeLinea
+        // Función para hacer el select de los Departamentos
+        fun obtenerDepartamentos(): List<Departamento> {
+            val listadoDepartamento = mutableListOf<Departamento>()
+            val objConexion = ClaseConexion().cadenaConexion()
+
+            if (objConexion != null) {
+                // Creo un Statement que me ejecutará el select
+                val statement = objConexion.createStatement()
+                val resultSet = statement?.executeQuery("select * from DEPARTAMENTO")
+
+                if (resultSet != null) {
+                    while (resultSet.next()) {
+                        val idDepartamento = resultSet.getInt("idDepartamento")
+                        val Nombre = resultSet.getString("Nombre")
+                        val listadoCompleto = Departamento(idDepartamento, Nombre)
+                        listadoDepartamento.add(listadoCompleto)
+                    }
+                    resultSet.close()
+                }
+                statement?.close()
+                objConexion.close()
+            } else {
+                Log.e("registro_empresa", "Connection to database failed")
+            }
+            return listadoDepartamento
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val listadoDepartamentos = obtenerDepartamentos()
+            val Departamento = listadoDepartamentos.map { it.Nombre }
+
+            withContext(Dispatchers.Main) {
+                // Configuración del adaptador
+                val adapter = ArrayAdapter(
+                    this@registro_empresa, // Usar el contexto adecuado
+                    android.R.layout.simple_spinner_dropdown_item,
+                    Departamento
+                )
+                spDepartamentos.adapter = adapter
+            }
+        }
 
         val btnCrearCuentaEmpleador = findViewById<ImageView>(R.id.btnCrearCuentaEmpleador)
 
@@ -210,8 +245,21 @@ class registro_empresa : AppCompatActivity() {
                                     (imgFotoDePerfilEmpleador.drawable as BitmapDrawable).bitmap
                                 subirimagenFirebase(bitmap) { imageUrl ->
                                     CoroutineScope(Dispatchers.IO).launch {
+
+                                        val DepartamentoNombre =
+                                            spDepartamentos.selectedItem.toString()
+
+                                        // Obtener el id_medicamento desde el Spinner
+                                        val Departamento =
+                                            obtenerDepartamentos() // Se asume que puedes obtener la lista de medicamentos aquí
+                                        val DepartamentoSeleccionado =
+                                            Departamento.find { it.Nombre == DepartamentoNombre }
+                                        val idDepartamento =
+                                            DepartamentoSeleccionado!!.Id_departamento
+
+
                                         val crearUsuario = objConexion?.prepareStatement(
-                                            "INSERT INTO EMPLEADOR (IdEmpleador, NombreEmpresa, CorreoElectronico, NumeroTelefono, Direccion, SitioWeb, NombreRepresentante, Departamento, Contrasena, Estado, Foto) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
+                                            "INSERT INTO EMPLEADOR (IdEmpleador, NombreEmpresa, CorreoElectronico, NumeroTelefono, Direccion, SitioWeb, NombreRepresentante, IdDepartamento, Contrasena, Estado, Foto) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
                                         )!!
                                         crearUsuario.setString(1, uuid)
                                         crearUsuario.setString(
@@ -235,9 +283,9 @@ class registro_empresa : AppCompatActivity() {
                                             7,
                                             txtNombreEmpleador.text.toString()
                                         )
-                                        crearUsuario.setString(
+                                        crearUsuario.setInt(
                                             8,
-                                            spDepartamentos.selectedItem.toString()
+                                            idDepartamento
                                         )
                                         crearUsuario.setString(9, contrasenaEncriptada)
                                         crearUsuario.setString(10, "Pendiente")
@@ -366,8 +414,20 @@ class registro_empresa : AppCompatActivity() {
                                 subirimagenFirebase(bitmap) { imageUrl ->
                                     CoroutineScope(Dispatchers.IO).launch {
                                         try {
+
+                                            val DepartamentoNombre =
+                                                spDepartamentos.selectedItem.toString()
+
+                                            // Obtener el id_medicamento desde el Spinner
+                                            val Departamento =
+                                                obtenerDepartamentos() // Se asume que puedes obtener la lista de medicamentos aquí
+                                            val DepartamentoSeleccionado =
+                                                Departamento.find { it.Nombre == DepartamentoNombre }
+                                            val idDepartamento =
+                                                DepartamentoSeleccionado!!.Id_departamento
+
                                             val crearUsuario = objConexion?.prepareStatement(
-                                                "INSERT INTO EMPLEADOR (IdEmpleador, NombreEmpresa, CorreoElectronico, NumeroTelefono, Direccion, SitioWeb, NombreRepresentante, Departamento, Contrasena, Estado, Foto) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
+                                                "INSERT INTO EMPLEADOR (IdEmpleador, NombreEmpresa, CorreoElectronico, NumeroTelefono, Direccion, SitioWeb, NombreRepresentante, IdDepartamento, Contrasena, Estado, Foto) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
                                             )!!
                                             crearUsuario.setString(1, uuid)
                                             crearUsuario.setString(
@@ -391,9 +451,9 @@ class registro_empresa : AppCompatActivity() {
                                                 7,
                                                 txtNombreEmpleador.text.toString()
                                             )
-                                            crearUsuario.setString(
+                                            crearUsuario.setInt(
                                                 8,
-                                                spDepartamentos.selectedItem.toString()
+                                                idDepartamento
                                             )
                                             crearUsuario.setString(9, contrasenaEncriptada)
                                             crearUsuario.setString(10, "Activo")
@@ -497,8 +557,8 @@ class registro_empresa : AppCompatActivity() {
                 }
             }
         }
-
     }
+
     private fun checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(
                 this,
