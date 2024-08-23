@@ -20,7 +20,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import modelo.AreaDeTrabajo
 import modelo.ClaseConexion
+import modelo.Departamento
 import modelo.Trabajo
 import java.math.BigDecimal
 import java.text.SimpleDateFormat
@@ -90,9 +92,10 @@ class homeEmpresa : Fragment() {
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
-                val AreaDeTrabajo = resultSet.getString("AreaDeTrabajo")
+                val AreaDeTrabajo = resultSet.getInt("AreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Ubicacion = resultSet.getString("Ubicacion")
+                val Departamento = resultSet.getInt("Departamento")
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
                 val Estado = resultSet.getString("Estado")
@@ -107,6 +110,7 @@ class homeEmpresa : Fragment() {
                     AreaDeTrabajo,
                     Descripcion,
                     Ubicacion,
+                    Departamento,
                     Experiencia,
                     Requerimientos,
                     Estado,
@@ -154,26 +158,91 @@ class homeEmpresa : Fragment() {
             val fechaDePublicacion =
                 SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
-            val spnTiposTrabajo = view.findViewById<Spinner>(R.id.spnTiposTrabajo)
-            val listadoAreas = listOf(
-                "Trabajo doméstico",
-                "Freelancers",
-                "Trabajos remotos",
-                "Servicios de entrega",
-                "Sector de la construcción",
-                "Área de la salud",
-                "Sector de la hostelería",
-                "Servicios profesionales",
-                "Área de ventas y atención al cliente",
-                "Educación y enseñanza"
-            )
-            val adaptadorAreasDeTrabajo =
-                ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_spinner_dropdown_item,
-                    listadoAreas
-                )
-            spnTiposTrabajo.adapter = adaptadorAreasDeTrabajo
+            //spinerTrabajo
+            val spAreaDeTrabajoSolicitante = view.findViewById<Spinner>(R.id.spnTiposTrabajo)
+
+            fun obtenerAreasDeTrabajo(): List<AreaDeTrabajo> {
+                val listadoAreaDeTrabajo = mutableListOf<AreaDeTrabajo>()
+                val objConexion = ClaseConexion().cadenaConexion()
+
+                if (objConexion != null) {
+                    // Creo un Statement que me ejecutará el select
+                    val statement = objConexion.createStatement()
+                    val resultSet = statement?.executeQuery("select * from AreaDeTrabajo")
+
+                    if (resultSet != null) {
+                        while (resultSet.next()) {
+                            val idAreaDeTrabajo = resultSet.getInt("IdAreaDeTrabajo")
+                            val NombreAreaDetrabajo = resultSet.getString("NombreAreaDetrabajo")
+                            val listadoCompleto = AreaDeTrabajo(idAreaDeTrabajo, NombreAreaDetrabajo)
+                            listadoAreaDeTrabajo.add(listadoCompleto)
+                        }
+                        resultSet.close()
+                    }
+                    statement?.close()
+                    objConexion.close()
+                } else {
+                    Log.e("registroSolicitante", "Connection to database failed")
+                }
+                return listadoAreaDeTrabajo
+            }
+            CoroutineScope(Dispatchers.IO).launch {
+                val listadoAreaDeTrabajo = obtenerAreasDeTrabajo()
+                val AreaDeTrabajo = listadoAreaDeTrabajo.map { it.NombreAreaDetrabajo }
+
+                withContext(Dispatchers.Main) {
+                    // Configuración del adaptador
+                    val adapter = ArrayAdapter(
+                        requireContext(), // Usar el contexto adecuado
+                        android.R.layout.simple_spinner_dropdown_item,
+                        AreaDeTrabajo
+                    )
+                    spAreaDeTrabajoSolicitante.adapter = adapter
+                }
+            }
+
+            //spinnerDepartamentos
+            val spDepartamentoSolicitante = view.findViewById<Spinner>(R.id.spnDepartamentos)
+
+            fun obtenerDepartamentos(): List<Departamento> {
+                val listadoDepartamento = mutableListOf<Departamento>()
+                val objConexion = ClaseConexion().cadenaConexion()
+
+                if (objConexion != null) {
+                    // Creo un Statement que me ejecutará el select
+                    val statement = objConexion.createStatement()
+                    val resultSet = statement?.executeQuery("select * from DEPARTAMENTO")
+
+                    if (resultSet != null) {
+                        while (resultSet.next()) {
+                            val idDepartamento = resultSet.getInt("idDepartamento")
+                            val Nombre = resultSet.getString("Nombre")
+                            val listadoCompleto = Departamento(idDepartamento, Nombre)
+                            listadoDepartamento.add(listadoCompleto)
+                        }
+                        resultSet.close()
+                    }
+                    statement?.close()
+                    objConexion.close()
+                } else {
+                    Log.e("registroSolicitante", "Connection to database failed")
+                }
+                return listadoDepartamento
+            }
+            CoroutineScope(Dispatchers.IO).launch {
+                val listadoDepartamentos = obtenerDepartamentos()
+                val Departamento = listadoDepartamentos.map { it.Nombre }
+
+                withContext(Dispatchers.Main) {
+                    // Configuración del adaptador
+                    val adapter = ArrayAdapter(
+                        requireContext(), // Usar el contexto adecuado
+                        android.R.layout.simple_spinner_dropdown_item,
+                        Departamento
+                    )
+                    spDepartamentoSolicitante.adapter = adapter
+                }
+            }
 
             fun obtenerIdEmpleador(): String {
                 return login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
@@ -201,6 +270,28 @@ class homeEmpresa : Fragment() {
                     return@setOnClickListener
                 }
 
+                val DepartamentoNombre =
+                    spDepartamentoSolicitante.selectedItem.toString()
+
+                // Obtener el id_medicamento desde el Spinner
+                val Departamento =
+                    obtenerDepartamentos() // Se asume que puedes obtener la lista de medicamentos aquí
+                val DepartamentoSeleccionado =
+                    Departamento.find { it.Nombre == DepartamentoNombre }
+                val idDepartamento = DepartamentoSeleccionado!!.Id_departamento
+
+                val AreadetrabajoNombre =
+                    spAreaDeTrabajoSolicitante.selectedItem.toString()
+
+                // Obtener el id_medicamento desde el Spinner
+                val AreaDeTrabajo =
+                    obtenerAreasDeTrabajo() // Se asume que puedes obtener la lista de medicamentos aquí
+                val AreaDeTrabajoSeleccionada =
+                    AreaDeTrabajo.find { it.NombreAreaDetrabajo == AreadetrabajoNombre }
+                val idAreaDeTrabajo = AreaDeTrabajoSeleccionada!!.idAreaDeTrabajo
+
+                val salario = BigDecimal(txtSalarioJob.text.toString())
+
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
                         //1-creo un objeto de la clse conexion
@@ -211,24 +302,22 @@ class homeEmpresa : Fragment() {
                             objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , AreaDeTrabajo,Descripcion ,Ubicacion , Experiencia , Requerimientos , Estado ,Salario , Beneficios, FechaDePublicacion ) VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,? )")!!
                         addTrabajo.setString(1, txtTituloJob.text.toString())
                         addTrabajo.setString(2, idEmpleador)
-                        addTrabajo.setString(3, spnTiposTrabajo.selectedItem.toString())
+                        addTrabajo.setInt(3, idAreaDeTrabajo)
                         addTrabajo.setString(4, txtDescripcionJob.text.toString())
                         addTrabajo.setString(5, txtUbicacionJob.text.toString())
-                        addTrabajo.setString(6, txtExperienciaJob.text.toString())
-                        addTrabajo.setString(7, txtHabilidadesJob.text.toString())
-                        addTrabajo.setString(8, "Activo")
-
-                        val salario = BigDecimal(txtSalarioJob.text.toString())
-                        addTrabajo.setBigDecimal(9, salario)
-
-                        addTrabajo.setString(10, txtBeneficiosJob.text.toString())
-                        addTrabajo.setString(11, fechaDePublicacion)
+                        addTrabajo.setInt(6, idDepartamento)
+                        addTrabajo.setString(7, txtExperienciaJob.text.toString())
+                        addTrabajo.setString(8, txtHabilidadesJob.text.toString())
+                        addTrabajo.setString(9, "Activo")
+                        addTrabajo.setBigDecimal(10, salario)
+                        addTrabajo.setString(11, txtBeneficiosJob.text.toString())
+                        addTrabajo.setString(12, fechaDePublicacion)
 
 
 
                         Log.d(
                             "InsertJob",
-                            "Datos a insertar: Titulo=${txtTituloJob.text}, IdEmpleador=$idEmpleador, AreaDeTrabajo=${spnTiposTrabajo.selectedItem}, Descripcion=${txtDescripcionJob.text}, Ubicacion=${txtUbicacionJob.text}, Experiencia=${txtExperienciaJob.text}, Requerimientos=${txtHabilidadesJob.text}, Estado=Activo, Salario=$salario, Beneficios=${txtBeneficiosJob.text}, FechaDePublicacion=$fechaDePublicacion"
+                            "Datos a insertar: Titulo=${txtTituloJob.text}, IdEmpleador=$idEmpleador, AreaDeTrabajo=$idAreaDeTrabajo, Descripcion=${txtDescripcionJob.text}, Ubicacion=${txtUbicacionJob.text},idDepartamento=$idDepartamento ,Experiencia=${txtExperienciaJob.text}, Requerimientos=${txtHabilidadesJob.text}, Estado=Activo, Salario=$salario, Beneficios=${txtBeneficiosJob.text}, FechaDePublicacion=$fechaDePublicacion"
                         )
 
                         addTrabajo.executeUpdate()

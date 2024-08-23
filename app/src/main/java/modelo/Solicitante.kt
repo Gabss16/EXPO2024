@@ -10,7 +10,7 @@ class Solicitante(
    val CorreoElectronico: String,
    val Telefono: String,
    val Direccion: String,
-   val Departamento: String,
+   val Departamento: Int,
    val FechaDeNacimiento: DATE,
    val Estado: String,
    val Genero: String,
