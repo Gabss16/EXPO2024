@@ -3,9 +3,9 @@ package modelo
 import oracle.sql.DATE
 
 class Solicitud(
-    IdSolicitud: Number,
-    IdSolicitante: String,
-    IdTrabajo: Number,
-    FechaSolicitud: DATE,
-    Estado: String
+    val IdSolicitud: Number,
+    val IdSolicitante: String,
+    val IdTrabajo: Number,
+    val FechaSolicitud: String, // Usar LocalDate o Date si quieres trabajar con fechas
+    val Estado: String
 )

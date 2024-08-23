@@ -1,5 +1,6 @@
 package com.example.expogbss
 
+import RecicleViewHelpers.AdaptadorPublicacion
 import RecicleViewHelpers.AdaptadorTrabajos
 import android.os.Bundle
 import android.util.Log
@@ -128,7 +129,7 @@ class homeEmpresa : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             val TrabajoDb = obtenerDatos()
             withContext(Dispatchers.Main) {
-                val adapter = AdaptadorTrabajos(TrabajoDb)
+                val adapter = AdaptadorPublicacion(TrabajoDb)
                 rcvTrabajos.adapter = adapter
             }
         }
