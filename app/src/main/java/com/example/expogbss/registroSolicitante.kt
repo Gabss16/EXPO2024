@@ -31,6 +31,8 @@ import java.security.MessageDigest
 import android.util.Log
 import android.view.Window
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -50,9 +52,15 @@ class registroSolicitante : AppCompatActivity() {
 
     lateinit var imgFotoDePerfilSolicitante: ImageView
     lateinit var miPath: String
+    lateinit var latitud: String
+    lateinit var longitud: String
+    lateinit var direccion: String
     val uuid = UUID.randomUUID().toString()
     private var fotoSubida = false
     private var fechaNacimientoSeleccionada: String? = null
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -208,6 +216,14 @@ class registroSolicitante : AppCompatActivity() {
                 listadoSituacionLaboral
             )
         spEstadoSolicitante.adapter = adaptadorDeEstado
+
+
+        //Mapas
+        txtDireccionSolicitante.setOnClickListener {
+            val intent = Intent(this, SeleccionarUbicacion::class.java)
+            seleccionarUbicacion_ARL.launch(intent)
+        }
+
 
 
         imgFotoDePerfilSolicitante = findViewById(R.id.imgFotoDePerfilSolicitante)
@@ -390,6 +406,18 @@ class registroSolicitante : AppCompatActivity() {
 
 
     }
+
+    private val seleccionarUbicacion_ARL =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultado ->
+            if (resultado.resultCode == Activity.RESULT_OK) {
+                val data = resultado.data
+                if (data != null) {
+                    latitud = data.getStringExtra("latitud, 0.0")?: ""
+                    longitud = data.getStringExtra("longitud, 0.0")?: ""
+                    direccion = data.getStringExtra("direccion") ?: ""
+                }
+            }
+        }
 
     private fun checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(
