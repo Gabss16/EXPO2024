@@ -17,6 +17,8 @@
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -29,6 +31,7 @@
         android:theme="@style/Theme.Design.Light"
         tools:targetApi="31">
         <activity
+
             android:name=".DetallePublicacion"
             android:exported="false" />
         <activity
@@ -38,6 +41,7 @@
             android:name=".cardSolicitudes"
             android:exported="false" />
         <activity
+
             android:name=".editar_perfil_Empleador"
             android:exported="false" />
         <activity
@@ -96,7 +100,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="@string/mi_google_maps_api_key" />
     </application>
 
 </manifest>
