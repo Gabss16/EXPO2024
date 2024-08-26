@@ -83,7 +83,7 @@ class Detalle_Puesto : AppCompatActivity() {
     }
     private fun enviarSolicitud() {
         val idTrabajo = intent.getIntExtra("IdTrabajo", 1)
-        val idSolicitante = obtenerIdSolicitante()
+        val idSolicitante = IdSolicitante
         val fechaSolicitud = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val estado = "Pendiente"
 
