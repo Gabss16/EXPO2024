@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Casco de construcción -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M16,13V11H8v2H6v2h12v-2h-2Zm-4-7.75C10.57,5.25 9.25,6.57 9.25,8V10H14.75V8c0-1.43-1.32-2.75-2.75-2.75Zm0,10c-1.57,0-2.75-1.18-2.75-2.75v-1.5c0-1.57,1.18-2.75,2.75-2.75s2.75,1.18,2.75,2.75v1.5c0,1.57-1.18,2.75-2.75,2.75ZM3.5,4h17c0.83,0,1.5,0.67,1.5,1.5v13c0,0.83-0.67,1.5-1.5,1.5h-17C2.67,20,2,19.33,2,18.5v-13C2,4.67,2.67,4,3.5,4Z"/>
+</vector>

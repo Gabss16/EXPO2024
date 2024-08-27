@@ -33,7 +33,7 @@ class AdaptadorTrabajos(var Datos : List<Trabajo>) : RecyclerView.Adapter<ViewHo
     override fun onBindViewHolder(holder: ViewHolderTrabajos, position: Int) {
         val trabajos = Datos[position]
         holder.txtTIituloTrabajo.text = trabajos.Titulo
-        holder.txtTipoTrabajo.text = trabajos.AreaDeTrabajo
+        holder.txtTipoTrabajo.text = trabajos.IdAreaDeTrabajo.toString()
 
         //click a la card
 
@@ -44,9 +44,10 @@ class AdaptadorTrabajos(var Datos : List<Trabajo>) : RecyclerView.Adapter<ViewHo
             val pantallaDetalle = Intent(context, Detalle_Puesto::class.java)
             //enviar a la otra pantalla todos mis valores
             pantallaDetalle.putExtra("Titulo", trabajos.Titulo)
-            pantallaDetalle.putExtra("AreaDeTrabajo", trabajos.AreaDeTrabajo)
+            pantallaDetalle.putExtra("AreaDeTrabajo", trabajos.IdAreaDeTrabajo)
             pantallaDetalle.putExtra("Descripcion", trabajos.Descripcion)
-            pantallaDetalle.putExtra("Ubicacion", trabajos.Ubicacion)
+            pantallaDetalle.putExtra("Direccion", trabajos.Direccion)
+            pantallaDetalle.putExtra("IdDepartamento", trabajos.IdDepartamento)
             pantallaDetalle.putExtra("Experiencia", trabajos.Experiencia)
             pantallaDetalle.putExtra("Requerimientos", trabajos.Requerimientos)
             pantallaDetalle.putExtra("Estado", trabajos.Estado)

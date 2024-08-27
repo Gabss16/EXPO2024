@@ -60,9 +60,10 @@ class HomeFragment : Fragment() {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
                 val IdEmpleador = resultSet.getString("IdEmpleador")
-                val AreaDeTrabajo = resultSet.getString("AreaDeTrabajo")
+                val IdAreaDeTrabajo = resultSet.getInt("IdAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
-                val Ubicacion = resultSet.getString("Ubicacion")
+                val Direccion = resultSet.getString("Direccion")
+                val IdDepartamento = resultSet.getInt("IdDepartamento")
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
                 val Estado = resultSet.getString("Estado")
@@ -74,9 +75,10 @@ class HomeFragment : Fragment() {
                     IdTrabajo,
                     Titulo,
                     IdEmpleador,
-                    AreaDeTrabajo,
+                    IdAreaDeTrabajo,
                     Descripcion,
-                    Ubicacion,
+                    Direccion,
+                    IdDepartamento,
                     Experiencia,
                     Requerimientos,
                     Estado,
