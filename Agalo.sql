@@ -36,6 +36,8 @@ CREATE TABLE TRABAJO (
     IdEmpleador VARCHAR2(50) NOT NULL,
     IdAreaDeTrabajo INT,
     Descripcion VARCHAR2(150),  
+    Altitud varchar2(250),
+    Latitud VARCHAR2 (200),
     Direccion varchar2(250),
     IdDepartamento INT,
     Experiencia VARCHAR2(50),
