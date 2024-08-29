@@ -8,8 +8,8 @@ class Empleador (
     val NumeroTelefono: String,
     val Direccion: String,
     val SitioWeb: String,
-    val Departamento: String,
+    val IdDepartamento: String,
     val Contrasena: String,
     val Estado: String,
-    val Foto: String
+    //val Foto: String
 )
