@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
+
         <ImageButton
             android:id="@+id/btnRegresar"
             android:layout_width="wrap_content"
@@ -21,8 +22,7 @@
             android:padding="10dp"
             android:src="@drawable/ic_regresar" />
 
-
-    <TextView
+        <TextView
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -35,13 +35,24 @@
         android:background="@android:color/transparent"
         android:padding="10dp"
         android:src="@drawable/ic_gps" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#ccc"
-        android:layout_alignParentBottom="true"
-        />
+
+        <View
+            android:id="@+id/ToolBar"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="674dp"
+            android:background="#ccc" />
     </RelativeLayout>
+
+    <fragment
+        android:id="@+id/MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="675dp"
+        android:layout_marginTop="56dp" />
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 
 </RelativeLayout>
