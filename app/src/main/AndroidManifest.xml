@@ -31,6 +31,9 @@
         android:theme="@style/Theme.Design.Light"
         tools:targetApi="31">
         <activity
+            android:name=".card_EstadoSolicitud"
+            android:exported="false" />
+        <activity
             android:name=".card_chats"
             android:exported="false" />
         <activity

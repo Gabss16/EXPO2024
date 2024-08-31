@@ -55,41 +55,18 @@
             app:layout_constraintTop_toBottomOf="@id/tvJobTitle" />
 
         <!-- Publicador -->
-        <TextView
-            android:id="@+id/txtPublicador"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Publicado por: Empresa XYZ"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvJobCategory" />
 
         <!-- Fecha de publicación -->
-        <TextView
-            android:id="@+id/tvJobPublishedDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="01/01/2024"
-            android:textSize="12sp"
-            android:textColor="@android:color/darker_gray"
-            app:layout_constraintTop_toTopOf="@id/txtPublicador"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/txtPublicador"/>
 
         <!-- Botones de acción -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtPublicador">
+            tools:layout_editor_absoluteY="112dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAceptar"
