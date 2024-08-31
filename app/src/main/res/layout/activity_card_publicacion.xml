@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardElevation="4dp"
+    android:layout_margin="2dp"
+    app:cardElevation="5dp"
     app:cardCornerRadius="12dp"
     app:cardUseCompatPadding="true">
 
@@ -16,31 +16,63 @@
         android:padding="16dp">
 
         <!-- Título del trabajo -->
-        <TextView
-            android:id="@+id/txtTituloTrabajo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Título del Trabajo"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/imageView12"
+            android:layout_width="371dp"
+            android:layout_height="93dp"
+            app:srcCompat="@drawable/aaaa"
+            tools:layout_editor_absoluteX="-7dp"
+            tools:layout_editor_absoluteY="-5dp" />
 
         <!-- Tipo de trabajo -->
+
+        <TextView
+            android:id="@+id/txtTituloTrabajo"
+            android:layout_width="330dp"
+            android:layout_height="29dp"
+            android:layout_marginTop="12dp"
+            android:text="Título del Trabajo"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/txtTipoTrabajo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:text="Tipo de Trabajo"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.038"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtTituloTrabajo" />
+            tools:layout_editor_absoluteY="39dp" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="53dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="68dp"
+            android:backgroundTint="#00FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.612"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/cardelete" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#02FFFFFF"
+            app:srcCompat="@drawable/cardedit"
+            tools:layout_editor_absoluteX="231dp"
+            tools:layout_editor_absoluteY="64dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
