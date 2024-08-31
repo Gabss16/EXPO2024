@@ -54,7 +54,7 @@
             tools:layout_editor_absoluteY="39dp" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/imgBorrarPublicacion"
             android:layout_width="53dp"
             android:layout_height="43dp"
             android:layout_marginTop="68dp"
@@ -66,7 +66,7 @@
             app:srcCompat="@drawable/cardelete" />
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/imgEditarPublicacion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#02FFFFFF"
