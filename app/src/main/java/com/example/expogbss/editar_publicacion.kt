@@ -135,4 +135,3 @@ class editar_publicacion : AppCompatActivity() {
         }
         }
     }
-}
