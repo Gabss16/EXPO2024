@@ -293,7 +293,7 @@ class registroSolicitante : AppCompatActivity() {
 
                             // Encripto la contraseña usando la función de encriptación
                             val contrasenaEncriptada =
-                                hashSHA256(txtConstrasenaSolicitante.text.toString())
+                                hashSHA256(txtConstrasenaSolicitante.text.toString().trim())
 
                             val DepartamentoNombre =
                                 spDepartamentoSolicitante.selectedItem.toString()
@@ -320,10 +320,10 @@ class registroSolicitante : AppCompatActivity() {
                                 "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion,IdDepartamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
                             )!!
                             crearUsuario.setString(1, uuid)
-                            crearUsuario.setString(2, txtNombreSolicitante.text.toString())
-                            crearUsuario.setString(3, txtCorreoSolicitante.text.toString())
-                            crearUsuario.setString(4, txtTelefonoSolicitante.text.toString())
-                            crearUsuario.setString(5, txtDireccionSolicitante.text.toString())
+                            crearUsuario.setString(2, txtNombreSolicitante.text.toString().trim())
+                            crearUsuario.setString(3, txtCorreoSolicitante.text.toString().trim())
+                            crearUsuario.setString(4, txtTelefonoSolicitante.text.toString().trim())
+                            crearUsuario.setString(5, txtDireccionSolicitante.text.toString().trim())
                             crearUsuario.setInt(
                                 6, idDepartamento
                             )
@@ -336,7 +336,7 @@ class registroSolicitante : AppCompatActivity() {
                             )
                             crearUsuario.setString(
                                 11,
-                                txtHabilidadesSolicitante.text.toString()
+                                txtHabilidadesSolicitante.text.toString().trim()
                             )
                             crearUsuario.setBlob(
                                 12,

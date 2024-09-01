@@ -38,11 +38,11 @@ class NotificationsFragment : Fragment() {
         textViewCorreoSolicitante.text = login.correoSolicitante
         textViewNumeroSolicitante.text = login.numeroSolicitante
         textViewDireccionSolicitante.text = login.direccionSolicitante
-        textViewDepartamento.text = login.departamentoSolicitante
+//        textViewDepartamento.text = login.departamentoSolicitante
         textViewFechaSolicitante.text = login.fechaNacimiento
         textViewGeneroSolicitante.text = login.generoSolicitante
-        textViewArea.text = login.areaDeTrabajo
-        textViewHabilidades.text = login.areaDeTrabajo
+//        textViewArea.text = login.areaDeTrabajo
+//        textViewHabilidades.text = login.areaDeTrabajo
         Glide.with(this).load(login.fotoSolicitante).into(imgFotoSolicitante)
 
 

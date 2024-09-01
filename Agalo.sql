@@ -122,9 +122,11 @@ Insert into DEPARTAMENTO(Nombre) values ('Sonsonate');
 Insert into DEPARTAMENTO(Nombre) values ('La Unión');
 Insert into DEPARTAMENTO(Nombre) values ('Usulután');
 
+//Insert roles de escritorio
+INSERT INTO ROLESCRITORIO(Rol) Values('Admin');
+INSERT INTO ROLESCRITORIO(Rol) Values('Super admin');
 
 //Secuencia y trigger para las solicitudes
-
 CREATE SEQUENCE SolicitudSeq 
 START WITH 1 
 INCREMENT BY 1;
@@ -138,6 +140,34 @@ BEGIN
     FROM DUAL;
 END;
 
+//Procedimiento almacenado para verificar correos electrónicos
+CREATE OR REPLACE PROCEDURE VerificarCorreoElectronico(
+    p_IdAdmin IN VARCHAR2,
+    p_Nombre IN VARCHAR2,
+    p_Usuario IN VARCHAR2,
+    p_Contrasena IN VARCHAR2,
+    p_Foto IN VARCHAR2,
+    p_CorreoElectronico IN VARCHAR2,
+    p_IdRol IN INT
+) AS
+    v_patronRegex VARCHAR2(100) := '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+BEGIN
+    -- Verificar si el correo electrónico cumple con el patrón
+    IF NOT REGEXP_LIKE(p_CorreoElectronico, v_patronRegex) THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Correo electrónico no válido.');
+    END IF;
+
+    -- Insertar el usuario en la tabla UsuarioEscritorio
+    INSERT INTO UsuarioEscritorio (IdAdmin, Nombre, Usuario, Contrasena, Foto, CorreoElectronico, IdRol)
+    VALUES (p_IdAdmin, p_Nombre, p_Usuario, p_Contrasena, p_Foto, p_CorreoElectronico, p_IdRol);
+    
+END VerificarCorreoElectronico;
+
+begin 
+VerificarCorreoElectronico('12342','Ricardo de paz', 'RicAdmin1', 'ContrasenaEncriptada', 'Foto1', 'prueba@gmail.com', 2);
+end;
+
+select * from UsuarioEscritorio;
 
 //Secuencias y triggers para auto incremento 
 CREATE SEQUENCE Trabajoseq
@@ -180,3 +210,4 @@ DROP TABLE EMPLEADOR;
 DROP TABLE AREADETRABAJO;
 Drop table UsuarioEscritorio;
 Drop table ROLESCRITORIO;
+Drop table DEPARTAMENTO;
