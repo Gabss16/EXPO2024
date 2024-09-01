@@ -163,7 +163,7 @@ class editar_publicacion : AppCompatActivity() {
             val ExperienciaJobEditado = txtExperienciaJobEditar.text.toString()
             val HabilidadesJobEditado = txtHabilidadesJobEditar.text.toString()
             val BeneficiosJobEditado = txtBeneficiosJobEditar.text.toString()
-            val SalarioJobEditado = txtSalarioJobEditar.text.toString()
+            val SalarioJobEditado = txtSalarioJobEditar.text.toString().toBigDecimalOrNull()
             val TiposTrabajoEditado = spnTiposTrabajoEditar.selectedItem.toString()
 
                 GlobalScope.launch(Dispatchers.IO){
@@ -183,7 +183,7 @@ class editar_publicacion : AppCompatActivity() {
                     updateTrabajo.setString(5, DepartamentosEditado)
                     updateTrabajo.setString(6, ExperienciaJobEditado)
                     updateTrabajo.setString(7, HabilidadesJobEditado)
-                    updateTrabajo.setString(8, SalarioJobEditado)
+                    updateTrabajo.setBigDecimal(8, SalarioJobEditado)
                     updateTrabajo.setString(9, BeneficiosJobEditado)
                         updateTrabajo.setInt(10, idTrabajo)
                     updateTrabajo.executeUpdate()
