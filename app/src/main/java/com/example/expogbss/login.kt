@@ -27,26 +27,37 @@ import java.util.Date
 
 class login : AppCompatActivity() {
     companion object variablesGlobalesRecuperacionDeContrasena {
-        lateinit var correoLogin: String
+
+        // Valores para empleador
         lateinit var IdEmpleador: String
+        lateinit var nombreEmpresa: String
+        lateinit var nombreEmpleador: String
+        lateinit var correoEmpleador: String
+        lateinit var numeroEmpleador: String
+        lateinit var altitudEmpleador: String
+        lateinit var latitudEmpleador: String
+        lateinit var direccionEmpleador: String
+        lateinit var sitioWebEmpleador: String
+        lateinit var fotoEmpleador: String
+
+        // Valores para solicitante
+        lateinit var IdSolicitante: String
         lateinit var nombresSolicitante: String
         lateinit var correoSolicitante: String
         lateinit var numeroSolicitante: String
         lateinit var direccionSolicitante: String
-        lateinit var departamentoSolicitante: String
+        lateinit var altitudSolicitante: String
+        lateinit var latitudSolicitante: String
         lateinit var fechaNacimiento: String
         lateinit var generoSolicitante: String
-        lateinit var areaDeTrabajo: String
         lateinit var habilidades: String
         lateinit var fotoSolicitante: String
-        lateinit var nombreEmpresa: String
-        lateinit var correoEmpleador: String
-        lateinit var nombreEmpleador: String
-        lateinit var numeroEmpleador: String
-        lateinit var direccionEmpleador: String
-        lateinit var sitioWebEmpleador: String
-        lateinit var fotoEmpleador: String
-        lateinit var IdSolicitante: String
+
+        // Otras variables
+        var idDepartamento: Int? = null
+        var areaDeTrabajo: Int? = null
+        lateinit var correoLogin: String
+
         //TODO: Añadir todos los campos que quiero llamar en los perfiles
     }
 
@@ -218,10 +229,10 @@ class login : AppCompatActivity() {
                             correoSolicitante = esSolicitante.getString("CorreoElectronico")
                             numeroSolicitante = esSolicitante.getString("Telefono")
                             direccionSolicitante = esSolicitante.getString("Direccion")
-                            departamentoSolicitante = esSolicitante.getString("Departamento")
+                            idDepartamento = esSolicitante.getInt("IdDepartamento")
                             fechaNacimiento = esSolicitante.getString("FechaDeNacimiento")
                             generoSolicitante = esSolicitante.getString("Genero")
-                            areaDeTrabajo = esSolicitante.getString("AreaDeTrabajo")
+                            areaDeTrabajo = esSolicitante.getInt("IdAreaDeTrabajo")
                             habilidades = esSolicitante.getString("Habilidades")
                             fotoSolicitante = esSolicitante.getString("Foto")
 

@@ -31,7 +31,9 @@
         android:theme="@style/Theme.Design.Light"
         tools:targetApi="31">
         <activity
-            android:name=".card_EstadoSolicitud"
+
+            android:name=".editar_publicacion"
+
             android:exported="false" />
         <activity
             android:name=".card_chats"
