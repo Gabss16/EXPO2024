@@ -13,7 +13,6 @@ Create table AreaDeTrabajo(
 IdAreaDeTrabajo INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 NombreAreaDetrabajo varchar2(100));
   
-
 CREATE TABLE EMPLEADOR (
     IdEmpleador VARCHAR2(50) PRIMARY KEY, 
     NombreEmpresa VARCHAR2(50),
@@ -70,7 +69,6 @@ CREATE TABLE SOLICITANTE (
     CONSTRAINT FkAreaDeTrabajoSolicitante FOREIGN KEY (IdAreaDeTrabajo) REFERENCES AreaDeTrabajo(IdAreaDeTrabajo) ON DELETE CASCADE,
     CONSTRAINT FkDepartamentoSolicitante FOREIGN KEY (IdDepartamento) REFERENCES DEPARTAMENTO(IdDepartamento) ON DELETE CASCADE);
     
-    
 CREATE TABLE SOLICITUD (
     IdSolicitud NUMBER PRIMARY KEY , 
     IdSolicitante VARCHAR2(50) NOT NULL,
@@ -78,8 +76,7 @@ CREATE TABLE SOLICITUD (
     FechaSolicitud VARCHAR2(20) NOT NULL,
     Estado VARCHAR(10) CHECK (Estado IN ('Activa', 'Finalizada', 'Pendiente')),
     CONSTRAINT FKSolicitanteSolicitud FOREIGN KEY (IdSolicitante) REFERENCES SOLICITANTE(IdSolicitante) ON DELETE CASCADE,
-    CONSTRAINT FKTrabajoSolicitud FOREIGN KEY (IdTrabajo) REFERENCES TRABAJO(IdTrabajo) ON DELETE CASCADE
-);
+    CONSTRAINT FKTrabajoSolicitud FOREIGN KEY (IdTrabajo) REFERENCES TRABAJO(IdTrabajo) ON DELETE CASCADE);
 
 CREATE TABLE ROLESCRITORIO(
 IdRol INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -94,6 +91,96 @@ Foto VARCHAR2(300),
 CorreoElectronico VARCHAR2(50) NOT NULL UNIQUE,
 IdRol INT,
 CONSTRAINT FKRol FOREIGN KEY (IdRol) REFERENCES ROLESCRITORIO(IdRol) ON DELETE CASCADE);
+
+CREATE TABLE AUDITORIA (
+    IdAuditoria NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    TablaAfectada VARCHAR2(50),
+    Operacion VARCHAR2(10),
+    Usuario VARCHAR2(50) not null,
+    FechaAccion varchar2(50) not null,
+    Detalles VARCHAR2(500) not null,
+    IdTrabajo Number
+);
+
+CREATE OR REPLACE TRIGGER TrigAuditoriaInsertTrabajo
+AFTER INSERT ON TRABAJO
+FOR EACH ROW
+BEGIN
+    INSERT INTO AUDITORIA (TablaAfectada, Operacion, Usuario, FechaAccion, Detalles, IdTrabajo)
+    VALUES (
+        'Trabajo', 
+        'INSERT', 
+        :NEW.IdEmpleador, 
+        TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'),
+        'Se creó un trabajo con descripción: ' || :NEW.Descripcion,
+        :NEW.IdTrabajo
+    );
+END;
+
+
+CREATE OR REPLACE TRIGGER trg_audit_delete_trabajo
+AFTER DELETE ON TRABAJO
+FOR EACH ROW
+BEGIN
+    INSERT INTO AUDITORIA (TablaAfectada, Operacion, Usuario, FechaAccion, Detalles, IdTrabajo) VALUES (
+        'Trabajo', 
+        'DELETE', 
+        :OLD.IdEmpleador, 
+        TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'),
+        'Se creó un trabajo con descripción: ' || :OLD.Descripcion, -- Detalles con mensaje personalizado
+        :OLD.IdTrabajo
+    );
+END;
+
+//Secuencia y trigger para las solicitudes
+CREATE SEQUENCE SolicitudSeq 
+START WITH 1 
+INCREMENT BY 1;
+
+CREATE OR REPLACE TRIGGER TrigSolicitud
+BEFORE INSERT ON SOLICITUD
+FOR EACH ROW 
+BEGIN 
+    SELECT SolicitudSeq.NEXTVAL
+    INTO :NEW.IdSolicitud
+    FROM DUAL;
+END;
+
+//Secuencias y triggers para auto incremento en trabajo
+CREATE SEQUENCE Trabajoseq
+START WITH 1
+INCREMENT BY 1;
+
+CREATE TRIGGER TrigTrabajo
+BEFORE INSERT ON TRABAJO
+FOR EACH ROW 
+BEGIN 
+SELECT Trabajoseq.NEXTVAL INTO:NEW.IdTrabajo
+FROM DUAL;
+END;
+
+//Procedimiento almacenado para verificar correos electrónicos
+CREATE OR REPLACE PROCEDURE VerificarCorreoElectronico(
+    p_IdAdmin IN VARCHAR2,
+    p_Nombre IN VARCHAR2,
+    p_Usuario IN VARCHAR2,
+    p_Contrasena IN VARCHAR2,
+    p_Foto IN VARCHAR2,
+    p_CorreoElectronico IN VARCHAR2,
+    p_IdRol IN INT
+) AS
+    v_patronRegex VARCHAR2(100) := '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+BEGIN
+    -- Verificar si el correo electrónico cumple con el patrón
+    IF NOT REGEXP_LIKE(p_CorreoElectronico, v_patronRegex) THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Correo electrónico no válido.');
+    END IF;
+
+    -- Insertar el usuario en la tabla UsuarioEscritorio
+    INSERT INTO UsuarioEscritorio (IdAdmin, Nombre, Usuario, Contrasena, Foto, CorreoElectronico, IdRol)
+    VALUES (p_IdAdmin, p_Nombre, p_Usuario, p_Contrasena, p_Foto, p_CorreoElectronico, p_IdRol);
+    
+END VerificarCorreoElectronico;
 
 // INSERTS a tablas normalizadas por datos repetidos
 INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Trabajo doméstico');
@@ -126,61 +213,13 @@ Insert into DEPARTAMENTO(Nombre) values ('Usulután');
 INSERT INTO ROLESCRITORIO(Rol) Values('Admin');
 INSERT INTO ROLESCRITORIO(Rol) Values('Super admin');
 
-//Secuencia y trigger para las solicitudes
-CREATE SEQUENCE SolicitudSeq 
-START WITH 1 
-INCREMENT BY 1;
 
-CREATE OR REPLACE TRIGGER TrigSolicitud
-BEFORE INSERT ON SOLICITUD
-FOR EACH ROW 
-BEGIN 
-    SELECT SolicitudSeq.NEXTVAL
-    INTO :NEW.IdSolicitud
-    FROM DUAL;
-END;
-
-//Procedimiento almacenado para verificar correos electrónicos
-CREATE OR REPLACE PROCEDURE VerificarCorreoElectronico(
-    p_IdAdmin IN VARCHAR2,
-    p_Nombre IN VARCHAR2,
-    p_Usuario IN VARCHAR2,
-    p_Contrasena IN VARCHAR2,
-    p_Foto IN VARCHAR2,
-    p_CorreoElectronico IN VARCHAR2,
-    p_IdRol IN INT
-) AS
-    v_patronRegex VARCHAR2(100) := '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
-BEGIN
-    -- Verificar si el correo electrónico cumple con el patrón
-    IF NOT REGEXP_LIKE(p_CorreoElectronico, v_patronRegex) THEN
-        RAISE_APPLICATION_ERROR(-20001, 'Correo electrónico no válido.');
-    END IF;
-
-    -- Insertar el usuario en la tabla UsuarioEscritorio
-    INSERT INTO UsuarioEscritorio (IdAdmin, Nombre, Usuario, Contrasena, Foto, CorreoElectronico, IdRol)
-    VALUES (p_IdAdmin, p_Nombre, p_Usuario, p_Contrasena, p_Foto, p_CorreoElectronico, p_IdRol);
-    
-END VerificarCorreoElectronico;
-
+//Pruebas 
 begin 
 VerificarCorreoElectronico('12342','Ricardo de paz', 'RicAdmin1', 'ContrasenaEncriptada', 'Foto1', 'prueba@gmail.com', 2);
 end;
 
 select * from UsuarioEscritorio;
-
-//Secuencias y triggers para auto incremento 
-CREATE SEQUENCE Trabajoseq
-START WITH 1
-INCREMENT BY 1;
-
-CREATE TRIGGER TrigTrabajo
-BEFORE INSERT ON TRABAJO
-FOR EACH ROW 
-BEGIN 
-SELECT Trabajoseq.NEXTVAL INTO:NEW.IdTrabajo
-FROM DUAL;
-END;
 
 select * from empleador;
 select * from solicitante;
@@ -193,6 +232,13 @@ SELECT * FROM EMPLEADOR WHERE CorreoElectronico = 'contacto@innovaciones.com.sv'
 SELECT * FROM SOLICITANTE WHERE CorreoElectronico =  'ana.martinez@example.com' AND Contrasena = 'contraseÃ±a1';
 SELECT * FROM ESTADOSOLICITANTE ;
 
+
+select * from auditoria;
+select * from trabajo;
+
+delete from auditoria; 
+
+//Para eliminar
 -- Eliminar secuencias
 DROP SEQUENCE SolicitudSeq;
 DROP SEQUENCE Trabajoseq;
