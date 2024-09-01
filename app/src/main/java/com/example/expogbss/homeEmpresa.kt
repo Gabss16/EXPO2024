@@ -96,7 +96,7 @@ class homeEmpresa : Fragment() {
                 val AreaDeTrabajo = resultSet.getInt("IdAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Ubicacion = resultSet.getString("Direccion")
-                val Departamento = resultSet.getInt("Departamento")
+                val Departamento = resultSet.getInt("IdDepartamento")
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
                 val Estado = resultSet.getString("Estado")
@@ -271,54 +271,49 @@ class homeEmpresa : Fragment() {
                     return@setOnClickListener
                 }
 
-                val DepartamentoNombre =
-                    spDepartamentoSolicitante.selectedItem.toString()
 
-                // Obtener el id_medicamento desde el Spinner
-                val Departamento =
-                    obtenerDepartamentos() // Se asume que puedes obtener la lista de medicamentos aquí
-                val DepartamentoSeleccionado =
-                    Departamento.find { it.Nombre == DepartamentoNombre }
-                val idDepartamento = DepartamentoSeleccionado!!.Id_departamento
-
-                val AreadetrabajoNombre =
-                    spAreaDeTrabajoSolicitante.selectedItem.toString()
-
-                // Obtener el id_medicamento desde el Spinner
-                val AreaDeTrabajo =
-                    obtenerAreasDeTrabajo() // Se asume que puedes obtener la lista de medicamentos aquí
-                val AreaDeTrabajoSeleccionada =
-                    AreaDeTrabajo.find { it.NombreAreaDetrabajo == AreadetrabajoNombre }
-                val idAreaDeTrabajo = AreaDeTrabajoSeleccionada!!.idAreaDeTrabajo
-
-                val salario = BigDecimal(txtSalarioJob.text.toString())
 
                 CoroutineScope(Dispatchers.IO).launch {
+
                     try {
+                        val DepartamentoNombre =
+                            spDepartamentoSolicitante.selectedItem.toString()
+                        // Obtener el id_medicamento desde el Spinner
+                        val Departamento =
+                            obtenerDepartamentos() // Se asume que puedes obtener la lista de medicamentos aquí
+                        val DepartamentoSeleccionado =
+                            Departamento.find { it.Nombre == DepartamentoNombre }
+                        val idDepartamento = DepartamentoSeleccionado!!.Id_departamento
+
+
+                        val AreadetrabajoNombre =
+                            spAreaDeTrabajoSolicitante.selectedItem.toString()
+                        // Obtener el id_medicamento desde el Spinner
+                        val AreaDeTrabajo =
+                            obtenerAreasDeTrabajo() // Se asume que puedes obtener la lista de medicamentos aquí
+                        val AreaDeTrabajoSeleccionada =
+                            AreaDeTrabajo.find { it.NombreAreaDetrabajo == AreadetrabajoNombre }
+                        val idAreaDeTrabajo = AreaDeTrabajoSeleccionada!!.idAreaDeTrabajo
+
+                        val salario = BigDecimal(txtSalarioJob.text.toString())
                         //1-creo un objeto de la clse conexion
                         val objConexion = ClaseConexion().cadenaConexion()
 
                         //2-creo una variable que contenga un PrepareStatement
                         val addTrabajo =
-<<<<<<< HEAD
-                            objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , AreaDeTrabajo,Descripcion ,Ubicacion ,idDepartamento, Experiencia , Requerimientos , Estado ,Salario , Beneficios, FechaDePublicacion ) VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,? )")!!
-=======
-                            objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , IdAreaDeTrabajo,Descripcion ,Direccion ,IdDepartamento, Experiencia , Requerimientos , Estado ,Salario , Beneficios, FechaDePublicacion ) VALUES ( ?. ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,? )")!!
->>>>>>> 408913476807f8fbcfbdac3a4e081ce4a79784fa
-                        addTrabajo.setString(1, txtTituloJob.text.toString())
+                            objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , IdAreaDeTrabajo,Descripcion ,Direccion ,IdDepartamento, Experiencia , Requerimientos , Estado ,Salario , Beneficios, FechaDePublicacion ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
+                        addTrabajo.setString(1, txtTituloJob.text.toString().trim())
                         addTrabajo.setString(2, idEmpleador)
                         addTrabajo.setInt(3, idAreaDeTrabajo)
-                        addTrabajo.setString(4, txtDescripcionJob.text.toString())
-                        addTrabajo.setString(5, txtUbicacionJob.text.toString())
+                        addTrabajo.setString(4, txtDescripcionJob.text.toString().trim())
+                        addTrabajo.setString(5, txtUbicacionJob.text.toString().trim())
                         addTrabajo.setInt(6, idDepartamento)
-                        addTrabajo.setString(7, txtExperienciaJob.text.toString())
-                        addTrabajo.setString(8, txtHabilidadesJob.text.toString())
+                        addTrabajo.setString(7, txtExperienciaJob.text.toString().trim())
+                        addTrabajo.setString(8, txtHabilidadesJob.text.toString().trim())
                         addTrabajo.setString(9, "Activo")
                         addTrabajo.setBigDecimal(10, salario)
-                        addTrabajo.setString(11, txtBeneficiosJob.text.toString())
+                        addTrabajo.setString(11, txtBeneficiosJob.text.toString().trim())
                         addTrabajo.setString(12, fechaDePublicacion)
-
-
 
                         Log.d(
                             "InsertJob",
@@ -343,7 +338,6 @@ class homeEmpresa : Fragment() {
                                 Toast.LENGTH_LONG
                             ).show()
                         }
-                        //aqui estaban antes
                     }
 
 
