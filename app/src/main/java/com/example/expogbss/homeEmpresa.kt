@@ -300,6 +300,7 @@ class homeEmpresa : Fragment() {
                         val objConexion = ClaseConexion().cadenaConexion()
 
                         //2-creo una variable que contenga un PrepareStatement
+
                         val addTrabajo =
                             objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , IdAreaDeTrabajo,Descripcion ,Direccion ,IdDepartamento, Experiencia , Requerimientos , Estado ,Salario , Beneficios, FechaDePublicacion ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
                         addTrabajo.setString(1, txtTituloJob.text.toString().trim())

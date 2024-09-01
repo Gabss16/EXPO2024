@@ -7,4 +7,6 @@ import com.example.expogbss.R
 
 class ViewHolderPublicacion (view: View): RecyclerView.ViewHolder(view) {
     var txtTIituloTrabajo= view.findViewById<TextView>(R.id.txtTituloTrabajo)
-    var txtTipoTrabajo =  view.findViewById<TextView>(R.id.txtTipoTrabajo)}
+    var txtTipoTrabajo =  view.findViewById<TextView>(R.id.txtTipoTrabajo)
+    var imgBorrar =  view.findViewById<TextView>(R.id.txtTipoTrabajo)
+    var imgEditar =  view.findViewById<TextView>(R.id.txtTipoTrabajo)}
