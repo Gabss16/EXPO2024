@@ -86,6 +86,9 @@ class AdaptadorPublicacion(var Datos : List<Trabajo>) : RecyclerView.Adapter<Vie
             val context = holder.itemView.context
 
             val PantallaEditar = Intent(context, editar_publicacion::class.java)
+
+            PantallaEditar.putExtra("IdTrabajo", trabajos.IdTrabajo) // Pasas el IdTrabajo
+
             PantallaEditar.putExtra("Titulo", trabajos.Titulo)
             PantallaEditar.putExtra("IdAreaDeTrabajo", trabajos.IdAreaDeTrabajo)
             PantallaEditar.putExtra("Descripcion", trabajos.Descripcion)
