@@ -83,7 +83,7 @@ IdRol INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 Rol Varchar2(50));
 
 CREATE TABLE UsuarioEscritorio(
-IdAdmin VARCHAR2(50) PRIMARY KEY,
+IdAdmin INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 Nombre Varchar2(50) NOT NULL,
 Usuario Varchar2(50) NOT NULL,
 Contrasena Varchar2(250) NOT NULL,
@@ -151,7 +151,7 @@ CREATE SEQUENCE Trabajoseq
 START WITH 1
 INCREMENT BY 1;
 
-CREATE TRIGGER TrigTrabajo
+CREATE OR REPLACE TRIGGER TrigTrabajo
 BEFORE INSERT ON TRABAJO
 FOR EACH ROW 
 BEGIN 
@@ -161,7 +161,6 @@ END;
 
 //Procedimiento almacenado para verificar correos electrónicos
 CREATE OR REPLACE PROCEDURE VerificarCorreoElectronico(
-    p_IdAdmin IN VARCHAR2,
     p_Nombre IN VARCHAR2,
     p_Usuario IN VARCHAR2,
     p_Contrasena IN VARCHAR2,
@@ -177,8 +176,8 @@ BEGIN
     END IF;
 
     -- Insertar el usuario en la tabla UsuarioEscritorio
-    INSERT INTO UsuarioEscritorio (IdAdmin, Nombre, Usuario, Contrasena, Foto, CorreoElectronico, IdRol)
-    VALUES (p_IdAdmin, p_Nombre, p_Usuario, p_Contrasena, p_Foto, p_CorreoElectronico, p_IdRol);
+    INSERT INTO UsuarioEscritorio (Nombre, Usuario, Contrasena, Foto, CorreoElectronico, IdRol)
+    VALUES (p_Nombre, p_Usuario, p_Contrasena, p_Foto, p_CorreoElectronico, p_IdRol);
     
 END VerificarCorreoElectronico;
 
@@ -216,10 +215,59 @@ INSERT INTO ROLESCRITORIO(Rol) Values('Super admin');
 
 //Pruebas 
 begin 
-VerificarCorreoElectronico('12342','Ricardo de paz', 'RicAdmin1', 'ContrasenaEncriptada', 'Foto1', 'prueba@gmail.com', 2);
+VerificarCorreoElectronico('Ricardo de paz', 'RicAdmin1', 'ContrasenaEncriptada', 'Foto1', 'prueba@gmail.com', 2);
 end;
 
-select * from UsuarioEscritorio;
+//Inner join para ver Trabajo
+SELECT 
+    T.IdTrabajo AS "Número de trabajo",
+    T.Titulo AS "Título",
+    A.NombreAreaDetrabajo AS "Área de trabajo",
+    T.Descripcion AS "Descripción",
+    T.IdEmpleador AS "Código de empleador",
+    E.NombreRepresentante AS "Nombre del empleador",
+    E.CorreoElectronico AS "Correo Electrónico de contacto",
+    E.NumeroTelefono AS "Número de contacto",
+    T.Direccion AS "Dirección del trabajo",
+    T.Experiencia AS "Experiencia requerida",
+    T.Requerimientos,
+    T.Salario, 
+    T.Beneficios
+FROM 
+    TRABAJO T
+INNER JOIN 
+    EMPLEADOR E ON T.IdEmpleador = E.IdEmpleador
+INNER JOIN
+AreaDeTrabajo A ON T.IdAreaDeTrabajo = A.IdAreaDeTrabajo;
+
+//INNER JOIN para ver solicitudes
+SELECT 
+    S.IdSolicitante AS "Código del solicitante",
+    S.Nombre AS "Nombre del solicitante",
+    S.CorreoElectronico AS "Correo Electrónico del solicitante",
+    S.Telefono AS "Teléfono del solicitante",
+    T.Titulo AS "Título del trabajo",
+    A.NombreAreaDetrabajo AS "Área de trabajo",
+    T.Descripcion AS "Descripción del trabajo",
+    T.Direccion AS "Dirección del trabajo",
+    T.Salario AS "Salario",
+    T.Beneficios AS "Beneficios",
+    Sol.FechaSolicitud AS "Fecha de solicitud",
+    Sol.Estado AS "Estado de solicitud"
+FROM 
+    SOLICITUD Sol
+INNER JOIN 
+    SOLICITANTE S ON Sol.IdSolicitante = S.IdSolicitante
+INNER JOIN 
+    TRABAJO T ON Sol.IdTrabajo = T.IdTrabajo
+INNER JOIN
+AreaDeTrabajo A ON T.IdAreaDeTrabajo = A.IdAreaDeTrabajo;
+
+//INNER JOIN PARA VER ROL EN TABLA USUARIOS ESCRITORIO
+SELECT u.IdADmin as "Id", u.Nombre, u.Usuario, u.Contrasena, u.Foto, u.CorreoElectronico, R.Rol, u.IdRol
+FROM UsuarioEscritorio u
+INNER JOIN ROLESCRITORIO R ON u.IdRol = R.IdRol;
+
 
 select * from empleador;
 select * from solicitante;
