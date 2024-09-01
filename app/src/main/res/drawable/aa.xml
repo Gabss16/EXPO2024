@@ -2,11 +2,15 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Sombra en la parte inferior -->
-    <item android:bottom="12dp">
+    <item>
         <shape android:shape="rectangle">
             <corners android:radius="16dp" />
-            <solid android:color="#99000000" /> <!-- Sombra más oscura -->
-            <padding android:left="0dp" android:top="0dp" android:right="0dp" android:bottom="6dp" />
+            <solid android:color="#1D000000" />
+            <padding
+                android:left="2dp"
+                android:top="2dp"
+                android:right="2dp"
+                android:bottom="4dp" />
         </shape>
     </item>
 
@@ -14,7 +18,7 @@
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="16dp" />
-            <solid android:color="#3B4147" />
+            <solid android:color="#858587" />
         </shape>
     </item>
 

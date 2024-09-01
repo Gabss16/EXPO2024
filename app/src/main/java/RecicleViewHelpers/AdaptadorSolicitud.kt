@@ -18,9 +18,10 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
     override fun onBindViewHolder(holder: ViewHolderSolicitud, position: Int) {
         val Solicitud = Datos[position]
 
-        holder.jobTitleTextView .text = Solicitud.IdTrabajo.toString()
-        holder.jobCategoryTextView.text = Solicitud.IdTrabajo.toString()
+        holder.jobTitleTextView .text = Solicitud.TituloTrabajo
+        holder.jobCategoryTextView.text = Solicitud.CategoriaTrabajo.toString()
         holder.statusTextView.text = Solicitud.Estado
+
 
 
     }
