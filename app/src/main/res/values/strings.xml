@@ -9,4 +9,7 @@
     <string name="title_activity_empleadores">Empleadores</string>
     <string name="title_activity_main2">MainActivity2</string>
     <string name="mi_google_maps_api_key">AIzaSyCiIM2fOjEr1ooevE73Iolz82g8VI6exW0</string>
+
+    <string name="selec_ubicacion">Seleccionar ubicacion</string>
+    <string name="btn_listo">Listo</string>
 </resources>

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,51 +7,102 @@
     android:layout_height="match_parent"
     tools:context=".SeleccionarUbicacion">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+ <RelativeLayout
+     android:id="@+id/ToolBarRl"
+     android:layout_width="match_parent"
+     android:layout_height="60dp">
 
+     <!--Regresar-->
+     <ImageButton
+         android:id="@+id/btnRegresar"
+         android:src="@drawable/ic_regresar"
+         android:background="@android:color/transparent"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerVertical="true"
+         android:padding="10dp" />
 
-        <ImageButton
-            android:id="@+id/btnRegresar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerInParent="true"
+         android:text="Seleccione Ubicacion" />
 
-            android:background="@android:color/transparent"
-            android:padding="10dp"
-            android:src="@drawable/ic_regresar" />
+     <!--GPS-->
+     <ImageButton
+         android:id="@+id/btnGps"
+         android:src="@drawable/ic_gps"
+         android:background="@android:color/transparent"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerVertical="true"
+         android:layout_alignParentEnd="true"
+         android:padding="10dp" />
 
-        <TextView
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-    <ImageButton
-        android:id="@+id/btnGPS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:background="@android:color/transparent"
-        android:padding="10dp"
-        android:src="@drawable/ic_gps" />
-
-        <View
-            android:id="@+id/ToolBar"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="674dp"
-            android:background="#ccc" />
-    </RelativeLayout>
+     <View
+         android:layout_width="match_parent"
+         android:layout_height="1dp"
+         android:background="#ccc"
+         android:layout_alignParentBottom="true"
+         />
+ </RelativeLayout>
 
     <fragment
         android:id="@+id/MapFragment"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="675dp"
-        android:layout_marginTop="56dp" />
-    <com.google.android.material.card.MaterialCardView
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ToolBarRl"/>
+
+    <!--Buscar Ubi-->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ToolBarRl"
+        app:cardCornerRadius="8dp"
+        app:cardUseCompatPadding="true">
+
+        <fragment
+
+            android:id="@+id/AutoCompletar"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </androidx.cardview.widget.CardView>
+
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ListoLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="8dp"
+            app:contentPadding="10dp">
+
+            <TextView
+                android:id="@+id/lblugarSelec"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </androidx.cardview.widget.CardView>
+
+        <ImageButton
+            android:id="@+id/btnListo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btnlisto" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
 
 
 </RelativeLayout>

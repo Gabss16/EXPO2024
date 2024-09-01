@@ -55,6 +55,7 @@ class registroSolicitante : AppCompatActivity() {
     lateinit var latitud: String
     lateinit var longitud: String
     lateinit var direccion: String
+    lateinit var txtDireccionSolicitante: EditText
     val uuid = UUID.randomUUID().toString()
     private var fotoSubida = false
     private var fechaNacimientoSeleccionada: String? = null
@@ -415,6 +416,7 @@ class registroSolicitante : AppCompatActivity() {
                     latitud = data.getStringExtra("latitud, 0.0")?: ""
                     longitud = data.getStringExtra("longitud, 0.0")?: ""
                     direccion = data.getStringExtra("direccion") ?: ""
+                    txtDireccionSolicitante.setText(direccion)
                 }
             }
         }

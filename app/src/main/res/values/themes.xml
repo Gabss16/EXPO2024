@@ -6,4 +6,5 @@
     </style>
 
     <style name="Theme.EXPOgbss" parent="Base.Theme.EXPOgbss" />
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar"/>
 </resources>

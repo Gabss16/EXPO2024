@@ -32,8 +32,12 @@
         tools:targetApi="31">
         <activity
             android:name=".SeleccionarUbicacion"
+            android:exported="false" />
+
+        <activity
             android:name=".card_chats"
             android:exported="false" />
+
         <activity
             android:name=".DetallePublicacion"
             android:exported="false" />
