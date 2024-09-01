@@ -11,8 +11,6 @@ class ViewHolderSolicitud (view: View): RecyclerView.ViewHolder(view) {
     var statusTextView = itemView.findViewById<TextView>(R.id.txtRequestStatus)
     var jobTitleTextView = itemView.findViewById<TextView>(R.id.tvJobTitle)
     var jobCategoryTextView = itemView.findViewById<TextView>(R.id.tvJobCategory)
-    var publisherTextView = itemView.findViewById<TextView>(R.id.txtPublicador)
-    var publishedDateTextView = itemView.findViewById<TextView>(R.id.tvJobPublishedDate)
     var acceptButton = itemView.findViewById<MaterialButton>(R.id.btnAceptar)
     var rejectButton = itemView.findViewById<MaterialButton>(R.id.btnRechazar)
 }

@@ -20,8 +20,6 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
 
         holder.jobTitleTextView .text = Solicitud.IdTrabajo.toString()
         holder.jobCategoryTextView.text = Solicitud.IdTrabajo.toString()
-        holder.publisherTextView.text = Solicitud.IdTrabajo.toString()
-        holder.publishedDateTextView.text = Solicitud.IdTrabajo.toString()
         holder.statusTextView.text = Solicitud.Estado
 
 
