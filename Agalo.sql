@@ -30,7 +30,7 @@ CREATE TABLE EMPLEADOR (
     CONSTRAINT FkDepartamentoEmpleador FOREIGN KEY (IdDepartamento) REFERENCES DEPARTAMENTO(IdDepartamento) ON DELETE CASCADE);
 
 CREATE TABLE TRABAJO (
-    IdTrabajo NUMBER PRIMARY KEY, 
+    IdTrabajo INT PRIMARY KEY, 
     Titulo VARCHAR2(50) NOT NULL,
     IdEmpleador VARCHAR2(50) NOT NULL,
     IdAreaDeTrabajo INT,
@@ -70,11 +70,11 @@ CREATE TABLE SOLICITANTE (
     CONSTRAINT FkDepartamentoSolicitante FOREIGN KEY (IdDepartamento) REFERENCES DEPARTAMENTO(IdDepartamento) ON DELETE CASCADE);
     
 CREATE TABLE SOLICITUD (
-    IdSolicitud NUMBER PRIMARY KEY , 
+    IdSolicitud INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 
     IdSolicitante VARCHAR2(50) NOT NULL,
-    IdTrabajo NUMBER NOT NULL,
+    IdTrabajo INT NOT NULL,
     FechaSolicitud VARCHAR2(20) NOT NULL,
-    Estado VARCHAR(10) CHECK (Estado IN ('Activa', 'Finalizada', 'Pendiente')),
+    Estado VARCHAR(10) CHECK (Estado IN ('Aprobada', 'Rechazada', 'Pendiente')),
     CONSTRAINT FKSolicitanteSolicitud FOREIGN KEY (IdSolicitante) REFERENCES SOLICITANTE(IdSolicitante) ON DELETE CASCADE,
     CONSTRAINT FKTrabajoSolicitud FOREIGN KEY (IdTrabajo) REFERENCES TRABAJO(IdTrabajo) ON DELETE CASCADE);
 
@@ -130,20 +130,6 @@ BEGIN
         'Se creó un trabajo con descripción: ' || :OLD.Descripcion, -- Detalles con mensaje personalizado
         :OLD.IdTrabajo
     );
-END;
-
-//Secuencia y trigger para las solicitudes
-CREATE SEQUENCE SolicitudSeq 
-START WITH 1 
-INCREMENT BY 1;
-
-CREATE OR REPLACE TRIGGER TrigSolicitud
-BEFORE INSERT ON SOLICITUD
-FOR EACH ROW 
-BEGIN 
-    SELECT SolicitudSeq.NEXTVAL
-    INTO :NEW.IdSolicitud
-    FROM DUAL;
 END;
 
 //Secuencias y triggers para auto incremento en trabajo
@@ -213,11 +199,6 @@ INSERT INTO ROLESCRITORIO(Rol) Values('Admin');
 INSERT INTO ROLESCRITORIO(Rol) Values('Super admin');
 
 
-//Pruebas 
-begin 
-VerificarCorreoElectronico('Ricardo de paz', 'RicAdmin1', 'ContrasenaEncriptada', 'Foto1', 'prueba@gmail.com', 2);
-end;
-
 //Inner join para ver Trabajo
 SELECT 
     T.IdTrabajo AS "Número de trabajo",
@@ -267,6 +248,37 @@ AreaDeTrabajo A ON T.IdAreaDeTrabajo = A.IdAreaDeTrabajo;
 SELECT u.IdADmin as "Id", u.Nombre, u.Usuario, u.Contrasena, u.Foto, u.CorreoElectronico, R.Rol, u.IdRol
 FROM UsuarioEscritorio u
 INNER JOIN ROLESCRITORIO R ON u.IdRol = R.IdRol;
+
+//INNER JOIN PARA PERFIL SOLICITANTE
+SELECT 
+    s.Nombre, 
+    s.CorreoElectronico, 
+    s.Telefono, 
+    s.Direccion, 
+    d.Nombre, 
+    s.FechaDeNacimiento, 
+    s.Genero, 
+    a.NombreAreaDeTrabajo, 
+    s.Habilidades, 
+    s.Foto 
+FROM 
+    SOLICITANTE s 
+INNER JOIN 
+    DEPARTAMENTO d ON s.IdDepartamento = d.IdDepartamento 
+INNER JOIN 
+    AreaDeTrabajo a ON s.IdAreaDeTrabajo = a.IdAreaDeTrabajo 
+WHERE 
+    s.CorreoElectronico = 'prueba@gmail.com';
+    
+    
+
+
+//Pruebas 
+begin 
+VerificarCorreoElectronico('Ricardo de paz', 'RicAdmin3', 'ContrasenaEncriptada', 'Foto1', 'prueba3@gmail.com', 1);
+end;
+
+select * from usuarioEscritorio;
 
 
 select * from empleador;

@@ -208,6 +208,7 @@ class login : AppCompatActivity() {
                                 nombreEmpleador = esEmpleador.getString("NombreRepresentante")
                                 correoEmpleador = esEmpleador.getString("CorreoElectronico")
                                 numeroEmpleador = esEmpleador.getString("NumeroTelefono")
+                                idDepartamento = esEmpleador.getInt("IdDepartamento")
                                 direccionEmpleador = esEmpleador.getString("Direccion")
                                 sitioWebEmpleador = esEmpleador.getString("SitioWeb") ?: ""
                                 fotoEmpleador = esEmpleador.getString("Foto")

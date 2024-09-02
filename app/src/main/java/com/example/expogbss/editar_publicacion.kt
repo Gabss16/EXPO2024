@@ -145,7 +145,7 @@ class editar_publicacion : AppCompatActivity() {
 
         txtTituloJobEditar.setText(Titulo)
         txtDescripcionJobEditar.setText(Descripcion)
-       // spnDepartamentosEditar.setText(Descripcion)
+        // spnDepartamentosEditar.setText(Descripcion)
         txtUbicacionJobEditar.setText(Direccion)
         txtExperienciaJobEditar.setText(Experiencia)
         txtHabilidadesJobEditar.setText(Requerimientos)
@@ -166,16 +166,17 @@ class editar_publicacion : AppCompatActivity() {
             val SalarioJobEditado = txtSalarioJobEditar.text.toString().toBigDecimalOrNull()
             val TiposTrabajoEditado = spnTiposTrabajoEditar.selectedItem.toString()
 
-                GlobalScope.launch(Dispatchers.IO){
-                    try{
+            GlobalScope.launch(Dispatchers.IO) {
+                try {
 
                     //1- Creo un objeto de la clase de conexion
                     val objConexion = ClaseConexion().cadenaConexion()
-                        val idTrabajo = intent.getIntExtra("IdTrabajo", -1)
+                    val idTrabajo = intent.getIntExtra("IdTrabajo", -1)
 
 
-                        //2- creo una variable que contenga un PrepareStatement
-                    val updateTrabajo = objConexion?.prepareStatement("update TRABAJO set Titulo = ?, IdAreaDeTrabajo = ?,Descripcion  = ?, Direccion = ?, IdDepartamento = ?,  Experiencia= ?, Requerimientos= ?,Salario= ?,Beneficios= ? where IdTrabajo = ?")!!
+                    //2- creo una variable que contenga un PrepareStatement
+                    val updateTrabajo =
+                        objConexion?.prepareStatement("update TRABAJO set Titulo = ?, IdAreaDeTrabajo = ?,Descripcion  = ?, Direccion = ?, IdDepartamento = ?,  Experiencia= ?, Requerimientos= ?,Salario= ?,Beneficios= ? where IdTrabajo = ?")!!
                     updateTrabajo.setString(1, TituloJobEditado)
                     updateTrabajo.setString(2, TiposTrabajoEditado)
                     updateTrabajo.setString(3, DescripcionJobEditado)
@@ -185,7 +186,7 @@ class editar_publicacion : AppCompatActivity() {
                     updateTrabajo.setString(7, HabilidadesJobEditado)
                     updateTrabajo.setBigDecimal(8, SalarioJobEditado)
                     updateTrabajo.setString(9, BeneficiosJobEditado)
-                        updateTrabajo.setInt(10, idTrabajo)
+                    updateTrabajo.setInt(10, idTrabajo)
                     updateTrabajo.executeUpdate()
 
                     withContext(Dispatchers.Main) {
@@ -197,22 +198,21 @@ class editar_publicacion : AppCompatActivity() {
                     }
 
 
-
-                    } catch (e: Exception) {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(
-                                this@editar_publicacion,
-                                "Ocurrió un error al Trabajo. Por favor, intente nuevamente.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            println("Error: ${e.message}")
-                        }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            this@editar_publicacion,
+                            "Ocurrió un error al Trabajo. Por favor, intente nuevamente.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        println("Error: ${e.message}")
                     }
-
                 }
 
+            }
 
 
         }
 
     }
+}
