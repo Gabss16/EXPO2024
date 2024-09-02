@@ -1,15 +1,18 @@
 package com.example.expogbss.ui.home
 
 import RecicleViewHelpers.AdaptadorTrabajos
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.expogbss.Construccion
 import com.example.expogbss.R
 import com.example.expogbss.databinding.FragmentHomeBinding
 import kotlinx.coroutines.CoroutineScope
@@ -37,6 +40,12 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        val construccion = root.findViewById<ImageButton>(R.id.BtnCategoria1)
+        construccion.setOnClickListener{
+            val intent = Intent(context, Construccion::class.java)
+            startActivity(intent)
+        }
 
         val rcvTrabajosPublicados = root.findViewById<RecyclerView>(R.id.rcvTrabajosPublicados)
         rcvTrabajosPublicados.layoutManager = LinearLayoutManager(requireContext())
