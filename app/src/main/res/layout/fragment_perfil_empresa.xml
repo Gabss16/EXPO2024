@@ -157,6 +157,17 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.256" />
 
+                <ImageView
+                    android:id="@+id/btnEditarContrasenaEmpresa"
+                    android:layout_width="180dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="100dp"
+                    android:src="@drawable/editar_contrasena"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.93"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewSitioWeb" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
