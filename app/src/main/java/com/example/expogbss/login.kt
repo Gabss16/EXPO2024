@@ -101,6 +101,8 @@ class login : AppCompatActivity() {
 
         //Botones para ingresar al sistema
         btnSignIn.setOnClickListener {
+//            println("esta es la variable global $IdEmpleador")
+
             correoLogin = txtCorreoLogin.text.toString()
             //obtener idEmpleador
             GlobalScope.launch(Dispatchers.IO) {

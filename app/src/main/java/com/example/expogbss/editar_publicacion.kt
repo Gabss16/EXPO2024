@@ -48,16 +48,17 @@ class editar_publicacion : AppCompatActivity() {
         val BtnIngresoEditado = findViewById<Button>(R.id.BtnIngresoEditado)
 
         val Titulo = intent.getStringExtra("Titulo")
-        val IdAreaDeTrabajo = intent.getStringExtra("IdAreaDeTrabajo")
+        val IdAreaDeTrabajo = intent.getIntExtra("IdAreaDeTrabajo",1)
         val Descripcion = intent.getStringExtra("Descripcion")
         val Direccion = intent.getStringExtra("Direccion")
-        val IdDepartamento = intent.getStringExtra("IdDepartamento")
+        val IdDepartamento = intent.getIntExtra("IdDepartamento", 1)
         val Experiencia = intent.getStringExtra("Experiencia")
         val Requerimientos = intent.getStringExtra("Requerimientos")
         val Estado = intent.getStringExtra("Estado")
         val Salario = intent.getStringExtra("Salario")
         val Beneficios = intent.getStringExtra("Beneficios")
 
+                // Función para hacer el select de los Departamentos
         fun obtenerAreasDeTrabajo(): List<AreaDeTrabajo> {
             val listadoAreaDeTrabajo = mutableListOf<AreaDeTrabajo>()
             val objConexion = ClaseConexion().cadenaConexion()
@@ -83,6 +84,7 @@ class editar_publicacion : AppCompatActivity() {
             }
             return listadoAreaDeTrabajo
         }
+
         CoroutineScope(Dispatchers.IO).launch {
             val listadoAreaDeTrabajo = obtenerAreasDeTrabajo()
             val AreaDeTrabajo = listadoAreaDeTrabajo.map { it.NombreAreaDetrabajo }
@@ -95,8 +97,18 @@ class editar_publicacion : AppCompatActivity() {
                     AreaDeTrabajo
                 )
                 spnTiposTrabajoEditar.adapter = adapter
+
+                // Aquí seleccionamos el departamento basado en el IdDepartamento
+                val posicionSeleccionada =
+                    listadoAreaDeTrabajo.indexOfFirst { it.idAreaDeTrabajo == IdAreaDeTrabajo }
+
+                // Si el departamento existe en la lista, seleccionarlo
+                if (posicionSeleccionada != -1) {
+                    spnTiposTrabajoEditar.setSelection(posicionSeleccionada)
+                }
             }
         }
+
 
         fun obtenerDepartamentos(): List<Departamento> {
             val listadoDepartamento = mutableListOf<Departamento>()
@@ -119,27 +131,38 @@ class editar_publicacion : AppCompatActivity() {
                 statement?.close()
                 objConexion.close()
             } else {
-                Log.e("registroSolicitante", "Connection to database failed")
+                Log.e("registro_empresa", "Connection to database failed")
             }
             return listadoDepartamento
         }
+
         CoroutineScope(Dispatchers.IO).launch {
             val listadoDepartamentos = obtenerDepartamentos()
-            val Departamento = listadoDepartamentos.map { it.Nombre }
+            val nombresDepartamentos = listadoDepartamentos.map { it.Nombre }
 
             withContext(Dispatchers.Main) {
                 // Configuración del adaptador
                 val adapter = ArrayAdapter(
                     this@editar_publicacion, // Usar el contexto adecuado
                     android.R.layout.simple_spinner_dropdown_item,
-                    Departamento
+                    nombresDepartamentos
                 )
                 spnDepartamentosEditar.adapter = adapter
+
+                // Aquí seleccionamos el departamento basado en el IdDepartamento
+                val posicionSeleccionada =
+                    listadoDepartamentos.indexOfFirst { it.Id_departamento == IdDepartamento}
+
+                // Si el departamento existe en la lista, seleccionarlo
+                if (posicionSeleccionada != -1) {
+                    spnDepartamentosEditar.setSelection(posicionSeleccionada)
+                }
             }
         }
 
+
         fun obtenerIdEmpleador(): String {
-            return login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
+            return login.IdEmpleador
         }
 
         val idEmpleador = obtenerIdEmpleador()
@@ -165,30 +188,58 @@ class editar_publicacion : AppCompatActivity() {
             val ExperienciaJobEditado = txtExperienciaJobEditar.text.toString()
             val HabilidadesJobEditado = txtHabilidadesJobEditar.text.toString()
             val BeneficiosJobEditado = txtBeneficiosJobEditar.text.toString()
-            val SalarioJobEditado = txtSalarioJobEditar.text.toString().toBigDecimalOrNull()
+            val SalarioJobEditado = txtSalarioJobEditar.text.toString().toBigDecimal()
             val TiposTrabajoEditado = spnTiposTrabajoEditar.selectedItem.toString()
+
+            println(SalarioJobEditado)
 
             GlobalScope.launch(Dispatchers.IO) {
                 try {
 
                     //1- Creo un objeto de la clase de conexion
                     val objConexion = ClaseConexion().cadenaConexion()
-                    val idTrabajo = intent.getIntExtra("IdTrabajo", -1)
+
+
+                //    val idTrabajo =
+                  //  val DepartamentoNombre =
+                        spnDepartamentosEditar.selectedItem.toString()
+                    // Obtener el id_medicamento desde el Spinner
+                    val Departamento =
+                        obtenerDepartamentos() // Se asume que puedes obtener la lista de medicamentos aquí
+                  //  val DepartamentoSeleccionado =
+                //        Departamento.find { it.Nombre == DepartamentoNombre }
+                //    val idDepartamento =
+                      //  DepartamentoSeleccionado!!.Id_departamento
+
+
+
+
+                    val AreaDeTrabajoNombre =
+                        spnTiposTrabajoEditar.selectedItem.toString()
+
+                    // Obtener el id_medicamento desde el Spinner
+                    val Area =
+                        obtenerAreasDeTrabajo() // Se asume que puedes obtener la lista de medicamentos aquí
+
+                    val AreaSeleccionada =
+                        Area.find { it.NombreAreaDetrabajo == AreaDeTrabajoNombre }
+                    val idAreaDeTrabajo =
+                        AreaSeleccionada!!.idAreaDeTrabajo
 
 
                     //2- creo una variable que contenga un PrepareStatement
                     val updateTrabajo =
                         objConexion?.prepareStatement("update TRABAJO set Titulo = ?, IdAreaDeTrabajo = ?,Descripcion  = ?, Direccion = ?, IdDepartamento = ?,  Experiencia= ?, Requerimientos= ?,Salario= ?,Beneficios= ? where IdTrabajo = ?")!!
                     updateTrabajo.setString(1, TituloJobEditado)
-                    updateTrabajo.setString(2, TiposTrabajoEditado)
+                    updateTrabajo.setInt(2, idAreaDeTrabajo)
                     updateTrabajo.setString(3, DescripcionJobEditado)
                     updateTrabajo.setString(4, UbicacionJobEditado)
-                    updateTrabajo.setString(5, DepartamentosEditado)
+                 //   updateTrabajo.setInt(5, idDepartamento)
                     updateTrabajo.setString(6, ExperienciaJobEditado)
                     updateTrabajo.setString(7, HabilidadesJobEditado)
                     updateTrabajo.setBigDecimal(8, SalarioJobEditado)
                     updateTrabajo.setString(9, BeneficiosJobEditado)
-                    updateTrabajo.setInt(10, idTrabajo)
+                //    updateTrabajo.setInt(10, idTrabajo)
                     updateTrabajo.executeUpdate()
 
                     withContext(Dispatchers.Main) {
