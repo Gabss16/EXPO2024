@@ -46,6 +46,7 @@ class login : AppCompatActivity() {
         lateinit var correoSolicitante: String
         lateinit var numeroSolicitante: String
         lateinit var direccionSolicitante: String
+        lateinit var estadoSolicitante: String
         lateinit var altitudSolicitante: String
         lateinit var latitudSolicitante: String
         lateinit var fechaNacimiento: String
@@ -231,6 +232,7 @@ class login : AppCompatActivity() {
                             numeroSolicitante = esSolicitante.getString("Telefono")
                             direccionSolicitante = esSolicitante.getString("Direccion")
                             idDepartamento = esSolicitante.getInt("IdDepartamento")
+                            estadoSolicitante = esSolicitante.getString("Estado")
                             fechaNacimiento = esSolicitante.getString("FechaDeNacimiento")
                             generoSolicitante = esSolicitante.getString("Genero")
                             areaDeTrabajo = esSolicitante.getInt("IdAreaDeTrabajo")

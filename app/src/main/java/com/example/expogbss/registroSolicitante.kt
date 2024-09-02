@@ -17,13 +17,10 @@ import android.widget.ImageView
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
@@ -73,8 +70,15 @@ class registroSolicitante : AppCompatActivity() {
         val txtTelefonoSolicitante = findViewById<EditText>(R.id.txtTelefonoSolicitante)
         val txtDireccionSolicitante = findViewById<EditText>(R.id.txtDireccionSolicitante)
         val txtHabilidadesSolicitante = findViewById<EditText>(R.id.txtHabilidadesLaborales)
-
         val spDepartamentoSolicitante = findViewById<Spinner>(R.id.spDepartamentoSolicitante)
+        val spGeneroSolicitante = findViewById<Spinner>(R.id.spGeneroSolicitante)
+        val txtFechaSolicitante = findViewById<EditText>(R.id.txtFechaSolicitante)
+        val spAreaDeTrabajoSolicitante = findViewById<Spinner>(R.id.spAreaDeTrabajoSolicitante)
+        val spEstadoSolicitante = findViewById<Spinner>(R.id.spSituacionLaboralSolicitante)
+        val btnTomarFotoSolicitante = findViewById<Button>(R.id.btnTomarFotoSolicitante)
+        val btnCrearCuentaSolicitante = findViewById<ImageButton>(R.id.btnCrearCuentaSolicitante)
+        val btnSubirDesdeGaleriaSolicitante = findViewById<Button>(R.id.btnSubirDesdeGaleriaSolicitante)
+        imgFotoDePerfilSolicitante = findViewById(R.id.imgFotoDePerfilSolicitante)
 
         // Función para hacer el select de los Departamentos
         fun obtenerDepartamentos(): List<Departamento> {
@@ -117,7 +121,7 @@ class registroSolicitante : AppCompatActivity() {
             }
         }
 
-        val txtFechaSolicitante = findViewById<EditText>(R.id.txtFechaSolicitante)
+
         // Mostrar el calendario al hacer click en el EditText txtFechaNacimientoPaciente
         txtFechaSolicitante.setOnClickListener {
             val calendario = Calendar.getInstance()
@@ -145,7 +149,7 @@ class registroSolicitante : AppCompatActivity() {
         }
 
 
-        val spGeneroSolicitante = findViewById<Spinner>(R.id.spGeneroSolicitante)
+
         val listadoGeneros = listOf(
             "Masculino", "Femenino", "Prefiero no decirlo"
         )
@@ -154,7 +158,7 @@ class registroSolicitante : AppCompatActivity() {
         spGeneroSolicitante.adapter = adaptadorDeGeneros
 
 
-        val spAreaDeTrabajoSolicitante = findViewById<Spinner>(R.id.spAreaDeTrabajoSolicitante)
+
 
         // Función para hacer el select del Area de trabajo
         fun obtenerAreasDeTrabajo(): List<AreaDeTrabajo> {
@@ -197,7 +201,7 @@ class registroSolicitante : AppCompatActivity() {
             }
         }
 
-        val spEstadoSolicitante = findViewById<Spinner>(R.id.spSituacionLaboralSolicitante)
+
         val listadoSituacionLaboral = listOf(
             "Empleado", "Desempleado"
         )
@@ -210,11 +214,9 @@ class registroSolicitante : AppCompatActivity() {
         spEstadoSolicitante.adapter = adaptadorDeEstado
 
 
-        imgFotoDePerfilSolicitante = findViewById(R.id.imgFotoDePerfilSolicitante)
-        val btnSubirDesdeGaleriaSolicitante =
-            findViewById<Button>(R.id.btnSubirDesdeGaleriaSolicitante)
-        val btnTomarFotoSolicitante = findViewById<Button>(R.id.btnTomarFotoSolicitante)
-        val btnCrearCuentaSolicitante = findViewById<ImageButton>(R.id.btnCrearCuentaSolicitante)
+
+
+
 
         // Creo la función para encriptar la contraseña
         fun hashSHA256(contraseniaEscrita: String): String {
