@@ -2,6 +2,7 @@ package com.example.expogbss
 
 import RecicleViewHelpers.AdaptadorSolicitud
 import android.os.Bundle
+import android.view.Window
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,7 @@ class DetallePublicacion : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
         setContentView(R.layout.activity_detalle_publicacion)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

@@ -3,6 +3,7 @@ package com.example.expogbss
 import RecicleViewHelpers.AdaptadorPublicacion
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -26,6 +27,7 @@ import modelo.Trabajo
 class editar_publicacion : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
         setContentView(R.layout.activity_editar_publicacion)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
