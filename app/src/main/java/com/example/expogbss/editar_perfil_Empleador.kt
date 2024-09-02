@@ -222,9 +222,9 @@ class editar_perfil_Empleador : AppCompatActivity() {
                                 val DepartamentoNombre =
                                     spDepartamentos.selectedItem.toString()
 
-                                // Obtener el id_medicamento desde el Spinner
+                                // Obtener el id_Departamento desde el Spinner
                                 val Departamento =
-                                    obtenerDepartamentos() // Se asume que puedes obtener la lista de medicamentos aquí
+                                    obtenerDepartamentos() // Se asume que puedes obtener la lista de Departamentos aquí
                                 val DepartamentoSeleccionado =
                                     Departamento.find { it.Nombre == DepartamentoNombre }
                                 val idDepartamento =

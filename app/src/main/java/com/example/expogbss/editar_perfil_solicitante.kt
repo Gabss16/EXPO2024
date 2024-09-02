@@ -5,8 +5,10 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +21,8 @@ import kotlinx.coroutines.withContext
 import modelo.AreaDeTrabajo
 import modelo.ClaseConexion
 import modelo.Departamento
+import org.checkerframework.checker.units.qual.Area
+import java.sql.SQLException
 import java.util.UUID
 
 class editar_perfil_solicitante : AppCompatActivity() {
@@ -62,6 +66,7 @@ class editar_perfil_solicitante : AppCompatActivity() {
         val departamentoSolicitante = login.idDepartamento
         val estadoSolicitante = login.estadoSolicitante
         val areaDeTrabajoSolicitante = login.areaDeTrabajo
+        val btnEditarPerfilSolicitante = findViewById<ImageButton>(R.id.btnEditarPerfilSolicitanteEdit)
 
 
         val idSolicitante = login.IdSolicitante
@@ -182,5 +187,191 @@ class editar_perfil_solicitante : AppCompatActivity() {
                 }
             }
         }
+
+        btnEditarPerfilSolicitante.setOnClickListener {
+            // Deshabilitar el botón para evitar múltiples clicks
+            btnEditarPerfilSolicitante.isEnabled = false
+
+            // Obtener los valores de los EditText
+            val nombreSolicitante = txtNombreSolicitanteEdit.text.toString().trim()
+            val CorreoSolicitante = txtCorreoSolicitanteEdit.text.toString().trim()
+            val TelefonoSolicitante = txtTelefonoSolicitanteEdit.text.toString().trim()
+            val DireccionSolicitante = txtDireccionSolicitanteEdit.text.toString().trim()
+            val HabilidadesSolicitante = txtHabilidadesSolicitanteEdit.text.toString().trim()
+
+            val VerificarTelefono = Regex("^\\d{4}-\\d{4}\$")
+            val verificarCorreo = Regex("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
+
+            // Validaciones de campos vacíos y otros formatos
+            if (nombreSolicitante.isEmpty() || CorreoSolicitante.isEmpty() || TelefonoSolicitante.isEmpty() || DireccionSolicitante.isEmpty()|| HabilidadesSolicitante.isEmpty()) {
+                Toast.makeText(
+                    this@editar_perfil_solicitante,
+                    "Por favor, llenar los espacios obligatorios",
+                    Toast.LENGTH_SHORT
+                ).show()
+                btnEditarPerfilSolicitante.isEnabled = true
+            } else if (!VerificarTelefono.matches(telefonoSolicitante)) {
+                Toast.makeText(
+                    this@editar_perfil_solicitante,
+                    "Ingresar un número de teléfono válido.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                btnEditarPerfilSolicitante.isEnabled = true
+            } else if (!verificarCorreo.matches(correoSolicitante)) {
+                Toast.makeText(
+                    this@editar_perfil_solicitante,
+                    "Ingresar un correo electrónico válido.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                btnEditarPerfilSolicitante.isEnabled = true
+            } else {
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        // Realizar la actualización en la base de datos
+                        val objConexion = ClaseConexion().cadenaConexion()
+
+                        // Comprobar si existe algún Empleador con el mismo teléfono
+                        val comprobarSiExistetelefonoEmpleador =
+                            objConexion?.prepareStatement("SELECT * FROM Empleador WHERE Telefono = ?")!!
+                        comprobarSiExistetelefonoEmpleador.setString(1, TelefonoSolicitante)
+
+                        val existeTelefonoSolicitante =
+                            comprobarSiExistetelefonoEmpleador.executeQuery()
+
+                        if (existeTelefonoSolicitante.next()) {
+                            // Si existe un solicitante con el mismo teléfono
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@editar_perfil_solicitante,
+                                    "Ya existe alguien con ese número de teléfono, por favor ingresa uno distinto.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                btnEditarPerfilSolicitante.isEnabled = true
+                            }
+                        } else {
+                            // Comprobar si existe algún otro Solicitante con el mismo teléfono
+                            val comprobarSiExisteTelefonoSolicitante =
+                                objConexion?.prepareStatement("SELECT * FROM Solicitante WHERE NumeroTelefono = ? AND IDSolicitante != ?")!!
+                            comprobarSiExisteTelefonoSolicitante.setString(1, telefonoSolicitante)
+                            comprobarSiExisteTelefonoSolicitante.setString(2, idSolicitante)
+
+                            val existeTelefonoSolicitante =
+                                comprobarSiExisteTelefonoSolicitante.executeQuery()
+
+                            if (existeTelefonoSolicitante.next()) {
+                                // Si existe otro empleador con el mismo teléfono
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(
+                                        this@editar_perfil_solicitante,
+                                        "Ya existe alguien con ese número de teléfono, por favor, utiliza otro.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    btnEditarPerfilSolicitante.isEnabled = true
+                                }
+                            } else {
+
+                                val DepartamentoNombre =
+                                    spDepartamentoSolicitanteEdit.selectedItem.toString()
+                                val AreaNombre =
+                                    spAreaDeTrabajoSolicitante.selectedItem.toString()
+
+                                // Obtener el id_medicamento desde el Spinner
+                                val Departamento =
+                                    obtenerDepartamentos() // Se asume que puedes obtener la lista de medicamentos aquí
+                                val DepartamentoSeleccionado =
+                                    Departamento.find { it.Nombre == DepartamentoNombre }
+                                val idDepartamento =
+                                    DepartamentoSeleccionado!!.Id_departamento
+
+                                // Obtener el id_medicamento desde el Spinner
+                                val AreaDeTrabajo =
+                                    obtenerArea() // Se asume que puedes obtener la lista de medicamentos aquí
+                                val AreaSeleccionada =
+                                    AreaDeTrabajo.find { it.NombreAreaDetrabajo == AreaNombre }
+                                val idAreaDeTrabajo =
+                                    AreaSeleccionada!!.idAreaDeTrabajo
+
+                                // Actualizar los datos del empleador en la base de datos
+                                val actualizarUsuario = objConexion?.prepareStatement(
+                                    "UPDATE Solicitante SET CorreoElectronico = ?, Nombre = ?, Telefono = ?, Direccion = ?, Habilidades = ?, IdDepartamento = ?, IdAreaDeTrabajo = ? WHERE IdEmpleador = ?"
+                                )!!
+                                actualizarUsuario.setString(1, correoSolicitante)
+                                actualizarUsuario.setString(2, nombreSolicitante)
+                                actualizarUsuario.setString(3, direccionSolicitante)
+                                actualizarUsuario.setString(4, habilidadesSolicitante)
+                                actualizarUsuario.setInt(5, idDepartamento)
+                                actualizarUsuario.setInt(6, idAreaDeTrabajo)
+
+
+                                val filasAfectadas = actualizarUsuario.executeUpdate()
+
+                                if (filasAfectadas > 0) {
+                                    // Actualización exitosa, actualizar variables globales
+                                    login.correoSolicitante = CorreoSolicitante
+                                    login.nombresSolicitante = nombreSolicitante
+                                    login.numeroSolicitante = telefonoSolicitante
+                                    login.direccionSolicitante = direccionSolicitante
+                                    login.habilidades = habilidadesSolicitante
+                                    login.idDepartamento = idDepartamento
+                                    login.areaDeTrabajo = idAreaDeTrabajo
+
+                                    withContext(Dispatchers.Main) {
+                                        AlertDialog.Builder(this@editar_perfil_solicitante)
+                                            .setTitle("Perfil actualizado")
+                                            .setMessage("Los datos del perfil han sido actualizados correctamente.")
+                                            .setPositiveButton("Aceptar", null)
+                                            .show()
+                                    }
+                                } else {
+                                    withContext(Dispatchers.Main) {
+                                        Toast.makeText(
+                                            this@editar_perfil_solicitante,
+                                            "Error al actualizar el perfil.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                            }
+                        }
+                    } catch (e: SQLException) {
+                        when (e.errorCode) {
+                            1 -> { // ORA-00001: unique constraint violated
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(
+                                        this@editar_perfil_solicitante,
+                                        "Ya existe un usuario con ese correo electrónico, por favor ingresa uno distinto.",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
+
+                            else -> {
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(
+                                        this@editar_perfil_solicitante,
+                                        "Error SQL: ${e.message}",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                this@editar_perfil_solicitante,
+                                "Ocurrió un error al actualizar el perfil. Por favor, intente nuevamente.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            println("Error: ${e.message}")
+                        }
+                    } finally {
+                        // Habilitar el botón nuevamente después de completar la coroutine
+                        withContext(Dispatchers.Main) {
+                            btnEditarPerfilSolicitante.isEnabled = true
+                        }
+                    }
+                }
+        }
     }
+}
 }

@@ -53,6 +53,7 @@ class login : AppCompatActivity() {
         lateinit var generoSolicitante: String
         lateinit var habilidades: String
         lateinit var fotoSolicitante: String
+        late
 
         // Otras variables
         var idDepartamento: Int? = null
