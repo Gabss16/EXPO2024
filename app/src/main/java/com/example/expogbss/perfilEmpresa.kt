@@ -47,6 +47,14 @@ class perfilEmpresa : Fragment() {
             startActivity(intent)
         }
 
+        val btnEditarContrasena = root.findViewById<ImageView>(R.id.btnEditarContrasenaEmpresa)
+
+        // Manejar el evento de clic en el botón de editar contraseña
+        btnEditarContrasena.setOnClickListener {
+            // Iniciar la actividad "Cambiar_ContrasenaEmpleador"
+            val intent = Intent(activity, Cambiar_ContrasenaEmpleador::class.java)
+            startActivity(intent)
+        }
         // Cargar datos del perfil
 
         cargarDatosPerfil()

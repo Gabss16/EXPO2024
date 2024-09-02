@@ -6,12 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.expogbss.R
 import com.example.expogbss.databinding.FragmentNotificationsBinding
 import com.example.expogbss.login
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import modelo.ClaseConexion
 
 class NotificationsFragment : Fragment() {
 
@@ -34,21 +40,59 @@ class NotificationsFragment : Fragment() {
         val textViewHabilidades = root.findViewById<TextView>(R.id.textViewHabilidades)
         val imgFotoSolicitante = root.findViewById<ImageView>(R.id.imgFotoSolicitante)
 
-        textViewNombreSolicitante.text = login.nombresSolicitante
-        textViewCorreoSolicitante.text = login.correoSolicitante
-        textViewNumeroSolicitante.text = login.numeroSolicitante
-        textViewDireccionSolicitante.text = login.direccionSolicitante
-//        textViewDepartamento.text = login.departamentoSolicitante
-        textViewFechaSolicitante.text = login.fechaNacimiento
-        textViewGeneroSolicitante.text = login.generoSolicitante
-//        textViewArea.text = login.areaDeTrabajo
-//        textViewHabilidades.text = login.areaDeTrabajo
-        Glide.with(this).load(login.fotoSolicitante).into(imgFotoSolicitante)
+        // Realiza la consulta en un hilo secundario usando corrutinas
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val objConexion = ClaseConexion().cadenaConexion()
 
+                val query = """
+                    SELECT 
+                        s.Nombre, 
+                        s.CorreoElectronico, 
+                        s.Telefono, 
+                        s.Direccion, 
+                        d.Nombre, 
+                        s.FechaDeNacimiento, 
+                        s.Genero, 
+                        a.NombreAreaDeTrabajo, 
+                        s.Habilidades, 
+                        s.Foto 
+                    FROM 
+                        SOLICITANTE s 
+                    INNER JOIN 
+                        DEPARTAMENTO d ON s.IdDepartamento = d.IdDepartamento 
+                    INNER JOIN 
+                        AreaDeTrabajo a ON s.IdAreaDeTrabajo = a.IdAreaDeTrabajo 
+                    WHERE 
+                        s.CorreoElectronico = ?
+                """
 
+                val statement = objConexion?.prepareStatement(query)
+                statement?.setString(1, login.correoLogin)
+                val resultSet = statement?.executeQuery()
 
-
-
+                if (resultSet?.next() == true) {
+                    // Actualiza los TextView en el hilo principal
+                    withContext(Dispatchers.Main) {
+                        textViewNombreSolicitante.text = resultSet.getString(1)
+                        textViewCorreoSolicitante.text = resultSet.getString(2)
+                        textViewNumeroSolicitante.text = resultSet.getString(3)
+                        textViewDireccionSolicitante.text = resultSet.getString(4)
+                        textViewDepartamento.text = resultSet.getString(5)
+                        textViewFechaSolicitante.text = resultSet.getString(6)
+                        textViewGeneroSolicitante.text = resultSet.getString(7)
+                        textViewArea.text = resultSet.getString(8)
+                        textViewHabilidades.text = resultSet.getString(9)
+                        val fotoUrl = resultSet.getString(10)
+                        Glide.with(this@NotificationsFragment).load(fotoUrl).into(imgFotoSolicitante)
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Error al consultar la base de datos", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
         return root
     }
 

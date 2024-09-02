@@ -46,6 +46,7 @@ class login : AppCompatActivity() {
         lateinit var correoSolicitante: String
         lateinit var numeroSolicitante: String
         lateinit var direccionSolicitante: String
+        lateinit var estadoSolicitante: String
         lateinit var altitudSolicitante: String
         lateinit var latitudSolicitante: String
         lateinit var fechaNacimiento: String
@@ -64,9 +65,8 @@ class login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_login)
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -130,9 +130,7 @@ class login : AppCompatActivity() {
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
-                            this@login,
-                            "Error al consultar la base de datos",
-                            Toast.LENGTH_SHORT
+                            this@login, "Error al consultar la base de datos", Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
@@ -160,9 +158,7 @@ class login : AppCompatActivity() {
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
-                            this@login,
-                            "Error al consultar la base de datos",
-                            Toast.LENGTH_SHORT
+                            this@login, "Error al consultar la base de datos", Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
@@ -208,6 +204,7 @@ class login : AppCompatActivity() {
                                 nombreEmpleador = esEmpleador.getString("NombreRepresentante")
                                 correoEmpleador = esEmpleador.getString("CorreoElectronico")
                                 numeroEmpleador = esEmpleador.getString("NumeroTelefono")
+                                idDepartamento = esEmpleador.getInt("IdDepartamento")
                                 direccionEmpleador = esEmpleador.getString("Direccion")
                                 sitioWebEmpleador = esEmpleador.getString("SitioWeb") ?: ""
                                 fotoEmpleador = esEmpleador.getString("Foto")
@@ -230,6 +227,7 @@ class login : AppCompatActivity() {
                             numeroSolicitante = esSolicitante.getString("Telefono")
                             direccionSolicitante = esSolicitante.getString("Direccion")
                             idDepartamento = esSolicitante.getInt("IdDepartamento")
+                            estadoSolicitante = esSolicitante.getString("Estado")
                             fechaNacimiento = esSolicitante.getString("FechaDeNacimiento")
                             generoSolicitante = esSolicitante.getString("Genero")
                             areaDeTrabajo = esSolicitante.getInt("IdAreaDeTrabajo")
@@ -252,8 +250,6 @@ class login : AppCompatActivity() {
                 }
             }
         }
-
-
     }
 }
 
