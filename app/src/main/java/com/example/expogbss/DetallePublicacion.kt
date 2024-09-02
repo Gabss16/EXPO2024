@@ -9,6 +9,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import modelo.ClaseConexion
+import modelo.Solicitud
+import modelo.Trabajo
 
 class DetallePublicacion : AppCompatActivity() {
 
@@ -45,6 +48,52 @@ class DetallePublicacion : AppCompatActivity() {
 
         // Obtener lista de solicitudes (esto es un ejemplo; debes obtenerlas desde tu fuente de datos)
         //val solicitudes = obtenerSolicitudesParaTrabajo()
+
+        fun obtenerSolicitudesParaTrabajo(): List<Solicitud>{
+            val objConexion = ClaseConexion().cadenaConexion()
+            //2 - Creo un statement
+
+            val statement = objConexion?.createStatement()
+            val resultSet = statement?.executeQuery("""
+        SELECT 
+            s.IdSolicitud, 
+            s.IdSolicitante, 
+            s.IdTrabajo, 
+            s.FechaSolicitud, 
+            s.Estado,
+            t.Titulo AS TituloTrabajo,
+            t.IdAreaDeTrabajo AS CategoriaTrabajo
+        FROM SOLICITUD s
+        INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
+    """)!!
+
+            //en esta variable se añaden TODOS los valores de mascotas
+            val listaSolicitud = mutableListOf<Solicitud>()
+
+            while (resultSet.next()) {
+                val IdSolicitud = resultSet.getInt("IdSolicitud")
+                val IdSolicitante = resultSet.getString("IdSolicitante")
+                val IdTrabajo = resultSet.getInt("IdTrabajo")
+                val FechaSolicitud = resultSet.getString("FechaSolicitud")
+                val Estado = resultSet.getString("Estado")
+                val tituloTrabajo = resultSet.getString("TituloTrabajo")
+                val categoriaTrabajo = resultSet.getInt("CategoriaTrabajo")
+
+
+                val solicitud = Solicitud(
+                    IdSolicitud,
+                    IdSolicitante,
+                    IdTrabajo,
+                    FechaSolicitud,
+                    Estado,
+                    tituloTrabajo,
+                    categoriaTrabajo
+                )
+                listaSolicitud.add(solicitud)
+            }
+            return listaSolicitud
+
+        }
 
         // Configurar adaptador para solicitudes
        // solicitudesAdapter = AdaptadorSolicitud(solicitudes)
