@@ -34,6 +34,9 @@
             android:name=".Cambiar_ContrasenaEmpleador"
             android:exported="false" />
         <activity
+            android:name=".editar_perfil_solicitante"
+            android:exported="false" />
+        <activity
             android:name=".editar_publicacion"
             android:exported="false" />
         <activity

@@ -57,7 +57,6 @@ class editar_perfil_Empleador : AppCompatActivity() {
         val txtDireccionEmpleador = findViewById<EditText>(R.id.txtDireccionEmpleadorEditar)
         val txtSitioWebEmpleador = findViewById<EditText>(R.id.txtSitioWebEmpleadorEditar)
         val spDepartamentos = findViewById<Spinner>(R.id.spDepartamentoEditar)
-
         val nombreEmpresa = login.nombreEmpresa
         val correoEmpleador = login.correoEmpleador
         val nombreEmpleador = login.nombreEmpleador
