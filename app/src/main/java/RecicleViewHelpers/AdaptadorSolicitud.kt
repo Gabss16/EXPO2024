@@ -52,6 +52,7 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
         holder.statusTextView.text = Solicitud.Estado
 
         holder.acceptButton.setOnClickListener {
+
             actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Activa")
         }
 
