@@ -13,10 +13,10 @@ import com.example.expogbss.databinding.ActivityEmpleadoresBinding
 class Empleadores : AppCompatActivity() {
 
     private lateinit var binding: ActivityEmpleadoresBinding
-
+//
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+    supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         binding = ActivityEmpleadoresBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -27,11 +27,11 @@ class Empleadores : AppCompatActivity() {
         // menu should be considered as top level destinations.
         navView.setupWithNavController(navController)
 
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.homeEmpresa, R.id.busquedaEmpresa, R.id.perfilEmpresa,R.id.chatEmpresa
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
+//        val appBarConfiguration = AppBarConfiguration(
+//            setOf(
+//                R.id.homeEmpresa, R.id.busquedaEmpresa, R.id.perfilEmpresa,R.id.chatEmpresa
+//            )
+//        )
+//        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 }

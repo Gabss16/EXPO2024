@@ -31,6 +31,9 @@
         android:theme="@style/Theme.Design.Light"
         tools:targetApi="31">
         <activity
+            android:name=".cambiar_contrasena_Solicitante"
+            android:exported="false" />
+        <activity
             android:name=".Cambiar_ContrasenaEmpleador"
             android:exported="false" />
         <activity
