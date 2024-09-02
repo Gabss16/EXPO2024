@@ -2,6 +2,7 @@ package com.example.expogbss
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -22,6 +23,7 @@ import java.util.Locale
 class Detalle_Puesto : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
         setContentView(R.layout.activity_detalle_puesto)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

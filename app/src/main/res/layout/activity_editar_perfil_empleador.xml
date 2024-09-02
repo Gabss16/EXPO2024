@@ -55,45 +55,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textViewNoseasbdas"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Foto de perfil"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.186"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtSitioWebEmpleadorEditar" />
-
-            <Button
-                android:id="@+id/btnSubirFotoEmpleadorEditar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="48dp"
-                android:layout_marginBottom="16dp"
-                android:text="subir foto"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <Button
-                android:id="@+id/btnTomarFotoEmpleadorEditar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="44dp"
-                android:text="tomar foto"
-                app:layout_constraintBottom_toTopOf="@+id/btnSubirFotoEmpleadorEditar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtSitioWebEmpleadorEditar"
-                app:layout_constraintVertical_bias="0.545" />
-
             <EditText
                 android:id="@+id/txtTelefonoEmpleadorEditar"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="22dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
@@ -104,23 +71,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtContrasenaEmpleadorEditar" />
-
-            <EditText
-                android:id="@+id/txtContrasenaEmpleadorEditar"
-                android:layout_width="298dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="22dp"
-                android:background="@drawable/txt_registro"
-                android:ems="10"
-                android:hint="Contraseña"
-                android:inputType="textPassword"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtCorreoEmpleadorEditar" />
 
             <EditText
@@ -128,7 +78,7 @@
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="80dp"
                 android:layout_marginEnd="22dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
@@ -137,32 +87,16 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/txtNombreEmpresaEmpleadorEditar"
-                android:layout_width="298dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="22dp"
-                android:background="@drawable/txt_registro"
-                android:ems="10"
-                android:hint="Empresa (si aplica)"
-                android:inputType="text"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtNombreEmpleadorEditar" />
 
             <EditText
                 android:id="@+id/txtCorreoEmpleadorEditar"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="22dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
@@ -171,15 +105,16 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtNombreEmpresaEmpleadorEditar" />
+                app:layout_constraintTop_toBottomOf="@+id/txtNombreEmpleadorEditar" />
 
             <EditText
                 android:id="@+id/txtDireccionEmpleadorEditar"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="22dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
@@ -188,6 +123,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtTelefonoEmpleadorEditar" />
 
@@ -196,7 +132,7 @@
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="22dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
@@ -214,22 +150,12 @@
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="22dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.533"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtDireccionEmpleadorEditar" />
-
-            <ImageView
-                android:id="@+id/imgFotoDePerfilEmpleador"
-                android:layout_width="84dp"
-                android:layout_height="77dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnSubirFotoEmpleadorEditar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewNoseasbdas"
-                tools:srcCompat="@tools:sample/avatars" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
