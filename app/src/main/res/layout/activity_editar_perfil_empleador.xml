@@ -60,7 +60,7 @@
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="22dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
@@ -69,7 +69,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtCorreoEmpleadorEditar" />
 
@@ -92,28 +92,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/txtNombreEmpresaEmpleadorEditar"
-                android:layout_width="298dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="22dp"
-                android:background="@drawable/txt_registro"
-                android:ems="10"
-                android:hint="Empresa (si aplica)"
-                android:inputType="text"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtNombreEmpleadorEditar" />
-
-            <EditText
                 android:id="@+id/txtCorreoEmpleadorEditar"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="22dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
@@ -122,15 +105,16 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtNombreEmpresaEmpleadorEditar" />
+                app:layout_constraintTop_toBottomOf="@+id/txtNombreEmpleadorEditar" />
 
             <EditText
                 android:id="@+id/txtDireccionEmpleadorEditar"
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
-                android:layout_marginTop="44dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="22dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
@@ -148,7 +132,7 @@
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="22dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
@@ -166,7 +150,7 @@
                 android:layout_width="298dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="22dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="22dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"

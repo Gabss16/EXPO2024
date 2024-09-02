@@ -52,7 +52,6 @@ class editar_perfil_Empleador : AppCompatActivity() {
         }
         // Mando a llamar a todos los elementos de la vista
         val txtNombreEmpleador = findViewById<EditText>(R.id.txtNombreEmpleadorEditar)
-        val txtEmpresaEmpleador = findViewById<EditText>(R.id.txtNombreEmpresaEmpleadorEditar)
         val txtCorreoEmpleador = findViewById<EditText>(R.id.txtCorreoEmpleadorEditar)
         val txtTelefonoEmpleador = findViewById<EditText>(R.id.txtTelefonoEmpleadorEditar)
         val txtDireccionEmpleador = findViewById<EditText>(R.id.txtDireccionEmpleadorEditar)
@@ -69,22 +68,18 @@ class editar_perfil_Empleador : AppCompatActivity() {
 
         val idEmpleador = login.IdEmpleador
 
-        // Deshabilitar los EditText de empresa y contraseña
-        txtEmpresaEmpleador.isEnabled = false
-
         // Asigna los datos a los EditText correspondientes
-        txtEmpresaEmpleador.setText(nombreEmpresa)
         txtCorreoEmpleador.setText(correoEmpleador)
         txtNombreEmpleador.setText(nombreEmpleador)
         txtTelefonoEmpleador.setText(numeroEmpleador)
         txtDireccionEmpleador.setText(direccionEmpleador)
         txtSitioWebEmpleador.setText(sitioWebEmpleador)
 
-//        AlertDialog.Builder(this@editar_perfil_Empleador)
-//            .setTitle("Atención!!")
-//            .setMessage("En esta versión no puedes editar tu contraseña y foto de perfil, se incluirá más adelante.")
-//            .setPositiveButton("Aceptar", null)
-//            .show()
+        AlertDialog.Builder(this@editar_perfil_Empleador)
+            .setTitle("Atención!!")
+            .setMessage("Acá puedes editar la información general de tu perfil, solamente edita los datos que quieras cambiar, lo demás no lo toques.")
+            .setPositiveButton("Aceptar", null)
+            .show()
 
 
         // Función para hacer el select de los Departamentos
@@ -128,7 +123,8 @@ class editar_perfil_Empleador : AppCompatActivity() {
                 spDepartamentos.adapter = adapter
 
                 // Aquí seleccionamos el departamento basado en el IdDepartamento
-                val posicionSeleccionada = listadoDepartamentos.indexOfFirst { it.Id_departamento == departamentoEmpleador }
+                val posicionSeleccionada =
+                    listadoDepartamentos.indexOfFirst { it.Id_departamento == departamentoEmpleador }
 
                 // Si el departamento existe en la lista, seleccionarlo
                 if (posicionSeleccionada != -1) {
@@ -137,16 +133,6 @@ class editar_perfil_Empleador : AppCompatActivity() {
             }
         }
 
-
-//        // Obtener el id_medicamento desde el Spinner
-//        val DepartamentoPerfil =
-//            obtenerDepartamentos() // Se asume que puedes obtener la lista de medicamentos aquí
-//
-//        val posicionSeleccionada =
-//            DepartamentoPerfil.indexOfFirst { it.Id_departamento == departamentoEmpleador }
-//        // Verificar que el ID se encuentre en la lista
-//
-//        spDepartamentos.setSelection(posicionSeleccionada)
 
         println(idEmpleador)
         val btnEditarPerfilEmpleador = findViewById<ImageView>(R.id.btnEditarPerfilEmpleador)
@@ -157,12 +143,11 @@ class editar_perfil_Empleador : AppCompatActivity() {
             btnEditarPerfilEmpleador.isEnabled = false
 
             // Obtener los valores de los EditText
-            val nombreEmpleador = txtNombreEmpleador.text.toString()
-            val CorreoEmpleador = txtCorreoEmpleador.text.toString()
-            val TelefoEmpleador = txtTelefonoEmpleador.text.toString()
-            val DireccionEmpleador = txtDireccionEmpleador.text.toString()
-            val SitioWebEmpleador = txtSitioWebEmpleador.text.toString()
-            val EmpresaEmpleador = txtEmpresaEmpleador.text.toString()
+            val nombreEmpleador = txtNombreEmpleador.text.toString().trim()
+            val CorreoEmpleador = txtCorreoEmpleador.text.toString().trim()
+            val TelefoEmpleador = txtTelefonoEmpleador.text.toString().trim()
+            val DireccionEmpleador = txtDireccionEmpleador.text.toString().trim()
+            val SitioWebEmpleador = txtSitioWebEmpleador.text.toString().trim()
 
             val VerificarTelefono = Regex("^\\d{4}-\\d{4}\$")
             val verificarCorreo = Regex("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
@@ -234,31 +219,40 @@ class editar_perfil_Empleador : AppCompatActivity() {
                                     btnEditarPerfilEmpleador.isEnabled = true
                                 }
                             } else {
+
+                                val DepartamentoNombre =
+                                    spDepartamentos.selectedItem.toString()
+
+                                // Obtener el id_medicamento desde el Spinner
+                                val Departamento =
+                                    obtenerDepartamentos() // Se asume que puedes obtener la lista de medicamentos aquí
+                                val DepartamentoSeleccionado =
+                                    Departamento.find { it.Nombre == DepartamentoNombre }
+                                val idDepartamento =
+                                    DepartamentoSeleccionado!!.Id_departamento
+
                                 // Actualizar los datos del empleador en la base de datos
                                 val actualizarUsuario = objConexion?.prepareStatement(
-                                    "UPDATE EMPLEADOR SET CorreoElectronico = ?, NumeroTelefono = ?, Direccion = ?, SitioWeb = ?, NombreRepresentante = ?, Departamento = ? WHERE IdEmpleador = ?"
+                                    "UPDATE EMPLEADOR SET CorreoElectronico = ?, NumeroTelefono = ?, Direccion = ?, SitioWeb = ?, NombreRepresentante = ?, IdDepartamento = ? WHERE IdEmpleador = ?"
                                 )!!
                                 actualizarUsuario.setString(1, CorreoEmpleador)
                                 actualizarUsuario.setString(2, TelefoEmpleador)
                                 actualizarUsuario.setString(3, DireccionEmpleador)
                                 actualizarUsuario.setString(4, SitioWebEmpleador)
                                 actualizarUsuario.setString(5, nombreEmpleador)
-                                actualizarUsuario.setString(
-                                    6,
-                                    spDepartamentos.selectedItem.toString()
-                                )
+                                actualizarUsuario.setInt(6, idDepartamento)
                                 actualizarUsuario.setString(7, idEmpleador)
 
                                 val filasAfectadas = actualizarUsuario.executeUpdate()
 
                                 if (filasAfectadas > 0) {
                                     // Actualización exitosa, actualizar variables globales
-                                    login.nombreEmpresa = EmpresaEmpleador
                                     login.correoEmpleador = CorreoEmpleador
-                                    login.nombreEmpleador = nombreEmpleador
                                     login.numeroEmpleador = TelefoEmpleador
                                     login.direccionEmpleador = DireccionEmpleador
                                     login.sitioWebEmpleador = SitioWebEmpleador
+                                    login.nombreEmpleador = nombreEmpleador
+                                    login.idDepartamento = idDepartamento
 
                                     withContext(Dispatchers.Main) {
                                         AlertDialog.Builder(this@editar_perfil_Empleador)
