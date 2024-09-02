@@ -217,15 +217,13 @@ class SeleccionarUbicacion : AppCompatActivity() ,  OnMapReadyCallback{
     private fun agregarMarcador(latlng: LatLng, titulo: String, direccion: String){
         mMap!!.clear()
         try {
-        val markerOptions = MarkerOptions()
+            val markerOptions = MarkerOptions()
             markerOptions.position(latlng)
             markerOptions.title("$titulo")
             markerOptions.snippet("$direccion")
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-
             mMap!!.addMarker(markerOptions)
             mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, DEFAULT_ZOOM.toFloat()))
-
             biding.ListoLL.visibility = View.VISIBLE
             biding.lblugarSelec.text = direccion
         }catch (e:Exception){
