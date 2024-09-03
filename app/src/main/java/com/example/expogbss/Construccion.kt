@@ -1,13 +1,17 @@
 package com.example.expogbss
 
 import RecicleViewHelpers.AdaptadorTrabajos
+import android.content.Intent
 import android.os.Bundle
+import android.widget.EditText
+import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.expogbss.ui.home.HomeFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +32,12 @@ class Construccion : AppCompatActivity() {
 
         val rcvTrabajosPublicados = findViewById<RecyclerView>(R.id.rcvConstruccion)
         rcvTrabajosPublicados.layoutManager = LinearLayoutManager(this)
+
+        val salir = findViewById<ImageButton>(R.id.btnSalir1)
+        salir.setOnClickListener{
+            val intent = Intent(this, HomeFragment::class.java)
+            startActivity(intent)
+        }
 
 
         fun obtenerDatos(): List<Trabajo> {

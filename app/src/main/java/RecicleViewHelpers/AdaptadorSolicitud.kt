@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.expogbss.R
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -52,12 +53,12 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
         holder.statusTextView.text = Solicitud.Estado
 
         holder.acceptButton.setOnClickListener {
-
-            actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Activa")
+            actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Aprobada")
+            CoroutineScope(Dispatchers.IO)
         }
 
         holder.rejectButton.setOnClickListener {
-            actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Finalizada")
+            actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Rechazada")
         }
 
     }

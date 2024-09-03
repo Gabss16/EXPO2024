@@ -78,16 +78,20 @@ class Detalle_Puesto : AppCompatActivity() {
         val btnSolicitar = findViewById<ImageButton>(R.id.btnSolicitar)
         btnSolicitar.setOnClickListener {
             enviarSolicitud()
-
-
     }
-
     }
     private fun enviarSolicitud() {
-        val idTrabajo = intent.getIntExtra("IdTrabajo", 1)
+
+        //el numero hay que cambiarlo dependiendo del idTrabjo que aparezca en la base de datos
+        //luego luego hay que hacer una funcion para que no pase esto
+        val idTrabajo = intent.getIntExtra("IdTrabajo", 24)
+
         val idSolicitante = IdSolicitante
         val fechaSolicitud = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val estado = "Pendiente"
+
+        println("Este es el idTrabajo:" + idTrabajo)
+        println("Este es el idSolicitante:" + idSolicitante)
 
         CoroutineScope(Dispatchers.IO).launch {
             var objConexion: Connection? = null
