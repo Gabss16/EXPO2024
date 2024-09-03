@@ -31,12 +31,39 @@
         android:theme="@style/Theme.Design.Light"
         tools:targetApi="31">
         <activity
+            android:name=".educacion"
+            android:exported="false" />
+        <activity
+            android:name=".ventas"
+            android:exported="false" />
+        <activity
+            android:name=".sp"
+            android:exported="false" />
+        <activity
+            android:name=".hosteleria"
+            android:exported="false" />
+        <activity
+            android:name=".Salud"
+            android:exported="false" />
+        <activity
+            android:name=".delivery"
+            android:exported="false" />
+        <activity
+            android:name=".remoto"
+            android:exported="false" />
+        <activity
+            android:name=".Freelance"
+            android:exported="false" />
+        <activity
+            android:name=".Domestico"
+            android:exported="false" />
+        <activity
             android:name=".Construccion"
-             android:exported="false" />
-       <activity
+            android:exported="false" />
+        <activity
             android:name=".Cambiar_ContrasenaEmpleador"
             android:exported="false" />
-       <activity
+        <activity
             android:name=".editar_perfil_solicitante"
             android:exported="false" />
         <activity

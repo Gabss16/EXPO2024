@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Construccion">
+    tools:context=".sp">
 
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="388dp"
@@ -19,13 +19,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/construccion"></com.airbnb.lottie.LottieAnimationView>
+        app:lottie_rawRes="@raw/profesiones"></com.airbnb.lottie.LottieAnimationView>
 
     <TextView
-        android:id="@+id/textView27"
+        android:id="@+id/tvServiciosProfesionalesTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Construccion"
+        android:text="Servicios Profesionales"
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +35,7 @@
         app:layout_constraintVertical_bias="0.043" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvConstruccion"
+        android:id="@+id/rcvServiciosProfesionales"
         android:layout_width="385dp"
         android:layout_height="576dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,6 +43,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.619" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
