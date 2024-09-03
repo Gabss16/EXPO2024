@@ -13,8 +13,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.expogbss.Construccion
+import com.example.expogbss.Domestico
+import com.example.expogbss.Freelance
 import com.example.expogbss.R
+import com.example.expogbss.Salud
 import com.example.expogbss.databinding.FragmentHomeBinding
+import com.example.expogbss.delivery
+import com.example.expogbss.educacion
+import com.example.expogbss.hosteleria
+import com.example.expogbss.sp
+import com.example.expogbss.ventas
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,8 +50,54 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         val construccion = root.findViewById<ImageButton>(R.id.BtnCategoria1)
+        val freelancer = root.findViewById<ImageButton>(R.id.BtnCategoria3)
+        val domestico = root.findViewById<ImageButton>(R.id.BtnCategoria2)
+        val delivery = root.findViewById<ImageButton>(R.id.BtnCategoria4)
+        val salud = root.findViewById<ImageButton>(R.id.BtnCategoria5)
+        val remoto = root.findViewById<ImageButton>(R.id.BtnCategoria10)
+        val sp = root.findViewById<ImageButton>(R.id.BtnCategoria9)
+        val cliente = root.findViewById<ImageButton>(R.id.BtnCategoria8)
+        val educacion = root.findViewById<ImageButton>(R.id.BtnCategoria7)
+        val hotel = root.findViewById<ImageButton>(R.id.BtnCategoria6)
         construccion.setOnClickListener{
             val intent = Intent(context, Construccion::class.java)
+            startActivity(intent)
+        }
+        freelancer.setOnClickListener{
+            val intent = Intent(context, Freelance::class.java)
+            startActivity(intent)
+        }
+
+        domestico.setOnClickListener{
+            val intent = Intent(context, Domestico::class.java)
+            startActivity(intent)
+        }
+        delivery.setOnClickListener{
+            val intent = Intent(context, delivery::class.java)
+            startActivity(intent)
+        }
+        salud.setOnClickListener{
+            val intent = Intent(context, Salud::class.java)
+            startActivity(intent)
+        }
+        remoto.setOnClickListener{
+            val intent = Intent(context, Construccion::class.java)
+            startActivity(intent)
+        }
+        sp.setOnClickListener{
+            val intent = Intent(context, sp::class.java)
+            startActivity(intent)
+        }
+        cliente.setOnClickListener{
+            val intent = Intent(context, ventas::class.java)
+            startActivity(intent)
+        }
+        educacion.setOnClickListener{
+            val intent = Intent(context, educacion::class.java)
+            startActivity(intent)
+        }
+        hotel.setOnClickListener{
+            val intent = Intent(context, hosteleria::class.java)
             startActivity(intent)
         }
 

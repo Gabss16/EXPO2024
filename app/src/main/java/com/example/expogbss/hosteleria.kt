@@ -15,18 +15,18 @@ import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
 import modelo.Trabajo
 
-class Construccion : AppCompatActivity() {
+class hosteleria : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_construccion)
+        setContentView(R.layout.activity_hosteleria)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        val rcvTrabajosPublicados = findViewById<RecyclerView>(R.id.rcvConstruccion)
+        val rcvTrabajosPublicados = findViewById<RecyclerView>(R.id.rcvHosteleria)
         rcvTrabajosPublicados.layoutManager = LinearLayoutManager(this)
 
 
@@ -37,7 +37,7 @@ class Construccion : AppCompatActivity() {
             //2 - Creo un statement
             //El símbolo de pregunta es pq los datos pueden ser nulos
             val statement = objConexion?.createStatement()
-            val resultSet = statement?.executeQuery("SELECT * FROM TRABAJO WHERE IdAreaDeTrabajo = 5")!!
+            val resultSet = statement?.executeQuery("SELECT * FROM TRABAJO WHERE IdAreaDeTrabajo = 7")!!
 
 
             //en esta variable se añaden TODOS los valores de mascotas

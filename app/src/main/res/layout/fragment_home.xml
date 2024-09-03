@@ -64,11 +64,10 @@
                    android:backgroundTint="#366461"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="0.03"
+                   app:layout_constraintHorizontal_bias="0.022"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toTopOf="parent"
                    app:layout_constraintVertical_bias="0.0" />
-
 
                <ImageButton
                    android:id="@+id/BtnCategoria2"
@@ -78,11 +77,10 @@
                    android:backgroundTint="#4C536D"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="0.367"
+                   app:layout_constraintHorizontal_bias="0.142"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toTopOf="parent"
-                   app:layout_constraintVertical_bias="0.0" />
-
+                   app:layout_constraintVertical_bias="0.027" />
 
                <ImageButton
                    android:id="@+id/BtnCategoria3"
@@ -92,23 +90,24 @@
                    android:backgroundTint="#376436"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="0.706"
+                   app:layout_constraintHorizontal_bias="0.257"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toTopOf="parent"
-                   app:layout_constraintVertical_bias="0.0" />
+                   app:layout_constraintVertical_bias="0.027" />
 
                <ImageButton
                    android:id="@+id/BtnCategoria4"
                    android:layout_width="60dp"
                    android:layout_height="60dp"
+                   android:layout_marginStart="15dp"
                    android:background="@drawable/circulos"
                    android:backgroundTint="#426436"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="1.0"
-                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintHorizontal_bias="0.0"
+                   app:layout_constraintStart_toEndOf="@+id/BtnCategoria3"
                    app:layout_constraintTop_toTopOf="parent"
-                   app:layout_constraintVertical_bias="0.0" />
+                   app:layout_constraintVertical_bias="0.027" />
 
                <TextView
                    android:id="@+id/Circulo1"
@@ -127,14 +126,14 @@
                    android:id="@+id/Circulo2"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:text="Hogar"
+                   android:text="Domestico"
                    android:textSize="12sp"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="0.38"
+                   app:layout_constraintHorizontal_bias="0.145"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toBottomOf="@+id/BtnCategoria2"
-                   app:layout_constraintVertical_bias="0.4" />
+                   app:layout_constraintVertical_bias="0.263" />
 
                <TextView
                    android:id="@+id/Circulo3"
@@ -144,22 +143,187 @@
                    android:textSize="12sp"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="0.708"
+                   app:layout_constraintHorizontal_bias="0.255"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toBottomOf="@+id/BtnCategoria3"
-                   app:layout_constraintVertical_bias="0.6" />
+                   app:layout_constraintVertical_bias="0.263" />
 
                <TextView
                    android:id="@+id/Circulo4"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_marginStart="41dp"
-                   android:layout_marginTop="2dp"
-                   android:text="Entregas"
+                   android:layout_marginStart="22dp"
+                   android:layout_marginTop="8dp"
+                   android:text="delivery"
                    android:textSize="12sp"
                    app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.0"
                    app:layout_constraintStart_toEndOf="@+id/Circulo3"
                    app:layout_constraintTop_toBottomOf="@+id/BtnCategoria4" />
+
+               <ImageButton
+                   android:id="@+id/BtnCategoria5"
+                   android:layout_width="60dp"
+                   android:layout_height="60dp"
+                   android:background="@drawable/circulos"
+                   android:backgroundTint="#366461"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.467"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toTopOf="parent"
+                   app:layout_constraintVertical_bias="0.027" />
+
+               <TextView
+                   android:id="@+id/Circulo5"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Salud"
+                   android:textSize="12sp"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.463"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/BtnCategoria5"
+                   app:layout_constraintVertical_bias="0.263" />
+
+               <ImageButton
+                   android:id="@+id/BtnCategoria6"
+                   android:layout_width="60dp"
+                   android:layout_height="60dp"
+                   android:layout_marginStart="700dp"
+                   android:background="@drawable/circulos"
+                   android:backgroundTint="#4C536D"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="1.0"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toTopOf="parent"
+                   app:layout_constraintVertical_bias="0.111" />
+
+               <TextView
+                   android:id="@+id/Circulo6"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Hostelería"
+                   android:textSize="12sp"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="1.70"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/BtnCategoria6"
+                   app:layout_constraintVertical_bias="0.2" />
+
+               <ImageButton
+                   android:id="@+id/BtnCategoria7"
+                   android:layout_width="60dp"
+                   android:layout_height="60dp"
+                   android:background="@drawable/circulos"
+                   android:backgroundTint="#7C5C5C"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.885"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toTopOf="parent"
+                   app:layout_constraintVertical_bias="0.027" />
+
+               <TextView
+                   android:id="@+id/Circulo7"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="10dp"
+                   android:text="Educacion"
+                   android:textSize="12sp"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.866"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/BtnCategoria7"
+                   app:layout_constraintVertical_bias="0.157" />
+
+               <ImageButton
+                   android:id="@+id/BtnCategoria8"
+                   android:layout_width="60dp"
+                   android:layout_height="60dp"
+                   android:background="@drawable/circulos"
+                   android:backgroundTint="#9B7F7F"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.78"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toTopOf="parent"
+                   app:layout_constraintVertical_bias="0.0" />
+
+               <TextView
+                   android:id="@+id/Circulo8"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="10dp"
+                   android:text="Ventas"
+                   android:textSize="12sp"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.774"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/BtnCategoria8"
+                   app:layout_constraintVertical_bias="0.2" />
+
+               <ImageButton
+                   android:id="@+id/BtnCategoria9"
+                   android:layout_width="60dp"
+                   android:layout_height="60dp"
+                   android:background="@drawable/circulos"
+                   android:backgroundTint="#B7A5A0"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.678"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toTopOf="parent"
+                   app:layout_constraintVertical_bias="0.027" />
+
+               <TextView
+                   android:id="@+id/Circulo9"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="10dp"
+                   android:text="Servicios"
+                   android:textSize="12sp"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.667"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/BtnCategoria9"
+                   app:layout_constraintVertical_bias="0.263" />
+
+               <ImageButton
+                   android:id="@+id/BtnCategoria10"
+                   android:layout_width="60dp"
+                   android:layout_height="60dp"
+                   android:layout_marginStart="13dp"
+                   android:layout_marginEnd="300dp"
+                   android:background="@drawable/circulos"
+                   android:backgroundTint="#B2B2B2"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintStart_toEndOf="@+id/BtnCategoria5"
+                   app:layout_constraintTop_toTopOf="parent"
+                   app:layout_constraintVertical_bias="0.0" />
+
+               <TextView
+                   android:id="@+id/Circulo10"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="10dp"
+                   android:text="Remotos"
+                   android:textSize="12sp"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.565"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/BtnCategoria10"
+                   app:layout_constraintVertical_bias="0.2" />
+
+
           </androidx.constraintlayout.widget.ConstraintLayout>
      </HorizontalScrollView>
 
