@@ -7,7 +7,7 @@
     android:layout_margin="0dp"
     android:backgroundTint="#00FFFFFF"
     app:cardCornerRadius="12dp"
-    app:cardElevation="0dp">
+    app:cardElevation="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,29 +18,6 @@
 
         <!-- Título del trabajo -->
 
-        <ImageView
-            android:id="@+id/imageView15"
-            android:layout_width="373dp"
-            android:layout_height="131dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/aa" />
-
-        <TextView
-            android:id="@+id/txtRequestStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:background="@drawable/solicitud"
-            android:padding="4dp"
-            android:text="Pendiente"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <!-- Categoría del trabajo -->
 
         <!-- Publicador -->
@@ -48,6 +25,20 @@
         <!-- Fecha de publicación -->
 
         <!-- Botones de acción -->
+
+        <TextView
+            android:id="@+id/txtRequestStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/solicitud"
+            android:padding="4dp"
+            android:text="Pendiente"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvJobTitle"

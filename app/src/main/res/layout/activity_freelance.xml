@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Construccion">
+    tools:context=".Freelance">
 
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="388dp"
@@ -19,13 +19,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/construccion"></com.airbnb.lottie.LottieAnimationView>
+        app:lottie_rawRes="@raw/si"></com.airbnb.lottie.LottieAnimationView>
 
     <TextView
-        android:id="@+id/textView27"
+        android:id="@+id/tvFreelanceTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Construccion"
+        android:text="Freelance"
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +35,7 @@
         app:layout_constraintVertical_bias="0.043" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvConstruccion"
+        android:id="@+id/rcvFreelance"
         android:layout_width="385dp"
         android:layout_height="576dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,19 +43,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.619" />
-
-    <ImageButton
-        android:id="@+id/btnSalir1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.983"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.004"
-        app:srcCompat="@drawable/reject" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

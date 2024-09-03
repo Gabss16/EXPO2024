@@ -16,7 +16,7 @@ class solicitante : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         binding = ActivitySolicitanteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -27,11 +27,14 @@ class solicitante : AppCompatActivity() {
         // menu should be considered as top level destinations.
         navView.setupWithNavController(navController)
 
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.chat
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
+//        val appBarConfiguration = AppBarConfiguration(
+//            setOf(
+//                R.id.navigation_home,
+//                R.id.navigation_dashboard,
+//                R.id.navigation_notifications,
+//                R.id.chat
+//            )
+//        )
+//        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 }

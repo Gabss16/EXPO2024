@@ -5,10 +5,7 @@
         android:icon="@drawable/logom_home"
         android:title="" />
 
-    <item
-        android:id="@+id/busquedaEmpresa"
-        android:icon="@drawable/logom_busqueda"
-        android:title="" />
+
     <item
         android:id="@+id/perfilEmpresa"
         android:icon="@drawable/logom_perfil"
