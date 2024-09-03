@@ -1,5 +1,6 @@
 package com.example.expogbss
 
+import RecicleViewHelpers.AdaptadorMSolicitud
 import RecicleViewHelpers.AdaptadorSolicitud
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
 import modelo.Solicitud
 
@@ -34,6 +39,8 @@ class FirstFragment : Fragment() {
         }
     }
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,7 +48,7 @@ class FirstFragment : Fragment() {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_first, container, false)
 
-         lateinit var solicitudesAdapter: AdaptadorSolicitud
+
 
         val rcvMSolis = root.findViewById<RecyclerView>(R.id.rcvMisSolicitudes)
 
@@ -94,8 +101,14 @@ class FirstFragment : Fragment() {
         }
 
         // Configurar adaptador para solicitudes
-        // solicitudesAdapter = AdaptadorSolicitud(solicitudes)
-        rcvMSolis.adapter = solicitudesAdapter
+        CoroutineScope(Dispatchers.IO).launch {
+            val solicitudesDb = obtenerSolicitudesParaTrabajo()
+            withContext(Dispatchers.Main) {
+                val adapter = AdaptadorMSolicitud(solicitudesDb)
+                rcvMSolis.adapter = adapter
+            }
+        }
+
 
         return root
     }
