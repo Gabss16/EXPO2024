@@ -3,7 +3,7 @@ package modelo
 import oracle.sql.DATE
 
 class Solicitud(
-    val IdSolicitud: Number,
+    val IdSolicitud: Int,
     val IdSolicitante: String,
     val IdTrabajo: Number,
     val FechaSolicitud: String, // Usar LocalDate o Date si quieres trabajar con fechas

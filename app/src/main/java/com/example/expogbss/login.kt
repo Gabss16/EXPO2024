@@ -54,6 +54,7 @@ class login : AppCompatActivity() {
         lateinit var habilidades: String
         lateinit var fotoSolicitante: String
 
+
         // Otras variables
         var idDepartamento: Int? = null
         var areaDeTrabajo: Int? = null

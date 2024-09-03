@@ -1,17 +1,31 @@
 package com.example.expogbss.ui.home
 
 import RecicleViewHelpers.AdaptadorTrabajos
+import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.expogbss.Construccion
+import com.example.expogbss.Domestico
+import com.example.expogbss.Freelance
 import com.example.expogbss.R
+import com.example.expogbss.Salud
 import com.example.expogbss.databinding.FragmentHomeBinding
+import com.example.expogbss.delivery
+import com.example.expogbss.educacion
+import com.example.expogbss.hosteleria
+import com.example.expogbss.sp
+import com.example.expogbss.ventas
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,6 +51,62 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        val construccion = root.findViewById<ImageButton>(R.id.BtnCategoria1)
+        val freelancer = root.findViewById<ImageButton>(R.id.BtnCategoria3)
+        val domestico = root.findViewById<ImageButton>(R.id.BtnCategoria2)
+        val delivery = root.findViewById<ImageButton>(R.id.BtnCategoria4)
+        val salud = root.findViewById<ImageButton>(R.id.BtnCategoria5)
+        val remoto = root.findViewById<ImageButton>(R.id.BtnCategoria10)
+        val sp = root.findViewById<ImageButton>(R.id.BtnCategoria9)
+        val cliente = root.findViewById<ImageButton>(R.id.BtnCategoria8)
+        val educacion = root.findViewById<ImageButton>(R.id.BtnCategoria7)
+        val hotel = root.findViewById<ImageButton>(R.id.BtnCategoria6)
+
+        val txtBuscar = root.findViewById<EditText>(R.id.txtBuscar)
+
+
+        construccion.setOnClickListener{
+            val intent = Intent(context, Construccion::class.java)
+            startActivity(intent)
+        }
+        freelancer.setOnClickListener{
+            val intent = Intent(context, Freelance::class.java)
+            startActivity(intent)
+        }
+
+        domestico.setOnClickListener{
+            val intent = Intent(context, Domestico::class.java)
+            startActivity(intent)
+        }
+        delivery.setOnClickListener{
+            val intent = Intent(context, delivery::class.java)
+            startActivity(intent)
+        }
+        salud.setOnClickListener{
+            val intent = Intent(context, Salud::class.java)
+            startActivity(intent)
+        }
+        remoto.setOnClickListener{
+            val intent = Intent(context, Construccion::class.java)
+            startActivity(intent)
+        }
+        sp.setOnClickListener{
+            val intent = Intent(context, sp::class.java)
+            startActivity(intent)
+        }
+        cliente.setOnClickListener{
+            val intent = Intent(context, ventas::class.java)
+            startActivity(intent)
+        }
+        educacion.setOnClickListener{
+            val intent = Intent(context, educacion::class.java)
+            startActivity(intent)
+        }
+        hotel.setOnClickListener{
+            val intent = Intent(context, hosteleria::class.java)
+            startActivity(intent)
+        }
 
         val rcvTrabajosPublicados = root.findViewById<RecyclerView>(R.id.rcvTrabajosPublicados)
         rcvTrabajosPublicados.layoutManager = LinearLayoutManager(requireContext())
@@ -98,6 +168,32 @@ class HomeFragment : Fragment() {
             withContext(Dispatchers.Main) {
                 val adapter = AdaptadorTrabajos(TrabajoDb)
                 rcvTrabajosPublicados.adapter = adapter
+
+                txtBuscar.addTextChangedListener(object : TextWatcher{
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+
+                        adapter.filtrar(s.toString())
+
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {
+
+                    }
+                })
             }
         }
 
