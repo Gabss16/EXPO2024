@@ -102,67 +102,67 @@ class login : AppCompatActivity() {
         //Botones para ingresar al sistema
         btnSignIn.setOnClickListener {
             correoLogin = txtCorreoLogin.text.toString()
-            //obtener idEmpleador
-            GlobalScope.launch(Dispatchers.IO) {
-                try {
-                    val objConexion = ClaseConexion().cadenaConexion()
+//            //obtener idEmpleador
+//            GlobalScope.launch(Dispatchers.IO) {
+//                try {
+//                    val objConexion = ClaseConexion().cadenaConexion()
+//
+//                    // Preparar la consulta para obtener IdEmpleador
+//                    val resultSet =
+//                        objConexion?.prepareStatement("SELECT IdEmpleador FROM EMPLEADOR WHERE CorreoElectronico = ?")
+//                    resultSet?.setString(1, correoLogin)
+//
+//                    // Ejecutar la consulta y obtener el resultado
+//                    val resultado = resultSet?.executeQuery()
+//
+//                    // Verificar si se encontró un resultado
+//                    if (resultado?.next() == true) {
+//                        IdEmpleador = resultado.getString("IdEmpleador")
+//                        // Ahora IdEmpleador tiene el valor obtenido de la base de datos
+//                    } else {
+//                        // Manejar caso donde no se encontró IdEmpleador (correo no existe)
+//                        withContext(Dispatchers.Main) {
+//                            Toast.makeText(this@login, "Correo no encontrado", Toast.LENGTH_SHORT)
+//                                .show()
+//                        }
+//                        return@launch  // Salir del bloque de código si no se encontró el correo
+//                    }
+//                } catch (e: Exception) {
+//                    withContext(Dispatchers.Main) {
+//                        Toast.makeText(
+//                            this@login, "Error al consultar la base de datos", Toast.LENGTH_SHORT
+//                        ).show()
+//                    }
+//                }
+//            }
 
-                    // Preparar la consulta para obtener IdEmpleador
-                    val resultSet =
-                        objConexion?.prepareStatement("SELECT IdEmpleador FROM EMPLEADOR WHERE CorreoElectronico = ?")
-                    resultSet?.setString(1, correoLogin)
-
-                    // Ejecutar la consulta y obtener el resultado
-                    val resultado = resultSet?.executeQuery()
-
-                    // Verificar si se encontró un resultado
-                    if (resultado?.next() == true) {
-                        IdEmpleador = resultado.getString("IdEmpleador")
-                        // Ahora IdEmpleador tiene el valor obtenido de la base de datos
-                    } else {
-                        // Manejar caso donde no se encontró IdEmpleador (correo no existe)
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(this@login, "Correo no encontrado", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                        return@launch  // Salir del bloque de código si no se encontró el correo
-                    }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            this@login, "Error al consultar la base de datos", Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-
-            //obtener idSolicitante
-            GlobalScope.launch(Dispatchers.IO) {
-                try {
-                    val objConexion = ClaseConexion().cadenaConexion()
-
-                    // Preparar la consulta para obtener IdSolicitante
-                    val resultSetSolicitante =
-                        objConexion?.prepareStatement("SELECT IdSolicitante FROM SOLICITANTE WHERE CorreoElectronico = ?")
-                    resultSetSolicitante?.setString(1, correoLogin)
-
-                    // Ejecutar la consulta y obtener el resultado
-                    val resultadoSolicitante = resultSetSolicitante?.executeQuery()
-
-                    // Verificar si se encontró un resultado
-                    if (resultadoSolicitante?.next() == true) {
-                        IdSolicitante = resultadoSolicitante.getString("IdSolicitante")
-                    } else {
-                        IdSolicitante = ""
-                    }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            this@login, "Error al consultar la base de datos", Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
+//            //obtener idSolicitante
+//            GlobalScope.launch(Dispatchers.IO) {
+//                try {
+//                    val objConexion = ClaseConexion().cadenaConexion()
+//
+//                    // Preparar la consulta para obtener IdSolicitante
+//                    val resultSetSolicitante =
+//                        objConexion?.prepareStatement("SELECT IdSolicitante FROM SOLICITANTE WHERE CorreoElectronico = ?")
+//                    resultSetSolicitante?.setString(1, correoLogin)
+//
+//                    // Ejecutar la consulta y obtener el resultado
+//                    val resultadoSolicitante = resultSetSolicitante?.executeQuery()
+//
+//                    // Verificar si se encontró un resultado
+//                    if (resultadoSolicitante?.next() == true) {
+//                        IdSolicitante = resultadoSolicitante.getString("IdSolicitante")
+//                    } else {
+//                        IdSolicitante = ""
+//                    }
+//                } catch (e: Exception) {
+//                    withContext(Dispatchers.Main) {
+//                        Toast.makeText(
+//                            this@login, "Error al consultar la base de datos", Toast.LENGTH_SHORT
+//                        ).show()
+//                    }
+//                }
+//            }
 
             val correo = txtCorreoLogin.text.toString()
             val contrasena = txtcontrasenaLogin.text.toString()
@@ -200,6 +200,7 @@ class login : AppCompatActivity() {
                         if (esEmpleador.next()) {
                             val estadoEmpleador = esEmpleador.getString("Estado")
                             if (estadoEmpleador == "Activo") {
+                                IdEmpleador = esEmpleador.getString("IdEmpleador")
                                 nombreEmpresa = esEmpleador.getString("NombreEmpresa") ?: ""
                                 nombreEmpleador = esEmpleador.getString("NombreRepresentante")
                                 correoEmpleador = esEmpleador.getString("CorreoElectronico")
@@ -221,7 +222,7 @@ class login : AppCompatActivity() {
                                 }
                             }
                         } else if (esSolicitante.next()) {
-                            // Si el usuario es Solicitante, se le muestra su pantalla respectiva
+                            IdSolicitante = esSolicitante.getString("IdSolicitante")
                             nombresSolicitante = esSolicitante.getString("Nombre")
                             correoSolicitante = esSolicitante.getString("CorreoElectronico")
                             numeroSolicitante = esSolicitante.getString("Telefono")
@@ -237,6 +238,15 @@ class login : AppCompatActivity() {
                             withContext(Dispatchers.Main) {
                                 startActivity(pantallaSolicitante)
                             }
+                        } else {
+                            // Si no se encuentra ninguna coincidencia
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@login,
+                                    "Correo electrónico o contraseña incorrectos.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     } catch (e: Exception) {
                         withContext(Dispatchers.Main) {
@@ -249,7 +259,9 @@ class login : AppCompatActivity() {
                     }
                 }
             }
+
         }
     }
 }
+
 
