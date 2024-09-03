@@ -7,6 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".rolSelector">
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="411dp"
         android:layout_height="202dp"
@@ -14,6 +16,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnSalir9"
+            android:layout_width="35dp"
+            android:layout_height="34dp"
+            android:background="@drawable/baseline_arrow_back_ios_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.042"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.095" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

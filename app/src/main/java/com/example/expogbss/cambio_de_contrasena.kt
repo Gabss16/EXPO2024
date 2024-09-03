@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +37,12 @@ class cambio_de_contrasena : AppCompatActivity() {
 
         val btnCambiarContrasena = findViewById<Button>(R.id.btnCambiarContrasena)
         val txtContrasenaNueva = findViewById<EditText>(R.id.txtnuevacontrasena)
+        val btnSalir2 = findViewById<ImageButton>(R.id.btnSalir2)
+
+        btnSalir2.setOnClickListener {
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
+
 
         val verificarContraseña = Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
 
@@ -44,6 +51,8 @@ class cambio_de_contrasena : AppCompatActivity() {
             val bytes = MessageDigest.getInstance("SHA-256").digest(contraseniaEscrita.toByteArray())
             return bytes.joinToString("") { "%02x".format(it) }
         }
+
+
 
         btnCambiarContrasena.setOnClickListener {
             val contrasenaNueva = txtContrasenaNueva.text.toString()
