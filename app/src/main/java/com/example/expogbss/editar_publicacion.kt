@@ -200,16 +200,16 @@ class editar_publicacion : AppCompatActivity() {
                     val objConexion = ClaseConexion().cadenaConexion()
 
 
-                //    val idTrabajo =
-                  //  val DepartamentoNombre =
+                    val idTrabajo = intent.getIntExtra("IdTrabajo", 22)
+                    val DepartamentoNombre =
                         spnDepartamentosEditar.selectedItem.toString()
                     // Obtener el id_medicamento desde el Spinner
                     val Departamento =
                         obtenerDepartamentos() // Se asume que puedes obtener la lista de medicamentos aquí
-                  //  val DepartamentoSeleccionado =
-                //        Departamento.find { it.Nombre == DepartamentoNombre }
-                //    val idDepartamento =
-                      //  DepartamentoSeleccionado!!.Id_departamento
+                  val DepartamentoSeleccionado =
+                        Departamento.find { it.Nombre == DepartamentoNombre }
+                    val idDepartamento =
+                        DepartamentoSeleccionado!!.Id_departamento
 
 
 
@@ -228,18 +228,25 @@ class editar_publicacion : AppCompatActivity() {
 
 
                     //2- creo una variable que contenga un PrepareStatement
-                    val updateTrabajo =
-                        objConexion?.prepareStatement("update TRABAJO set Titulo = ?, IdAreaDeTrabajo = ?,Descripcion  = ?, Direccion = ?, IdDepartamento = ?,  Experiencia= ?, Requerimientos= ?,Salario= ?,Beneficios= ? where IdTrabajo = ?")!!
+                    val updateTrabajo = objConexion?.prepareStatement("""
+    UPDATE TRABAJO 
+    SET Titulo = ?, IdAreaDeTrabajo = ?, Descripcion = ?, Direccion = ?, 
+        IdDepartamento = ?, Experiencia = ?, Requerimientos = ?, 
+        Salario = ?, Beneficios = ? 
+    WHERE IdTrabajo = ?
+""")!!
+
                     updateTrabajo.setString(1, TituloJobEditado)
                     updateTrabajo.setInt(2, idAreaDeTrabajo)
                     updateTrabajo.setString(3, DescripcionJobEditado)
                     updateTrabajo.setString(4, UbicacionJobEditado)
-                 //   updateTrabajo.setInt(5, idDepartamento)
+                    updateTrabajo.setInt(5, idDepartamento) // Asegúrate de que idDepartamento esté definido
                     updateTrabajo.setString(6, ExperienciaJobEditado)
                     updateTrabajo.setString(7, HabilidadesJobEditado)
                     updateTrabajo.setBigDecimal(8, SalarioJobEditado)
                     updateTrabajo.setString(9, BeneficiosJobEditado)
-                //    updateTrabajo.setInt(10, idTrabajo)
+                    updateTrabajo.setInt(10, idTrabajo) // Asegúrate de que idTrabajo esté definido
+
                     updateTrabajo.executeUpdate()
 
                     withContext(Dispatchers.Main) {
