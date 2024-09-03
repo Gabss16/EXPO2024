@@ -29,14 +29,16 @@ class delivery : AppCompatActivity() {
             insets
         }
 
-        val rcvTrabajosPublicados = findViewById<RecyclerView>(R.id.rcvDelivery)
-        rcvTrabajosPublicados.layoutManager = LinearLayoutManager(this)
-
-        val salir = findViewById<ImageButton>(R.id.btnSalir1)
+        val salir = findViewById<ImageButton>(R.id.sali9)
         salir.setOnClickListener{
             val intent = Intent(this, HomeFragment::class.java)
             startActivity(intent)
         }
+
+        val rcvTrabajosPublicados = findViewById<RecyclerView>(R.id.rcvDelivery)
+        rcvTrabajosPublicados.layoutManager = LinearLayoutManager(this)
+
+
 
 
         fun obtenerDatos(): List<Trabajo> {
