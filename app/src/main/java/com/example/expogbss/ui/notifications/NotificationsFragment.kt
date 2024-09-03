@@ -16,6 +16,7 @@ import com.example.expogbss.R
 import com.example.expogbss.cambiar_contrasena_Solicitante
 import com.example.expogbss.databinding.FragmentNotificationsBinding
 import com.example.expogbss.editar_perfil_Empleador
+import com.example.expogbss.editar_perfil_solicitante
 import com.example.expogbss.login
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +50,7 @@ class NotificationsFragment : Fragment() {
         // Manejar el evento de clic en el botón de editar perfil
         btnEditarSolicitante.setOnClickListener {
             // Iniciar la actividad "editar_perfil_Empleador"
-            val intent = Intent(activity, editar_perfil_Empleador::class.java)
+            val intent = Intent(activity, editar_perfil_solicitante::class.java)
             startActivity(intent)
         }
 

@@ -64,7 +64,6 @@ class editar_perfil_Empleador : AppCompatActivity() {
         val direccionEmpleador = login.direccionEmpleador
         val sitioWebEmpleador = login.sitioWebEmpleador
         val departamentoEmpleador = login.idDepartamento
-
         val idEmpleador = login.IdEmpleador
 
         // Asigna los datos a los EditText correspondientes
