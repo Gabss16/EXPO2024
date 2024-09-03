@@ -32,7 +32,7 @@ class Domestico : AppCompatActivity() {
         val rcvTrabajosPublicados = findViewById<RecyclerView>(R.id.rcvTrabajoDomestico)
         rcvTrabajosPublicados.layoutManager = LinearLayoutManager(this)
 
-        val salir = findViewById<ImageButton>(R.id.btnSalir1)
+        val salir = findViewById<ImageButton>(R.id.salir10)
         salir.setOnClickListener{
             val intent = Intent(this, HomeFragment::class.java)
             startActivity(intent)
