@@ -1,5 +1,6 @@
 package com.example.expogbss
 
+import RecicleViewHelpers.AdaptadorPublicacion
 import RecicleViewHelpers.AdaptadorSolicitud
 import android.os.Bundle
 import android.view.Window
@@ -10,6 +11,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
 import modelo.Solicitud
 import modelo.Trabajo
@@ -19,7 +24,7 @@ class DetallePublicacion : AppCompatActivity() {
     private lateinit var txtTituloDetalle: TextView
     private lateinit var txtDescripcionDetalle: TextView
     private lateinit var rcvSolicitudes: RecyclerView
-    private lateinit var solicitudesAdapter: AdaptadorSolicitud
+   // private lateinit var solicitudesAdapter: AdaptadorSolicitud
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,8 +103,16 @@ class DetallePublicacion : AppCompatActivity() {
         }
 
         // Configurar adaptador para solicitudes
+        CoroutineScope(Dispatchers.IO).launch {
+            val solicitudesDb = obtenerSolicitudesParaTrabajo()
+            withContext(Dispatchers.Main) {
+                val adapter = AdaptadorSolicitud(solicitudesDb)
+                rcvSolicitudes.adapter = adapter
+            }
+        }
        // solicitudesAdapter = AdaptadorSolicitud(solicitudes)
-        rcvSolicitudes.adapter = solicitudesAdapter
+      //  rcvSolicitudes.adapter = solicitudesAdapter
+
 
 
     }

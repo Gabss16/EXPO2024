@@ -64,24 +64,27 @@ class homeEmpresa : Fragment() {
         // initializing our variable for button with its id.
         val btnShowBottomSheet = root.findViewById<ImageButton>(R.id.idBtnShowBottomSheet)
         val rcvTrabajos = root.findViewById<RecyclerView>(R.id.rcvTrabajos)
+        val idEmpleador = login.IdEmpleador
+        println("este es el id empleador $idEmpleador" +
+                "" +
+                "" +
+                "" +
+                "" +
+                "")
 
         rcvTrabajos.layoutManager = LinearLayoutManager(requireContext())
+
+        println(idEmpleador)
 
         fun obtenerDatos(): List<Trabajo> {
             //1- Creo un objeto de la clase conexión
             val objConexion = ClaseConexion().cadenaConexion()
 
-            //2 - Creo un statement
-            fun obtenerIdEmpleador(): String {
-                return login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
-            }
-            val idEmpleador = obtenerIdEmpleador()
 
             //El símbolo de pregunta es pq los datos pueden ser nulos
             val statement = objConexion?.prepareStatement("SELECT * FROM TRABAJO WHERE IdEmpleador = ?")
             statement?.setString(1, idEmpleador)
             val resultSet = statement?.executeQuery()!!
-
 
             //en esta variable se añaden TODOS los valores de mascotas
             val listaTrabajos = mutableListOf<Trabajo>()
