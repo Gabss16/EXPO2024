@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -34,12 +35,18 @@ class cambiar_contrasena_Solicitante : AppCompatActivity() {
         val txtNuevaContrasena = findViewById<EditText>(R.id.txtNuevaContrasenaSolicitante)
         val txtReIngresarNuevaContrasenaEmpleador = findViewById<EditText>(R.id.txtRepetirNuevaContrasenaSolicitante)
         val btnEditarContrasena = findViewById<ImageView>(R.id.btnUpdateContrasenaSolicitante)
+        val btnSalir1 = findViewById<ImageButton>(R.id.btnSalir1)
+
 
         // Creo la función para encriptar la contraseña
         fun hashSHA256(contraseniaEscrita: String): String {
             val bytes =
                 MessageDigest.getInstance("SHA-256").digest(contraseniaEscrita.toByteArray())
             return bytes.joinToString("") { "%02x".format(it) }
+        }
+
+        btnSalir1.setOnClickListener {
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
         }
 
         btnEditarContrasena.setOnClickListener {

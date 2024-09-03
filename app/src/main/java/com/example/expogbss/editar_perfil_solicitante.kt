@@ -71,8 +71,13 @@ class editar_perfil_solicitante : AppCompatActivity() {
         val habilidadesSolicitante = login.habilidades
         val departamentoSolicitante = login.idDepartamento
         val estadoSolicitante = login.estadoSolicitante
+
+        val btnSalir5 = findViewById<ImageButton>(R.id.btnSalir5)
         val IdAreaDeTrabajo = login.areaDeTrabajo
 
+        btnSalir5.setOnClickListener {
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
 
         val idSolicitante = login.IdSolicitante
 

@@ -7,6 +7,7 @@ import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -46,6 +47,12 @@ class editar_publicacion : AppCompatActivity() {
         val txtSalarioJobEditar = findViewById<EditText>(R.id.txtSalarioJobEditar)
         val spnTiposTrabajoEditar = findViewById<Spinner>(R.id.spnTiposTrabajoEditar)
         val BtnIngresoEditado = findViewById<Button>(R.id.BtnIngresoEditado)
+
+        val btnSalir6 = findViewById<ImageButton>(R.id.btnSalir6)
+
+        btnSalir6.setOnClickListener {
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
 
         val Titulo = intent.getStringExtra("Titulo")
         val IdAreaDeTrabajo = intent.getIntExtra("IdAreaDeTrabajo",1)

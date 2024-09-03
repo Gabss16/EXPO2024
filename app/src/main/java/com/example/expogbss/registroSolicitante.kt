@@ -80,6 +80,12 @@ class registroSolicitante : AppCompatActivity() {
         val btnSubirDesdeGaleriaSolicitante = findViewById<Button>(R.id.btnSubirDesdeGaleriaSolicitante)
         imgFotoDePerfilSolicitante = findViewById(R.id.imgFotoDePerfilSolicitante)
 
+        val btnSalir8 = findViewById<ImageButton>(R.id.btnSalir8)
+
+        btnSalir8.setOnClickListener {
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
+
         // Función para hacer el select de los Departamentos
         fun obtenerDepartamentos(): List<Departamento> {
             val listadoDepartamento = mutableListOf<Departamento>()

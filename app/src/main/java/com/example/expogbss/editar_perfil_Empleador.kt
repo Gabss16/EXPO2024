@@ -12,6 +12,7 @@ import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
@@ -64,6 +65,13 @@ class editar_perfil_Empleador : AppCompatActivity() {
         val direccionEmpleador = login.direccionEmpleador
         val sitioWebEmpleador = login.sitioWebEmpleador
         val departamentoEmpleador = login.idDepartamento
+
+        val btnSalir4 = findViewById<ImageButton>(R.id.btnSalir4)
+
+        btnSalir4.setOnClickListener {
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
+
         val idEmpleador = login.IdEmpleador
 
         // Asigna los datos a los EditText correspondientes

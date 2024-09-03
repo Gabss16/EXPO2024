@@ -71,6 +71,12 @@ class registro_empresa : AppCompatActivity() {
         val btnSubirFotoEmpleador = findViewById<Button>(R.id.btnSubirFotoEmpleador)
         val btnTomarFotoEmpleador = findViewById<Button>(R.id.btnTomarFotoEmpleador)
 
+        val btnSalir7 = findViewById<ImageButton>(R.id.btnSalir7)
+
+        btnSalir7.setOnClickListener {
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
+
         // Función para hacer el select de los Departamentos
         fun obtenerDepartamentos(): List<Departamento> {
             val listadoDepartamento = mutableListOf<Departamento>()
