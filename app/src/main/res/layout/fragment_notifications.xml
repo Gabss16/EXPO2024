@@ -55,10 +55,10 @@
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="752dp"
+                android:layout_marginTop="624dp"
                 android:text="TextView"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="6dp" />
+                tools:layout_editor_absoluteX="-4dp" />
 
             <ImageView
                 android:id="@+id/imgFotoSolicitante"
@@ -264,6 +264,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewHabilidades"
                 app:layout_constraintVertical_bias="0.054" />
+
+            <ImageView
+                android:id="@+id/btnEditarSolicitante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="64dp"
+                android:src="@drawable/editar_perfil"
+                app:layout_constraintBottom_toTopOf="@+id/textViewNombreSolicitante"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imgFotoSolicitante"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,7 @@ import com.example.expogbss.Cambiar_ContrasenaEmpleador
 import com.example.expogbss.R
 import com.example.expogbss.cambiar_contrasena_Solicitante
 import com.example.expogbss.databinding.FragmentNotificationsBinding
+import com.example.expogbss.editar_perfil_Empleador
 import com.example.expogbss.login
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +43,15 @@ class NotificationsFragment : Fragment() {
         val textViewArea = root.findViewById<TextView>(R.id.textViewArea)
         val textViewHabilidades = root.findViewById<TextView>(R.id.textViewHabilidades)
         val imgFotoSolicitante = root.findViewById<ImageView>(R.id.imgFotoSolicitante)
+
+        val btnEditarSolicitante = root.findViewById<ImageView>(R.id.btnEditarSolicitante)
+
+        // Manejar el evento de clic en el botón de editar perfil
+        btnEditarSolicitante.setOnClickListener {
+            // Iniciar la actividad "editar_perfil_Empleador"
+            val intent = Intent(activity, editar_perfil_Empleador::class.java)
+            startActivity(intent)
+        }
 
         // Realiza la consulta en un hilo secundario usando corrutinas
         CoroutineScope(Dispatchers.IO).launch {
