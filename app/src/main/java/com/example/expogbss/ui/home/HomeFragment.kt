@@ -3,9 +3,12 @@ package com.example.expogbss.ui.home
 import RecicleViewHelpers.AdaptadorTrabajos
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -59,6 +62,10 @@ class HomeFragment : Fragment() {
         val cliente = root.findViewById<ImageButton>(R.id.BtnCategoria8)
         val educacion = root.findViewById<ImageButton>(R.id.BtnCategoria7)
         val hotel = root.findViewById<ImageButton>(R.id.BtnCategoria6)
+
+        val txtBuscar = root.findViewById<EditText>(R.id.txtBuscar)
+
+
         construccion.setOnClickListener{
             val intent = Intent(context, Construccion::class.java)
             startActivity(intent)
@@ -161,6 +168,32 @@ class HomeFragment : Fragment() {
             withContext(Dispatchers.Main) {
                 val adapter = AdaptadorTrabajos(TrabajoDb)
                 rcvTrabajosPublicados.adapter = adapter
+
+                txtBuscar.addTextChangedListener(object : TextWatcher{
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+
+                        adapter.filtrar(s.toString())
+
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {
+
+                    }
+                })
             }
         }
 

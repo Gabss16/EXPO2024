@@ -7,23 +7,10 @@
     android:background="@drawable/hom_solicitante"
     tools:context=".ui.home.HomeFragment">
 
-     <ImageButton
-         android:id="@+id/imageButton"
-         android:layout_width="74dp"
-         android:layout_height="57dp"
-         android:backgroundTint="#02FDFDFD"
-         android:src="@drawable/buscarbtn"
-         app:layout_constraintBottom_toBottomOf="parent"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintHorizontal_bias="0.997"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toTopOf="parent"
-         app:layout_constraintVertical_bias="0.209" />
-
      <EditText
          android:id="@+id/txtBuscar"
-         android:layout_width="316dp"
-         android:layout_height="51dp"
+         android:layout_width="381dp"
+         android:layout_height="56dp"
          android:layout_marginStart="10dp"
          android:background="@drawable/barra_busqueda"
          android:ems="10"
