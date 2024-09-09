@@ -84,7 +84,7 @@ class login : AppCompatActivity() {
 
         txtforgotPassword.setOnClickListener {
             //Cambio de pantalla a activity forgot password
-            val pantallaOlvideContrasena = Intent(this, forgotPassword::class.java)
+            val pantallaOlvideContrasena = Intent(this, ingresarCorreoRecupContrasena::class.java)
             startActivity(pantallaOlvideContrasena)
         }
 

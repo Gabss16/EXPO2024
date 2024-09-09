@@ -84,7 +84,7 @@ class Detalle_Puesto : AppCompatActivity() {
 
         //el numero hay que cambiarlo dependiendo del idTrabjo que aparezca en la base de datos
         //luego luego hay que hacer una funcion para que no pase esto
-        val idTrabajo = intent.getIntExtra("IdTrabajo", 24)
+        val idTrabajo = intent.getIntExtra("IdTrabajo", 1)
 
         val idSolicitante = IdSolicitante
         val fechaSolicitud = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
