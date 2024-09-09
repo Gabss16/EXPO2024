@@ -1,4 +1,4 @@
-package modelo
+package RecicleViewHelpers
 
 class AdaptadorBuscarEmpleo (private var itemList: List<String>)// : RecyclerView.Adapter<AdaptadorBuscarEmpleo.ViewHolder>() {
 

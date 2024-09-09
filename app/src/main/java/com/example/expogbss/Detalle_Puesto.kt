@@ -32,9 +32,9 @@ class Detalle_Puesto : AppCompatActivity() {
             insets
         }
         val TituloRecibido = intent.getStringExtra("Titulo")
-        val AreaDeTrabajoRecibido = intent.getStringExtra("AreaDeTrabajo")
+        val AreaDeTrabajoRecibido = intent.getIntExtra("IdAreaDeTrabajo",1)
         val DescripcionRecibido = intent.getStringExtra("Descripcion")
-        val UbicacionRecibido = intent.getStringExtra("Ubicacion")
+        val UbicacionRecibido = intent.getStringExtra("Direccion")
         val ExperienciaRecibida = intent.getStringExtra("Experiencia")
         val RequerimientosRecibida = intent.getStringExtra("Requerimientos")
         val EstadoRecibida = intent.getStringExtra("Estado")
@@ -62,7 +62,7 @@ class Detalle_Puesto : AppCompatActivity() {
         val txtBeneficiosDetalle = findViewById<TextView>(R.id.txtBeneficiosDetalle)
         val txtSalarioDetalle = findViewById<TextView>(R.id.txtSalarioDetalle)
 
-         txtAreaTrabajoDetalle.text = AreaDeTrabajoRecibido
+         txtAreaTrabajoDetalle.text = AreaDeTrabajoRecibido.toString()
          txtTituloDetalle.text = TituloRecibido
          txtDescripcionDetalle.text = DescripcionRecibido
          txtUbicacionDetalle.text = UbicacionRecibido
@@ -84,13 +84,13 @@ class Detalle_Puesto : AppCompatActivity() {
 
         //el numero hay que cambiarlo dependiendo del idTrabjo que aparezca en la base de datos
         //luego luego hay que hacer una funcion para que no pase esto
-        val idTrabajo = intent.getIntExtra("IdTrabajo", 1)
 
+        val idTrabajo = intent.getIntExtra("IdTrabajo", 1)
         val idSolicitante = IdSolicitante
         val fechaSolicitud = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val estado = "Pendiente"
 
-        println("Este es el idTrabajo:" + idTrabajo)
+        //println("Este es el idTrabajo:" + idTrabajo)
         println("Este es el idSolicitante:" + idSolicitante)
 
         CoroutineScope(Dispatchers.IO).launch {
