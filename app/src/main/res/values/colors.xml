@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FBF8F8</color>
+    <color name="agalo">#0D1F4D</color>
+
     <color name="white">#FFFFFFFF</color>
+
 
         <!-- Define the color for the icon tint -->
         <color name="colorIconTint">#FBFBFB</color> <!-- Negro (Black) -->
