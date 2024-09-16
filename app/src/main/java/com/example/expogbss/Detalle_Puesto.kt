@@ -32,9 +32,9 @@ class Detalle_Puesto : AppCompatActivity() {
             insets
         }
         val TituloRecibido = intent.getStringExtra("Titulo")
-        val AreaDeTrabajoRecibido = intent.getStringExtra("AreaDeTrabajo")
+        val AreaDeTrabajoRecibido = intent.getIntExtra("IdAreaDeTrabajo", 125)
         val DescripcionRecibido = intent.getStringExtra("Descripcion")
-        val UbicacionRecibido = intent.getStringExtra("Ubicacion")
+        val UbicacionRecibido = intent.getStringExtra("Direccion")
         val ExperienciaRecibida = intent.getStringExtra("Experiencia")
         val RequerimientosRecibida = intent.getStringExtra("Requerimientos")
         val EstadoRecibida = intent.getStringExtra("Estado")
@@ -43,9 +43,9 @@ class Detalle_Puesto : AppCompatActivity() {
 
         //Solo es para ver si los datos se reciben correctamente
         Log.d("Detalle_Puesto", "Titulo: $TituloRecibido")
-        Log.d("Detalle_Puesto", "AreaDeTrabajo: $AreaDeTrabajoRecibido")
+        Log.d("Detalle_Puesto", "IdAreaDeTrabajo: $AreaDeTrabajoRecibido")
         Log.d("Detalle_Puesto", "Descripcion: $DescripcionRecibido")
-        Log.d("Detalle_Puesto", "Ubicacion: $UbicacionRecibido")
+        Log.d("Detalle_Puesto", "Direccion: $UbicacionRecibido")
         Log.d("Detalle_Puesto", "Experiencia: $ExperienciaRecibida")
         Log.d("Detalle_Puesto", "Requerimientos: $RequerimientosRecibida")
         Log.d("Detalle_Puesto", "Estado: $EstadoRecibida")
@@ -62,7 +62,7 @@ class Detalle_Puesto : AppCompatActivity() {
         val txtBeneficiosDetalle = findViewById<TextView>(R.id.txtBeneficiosDetalle)
         val txtSalarioDetalle = findViewById<TextView>(R.id.txtSalarioDetalle)
 
-         txtAreaTrabajoDetalle.text = AreaDeTrabajoRecibido
+         txtAreaTrabajoDetalle.text = AreaDeTrabajoRecibido.toString()
          txtTituloDetalle.text = TituloRecibido
          txtDescripcionDetalle.text = DescripcionRecibido
          txtUbicacionDetalle.text = UbicacionRecibido
@@ -117,6 +117,8 @@ class Detalle_Puesto : AppCompatActivity() {
                     Toast.makeText(this@Detalle_Puesto, "Error al enviar solicitud", Toast.LENGTH_LONG).show()
                 }
             } finally {
+
+
                 objConexion?.close()
             }
         }

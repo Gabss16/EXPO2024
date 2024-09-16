@@ -24,7 +24,7 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/logo"
+        android:icon="@drawable/agaloicono2"
         android:label="AGALO"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -92,6 +92,9 @@
             android:exported="false" />
         <activity
             android:name=".cambio_de_contrasena"
+            android:exported="false" />
+        <activity
+            android:name=".cambiar_contrasena_Solicitante"
             android:exported="false" />
         <activity
             android:name=".ingresarCorreoRecupContrasena"

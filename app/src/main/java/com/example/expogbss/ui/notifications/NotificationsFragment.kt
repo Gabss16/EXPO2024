@@ -45,7 +45,6 @@ class NotificationsFragment : Fragment() {
         val textViewArea = root.findViewById<TextView>(R.id.textViewArea)
         val textViewHabilidades = root.findViewById<TextView>(R.id.textViewHabilidades)
         val imgFotoSolicitante = root.findViewById<ImageView>(R.id.imgFotoSolicitante)
-        //val btnCerrarSesion = root.findViewById<EditText>(R.id.btnCerrarSesionSolicitante)
         val btnEditarSolicitante = root.findViewById<ImageView>(R.id.btnEditarSolicitante)
 
         // Manejar el evento de clic en el botón de editar perfil
@@ -54,12 +53,24 @@ class NotificationsFragment : Fragment() {
             val intent = Intent(activity, editar_perfil_solicitante::class.java)
             startActivity(intent)
         }
-//        // Manejar el evento de clic en el botón de Cerrar sesión
-//        btnCerrarSesion.setOnClickListener {
-//            // Iniciar la actividad "editar_perfil_Empleador"
-//            val intent = Intent(activity, login::class.java)
-//            startActivity(intent)
-//        }
+        val btnCerrarSesion = root.findViewById<TextView>(R.id.btnCerrarSesionSolicitante)
+
+        // Manejar el evento de clic en el botón de Cerrar sesión
+        btnCerrarSesion.setOnClickListener {
+            // Iniciar la actividad "editar_perfil_Empleador"
+            val intent = Intent(activity, login::class.java)
+            startActivity(intent)
+        }
+
+        val btnEditarContrasena = root.findViewById<ImageView>(R.id.btnEditarContrasenaSolicitante)
+
+        // Manejar el evento de clic en el botón de editar contraseña
+        btnEditarContrasena.setOnClickListener {
+            // Iniciar la actividad "Cambiar_ContrasenaEmpleador"
+            val intent = Intent(activity, cambiar_contrasena_Solicitante::class.java)
+            startActivity(intent)
+        }
+
 
         // Realiza la consulta en un hilo secundario usando corrutinas
         CoroutineScope(Dispatchers.IO).launch {
@@ -115,14 +126,7 @@ class NotificationsFragment : Fragment() {
             }
 
         }
-        val btnEditarContrasena = root.findViewById<ImageView>(R.id.btnEditarContrasenaSolicitante)
 
-        // Manejar el evento de clic en el botón de editar contraseña
-        btnEditarContrasena.setOnClickListener {
-            // Iniciar la actividad "Cambiar_ContrasenaEmpleador"
-            val intent = Intent(activity, cambiar_contrasena_Solicitante::class.java)
-            startActivity(intent)
-        }
         return root
     }
 
