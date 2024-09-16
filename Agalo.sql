@@ -13,7 +13,6 @@ Create table AreaDeTrabajo(
 IdAreaDeTrabajo INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 NombreAreaDetrabajo varchar2(100));
   
-
 CREATE TABLE EMPLEADOR (
     IdEmpleador VARCHAR2(50) PRIMARY KEY, 
     NombreEmpresa VARCHAR2(50),
@@ -31,7 +30,7 @@ CREATE TABLE EMPLEADOR (
     CONSTRAINT FkDepartamentoEmpleador FOREIGN KEY (IdDepartamento) REFERENCES DEPARTAMENTO(IdDepartamento) ON DELETE CASCADE);
 
 CREATE TABLE TRABAJO (
-    IdTrabajo NUMBER PRIMARY KEY, 
+    IdTrabajo INT PRIMARY KEY, 
     Titulo VARCHAR2(50) NOT NULL,
     IdEmpleador VARCHAR2(50) NOT NULL,
     IdAreaDeTrabajo INT,
@@ -70,23 +69,21 @@ CREATE TABLE SOLICITANTE (
     CONSTRAINT FkAreaDeTrabajoSolicitante FOREIGN KEY (IdAreaDeTrabajo) REFERENCES AreaDeTrabajo(IdAreaDeTrabajo) ON DELETE CASCADE,
     CONSTRAINT FkDepartamentoSolicitante FOREIGN KEY (IdDepartamento) REFERENCES DEPARTAMENTO(IdDepartamento) ON DELETE CASCADE);
     
-    
 CREATE TABLE SOLICITUD (
-    IdSolicitud NUMBER PRIMARY KEY , 
+    IdSolicitud INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 
     IdSolicitante VARCHAR2(50) NOT NULL,
-    IdTrabajo NUMBER NOT NULL,
+    IdTrabajo INT NOT NULL,
     FechaSolicitud VARCHAR2(20) NOT NULL,
-    Estado VARCHAR(10) CHECK (Estado IN ('Activa', 'Finalizada', 'Pendiente')),
+    Estado VARCHAR(10) CHECK (Estado IN ('Aprobada', 'Rechazada', 'Pendiente')),
     CONSTRAINT FKSolicitanteSolicitud FOREIGN KEY (IdSolicitante) REFERENCES SOLICITANTE(IdSolicitante) ON DELETE CASCADE,
-    CONSTRAINT FKTrabajoSolicitud FOREIGN KEY (IdTrabajo) REFERENCES TRABAJO(IdTrabajo) ON DELETE CASCADE
-);
+    CONSTRAINT FKTrabajoSolicitud FOREIGN KEY (IdTrabajo) REFERENCES TRABAJO(IdTrabajo) ON DELETE CASCADE);
 
 CREATE TABLE ROLESCRITORIO(
 IdRol INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 Rol Varchar2(50));
 
 CREATE TABLE UsuarioEscritorio(
-IdAdmin VARCHAR2(50) PRIMARY KEY,
+IdAdmin INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 Nombre Varchar2(50) NOT NULL,
 Usuario Varchar2(50) NOT NULL,
 Contrasena Varchar2(250) NOT NULL,
@@ -94,6 +91,81 @@ Foto VARCHAR2(300),
 CorreoElectronico VARCHAR2(50) NOT NULL UNIQUE,
 IdRol INT,
 CONSTRAINT FKRol FOREIGN KEY (IdRol) REFERENCES ROLESCRITORIO(IdRol) ON DELETE CASCADE);
+
+CREATE TABLE AUDITORIA (
+    IdAuditoria NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    TablaAfectada VARCHAR2(50),
+    Operacion VARCHAR2(10),
+    Usuario VARCHAR2(50) not null,
+    FechaAccion varchar2(50) not null,
+    Detalles VARCHAR2(500) not null,
+    IdTrabajo Number
+);
+
+CREATE OR REPLACE TRIGGER TrigAuditoriaInsertTrabajo
+AFTER INSERT ON TRABAJO
+FOR EACH ROW
+BEGIN
+    INSERT INTO AUDITORIA (TablaAfectada, Operacion, Usuario, FechaAccion, Detalles, IdTrabajo)
+    VALUES (
+        'Trabajo', 
+        'INSERT', 
+        :NEW.IdEmpleador, 
+        TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'),
+        'Se creó un trabajo con descripción: ' || :NEW.Descripcion,
+        :NEW.IdTrabajo
+    );
+END;
+
+
+CREATE OR REPLACE TRIGGER trg_audit_delete_trabajo
+AFTER DELETE ON TRABAJO
+FOR EACH ROW
+BEGIN
+    INSERT INTO AUDITORIA (TablaAfectada, Operacion, Usuario, FechaAccion, Detalles, IdTrabajo) VALUES (
+        'Trabajo', 
+        'DELETE', 
+        :OLD.IdEmpleador, 
+        TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'),
+        'Se creó un trabajo con descripción: ' || :OLD.Descripcion, -- Detalles con mensaje personalizado
+        :OLD.IdTrabajo
+    );
+END;
+
+//Secuencias y triggers para auto incremento en trabajo
+CREATE SEQUENCE Trabajoseq
+START WITH 1
+INCREMENT BY 1;
+
+CREATE OR REPLACE TRIGGER TrigTrabajo
+BEFORE INSERT ON TRABAJO
+FOR EACH ROW 
+BEGIN 
+SELECT Trabajoseq.NEXTVAL INTO:NEW.IdTrabajo
+FROM DUAL;
+END;
+
+//Procedimiento almacenado para verificar correos electrónicos
+CREATE OR REPLACE PROCEDURE VerificarCorreoElectronico(
+    p_Nombre IN VARCHAR2,
+    p_Usuario IN VARCHAR2,
+    p_Contrasena IN VARCHAR2,
+    p_Foto IN VARCHAR2,
+    p_CorreoElectronico IN VARCHAR2,
+    p_IdRol IN INT
+) AS
+    v_patronRegex VARCHAR2(100) := '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+BEGIN
+    -- Verificar si el correo electrónico cumple con el patrón
+    IF NOT REGEXP_LIKE(p_CorreoElectronico, v_patronRegex) THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Correo electrónico no válido.');
+    END IF;
+
+    -- Insertar el usuario en la tabla UsuarioEscritorio
+    INSERT INTO UsuarioEscritorio (Nombre, Usuario, Contrasena, Foto, CorreoElectronico, IdRol)
+    VALUES (p_Nombre, p_Usuario, p_Contrasena, p_Foto, p_CorreoElectronico, p_IdRol);
+    
+END VerificarCorreoElectronico;
 
 // INSERTS a tablas normalizadas por datos repetidos
 INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Trabajo doméstico');
@@ -122,35 +194,92 @@ Insert into DEPARTAMENTO(Nombre) values ('Sonsonate');
 Insert into DEPARTAMENTO(Nombre) values ('La Unión');
 Insert into DEPARTAMENTO(Nombre) values ('Usulután');
 
-
-//Secuencia y trigger para las solicitudes
-
-CREATE SEQUENCE SolicitudSeq 
-START WITH 1 
-INCREMENT BY 1;
-
-CREATE OR REPLACE TRIGGER TrigSolicitud
-BEFORE INSERT ON SOLICITUD
-FOR EACH ROW 
-BEGIN 
-    SELECT SolicitudSeq.NEXTVAL
-    INTO :NEW.IdSolicitud
-    FROM DUAL;
-END;
+//Insert roles de escritorio
+INSERT INTO ROLESCRITORIO(Rol) Values('Admin');
+INSERT INTO ROLESCRITORIO(Rol) Values('Super admin');
 
 
-//Secuencias y triggers para auto incremento 
-CREATE SEQUENCE Trabajoseq
-START WITH 1
-INCREMENT BY 1;
+//Inner join para ver Trabajo
+SELECT 
+    T.IdTrabajo AS "Número de trabajo",
+    T.Titulo AS "Título",
+    A.NombreAreaDetrabajo AS "Área de trabajo",
+    T.Descripcion AS "Descripción",
+    T.IdEmpleador AS "Código de empleador",
+    E.NombreRepresentante AS "Nombre del empleador",
+    E.CorreoElectronico AS "Correo Electrónico de contacto",
+    E.NumeroTelefono AS "Número de contacto",
+    T.Direccion AS "Dirección del trabajo",
+    T.Experiencia AS "Experiencia requerida",
+    T.Requerimientos,
+    T.Salario, 
+    T.Beneficios
+FROM 
+    TRABAJO T
+INNER JOIN 
+    EMPLEADOR E ON T.IdEmpleador = E.IdEmpleador
+INNER JOIN
+AreaDeTrabajo A ON T.IdAreaDeTrabajo = A.IdAreaDeTrabajo;
 
-CREATE TRIGGER TrigTrabajo
-BEFORE INSERT ON TRABAJO
-FOR EACH ROW 
-BEGIN 
-SELECT Trabajoseq.NEXTVAL INTO:NEW.IdTrabajo
-FROM DUAL;
-END;
+//INNER JOIN para ver solicitudes
+SELECT 
+    S.IdSolicitante AS "Código del solicitante",
+    S.Nombre AS "Nombre del solicitante",
+    S.CorreoElectronico AS "Correo Electrónico del solicitante",
+    S.Telefono AS "Teléfono del solicitante",
+    T.Titulo AS "Título del trabajo",
+    A.NombreAreaDetrabajo AS "Área de trabajo",
+    T.Descripcion AS "Descripción del trabajo",
+    T.Direccion AS "Dirección del trabajo",
+    T.Salario AS "Salario",
+    T.Beneficios AS "Beneficios",
+    Sol.FechaSolicitud AS "Fecha de solicitud",
+    Sol.Estado AS "Estado de solicitud"
+FROM 
+    SOLICITUD Sol
+INNER JOIN 
+    SOLICITANTE S ON Sol.IdSolicitante = S.IdSolicitante
+INNER JOIN 
+    TRABAJO T ON Sol.IdTrabajo = T.IdTrabajo
+INNER JOIN
+AreaDeTrabajo A ON T.IdAreaDeTrabajo = A.IdAreaDeTrabajo;
+
+//INNER JOIN PARA VER ROL EN TABLA USUARIOS ESCRITORIO
+SELECT u.IdADmin as "Id", u.Nombre, u.Usuario, u.Contrasena, u.Foto, u.CorreoElectronico, R.Rol, u.IdRol
+FROM UsuarioEscritorio u
+INNER JOIN ROLESCRITORIO R ON u.IdRol = R.IdRol;
+
+//INNER JOIN PARA PERFIL SOLICITANTE
+SELECT 
+    s.Nombre, 
+    s.CorreoElectronico, 
+    s.Telefono, 
+    s.Direccion, 
+    d.Nombre, 
+    s.FechaDeNacimiento, 
+    s.Genero, 
+    a.NombreAreaDeTrabajo, 
+    s.Habilidades, 
+    s.Foto 
+FROM 
+    SOLICITANTE s 
+INNER JOIN 
+    DEPARTAMENTO d ON s.IdDepartamento = d.IdDepartamento 
+INNER JOIN 
+    AreaDeTrabajo a ON s.IdAreaDeTrabajo = a.IdAreaDeTrabajo 
+WHERE 
+    s.CorreoElectronico = 'prueba@gmail.com';
+    
+    
+
+
+//Pruebas 
+begin 
+VerificarCorreoElectronico('Ricardo de paz', 'RicAdmin3', 'ContrasenaEncriptada', 'Foto1', 'prueba3@gmail.com', 1);
+end;
+
+select * from usuarioEscritorio;
+
 
 select * from empleador;
 select * from solicitante;
@@ -163,6 +292,13 @@ SELECT * FROM EMPLEADOR WHERE CorreoElectronico = 'contacto@innovaciones.com.sv'
 SELECT * FROM SOLICITANTE WHERE CorreoElectronico =  'ana.martinez@example.com' AND Contrasena = 'contraseÃ±a1';
 SELECT * FROM ESTADOSOLICITANTE ;
 
+
+select * from auditoria;
+select * from trabajo;
+
+delete from auditoria; 
+
+//Para eliminar
 -- Eliminar secuencias
 DROP SEQUENCE SolicitudSeq;
 DROP SEQUENCE Trabajoseq;
@@ -180,3 +316,4 @@ DROP TABLE EMPLEADOR;
 DROP TABLE AREADETRABAJO;
 Drop table UsuarioEscritorio;
 Drop table ROLESCRITORIO;
+Drop table DEPARTAMENTO;

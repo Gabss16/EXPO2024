@@ -53,10 +53,10 @@
 
             <TextView
                 android:id="@+id/textView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1000dp"
-                android:text="TextView"
+                android:layout_width="43dp"
+                android:layout_height="107dp"
+                android:layout_marginTop="700dp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
@@ -250,6 +250,35 @@
                 app:layout_constraintHorizontal_bias="0.803"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewArea" />
+
+            <ImageView
+                android:id="@+id/btnEditarContrasenaSolicitante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:src="@drawable/editar_contrasena"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewHabilidades"
+                app:layout_constraintVertical_bias="0.054" />
+
+            <ImageView
+                android:id="@+id/btnEditarSolicitante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="64dp"
+                android:src="@drawable/editar_perfil"
+                app:layout_constraintBottom_toTopOf="@+id/textViewNombreSolicitante"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imgFotoSolicitante"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

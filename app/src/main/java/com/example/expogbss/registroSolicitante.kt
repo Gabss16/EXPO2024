@@ -17,13 +17,10 @@ import android.widget.ImageView
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
@@ -31,8 +28,6 @@ import java.security.MessageDigest
 import android.util.Log
 import android.view.Window
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -52,16 +47,9 @@ class registroSolicitante : AppCompatActivity() {
 
     lateinit var imgFotoDePerfilSolicitante: ImageView
     lateinit var miPath: String
-    lateinit var latitud: String
-    lateinit var longitud: String
-    lateinit var direccion: String
-    lateinit var txtDireccionSolicitante: EditText
     val uuid = UUID.randomUUID().toString()
     private var fotoSubida = false
     private var fechaNacimientoSeleccionada: String? = null
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,8 +70,21 @@ class registroSolicitante : AppCompatActivity() {
         val txtTelefonoSolicitante = findViewById<EditText>(R.id.txtTelefonoSolicitante)
         val txtDireccionSolicitante = findViewById<EditText>(R.id.txtDireccionSolicitante)
         val txtHabilidadesSolicitante = findViewById<EditText>(R.id.txtHabilidadesLaborales)
-
         val spDepartamentoSolicitante = findViewById<Spinner>(R.id.spDepartamentoSolicitante)
+        val spGeneroSolicitante = findViewById<Spinner>(R.id.spGeneroSolicitante)
+        val txtFechaSolicitante = findViewById<EditText>(R.id.txtFechaSolicitante)
+        val spAreaDeTrabajoSolicitante = findViewById<Spinner>(R.id.spAreaDeTrabajoSolicitante)
+        val spEstadoSolicitante = findViewById<Spinner>(R.id.spSituacionLaboralSolicitante)
+        val btnTomarFotoSolicitante = findViewById<Button>(R.id.btnTomarFotoSolicitante)
+        val btnCrearCuentaSolicitante = findViewById<ImageButton>(R.id.btnCrearCuentaSolicitante)
+        val btnSubirDesdeGaleriaSolicitante = findViewById<Button>(R.id.btnSubirDesdeGaleriaSolicitante)
+        imgFotoDePerfilSolicitante = findViewById(R.id.imgFotoDePerfilSolicitante)
+
+        val btnSalir8 = findViewById<ImageButton>(R.id.btnSalir8)
+
+        btnSalir8.setOnClickListener {
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
 
         // Función para hacer el select de los Departamentos
         fun obtenerDepartamentos(): List<Departamento> {
@@ -126,7 +127,7 @@ class registroSolicitante : AppCompatActivity() {
             }
         }
 
-        val txtFechaSolicitante = findViewById<EditText>(R.id.txtFechaSolicitante)
+
         // Mostrar el calendario al hacer click en el EditText txtFechaNacimientoPaciente
         txtFechaSolicitante.setOnClickListener {
             val calendario = Calendar.getInstance()
@@ -154,7 +155,7 @@ class registroSolicitante : AppCompatActivity() {
         }
 
 
-        val spGeneroSolicitante = findViewById<Spinner>(R.id.spGeneroSolicitante)
+
         val listadoGeneros = listOf(
             "Masculino", "Femenino", "Prefiero no decirlo"
         )
@@ -163,7 +164,7 @@ class registroSolicitante : AppCompatActivity() {
         spGeneroSolicitante.adapter = adaptadorDeGeneros
 
 
-        val spAreaDeTrabajoSolicitante = findViewById<Spinner>(R.id.spAreaDeTrabajoSolicitante)
+
 
         // Función para hacer el select del Area de trabajo
         fun obtenerAreasDeTrabajo(): List<AreaDeTrabajo> {
@@ -206,7 +207,7 @@ class registroSolicitante : AppCompatActivity() {
             }
         }
 
-        val spEstadoSolicitante = findViewById<Spinner>(R.id.spSituacionLaboralSolicitante)
+
         val listadoSituacionLaboral = listOf(
             "Empleado", "Desempleado"
         )
@@ -219,19 +220,9 @@ class registroSolicitante : AppCompatActivity() {
         spEstadoSolicitante.adapter = adaptadorDeEstado
 
 
-        //Mapas
-        txtDireccionSolicitante.setOnClickListener {
-            val intent = Intent(this, SeleccionarUbicacion::class.java)
-            seleccionarUbicacion_ARL.launch(intent)
-        }
 
 
 
-        imgFotoDePerfilSolicitante = findViewById(R.id.imgFotoDePerfilSolicitante)
-        val btnSubirDesdeGaleriaSolicitante =
-            findViewById<Button>(R.id.btnSubirDesdeGaleriaSolicitante)
-        val btnTomarFotoSolicitante = findViewById<Button>(R.id.btnTomarFotoSolicitante)
-        val btnCrearCuentaSolicitante = findViewById<ImageButton>(R.id.btnCrearCuentaSolicitante)
 
         // Creo la función para encriptar la contraseña
         fun hashSHA256(contraseniaEscrita: String): String {
@@ -310,7 +301,7 @@ class registroSolicitante : AppCompatActivity() {
 
                             // Encripto la contraseña usando la función de encriptación
                             val contrasenaEncriptada =
-                                hashSHA256(txtConstrasenaSolicitante.text.toString())
+                                hashSHA256(txtConstrasenaSolicitante.text.toString().trim())
 
                             val DepartamentoNombre =
                                 spDepartamentoSolicitante.selectedItem.toString()
@@ -337,10 +328,10 @@ class registroSolicitante : AppCompatActivity() {
                                 "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion,IdDepartamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
                             )!!
                             crearUsuario.setString(1, uuid)
-                            crearUsuario.setString(2, txtNombreSolicitante.text.toString())
-                            crearUsuario.setString(3, txtCorreoSolicitante.text.toString())
-                            crearUsuario.setString(4, txtTelefonoSolicitante.text.toString())
-                            crearUsuario.setString(5, txtDireccionSolicitante.text.toString())
+                            crearUsuario.setString(2, txtNombreSolicitante.text.toString().trim())
+                            crearUsuario.setString(3, txtCorreoSolicitante.text.toString().trim())
+                            crearUsuario.setString(4, txtTelefonoSolicitante.text.toString().trim())
+                            crearUsuario.setString(5, txtDireccionSolicitante.text.toString().trim())
                             crearUsuario.setInt(
                                 6, idDepartamento
                             )
@@ -353,7 +344,7 @@ class registroSolicitante : AppCompatActivity() {
                             )
                             crearUsuario.setString(
                                 11,
-                                txtHabilidadesSolicitante.text.toString()
+                                txtHabilidadesSolicitante.text.toString().trim()
                             )
                             crearUsuario.setBlob(
                                 12,
@@ -407,19 +398,6 @@ class registroSolicitante : AppCompatActivity() {
 
 
     }
-
-    private val seleccionarUbicacion_ARL =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultado ->
-            if (resultado.resultCode == Activity.RESULT_OK) {
-                val data = resultado.data
-                if (data != null) {
-                    latitud = data.getStringExtra("latitud, 0.0")?: ""
-                    longitud = data.getStringExtra("longitud, 0.0")?: ""
-                    direccion = data.getStringExtra("direccion") ?: ""
-                    txtDireccionSolicitante.setText(direccion)
-                }
-            }
-        }
 
     private fun checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(

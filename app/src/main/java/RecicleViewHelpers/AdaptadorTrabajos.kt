@@ -15,9 +15,23 @@ import modelo.Trabajo
 
 class AdaptadorTrabajos(var Datos : List<Trabajo>) : RecyclerView.Adapter<ViewHolderTrabajos>() {
 
+    private var datosOriginales: List<Trabajo> = Datos
+
     fun actualizarDatos(nuevosDatos: List<Trabajo>) {
         Datos= nuevosDatos
         notifyDataSetChanged()}
+
+    fun filtrar(query: String) {
+        Datos = if (query.isEmpty()) {
+            datosOriginales
+        } else {
+            datosOriginales.filter {
+                it.Titulo.contains(query, ignoreCase = true) || // Filtra por Titulo
+                        it.Descripcion.contains(query, ignoreCase = true) // Filtra por Descripción
+            }
+        }
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderTrabajos {
         val vista = LayoutInflater.from(parent.context).inflate(R.layout.activity_card_trabajos_empresa, parent, false)

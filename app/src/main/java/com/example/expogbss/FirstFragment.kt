@@ -1,10 +1,20 @@
 package com.example.expogbss
 
+import RecicleViewHelpers.AdaptadorMSolicitud
+import RecicleViewHelpers.AdaptadorSolicitud
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import modelo.ClaseConexion
+import modelo.Solicitud
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,12 +39,78 @@ class FirstFragment : Fragment() {
         }
     }
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false)
+        val root = inflater.inflate(R.layout.fragment_first, container, false)
+
+
+
+        val rcvMSolis = root.findViewById<RecyclerView>(R.id.rcvMisSolicitudes)
+
+        rcvMSolis.layoutManager = LinearLayoutManager(requireContext())
+
+        fun obtenerSolicitudesParaTrabajo(): List<Solicitud>{
+            val objConexion = ClaseConexion().cadenaConexion()
+            //2 - Creo un statement
+
+            val statement = objConexion?.createStatement()
+            val resultSet = statement?.executeQuery("""
+        SELECT 
+            s.IdSolicitud, 
+            s.IdSolicitante, 
+            s.IdTrabajo, 
+            s.FechaSolicitud, 
+            s.Estado,
+            t.Titulo AS TituloTrabajo,
+            t.IdAreaDeTrabajo AS CategoriaTrabajo
+        FROM SOLICITUD s
+        INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
+    """)!!
+
+            //en esta variable se añaden TODOS los valores de mascotas
+            val listaSolicitud = mutableListOf<Solicitud>()
+
+            while (resultSet.next()) {
+                val IdSolicitud = resultSet.getInt("IdSolicitud")
+                val IdSolicitante = resultSet.getString("IdSolicitante")
+                val IdTrabajo = resultSet.getInt("IdTrabajo")
+                val FechaSolicitud = resultSet.getString("FechaSolicitud")
+                val Estado = resultSet.getString("Estado")
+                val tituloTrabajo = resultSet.getString("TituloTrabajo")
+                val categoriaTrabajo = resultSet.getInt("CategoriaTrabajo")
+
+
+                val solicitud = Solicitud(
+                    IdSolicitud,
+                    IdSolicitante,
+                    IdTrabajo,
+                    FechaSolicitud,
+                    Estado,
+                    tituloTrabajo,
+                    categoriaTrabajo
+                )
+                listaSolicitud.add(solicitud)
+            }
+            return listaSolicitud
+
+        }
+
+        // Configurar adaptador para solicitudes
+        CoroutineScope(Dispatchers.IO).launch {
+            val solicitudesDb = obtenerSolicitudesParaTrabajo()
+            withContext(Dispatchers.Main) {
+                val adapter = AdaptadorMSolicitud(solicitudesDb)
+                rcvMSolis.adapter = adapter
+            }
+        }
+
+
+        return root
     }
 
     companion object {

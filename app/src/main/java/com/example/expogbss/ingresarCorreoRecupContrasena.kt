@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -46,6 +47,12 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
         val btnEnviar = findViewById<Button>(R.id.btnEnviarCodigoRecuperacion)
         val txtcorreoRecuperacion = findViewById<EditText>(R.id.txtIngresarCorreoRecuperacion)
         val codigoRecupContrasena = (1000..9999).random()
+
+        val btnSalir3 = findViewById<ImageButton>(R.id.btnSalir3)
+
+        btnSalir3.setOnClickListener {
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
 
         btnEnviar.setOnClickListener {
             val correo = txtcorreoRecuperacion.text.toString()

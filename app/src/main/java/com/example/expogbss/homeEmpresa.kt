@@ -64,24 +64,27 @@ class homeEmpresa : Fragment() {
         // initializing our variable for button with its id.
         val btnShowBottomSheet = root.findViewById<ImageButton>(R.id.idBtnShowBottomSheet)
         val rcvTrabajos = root.findViewById<RecyclerView>(R.id.rcvTrabajos)
+        val idEmpleador = login.IdEmpleador
+        println("este es el id empleador $idEmpleador" +
+                "" +
+                "" +
+                "" +
+                "" +
+                "")
 
         rcvTrabajos.layoutManager = LinearLayoutManager(requireContext())
+
+        println(idEmpleador)
 
         fun obtenerDatos(): List<Trabajo> {
             //1- Creo un objeto de la clase conexión
             val objConexion = ClaseConexion().cadenaConexion()
 
-            //2 - Creo un statement
-            fun obtenerIdEmpleador(): String {
-                return login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
-            }
-            val idEmpleador = obtenerIdEmpleador()
 
             //El símbolo de pregunta es pq los datos pueden ser nulos
             val statement = objConexion?.prepareStatement("SELECT * FROM TRABAJO WHERE IdEmpleador = ?")
             statement?.setString(1, idEmpleador)
             val resultSet = statement?.executeQuery()!!
-
 
             //en esta variable se añaden TODOS los valores de mascotas
             val listaTrabajos = mutableListOf<Trabajo>()
@@ -93,10 +96,10 @@ class homeEmpresa : Fragment() {
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
-                val AreaDeTrabajo = resultSet.getInt("AreaDeTrabajo")
+                val AreaDeTrabajo = resultSet.getInt("IdAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
-                val Ubicacion = resultSet.getString("Ubicacion")
-                val Departamento = resultSet.getInt("Departamento")
+                val Ubicacion = resultSet.getString("Direccion")
+                val Departamento = resultSet.getInt("IdDepartamento")
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
                 val Estado = resultSet.getString("Estado")
@@ -271,54 +274,54 @@ class homeEmpresa : Fragment() {
                     return@setOnClickListener
                 }
 
-                val DepartamentoNombre =
-                    spDepartamentoSolicitante.selectedItem.toString()
 
-                // Obtener el id_medicamento desde el Spinner
-                val Departamento =
-                    obtenerDepartamentos() // Se asume que puedes obtener la lista de medicamentos aquí
-                val DepartamentoSeleccionado =
-                    Departamento.find { it.Nombre == DepartamentoNombre }
-                val idDepartamento = DepartamentoSeleccionado!!.Id_departamento
-
-                val AreadetrabajoNombre =
-                    spAreaDeTrabajoSolicitante.selectedItem.toString()
-
-                // Obtener el id_medicamento desde el Spinner
-                val AreaDeTrabajo =
-                    obtenerAreasDeTrabajo() // Se asume que puedes obtener la lista de medicamentos aquí
-                val AreaDeTrabajoSeleccionada =
-                    AreaDeTrabajo.find { it.NombreAreaDetrabajo == AreadetrabajoNombre }
-                val idAreaDeTrabajo = AreaDeTrabajoSeleccionada!!.idAreaDeTrabajo
-
-                val salario = BigDecimal(txtSalarioJob.text.toString())
 
                 CoroutineScope(Dispatchers.IO).launch {
+
                     try {
+                        val DepartamentoNombre =
+                            spDepartamentoSolicitante.selectedItem.toString()
+                        // Obtener el id_medicamento desde el Spinner
+                        val Departamento =
+                            obtenerDepartamentos() // Se asume que puedes obtener la lista de medicamentos aquí
+                        val DepartamentoSeleccionado =
+                            Departamento.find { it.Nombre == DepartamentoNombre }
+                        val idDepartamento = DepartamentoSeleccionado!!.Id_departamento
+
+
+                        val AreadetrabajoNombre =
+                            spAreaDeTrabajoSolicitante.selectedItem.toString()
+                        // Obtener el id_medicamento desde el Spinner
+                        val AreaDeTrabajo =
+                            obtenerAreasDeTrabajo() // Se asume que puedes obtener la lista de medicamentos aquí
+                        val AreaDeTrabajoSeleccionada =
+                            AreaDeTrabajo.find { it.NombreAreaDetrabajo == AreadetrabajoNombre }
+                        val idAreaDeTrabajo = AreaDeTrabajoSeleccionada!!.idAreaDeTrabajo
+
+                        val salario = BigDecimal(txtSalarioJob.text.toString())
                         //1-creo un objeto de la clse conexion
                         val objConexion = ClaseConexion().cadenaConexion()
 
                         //2-creo una variable que contenga un PrepareStatement
+
                         val addTrabajo =
-                            objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , AreaDeTrabajo,Descripcion ,Ubicacion , Experiencia , Requerimientos , Estado ,Salario , Beneficios, FechaDePublicacion ) VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,? )")!!
-                        addTrabajo.setString(1, txtTituloJob.text.toString())
+                            objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , IdAreaDeTrabajo,Descripcion ,Direccion ,IdDepartamento, Experiencia , Requerimientos , Estado ,Salario , Beneficios, FechaDePublicacion ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
+                        addTrabajo.setString(1, txtTituloJob.text.toString().trim())
                         addTrabajo.setString(2, idEmpleador)
                         addTrabajo.setInt(3, idAreaDeTrabajo)
-                        addTrabajo.setString(4, txtDescripcionJob.text.toString())
-                        addTrabajo.setString(5, txtUbicacionJob.text.toString())
+                        addTrabajo.setString(4, txtDescripcionJob.text.toString().trim())
+                        addTrabajo.setString(5, txtUbicacionJob.text.toString().trim())
                         addTrabajo.setInt(6, idDepartamento)
-                        addTrabajo.setString(7, txtExperienciaJob.text.toString())
-                        addTrabajo.setString(8, txtHabilidadesJob.text.toString())
+                        addTrabajo.setString(7, txtExperienciaJob.text.toString().trim())
+                        addTrabajo.setString(8, txtHabilidadesJob.text.toString().trim())
                         addTrabajo.setString(9, "Activo")
                         addTrabajo.setBigDecimal(10, salario)
-                        addTrabajo.setString(11, txtBeneficiosJob.text.toString())
+                        addTrabajo.setString(11, txtBeneficiosJob.text.toString().trim())
                         addTrabajo.setString(12, fechaDePublicacion)
-
-
 
                         Log.d(
                             "InsertJob",
-                            "Datos a insertar: Titulo=${txtTituloJob.text}, IdEmpleador=$idEmpleador, AreaDeTrabajo=$idAreaDeTrabajo, Descripcion=${txtDescripcionJob.text}, Ubicacion=${txtUbicacionJob.text},idDepartamento=$idDepartamento ,Experiencia=${txtExperienciaJob.text}, Requerimientos=${txtHabilidadesJob.text}, Estado=Activo, Salario=$salario, Beneficios=${txtBeneficiosJob.text}, FechaDePublicacion=$fechaDePublicacion"
+                            "Datos a insertar: Titulo=${txtTituloJob.text}, IdEmpleador=$idEmpleador, IdAreaDeTrabajo=$idAreaDeTrabajo, Descripcion=${txtDescripcionJob.text}, Direccion=${txtUbicacionJob.text},idDepartamento=$idDepartamento ,Experiencia=${txtExperienciaJob.text}, Requerimientos=${txtHabilidadesJob.text}, Estado=Activo, Salario=$salario, Beneficios=${txtBeneficiosJob.text}, FechaDePublicacion=$fechaDePublicacion"
                         )
 
                         addTrabajo.executeUpdate()
@@ -339,7 +342,6 @@ class homeEmpresa : Fragment() {
                                 Toast.LENGTH_LONG
                             ).show()
                         }
-                        //aqui estaban antes
                     }
 
 

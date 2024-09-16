@@ -1,7 +1,9 @@
 package com.example.expogbss
 
+import RecicleViewHelpers.AdaptadorPublicacion
 import RecicleViewHelpers.AdaptadorSolicitud
 import android.os.Bundle
+import android.view.Window
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -9,16 +11,24 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import modelo.ClaseConexion
+import modelo.Solicitud
+import modelo.Trabajo
 
 class DetallePublicacion : AppCompatActivity() {
 
     private lateinit var txtTituloDetalle: TextView
     private lateinit var txtDescripcionDetalle: TextView
     private lateinit var rcvSolicitudes: RecyclerView
-    private lateinit var solicitudesAdapter: AdaptadorSolicitud
+   // private lateinit var solicitudesAdapter: AdaptadorSolicitud
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
         setContentView(R.layout.activity_detalle_publicacion)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -46,9 +56,63 @@ class DetallePublicacion : AppCompatActivity() {
         // Obtener lista de solicitudes (esto es un ejemplo; debes obtenerlas desde tu fuente de datos)
         //val solicitudes = obtenerSolicitudesParaTrabajo()
 
+        fun obtenerSolicitudesParaTrabajo(): List<Solicitud>{
+            val objConexion = ClaseConexion().cadenaConexion()
+            //2 - Creo un statement
+
+            val statement = objConexion?.createStatement()
+            val resultSet = statement?.executeQuery("""
+        SELECT 
+            s.IdSolicitud, 
+            s.IdSolicitante, 
+            s.IdTrabajo, 
+            s.FechaSolicitud, 
+            s.Estado,
+            t.Titulo AS TituloTrabajo,
+            t.IdAreaDeTrabajo AS CategoriaTrabajo
+        FROM SOLICITUD s
+        INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
+    """)!!
+
+            //en esta variable se añaden TODOS los valores de mascotas
+            val listaSolicitud = mutableListOf<Solicitud>()
+
+            while (resultSet.next()) {
+                val IdSolicitud = resultSet.getInt("IdSolicitud")
+                val IdSolicitante = resultSet.getString("IdSolicitante")
+                val IdTrabajo = resultSet.getInt("IdTrabajo")
+                val FechaSolicitud = resultSet.getString("FechaSolicitud")
+                val Estado = resultSet.getString("Estado")
+                val tituloTrabajo = resultSet.getString("TituloTrabajo")
+                val categoriaTrabajo = resultSet.getInt("CategoriaTrabajo")
+
+
+                val solicitud = Solicitud(
+                    IdSolicitud,
+                    IdSolicitante,
+                    IdTrabajo,
+                    FechaSolicitud,
+                    Estado,
+                    tituloTrabajo,
+                    categoriaTrabajo
+                )
+                listaSolicitud.add(solicitud)
+            }
+            return listaSolicitud
+
+        }
+
         // Configurar adaptador para solicitudes
+        CoroutineScope(Dispatchers.IO).launch {
+            val solicitudesDb = obtenerSolicitudesParaTrabajo()
+            withContext(Dispatchers.Main) {
+                val adapter = AdaptadorSolicitud(solicitudesDb)
+                rcvSolicitudes.adapter = adapter
+            }
+        }
        // solicitudesAdapter = AdaptadorSolicitud(solicitudes)
-        rcvSolicitudes.adapter = solicitudesAdapter
+      //  rcvSolicitudes.adapter = solicitudesAdapter
+
 
 
     }

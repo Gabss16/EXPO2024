@@ -100,9 +100,9 @@
 
     <TextView
         android:id="@+id/txtForgotYourPassword"
-        android:layout_width="175dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="184dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="4dp"
         android:text="¿Olvidaste tu contraseña?"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"

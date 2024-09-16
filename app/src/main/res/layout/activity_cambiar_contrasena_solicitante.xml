@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".cambiar_contrasena_Solicitante">
+
+    <EditText
+        android:id="@+id/txtRepetirNuevaContrasenaSolicitante"
+        android:layout_width="280dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/textboxregistro"
+        android:ems="10"
+        android:hint="Vuelve a ingresar la nueva contraseña"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.519"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNuevaContrasenaSolicitante" />
+
+    <ImageView
+        android:id="@+id/imgLineas2"
+        android:layout_width="630dp"
+        android:layout_height="230dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/login_desing" />
+
+    <EditText
+        android:id="@+id/txtContrasenaActualSolicitante"
+        android:layout_width="280dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/textboxregistro"
+        android:ems="10"
+        android:hint="Contraseña actual"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.519"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgLineas2" />
+
+    <EditText
+        android:id="@+id/txtNuevaContrasenaSolicitante"
+        android:layout_width="280dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/textboxregistro"
+        android:ems="10"
+        android:hint="Nueva contraseña"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.519"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtContrasenaActualSolicitante" />
+
+    <ImageView
+        android:id="@+id/btnUpdateContrasenaSolicitante"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtRepetirNuevaContrasenaSolicitante"
+        app:layout_constraintVertical_bias="0.659"
+        app:srcCompat="@drawable/editar_contrasena" />
+
+    <ImageButton
+        android:id="@+id/btnSalir1"
+        android:layout_width="35dp"
+        android:layout_height="34dp"
+        android:background="@drawable/baseline_arrow_back_ios_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.038" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
