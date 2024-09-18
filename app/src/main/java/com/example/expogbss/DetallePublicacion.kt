@@ -62,17 +62,17 @@ class DetallePublicacion : AppCompatActivity() {
 
             val statement = objConexion?.createStatement()
             val resultSet = statement?.executeQuery("""
-        SELECT 
-            s.IdSolicitud, 
-            s.IdSolicitante, 
-            s.IdTrabajo, 
-            s.FechaSolicitud, 
-            s.Estado,
-            t.Titulo AS TituloTrabajo,
-            t.IdAreaDeTrabajo AS CategoriaTrabajo
-        FROM SOLICITUD s
-        INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
-    """)!!
+SELECT
+                s.IdSolicitud,
+                s.IdSolicitante,
+                s.IdTrabajo,
+                s.FechaSolicitud,
+                s.Estado,
+                t.Titulo AS TituloTrabajo,
+                t.IdAreaDeTrabajo AS CategoriaTrabajo
+            FROM SOLICITUD s
+            INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
+            WHERE s.Estado = 'Pendiente'""")!!
 
             //en esta variable se añaden TODOS los valores de mascotas
             val listaSolicitud = mutableListOf<Solicitud>()
