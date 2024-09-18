@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -38,6 +39,7 @@ class perfilEmpresa : Fragment() {
         textViewSitioWeb = root.findViewById(R.id.textViewSitioWeb)
         imgFotoEmpleador = root.findViewById(R.id.imgFotoEmpleador)
 
+
         val btnEditarPerfil = root.findViewById<ImageView>(R.id.btnEditarPerfil)
 
         // Manejar el evento de clic en el botón de editar perfil
@@ -46,6 +48,14 @@ class perfilEmpresa : Fragment() {
             val intent = Intent(activity, editar_perfil_Empleador::class.java)
             startActivity(intent)
         }
+
+//        val btnCerrarSesionEmpleador = root.findViewById<EditText>(R.id.btnCerrarSesionEmpleador)
+//        // Manejar el evento de clic en el botón de editar perfil
+//        btnCerrarSesionEmpleador.setOnClickListener {
+//            // Iniciar la actividad "editar_perfil_Empleador"
+//            val intent = Intent(activity, login::class.java)
+//            startActivity(intent)
+//        }
 
         val btnEditarContrasena = root.findViewById<ImageView>(R.id.btnEditarContrasenaEmpresa)
 

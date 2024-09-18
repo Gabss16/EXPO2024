@@ -26,20 +26,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars" />
 
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="335dp"
-            android:layout_marginTop="21dp"
-            android:layout_marginEnd="19dp"
-            android:layout_marginBottom="807dp"
-            android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <ScrollView
             android:layout_width="409dp"
             android:layout_height="551dp"
@@ -170,6 +156,17 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+
+        <TextView
+            android:id="@+id/btnCerrarSesionEmpleador"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Cerrar Sesión"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

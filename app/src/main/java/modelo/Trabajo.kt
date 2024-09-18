@@ -3,7 +3,7 @@ package modelo
 import java.sql.Date
 
 class Trabajo(
-    val IdTrabajo: Number,
+    val IdTrabajo: Int,
     val Titulo: String,
     val IdEmpleador: String,
     val IdAreaDeTrabajo: Int,

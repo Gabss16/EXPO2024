@@ -72,5 +72,17 @@
         app:layout_constraintVertical_bias="0.659"
         app:srcCompat="@drawable/editar_contrasena" />
 
+    <ImageButton
+        android:id="@+id/btnSalir"
+        android:layout_width="35dp"
+        android:layout_height="34dp"
+        android:background="@drawable/baseline_arrow_back_ios_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.038" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

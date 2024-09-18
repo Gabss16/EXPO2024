@@ -36,6 +36,12 @@ class Cambiar_ContrasenaEmpleador : AppCompatActivity() {
         val txtReIngresarNuevaContrasenaEmpleador = findViewById<EditText>(R.id.txtRepetirNuevaContrasenaEmpleador)
         val btnEditarContrasena = findViewById<ImageView>(R.id.btnUpdateContrasenaEmpleador)
 
+        val btnSalir = findViewById<ImageButton>(R.id.btnSalir)
+
+        btnSalir.setOnClickListener {
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
+
         // Creo la función para encriptar la contraseña
         fun hashSHA256(contraseniaEscrita: String): String {
             val bytes =

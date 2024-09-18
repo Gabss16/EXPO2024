@@ -3,6 +3,7 @@ package com.example.expogbss
 import android.content.Intent
 import android.os.Bundle
 import android.view.Window
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,12 @@ class rolSelector : AppCompatActivity() {
 
         val btnEmpleador = findViewById<ImageView>(R.id.btnCuentaEmpleador)
         val btnSolicitante = findViewById<ImageView>(R.id.btnCuentaSolicitante)
+
+        val btnSalir9 = findViewById<ImageButton>(R.id.btnSalir9)
+
+        btnSalir9.setOnClickListener {
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
 
         btnEmpleador.setOnClickListener {
             //Cambio de pantalla para poder registrarse

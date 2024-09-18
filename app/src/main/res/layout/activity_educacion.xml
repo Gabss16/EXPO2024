@@ -44,4 +44,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.619" />
 
+    <ImageButton
+        android:id="@+id/salir1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="13dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/tvEducacionEnsenanzaTitulo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toEndOf="@+id/tvEducacionEnsenanzaTitulo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.176"
+        app:srcCompat="@drawable/reject" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

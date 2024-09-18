@@ -57,6 +57,7 @@ class AdaptadorTrabajos(var Datos : List<Trabajo>) : RecyclerView.Adapter<ViewHo
             //Cambiar de pantalla a la pantalla de detalle
             val pantallaDetalle = Intent(context, Detalle_Puesto::class.java)
             //enviar a la otra pantalla todos mis valores
+            pantallaDetalle.putExtra("IdTrabajo", trabajos.IdTrabajo)
             pantallaDetalle.putExtra("Titulo", trabajos.Titulo)
             pantallaDetalle.putExtra("AreaDeTrabajo", trabajos.IdAreaDeTrabajo)
             pantallaDetalle.putExtra("Descripcion", trabajos.Descripcion)

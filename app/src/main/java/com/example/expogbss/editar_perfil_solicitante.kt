@@ -2,6 +2,7 @@ package com.example.expogbss
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -44,6 +45,7 @@ class editar_perfil_solicitante : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
         setContentView(R.layout.activity_editar_perfil_solicitante)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -58,7 +60,8 @@ class editar_perfil_solicitante : AppCompatActivity() {
         val txtTelefonoSolicitanteEdit = findViewById<EditText>(R.id.txtTelefonoSolicitanteEdit)
         val txtDireccionSolicitanteEdit = findViewById<EditText>(R.id.txtDireccionSolicitanteEdit)
         val txtHabilidadesSolicitanteEdit = findViewById<EditText>(R.id.txtHabilidadesLaboralesEdit)
-        val spDepartamentoSolicitanteEdit = findViewById<Spinner>(R.id.spDepartamentoSolicitanteEdit)
+        val spDepartamentoSolicitanteEdit =
+            findViewById<Spinner>(R.id.spDepartamentoSolicitanteEdit)
         val spEstadoSolicitante = findViewById<Spinner>(R.id.spSituacionLaboralSolicitanteEdit)
         val spAreaDeTrabajoSolicitante = findViewById<Spinner>(R.id.spAreaDeTrabajoSolicitanteEdit)
         val nombreSolicitante = login.nombresSolicitante
@@ -68,9 +71,13 @@ class editar_perfil_solicitante : AppCompatActivity() {
         val habilidadesSolicitante = login.habilidades
         val departamentoSolicitante = login.idDepartamento
         val estadoSolicitante = login.estadoSolicitante
-        val areaDeTrabajoSolicitante = login.areaDeTrabajo
 
+        val btnSalir5 = findViewById<ImageButton>(R.id.btnSalir5)
+        val IdAreaDeTrabajo = login.areaDeTrabajo
 
+        btnSalir5.setOnClickListener {
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
 
         val idSolicitante = login.IdSolicitante
 
@@ -140,8 +147,7 @@ class editar_perfil_solicitante : AppCompatActivity() {
             }
         }
 
-        // Función para hacer el select del area de trabajo
-        fun obtenerArea(): List<AreaDeTrabajo> {
+        fun obtenerAreasDeTrabajo(): List<AreaDeTrabajo> {
             val listadoAreaDeTrabajo = mutableListOf<AreaDeTrabajo>()
             val objConexion = ClaseConexion().cadenaConexion()
 
@@ -152,9 +158,9 @@ class editar_perfil_solicitante : AppCompatActivity() {
 
                 if (resultSet != null) {
                     while (resultSet.next()) {
-                        val IdAreaDeTrabajo = resultSet.getInt("IdAreaDeTrabajo")
+                        val idAreaDeTrabajo = resultSet.getInt("IdAreaDeTrabajo")
                         val NombreAreaDetrabajo = resultSet.getString("NombreAreaDetrabajo")
-                        val listadoCompleto = AreaDeTrabajo(IdAreaDeTrabajo, NombreAreaDetrabajo)
+                        val listadoCompleto = AreaDeTrabajo(idAreaDeTrabajo, NombreAreaDetrabajo)
                         listadoAreaDeTrabajo.add(listadoCompleto)
                     }
                     resultSet.close()
@@ -162,58 +168,33 @@ class editar_perfil_solicitante : AppCompatActivity() {
                 statement?.close()
                 objConexion.close()
             } else {
-                Log.e("registro_empresa", "Connection to database failed")
+                Log.e("registroSolicitante", "Connection to database failed")
             }
             return listadoAreaDeTrabajo
         }
-
         CoroutineScope(Dispatchers.IO).launch {
-            val listadoAreaDeTrabajo = obtenerArea()
-            val NombreAreaDetrabajo = listadoAreaDeTrabajo.map { it.NombreAreaDetrabajo }
+            val listadoAreaDeTrabajo = obtenerAreasDeTrabajo()
+            val AreaDeTrabajo = listadoAreaDeTrabajo.map { it.NombreAreaDetrabajo }
 
             withContext(Dispatchers.Main) {
                 // Configuración del adaptador
                 val adapter = ArrayAdapter(
                     this@editar_perfil_solicitante, // Usar el contexto adecuado
                     android.R.layout.simple_spinner_dropdown_item,
-                    NombreAreaDetrabajo
+                    AreaDeTrabajo
                 )
                 spAreaDeTrabajoSolicitante.adapter = adapter
 
-                // Aquí seleccionamos el areaTrabajo basado en el IdAreaTrabajo
+                // Aquí seleccionamos el departamento basado en el IdDepartamento
                 val posicionSeleccionada =
-                    listadoAreaDeTrabajo.indexOfFirst { it.idAreaDeTrabajo == areaDeTrabajoSolicitante }
+                    listadoAreaDeTrabajo.indexOfFirst { it.idAreaDeTrabajo == IdAreaDeTrabajo }
 
-                // Si el area existe en la lista, seleccionarlo
+                // Si el departamento existe en la lista, seleccionarlo
                 if (posicionSeleccionada != -1) {
                     spAreaDeTrabajoSolicitante.setSelection(posicionSeleccionada)
                 }
             }
         }
-        CoroutineScope(Dispatchers.IO).launch {
-            val listadoAreaDeTrabajo = obtenerArea()
-            val NombreAreaDetrabajo = listadoAreaDeTrabajo.map { it.NombreAreaDetrabajo }
-
-            withContext(Dispatchers.Main) {
-                // Configuración del adaptador
-                val adapter = ArrayAdapter(
-                    this@editar_perfil_solicitante, // Usar el contexto adecuado
-                    android.R.layout.simple_spinner_dropdown_item,
-                    NombreAreaDetrabajo
-                )
-                spAreaDeTrabajoSolicitante.adapter = adapter
-
-                // Aquí seleccionamos el areaTrabajo basado en el IdAreaTrabajo
-                val posicionSeleccionada =
-                    listadoAreaDeTrabajo.indexOfFirst { it.idAreaDeTrabajo == areaDeTrabajoSolicitante }
-
-                // Si el area existe en la lista, seleccionarlo
-                if (posicionSeleccionada != -1) {
-                    spAreaDeTrabajoSolicitante.setSelection(posicionSeleccionada)
-                }
-            }
-        }
-
 
         val listadoSituacionLaboral = listOf(
             "Empleado", "Desempleado"
@@ -225,39 +206,17 @@ class editar_perfil_solicitante : AppCompatActivity() {
                 listadoSituacionLaboral
             )
         spEstadoSolicitante.adapter = adaptadorDeEstado
-        //Funcion llamar estado
-        //fun obtenerEstadoSolicitante(idSolicitante: String): String? {
-            //var estadoSolicitante: String? = null
-            //val objConexion = ClaseConexion().cadenaConexion()
 
-            //if (objConexion != null) {
-                //val query = "SELECT Estado FROM SOLICITANTE WHERE CorreoElectronico = ?"
-                //var preparedStatement: PreparedStatement? = null
-                //var resultSet: ResultSet? = null
-
-                //try {
-                    //preparedStatement = objConexion.prepareStatement(query)
-                    //preparedStatement.setString(1, idSolicitante)
-                    //resultSet = preparedStatement.executeQuery()
-
-                    //if (resultSet.next()) {
-                        //estadoSolicitante = resultSet.getString("Estado")
-                    //}
-               // } catch (e: SQLException) {
-                 //   println("Error al obtener el estado del solicitante: ${e.message}")
-                //} finally {
-                  //  resultSet?.close()
-                    //preparedStatement?.close()
-                    //objConexion.close()
-               // }
-            //} else {
-              //  println("No se pudo establecer la conexión con la base de datos.")
-            //}
-            //return estadoSolicitante
-        //}
+        if (estadoSolicitante == "Empleado") {
+            spEstadoSolicitante.setSelection(0)  // Empleado
+        } else {
+            spEstadoSolicitante.setSelection(1)  // Desempleado
+        }
 
 
-        val btnEditarPerfilSolicitante = findViewById<ImageButton>(R.id.btnEditarPerfilSolicitanteEdit)
+
+        val btnEditarPerfilSolicitante =
+            findViewById<ImageButton>(R.id.btnEditarPerfilSolicitanteEdit)
 
 
         btnEditarPerfilSolicitante.setOnClickListener {
@@ -299,114 +258,115 @@ class editar_perfil_solicitante : AppCompatActivity() {
             } else {
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
-                        // Realizar la actualización en la base de datos
-                        val objConexion = ClaseConexion().cadenaConexion()
+                    // Realizar la actualización en la base de datos
+                    val objConexion = ClaseConexion().cadenaConexion()
 
-                        // Comprobar si existe algún empleador con el mismo teléfono
-                        val comprobarSiExistetelefonoEmpleador =
-                            objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE NumeroTelefono = ?")!!
-                        comprobarSiExistetelefonoEmpleador.setString(1,telefonoSolicitante)
+                    // Comprobar si existe algún empleador con el mismo teléfono
+                    val comprobarSiExistetelefonoEmpleador =
+                        objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE NumeroTelefono = ?")!!
+                    comprobarSiExistetelefonoEmpleador.setString(1, telefonoSolicitante)
 
-                        val existeTelefonoEmpleador =
-                            comprobarSiExistetelefonoEmpleador.executeQuery()
+                    val existeTelefonoEmpleador =
+                        comprobarSiExistetelefonoEmpleador.executeQuery()
 
-                        if (existeTelefonoEmpleador.next()) {
-                            // Si existe un solicitante con el mismo teléfono
+                    if (existeTelefonoEmpleador.next()) {
+                        // Si existe un solicitante con el mismo teléfono
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                this@editar_perfil_solicitante,
+                                "Ya existe alguien con ese número de teléfono, por favor ingresa uno distinto.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            btnEditarPerfilSolicitante.isEnabled = true
+                        }
+                    } else {
+                        // Comprobar si existe algún otro solicitante con el mismo teléfono
+                        val comprobarSiExisteTelefonoSolicitante =
+                            objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE Telefono = ? AND IdSolicitante != ?")!!
+                        comprobarSiExisteTelefonoSolicitante.setString(1, telefonoSolicitante)
+                        comprobarSiExisteTelefonoSolicitante.setString(2, idSolicitante)
+
+                        val existeTelefonoSolicitante =
+                            comprobarSiExisteTelefonoSolicitante.executeQuery()
+
+                        if (existeTelefonoSolicitante.next()) {
+                            // Si existe otro solicitante con el mismo teléfono
                             withContext(Dispatchers.Main) {
                                 Toast.makeText(
                                     this@editar_perfil_solicitante,
-                                    "Ya existe alguien con ese número de teléfono, por favor ingresa uno distinto.",
+                                    "Ya existe alguien con ese número de teléfono, por favor, utiliza otro.",
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 btnEditarPerfilSolicitante.isEnabled = true
                             }
                         } else {
-                            // Comprobar si existe algún otro solicitante con el mismo teléfono
-                            val comprobarSiExisteTelefonoSolicitante =
-                                objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE Telefono = ? AND IdSolicitante != ?")!!
-                            comprobarSiExisteTelefonoSolicitante.setString(1, telefonoSolicitante)
-                            comprobarSiExisteTelefonoSolicitante.setString(2, idSolicitante)
 
-                            val existeTelefonoSolicitante =
-                                comprobarSiExisteTelefonoSolicitante.executeQuery()
+                            val DepartamentoNombre =
+                                spDepartamentoSolicitanteEdit.selectedItem.toString()
 
-                            if (existeTelefonoEmpleador.next()) {
-                                // Si existe otro solicitante con el mismo teléfono
+                            // Obtener el id_Departamento desde el Spinner
+                            val Departamento =
+                                obtenerDepartamentos() // Se asume que puedes obtener la lista de Departamentos aquí
+                            val DepartamentoSeleccionado =
+                                Departamento.find { it.Nombre == DepartamentoNombre }
+                            val idDepartamento =
+                                DepartamentoSeleccionado!!.Id_departamento
+
+                            val AreaNombre =
+                                spAreaDeTrabajoSolicitante.selectedItem.toString()
+
+                            // Obtener el id_areaTrabajo desde el Spinner
+                            val AreaDeTrabajo =
+                                obtenerAreasDeTrabajo() // Se asume que puedes obtener la lista de Areas aquí
+                            val AreaSeleccionada =
+                                AreaDeTrabajo.find { it.NombreAreaDetrabajo == AreaNombre }
+                            val idAreaTrabajo =
+                                AreaSeleccionada!!.idAreaDeTrabajo
+
+                            // Actualizar los datos del empleador en la base de datos
+                            val actualizarUsuario = objConexion?.prepareStatement(
+                                "UPDATE SOLICITANTE SET Nombre  = ?, CorreoElectronico  = ?, Telefono  = ?, Direccion  = ?, IdDepartamento  = ?, IdAreaDeTrabajo = ?, Habilidades  =?, Estado =?  WHERE IdSolicitante = ?"
+                            )!!
+                            actualizarUsuario.setString(1, nombreSolicitante)
+                            actualizarUsuario.setString(2, correoSolicitante)
+                            actualizarUsuario.setString(3, telefonoSolicitante)
+                            actualizarUsuario.setString(4, direccionSolicitante)
+                            actualizarUsuario.setInt(5, idDepartamento) // Asegúrate de que `idDepartamento` es un Int
+                            actualizarUsuario.setInt(6, idAreaTrabajo) // Asegúrate de que `idAreaTrabajo` es un Int
+                            actualizarUsuario.setString(7, habilidadesSolicitante)
+                            actualizarUsuario.setString(8, spEstadoSolicitante.selectedItem.toString()) // Estado
+                            actualizarUsuario.setString(9, idSolicitante)
+
+                            val filasAfectadas = actualizarUsuario.executeUpdate()
+
+                            if (filasAfectadas > 0) {
+                                // Actualización exitosa, actualizar variables globales
+                                login.nombresSolicitante = nombreSolicitante
+                                login.correoSolicitante = correoSolicitante
+                                login.numeroSolicitante = telefonoSolicitante
+                                login.direccionSolicitante = direccionSolicitante
+                                login.idDepartamento = idDepartamento
+                                login.areaDeTrabajo = idAreaTrabajo
+                                login.habilidades = habilidadesSolicitante
+                                login.estadoSolicitante = spEstadoSolicitante.selectedItem.toString()
+                                withContext(Dispatchers.Main) {
+                                    AlertDialog.Builder(this@editar_perfil_solicitante)
+                                        .setTitle("Perfil actualizado")
+                                        .setMessage("Los datos del perfil han sido actualizados correctamente.")
+                                        .setPositiveButton("Aceptar", null)
+                                        .show()
+                                }
+                            } else {
                                 withContext(Dispatchers.Main) {
                                     Toast.makeText(
                                         this@editar_perfil_solicitante,
-                                        "Ya existe alguien con ese número de teléfono, por favor, utiliza otro.",
+                                        "Error al actualizar el perfil.",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    btnEditarPerfilSolicitante.isEnabled = true
-                                }
-                            } else {
-
-                                val DepartamentoNombre =
-                                    spDepartamentoSolicitanteEdit.selectedItem.toString()
-
-                                // Obtener el id_Departamento desde el Spinner
-                                val Departamento =
-                                    obtenerDepartamentos() // Se asume que puedes obtener la lista de Departamentos aquí
-                                val DepartamentoSeleccionado =
-                                    Departamento.find { it.Nombre == DepartamentoNombre }
-                                val idDepartamento =
-                                    DepartamentoSeleccionado!!.Id_departamento
-
-                                val AreaNombre =
-                                    spAreaDeTrabajoSolicitante.selectedItem.toString()
-
-                                // Obtener el id_areaTrabajo desde el Spinner
-                                val AreaDeTrabajo =
-                                    obtenerArea() // Se asume que puedes obtener la lista de Areas aquí
-                                val AreaSeleccionada =
-                                    AreaDeTrabajo.find { it.NombreAreaDetrabajo == AreaNombre }
-                                val idAreaTrabajo =
-                                    AreaSeleccionada!!.idAreaDeTrabajo
-
-                                // Actualizar los datos del empleador en la base de datos
-                                val actualizarUsuario = objConexion?.prepareStatement(
-                                    "UPDATE SOLICITANTE SET Nombre  = ?, CorreoElectronico  = ?, Telefono  = ?, Direccion  = ?, IdDepartamento  = ?, IdAreaDeTrabajo = ?, Habilidades  =?, Estado =?  WHERE IdEmpleador = ?"
-                                )!!
-                                actualizarUsuario.setString(1, nombreSolicitante)
-                                actualizarUsuario.setString(2, correoSolicitante)
-                                actualizarUsuario.setString(3, telefonoSolicitante)
-                                actualizarUsuario.setString(4, direccionSolicitante)
-                                actualizarUsuario.setInt(5, idDepartamento)
-                                actualizarUsuario.setInt(6, idAreaTrabajo)
-                                actualizarUsuario.setString(7, habilidadesSolicitante)
-                                actualizarUsuario.setString(8,spEstadoSolicitante.selectedItem.toString())
-
-                                val filasAfectadas = actualizarUsuario.executeUpdate()
-
-                                if (filasAfectadas > 0) {
-                                    // Actualización exitosa, actualizar variables globales
-                                    login.nombresSolicitante = nombreSolicitante
-                                    login.correoSolicitante = correoSolicitante
-                                    login.numeroSolicitante = telefonoSolicitante
-                                    login.direccionSolicitante = direccionSolicitante
-                                    login.idDepartamento = idDepartamento
-                                    login.areaDeTrabajo = idAreaTrabajo
-                                    login.habilidades = habilidadesSolicitante
-
-                                    withContext(Dispatchers.Main) {
-                                        AlertDialog.Builder(this@editar_perfil_solicitante)
-                                            .setTitle("Perfil actualizado")
-                                            .setMessage("Los datos del perfil han sido actualizados correctamente.")
-                                            .setPositiveButton("Aceptar", null)
-                                            .show()
-                                    }
-                                } else {
-                                    withContext(Dispatchers.Main) {
-                                        Toast.makeText(
-                                            this@editar_perfil_solicitante,
-                                            "Error al actualizar el perfil.",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
                                 }
                             }
                         }
+                    }
                     } catch (e: SQLException) {
                         when (e.errorCode) {
                             1 -> { // ORA-00001: unique constraint violated
