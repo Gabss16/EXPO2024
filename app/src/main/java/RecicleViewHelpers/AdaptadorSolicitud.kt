@@ -1,8 +1,11 @@
 package RecicleViewHelpers
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.expogbss.DetallePublicacion
+import com.example.expogbss.Info_Perfil_Solicitante
 import com.example.expogbss.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -10,6 +13,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import modelo.ClaseConexion
 import modelo.Solicitud
+import modelo.Solicitante
 import modelo.Trabajo
 
 class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<ViewHolderSolicitud>() {
@@ -59,6 +63,17 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
 
         holder.rejectButton.setOnClickListener {
             actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Rechazada")
+        }
+
+        holder.itemView.setOnClickListener {
+
+            val context = holder.itemView.context
+            //Cambiar de pantalla a la pantalla de detalle
+            val pantallaDetalleP = Intent(context, Info_Perfil_Solicitante::class.java)
+
+            pantallaDetalleP.putExtra("IdSolicitante", Solicitud.IdSolicitante)
+
+            context.startActivity(pantallaDetalleP)
         }
 
     }

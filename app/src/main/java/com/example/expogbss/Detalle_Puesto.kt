@@ -32,7 +32,7 @@ class Detalle_Puesto : AppCompatActivity() {
             insets
         }
         val TituloRecibido = intent.getStringExtra("Titulo")
-        val AreaDeTrabajoRecibido = intent.getIntExtra("IdAreaDeTrabajo", 125)
+        val AreaDeTrabajoRecibido = intent.getIntExtra("IdAreaDeTrabajo",1)
         val DescripcionRecibido = intent.getStringExtra("Descripcion")
         val UbicacionRecibido = intent.getStringExtra("Direccion")
         val ExperienciaRecibida = intent.getStringExtra("Experiencia")
@@ -84,13 +84,13 @@ class Detalle_Puesto : AppCompatActivity() {
 
         //el numero hay que cambiarlo dependiendo del idTrabjo que aparezca en la base de datos
         //luego luego hay que hacer una funcion para que no pase esto
-        val idTrabajo = intent.getIntExtra("IdTrabajo", 1)
 
+        val idTrabajo = intent.getIntExtra("IdTrabajo", 1)
         val idSolicitante = IdSolicitante
         val fechaSolicitud = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val estado = "Pendiente"
 
-        println("Este es el idTrabajo:" + idTrabajo)
+        //println("Este es el idTrabajo:" + idTrabajo)
         println("Este es el idSolicitante:" + idSolicitante)
 
         CoroutineScope(Dispatchers.IO).launch {
