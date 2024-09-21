@@ -49,13 +49,13 @@ class perfilEmpresa : Fragment() {
             startActivity(intent)
         }
 
-//        val btnCerrarSesionEmpleador = root.findViewById<EditText>(R.id.btnCerrarSesionEmpleador)
-//        // Manejar el evento de clic en el botón de editar perfil
-//        btnCerrarSesionEmpleador.setOnClickListener {
-//            // Iniciar la actividad "editar_perfil_Empleador"
-//            val intent = Intent(activity, login::class.java)
-//            startActivity(intent)
-//        }
+        val btnCerrarSesionEmpleador = root.findViewById<TextView>(R.id.btnCerrarSesionEmpleador)
+        // Manejar el evento de clic en el botón de editar perfil
+        btnCerrarSesionEmpleador.setOnClickListener {
+            // Iniciar la actividad "editar_perfil_Empleador"
+            val intent = Intent(activity, login::class.java)
+            startActivity(intent)
+        }
 
         val btnEditarContrasena = root.findViewById<ImageView>(R.id.btnEditarContrasenaEmpresa)
 
