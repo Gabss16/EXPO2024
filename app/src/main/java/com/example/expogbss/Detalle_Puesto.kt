@@ -43,9 +43,9 @@ class Detalle_Puesto : AppCompatActivity() {
 
         //Solo es para ver si los datos se reciben correctamente
         Log.d("Detalle_Puesto", "Titulo: $TituloRecibido")
-        Log.d("Detalle_Puesto", "AreaDeTrabajo: $AreaDeTrabajoRecibido")
+        Log.d("Detalle_Puesto", "IdAreaDeTrabajo: $AreaDeTrabajoRecibido")
         Log.d("Detalle_Puesto", "Descripcion: $DescripcionRecibido")
-        Log.d("Detalle_Puesto", "Ubicacion: $UbicacionRecibido")
+        Log.d("Detalle_Puesto", "Direccion: $UbicacionRecibido")
         Log.d("Detalle_Puesto", "Experiencia: $ExperienciaRecibida")
         Log.d("Detalle_Puesto", "Requerimientos: $RequerimientosRecibida")
         Log.d("Detalle_Puesto", "Estado: $EstadoRecibida")
@@ -117,6 +117,8 @@ class Detalle_Puesto : AppCompatActivity() {
                     Toast.makeText(this@Detalle_Puesto, "Error al enviar solicitud", Toast.LENGTH_LONG).show()
                 }
             } finally {
+
+
                 objConexion?.close()
             }
         }

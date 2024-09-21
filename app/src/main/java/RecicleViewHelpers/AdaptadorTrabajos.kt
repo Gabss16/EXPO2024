@@ -59,7 +59,7 @@ class AdaptadorTrabajos(var Datos : List<Trabajo>) : RecyclerView.Adapter<ViewHo
             //enviar a la otra pantalla todos mis valores
             pantallaDetalle.putExtra("IdTrabajo", trabajos.IdTrabajo)
             pantallaDetalle.putExtra("Titulo", trabajos.Titulo)
-            pantallaDetalle.putExtra("AreaDeTrabajo", trabajos.IdAreaDeTrabajo)
+            pantallaDetalle.putExtra("IdAreaDeTrabajo", trabajos.IdAreaDeTrabajo)
             pantallaDetalle.putExtra("Descripcion", trabajos.Descripcion)
             pantallaDetalle.putExtra("Direccion", trabajos.Direccion)
             pantallaDetalle.putExtra("IdDepartamento", trabajos.IdDepartamento)

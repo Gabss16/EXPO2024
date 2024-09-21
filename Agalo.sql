@@ -271,7 +271,7 @@ WHERE
     s.CorreoElectronico = 'prueba@gmail.com';
     
     
-
+commit;
 
 //Pruebas 
 begin 

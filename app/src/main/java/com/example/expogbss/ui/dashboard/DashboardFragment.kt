@@ -1,5 +1,6 @@
 package com.example.expogbss.ui.dashboard
 
+import RecicleViewHelpers.AdaptadorMSolicitud
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,11 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.expogbss.FragmentPageAdapter
 import com.example.expogbss.R
 import com.example.expogbss.databinding.FragmentBuscarBinding
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import modelo.ClaseConexion
+import modelo.Solicitud
 
 class DashboardFragment : Fragment() {
 
@@ -33,56 +42,65 @@ class DashboardFragment : Fragment() {
         _binding = FragmentBuscarBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // Llamar a findViewById en la vista inflada
-        tabLayout = binding.root.findViewById(R.id.tabLayout)
-        viewPager2 = binding.root.findViewById(R.id.viewPager2)
+        val rcvMSolis = root.findViewById<RecyclerView>(R.id.rcvMisSolicitudes)
 
-        // Asegurarse de que las vistas no son null
-        if (tabLayout == null) {
-            Log.e("DashboardFragment", "View with ID 'tabLayout' not found in layout")
-        } else {
-            // Configurar el TabLayout si es necesario
+        rcvMSolis.layoutManager = LinearLayoutManager(requireContext())
+
+        fun obtenerSolicitudesParaTrabajo(): List<Solicitud>{
+            val objConexion = ClaseConexion().cadenaConexion()
+            //2 - Creo un statement
+
+            val statement = objConexion?.createStatement()
+            val resultSet = statement?.executeQuery("""
+        SELECT 
+            s.IdSolicitud, 
+            s.IdSolicitante, 
+            s.IdTrabajo, 
+            s.FechaSolicitud, 
+            s.Estado,
+            t.Titulo AS TituloTrabajo,
+            t.IdAreaDeTrabajo AS CategoriaTrabajo
+        FROM SOLICITUD s
+        INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
+    """)!!
+
+            //en esta variable se añaden TODOS los valores de mascotas
+            val listaSolicitud = mutableListOf<Solicitud>()
+
+            while (resultSet.next()) {
+                val IdSolicitud = resultSet.getInt("IdSolicitud")
+                val IdSolicitante = resultSet.getString("IdSolicitante")
+                val IdTrabajo = resultSet.getInt("IdTrabajo")
+                val FechaSolicitud = resultSet.getString("FechaSolicitud")
+                val Estado = resultSet.getString("Estado")
+                val tituloTrabajo = resultSet.getString("TituloTrabajo")
+                val categoriaTrabajo = resultSet.getInt("CategoriaTrabajo")
+
+
+                val solicitud = Solicitud(
+                    IdSolicitud,
+                    IdSolicitante,
+                    IdTrabajo,
+                    FechaSolicitud,
+                    Estado,
+                    tituloTrabajo,
+                    categoriaTrabajo
+                )
+                listaSolicitud.add(solicitud)
+            }
+            return listaSolicitud
+
         }
 
-        if (viewPager2 == null) {
-            Log.e("DashboardFragment", "View with ID 'viewPager2' not found in layout")
-        } else {
-            // Configurar el ViewPager2 si es necesario
+        // Configurar adaptador para solicitudes
+        CoroutineScope(Dispatchers.IO).launch {
+            val solicitudesDb = obtenerSolicitudesParaTrabajo()
+            withContext(Dispatchers.Main) {
+                val adapter = AdaptadorMSolicitud(solicitudesDb)
+                rcvMSolis.adapter = adapter
+            }
         }
 
-        // Utilizar childFragmentManager en lugar de supportFragmentManager
-        adapter = FragmentPageAdapter(childFragmentManager, lifecycle)
-
-        tabLayout.addTab(tabLayout.newTab().setText("First"))
-        tabLayout.addTab(tabLayout.newTab().setText("Second"))
-
-        viewPager2.adapter = adapter
-
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                tab?.let {
-                    viewPager2.currentItem = tab.position
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                // No se necesita implementación
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                // No se necesita implementación
-            }
-        })
-
-        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                tabLayout.selectTab(tabLayout.getTabAt(position))
-            }
-        })
-
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            // Actualizar la UI con los datos del ViewModel
-        }
 
         return root
     }
