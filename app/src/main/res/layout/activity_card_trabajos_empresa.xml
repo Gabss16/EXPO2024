@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardElevation="4dp"
-    app:cardCornerRadius="12dp"
+    android:layout_margin="1dp"
+    app:cardElevation="1dp"
+    app:cardCornerRadius="5dp"
     app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,31 +16,46 @@
         android:padding="16dp">
 
         <!-- Título del trabajo -->
+
+        <!-- Tipo de trabajo -->
+
         <TextView
             android:id="@+id/txtTipoTrabajo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="290dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="4dp"
             android:text="TipoTrabajo"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Tipo de trabajo -->
         <TextView
             android:id="@+id/txtTIituloTrabajoo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_width="143dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="32dp"
             android:text="titulo"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtTipoTrabajo" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView34"
+            android:layout_width="13dp"
+            android:layout_height="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.98"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/flechaa" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

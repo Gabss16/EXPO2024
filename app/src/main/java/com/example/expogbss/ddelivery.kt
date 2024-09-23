@@ -1,7 +1,6 @@
 package com.example.expogbss
 
 import RecicleViewHelpers.AdaptadorTrabajos
-import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.widget.ImageButton
@@ -11,7 +10,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.expogbss.ui.home.HomeFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +17,7 @@ import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
 import modelo.Trabajo
 
-class delivery : AppCompatActivity() {
+class ddelivery : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -31,18 +29,13 @@ class delivery : AppCompatActivity() {
             insets
         }
 
-<<<<<<< HEAD
 
-=======
         val salir = findViewById<ImageButton>(R.id.sali9)
         salir.setOnClickListener{
             finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
         }
->>>>>>> c2185cee4d238213408e67882211f71d9e883c78
-
         val rcvTrabajosPublicados = findViewById<RecyclerView>(R.id.rcvDelivery)
         rcvTrabajosPublicados.layoutManager = LinearLayoutManager(this)
-        val salir = findViewById<ImageButton>(R.id.sali9)
 
 
 

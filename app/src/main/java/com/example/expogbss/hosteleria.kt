@@ -22,9 +22,9 @@ import modelo.Trabajo
 class hosteleria : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
         setContentView(R.layout.activity_hosteleria)
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -33,8 +33,7 @@ class hosteleria : AppCompatActivity() {
 
         val salir = findViewById<ImageButton>(R.id.salir3)
         salir.setOnClickListener{
-            val intent = Intent(this, HomeFragment::class.java)
-            startActivity(intent)
+            finish()
         }
 
         val rcvTrabajosPublicados = findViewById<RecyclerView>(R.id.rcvHosteleria)

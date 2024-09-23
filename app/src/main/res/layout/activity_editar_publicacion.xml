@@ -162,7 +162,7 @@
                     android:background="@drawable/edittext_trabajos"
                     android:ems="10"
                     android:hint="Salario"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:paddingLeft="35dp"
                     android:textColor="#97000000"
                     android:textStyle="bold"

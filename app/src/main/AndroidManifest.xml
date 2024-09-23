@@ -34,13 +34,13 @@
             android:name=".Info_Perfil_Solicitante"
             android:exported="false" />
         <activity
-            android:name=".educacion"
+            android:name=".eeducacion"
             android:exported="false" />
         <activity
             android:name=".ventas"
             android:exported="false" />
         <activity
-            android:name=".sp"
+            android:name=".Servicios"
             android:exported="false" />
         <activity
             android:name=".hosteleria"
@@ -49,10 +49,10 @@
             android:name=".Salud"
             android:exported="false" />
         <activity
-            android:name=".delivery"
+            android:name=".ddelivery"
             android:exported="false" />
         <activity
-            android:name=".remoto"
+            android:name=".Remoto"
             android:exported="false" />
         <activity
             android:name=".Freelance"

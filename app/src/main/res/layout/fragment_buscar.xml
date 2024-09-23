@@ -4,34 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.dashboard.DashboardFragment"
-    android:background="@drawable/tussolicitudes">
+    android:background="@color/colorBackground"
+    tools:context=".ui.dashboard.DashboardFragment">
 
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="370dp"
         android:layout_height="38dp"
-        android:text="Bienvenido! Revisa el estado de tus solicitudes de trabajo y espera una respuesta."
-        android:textSize="16sp"
-        android:textColor="#959595"
-        android:textStyle="normal"
+        android:text="Solicitudes"
+        android:textColor="#000000"
+        android:textSize="26sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.39"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.04000002" />
+
+    <ImageView
+        android:id="@+id/imageView31"
+        android:layout_width="124dp"
+        android:layout_height="112dp"
+        android:layout_marginTop="700dp"
+        android:src="@drawable/dec"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvMisSolicitudes"
-        android:layout_width="345dp"
-        android:layout_height="559dp"
+        android:layout_width="397dp"
+        android:layout_height="667dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.604" />
+
+    <ImageView
+        android:id="@+id/imageView30"
+        android:layout_width="341dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="164dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/decooo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView31"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="..."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.04"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
