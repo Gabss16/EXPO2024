@@ -11,18 +11,16 @@
         android:id="@+id/imageView2"
         android:layout_width="623dp"
         android:layout_height="221dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/login_desing" />
 
     <EditText
         android:id="@+id/txtnuevacontrasena"
         android:layout_width="331dp"
         android:layout_height="68dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="40dp"
         android:hint="Nueva Contraseña"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,8 +35,10 @@
         android:text="Cambiar Contraseña"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtnuevacontrasena" />
+        app:layout_constraintTop_toBottomOf="@+id/txtnuevacontrasena"
+        app:layout_constraintVertical_bias="0.06" />
 
     <ImageButton
         android:id="@+id/btnSalir2"
@@ -47,9 +47,17 @@
         android:background="@drawable/baseline_arrow_back_ios_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintHorizontal_bias="0.042"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.038" />
+        app:layout_constraintVertical_bias="0.033" />
+
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="353dp"
+        android:layout_height="367dp"
+        app:srcCompat="@drawable/contrasena"
+        tools:layout_editor_absoluteX="42dp"
+        tools:layout_editor_absoluteY="463dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

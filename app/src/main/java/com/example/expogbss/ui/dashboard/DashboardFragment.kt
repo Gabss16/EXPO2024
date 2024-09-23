@@ -14,6 +14,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.expogbss.FragmentPageAdapter
 import com.example.expogbss.R
 import com.example.expogbss.databinding.FragmentBuscarBinding
+import com.example.expogbss.login
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,21 +49,25 @@ class DashboardFragment : Fragment() {
 
         fun obtenerSolicitudesParaTrabajo(): List<Solicitud>{
             val objConexion = ClaseConexion().cadenaConexion()
+            //aqui obtengo el id de quien inicio sesion
+            val idSolicitante = login.IdSolicitante
             //2 - Creo un statement
 
             val statement = objConexion?.createStatement()
             val resultSet = statement?.executeQuery("""
-        SELECT 
-            s.IdSolicitud, 
-            s.IdSolicitante, 
-            s.IdTrabajo, 
-            s.FechaSolicitud, 
-            s.Estado,
-            t.Titulo AS TituloTrabajo,
-            t.IdAreaDeTrabajo AS CategoriaTrabajo
-        FROM SOLICITUD s
-        INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
-    """)!!
+            SELECT 
+                s.IdSolicitud, 
+                s.IdSolicitante, 
+                s.IdTrabajo, 
+                s.FechaSolicitud, 
+                s.Estado,
+                t.Titulo AS TituloTrabajo,
+                a.NombreCategoria AS CategoriaTrabajo
+            FROM SOLICITUD s
+            INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
+            INNER JOIN AreaDeTrabajo a ON t.IdAreaDeTrabajo = a.IdAreaDeTrabajo
+            WHERE s.IdSolicitante = '$idSolicitante'
+        """)!!
 
             //en esta variable se añaden TODOS los valores de mascotas
             val listaSolicitud = mutableListOf<Solicitud>()

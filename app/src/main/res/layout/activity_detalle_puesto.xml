@@ -9,16 +9,16 @@
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="412dp"
-        android:layout_height="208dp"
+        android:layout_width="561dp"
+        android:layout_height="215dp"
         android:src="@drawable/detalles_puestos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="416dp"
-        android:layout_height="703dp"
+        android:layout_width="409dp"
+        android:layout_height="696dp"
         android:background="@drawable/detalles_puestos2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

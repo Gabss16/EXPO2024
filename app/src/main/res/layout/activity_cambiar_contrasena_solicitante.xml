@@ -9,15 +9,14 @@
 
     <EditText
         android:id="@+id/txtRepetirNuevaContrasenaSolicitante"
-        android:layout_width="280dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="80dp"
+        android:layout_width="335dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="28dp"
         android:background="@drawable/textboxregistro"
         android:ems="10"
-        android:hint="Vuelve a ingresar la nueva contraseña"
+        android:hint="   Vuelve a ingresar la nueva contraseña"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.519"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtNuevaContrasenaSolicitante" />
 
@@ -34,12 +33,12 @@
 
     <EditText
         android:id="@+id/txtContrasenaActualSolicitante"
-        android:layout_width="280dp"
-        android:layout_height="70dp"
+        android:layout_width="335dp"
+        android:layout_height="51dp"
         android:layout_marginTop="100dp"
         android:background="@drawable/textboxregistro"
         android:ems="10"
-        android:hint="Contraseña actual"
+        android:hint="   Contraseña actual"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.519"
@@ -48,15 +47,14 @@
 
     <EditText
         android:id="@+id/txtNuevaContrasenaSolicitante"
-        android:layout_width="280dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="80dp"
+        android:layout_width="335dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="52dp"
         android:background="@drawable/textboxregistro"
         android:ems="10"
-        android:hint="Nueva contraseña"
+        android:hint="   Nueva contraseña"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.519"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtContrasenaActualSolicitante" />
 
@@ -69,7 +67,7 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtRepetirNuevaContrasenaSolicitante"
-        app:layout_constraintVertical_bias="0.659"
+        app:layout_constraintVertical_bias="0.233"
         app:srcCompat="@drawable/editar_contrasena" />
 
     <ImageButton
@@ -83,6 +81,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.038" />
+
+    <ImageView
+        android:id="@+id/imageView18"
+        android:layout_width="267dp"
+        android:layout_height="310dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/contrasena" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
