@@ -12,29 +12,40 @@
     <!-- Descripción del trabajo -->
 
     <!-- RecyclerView para solicitudes -->
+    <ImageButton
+        android:id="@+id/btnSalirDetallesPublicacion"
+        android:layout_width="35dp"
+        android:layout_height="34dp"
+        android:background="@drawable/baseline_arrow_back_ios_black_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.038" />
 
     <TextView
         android:id="@+id/txtJobTitle1"
-        android:layout_width="348dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="225dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
         android:text="Título del Trabajo"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtJobDescription"
-        android:layout_width="370dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="60dp"
+        android:layout_width="290dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="56dp"
         android:text="Descripción del Trabajo"
         android:textColor="@android:color/darker_gray"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.768"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,8 +61,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvSolicitudesRecibidas"
-        android:layout_width="376dp"
-        android:layout_height="642dp"
+        android:layout_width="366dp"
+        android:layout_height="613dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
