@@ -55,18 +55,17 @@ class DashboardFragment : Fragment() {
 
             val statement = objConexion?.createStatement()
             val resultSet = statement?.executeQuery("""
-            SELECT 
-                s.IdSolicitud, 
-                s.IdSolicitante, 
-                s.IdTrabajo, 
-                s.FechaSolicitud, 
-                s.Estado,
-                t.Titulo AS TituloTrabajo,
-                a.NombreCategoria AS CategoriaTrabajo
-            FROM SOLICITUD s
-            INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
-            INNER JOIN AreaDeTrabajo a ON t.IdAreaDeTrabajo = a.IdAreaDeTrabajo
-            WHERE s.IdSolicitante = '$idSolicitante'
+        SELECT 
+            s.IdSolicitud, 
+            s.IdSolicitante, 
+            s.IdTrabajo, 
+            s.FechaSolicitud, 
+            s.Estado,
+            t.Titulo AS TituloTrabajo,
+            t.IdAreaDeTrabajo AS CategoriaTrabajo
+        FROM SOLICITUD s
+        INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
+        WHERE s.IdSolicitante = '$idSolicitante'
         """)!!
 
             //en esta variable se añaden TODOS los valores de mascotas

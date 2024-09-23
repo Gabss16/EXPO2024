@@ -44,45 +44,6 @@ class chat : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_chat, container, false)
 
-        val rcvChats = root.findViewById<RecyclerView>(R.id.rcvChats)
-
-        rcvChats.layoutManager = LinearLayoutManager(requireContext())
-
-        fun ObtenerChats(): List<Empleador>{
-
-            val objConexion = ClaseConexion().cadenaConexion()
-
-            val statement = objConexion?.createStatement()
-            val resultset = statement?.executeQuery("SELECT * FROM EMPLEADOR")!!
-
-            val listaDeChats = mutableListOf<Empleador>()
-
-            while (resultset.next()){
-                val IdEmpleador = resultset.getString("IdEmpleador")
-                val NombreEmpresa = resultset.getString("NombreEmpresa")
-                val NombreRepresentante = resultset.getString("NombreRepresentante")
-                val CorreoElectronico = resultset.getString("CorreoElectronico")
-                val NumeroTelefono = resultset.getString("NumeroTelefono")
-                val Direccion = resultset.getString("Direccion")
-                val IdDepartamento = resultset.getString("IdDepartamento")
-                val SitioWeb = resultset.getString("SitioWeb")
-                val Estado = resultset.getString("Estado")
-                val Foto = resultset.getString("Foto")
-
-                val valoresJuntos = Empleador(IdEmpleador,NombreEmpresa,NombreRepresentante,CorreoElectronico,NumeroTelefono,Direccion,IdDepartamento,SitioWeb,Foto, Estado)
-
-                listaDeChats.add(valoresJuntos)
-            }
-return listaDeChats
-        }
-
-        CoroutineScope(Dispatchers.IO).launch {
-            val chats = ObtenerChats()
-            withContext(Dispatchers.Main){
-                val adapter = AdaptadorChats(chats)
-                rcvChats.adapter = adapter
-            }
-        }
 
         // Inflate the layout for this fragment
         return root

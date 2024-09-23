@@ -30,10 +30,10 @@ class AdaptadorPublicacion(var Datos : List<Trabajo>) : RecyclerView.Adapter<Vie
             val objConexion = ClaseConexion().cadenaConexion()
 
             //2- Crear una variable que contenga un PrepareStatement
-            val deletePublicacion =
-                objConexion?.prepareStatement("delete from TRABAJO where Titulo = ?")!!
-            deletePublicacion.setString(1, TituloTrabajo)
-            deletePublicacion.executeUpdate()
+            val updatePublicacion =
+                objConexion?.prepareStatement("UPDATE TRABAJO SET Estado = 'Inactivo' WHERE Titulo = ?")!!
+            updatePublicacion.setString(1, TituloTrabajo)
+            updatePublicacion.executeUpdate()
 
             val commit = objConexion.prepareStatement("commit")!!
             commit.executeUpdate()

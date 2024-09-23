@@ -118,7 +118,7 @@ class HomeFragment : Fragment() {
             //2 - Creo un statement
             //El símbolo de pregunta es pq los datos pueden ser nulos
             val statement = objConexion?.createStatement()
-            val resultSet = statement?.executeQuery("SELECT * FROM TRABAJO")!!
+            val resultSet = statement?.executeQuery("SELECT * FROM TRABAJO WHERE Estado = 'Activo'")!!
 
 
             //en esta variable se añaden TODOS los valores de mascotas

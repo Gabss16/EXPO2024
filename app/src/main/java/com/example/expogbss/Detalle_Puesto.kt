@@ -41,6 +41,12 @@ class Detalle_Puesto : AppCompatActivity() {
         val SalarioRecibido = intent.getStringExtra("Salario")
         val BeneficiosRecibida = intent.getStringExtra("Beneficios")
 
+        val btnSalir = findViewById<ImageButton>(R.id.btnSalirDetalles)
+
+        btnSalir.setOnClickListener {
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
+
         //Solo es para ver si los datos se reciben correctamente
         Log.d("Detalle_Puesto", "Titulo: $TituloRecibido")
         Log.d("Detalle_Puesto", "IdAreaDeTrabajo: $AreaDeTrabajoRecibido")

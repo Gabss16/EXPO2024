@@ -4,6 +4,7 @@ import RecicleViewHelpers.AdaptadorPublicacion
 import RecicleViewHelpers.AdaptadorSolicitud
 import android.os.Bundle
 import android.view.Window
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -52,6 +53,12 @@ class DetallePublicacion : AppCompatActivity() {
 
         // Configurar RecyclerView para solicitudes
         rcvSolicitudes.layoutManager = LinearLayoutManager(this)
+
+        val btnSalir = findViewById<ImageButton>(R.id.btnSalirDetallesPublicacion)
+
+        btnSalir.setOnClickListener {
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
 
         // Obtener lista de solicitudes (esto es un ejemplo; debes obtenerlas desde tu fuente de datos)
         //val solicitudes = obtenerSolicitudesParaTrabajo()

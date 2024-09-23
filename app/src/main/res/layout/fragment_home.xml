@@ -9,17 +9,28 @@
 
      <EditText
          android:id="@+id/txtBuscar"
+<<<<<<< HEAD
          android:layout_width="370dp"
          android:layout_height="42dp"
          android:layout_marginStart="10dp"
          android:layout_marginTop="160dp"
+=======
+         android:layout_width="384dp"
+         android:layout_height="50dp"
+         android:layout_marginStart="10dp"
+         android:layout_marginTop="188dp"
+>>>>>>> c2185cee4d238213408e67882211f71d9e883c78
          android:background="@drawable/barra_busqueda"
          android:ems="10"
          android:hint="Buscar"
          android:inputType="text"
          android:paddingLeft="10dp"
          app:layout_constraintEnd_toEndOf="parent"
+<<<<<<< HEAD
          app:layout_constraintHorizontal_bias="0.333"
+=======
+         app:layout_constraintHorizontal_bias="0.352"
+>>>>>>> c2185cee4d238213408e67882211f71d9e883c78
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,12 +39,13 @@
          android:layout_width="401dp"
          android:layout_height="96dp"
          android:layout_marginStart="1dp"
-         android:layout_marginTop="225dp"
+         android:layout_marginTop="244dp"
          android:layout_marginEnd="1dp"
          app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintHorizontal_bias="1.0"
+
+
          app:layout_constraintStart_toStartOf="parent"
-
-
          app:layout_constraintTop_toTopOf="parent">
 
           <androidx.constraintlayout.widget.ConstraintLayout
@@ -425,23 +437,30 @@
          android:id="@+id/recomendaciones"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_marginTop="336dp"
+         android:layout_marginTop="364dp"
          android:text="Recomendaciones"
          android:textColor="#858585"
          android:textSize="14sp"
          android:textStyle="bold"
          app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintHorizontal_bias="0.057"
+         app:layout_constraintHorizontal_bias="0.054"
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toTopOf="parent" />
 
      <androidx.recyclerview.widget.RecyclerView
          android:id="@+id/rcvTrabajosPublicados"
+<<<<<<< HEAD
          android:layout_width="358dp"
          android:layout_height="457dp"
          android:layout_marginTop="48dp"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintHorizontal_bias="0.487"
+=======
+         android:layout_width="371dp"
+         android:layout_height="323dp"
+         android:layout_marginTop="52dp"
+         app:layout_constraintEnd_toEndOf="parent"
+>>>>>>> c2185cee4d238213408e67882211f71d9e883c78
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView2" />
 

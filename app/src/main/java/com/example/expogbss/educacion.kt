@@ -3,6 +3,7 @@ package com.example.expogbss
 import RecicleViewHelpers.AdaptadorTrabajos
 import android.content.Intent
 import android.os.Bundle
+import android.view.Window
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,7 @@ import modelo.Trabajo
 class educacion : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
         setContentView(R.layout.activity_educacion)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -31,8 +33,7 @@ class educacion : AppCompatActivity() {
 
         val salir = findViewById<ImageButton>(R.id.salir1)
         salir.setOnClickListener{
-            val intent = Intent(this, HomeFragment::class.java)
-            startActivity(intent)
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
         }
 
         val rcvTrabajosPublicados = findViewById<RecyclerView>(R.id.rcvEducacionEnsenanza)
