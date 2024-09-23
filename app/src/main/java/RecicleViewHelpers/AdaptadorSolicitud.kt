@@ -57,12 +57,45 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
         holder.statusTextView.text = Solicitud.Estado
 
         holder.acceptButton.setOnClickListener {
-            actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Aprobada")
-            CoroutineScope(Dispatchers.IO)
+            val context = holder.itemView.context
+            val builder = android.app.AlertDialog.Builder(context)
+            builder.setTitle("Confirmación")
+            builder.setMessage("¿Estás seguro de que deseas aceptar la solicitud?")
+
+            builder.setPositiveButton("Aceptar") { dialog, _ ->
+                // Actualizar el estado de la solicitud a 'Aprobada'
+                actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Aprobada")
+                dialog.dismiss() // Cerrar el diálogo
+            }
+
+            builder.setNegativeButton("Cancelar") { dialog, _ ->
+                // Cerrar el diálogo sin hacer nada
+                dialog.dismiss()
+            }
+
+            val dialog: android.app.AlertDialog = builder.create()
+            dialog.show()
         }
 
         holder.rejectButton.setOnClickListener {
-            actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Rechazada")
+            val context = holder.itemView.context
+            val builder = android.app.AlertDialog.Builder(context)
+            builder.setTitle("Confirmación")
+            builder.setMessage("¿Estás seguro de que deseas rechazar la solicitud?")
+
+            builder.setPositiveButton("Rechazar") { dialog, _ ->
+                // Actualizar el estado de la solicitud a 'Rechazada'
+                actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Rechazada")
+                dialog.dismiss() // Cerrar el diálogo
+            }
+
+            builder.setNegativeButton("Cancelar") { dialog, _ ->
+                // Cerrar el diálogo sin hacer nada
+                dialog.dismiss()
+            }
+
+            val dialog: android.app.AlertDialog = builder.create()
+            dialog.show()
         }
 
         holder.itemView.setOnClickListener {

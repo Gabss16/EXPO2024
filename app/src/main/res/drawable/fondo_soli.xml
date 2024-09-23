@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Sombra superior -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#BFB7B7" /> <!-- Color de la sombra -->
+            <corners android:topLeftRadius="16dp" android:topRightRadius="16dp" />
+        </shape>
+        <!-- La sombra se desplaza ligeramente hacia abajo y tiene blur -->
+        <padding android:left="4dp" android:top="4dp" android:right="4dp" android:bottom="0dp" />
+        <size android:height="4dp" />
+    </item>
+
+    <!-- Rectángulo principal con esquinas superiores redondeadas -->
+    <item android:top="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF"/> <!-- Color de fondo del rectángulo -->
+            <corners android:topLeftRadius="16dp" android:topRightRadius="16dp"/>
+        </shape>
+    </item>
+
+</layer-list>
