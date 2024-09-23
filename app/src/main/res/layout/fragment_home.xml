@@ -9,17 +9,17 @@
 
      <EditText
          android:id="@+id/txtBuscar"
-         android:layout_width="354dp"
-         android:layout_height="39dp"
+         android:layout_width="370dp"
+         android:layout_height="42dp"
          android:layout_marginStart="10dp"
-         android:layout_marginTop="152dp"
+         android:layout_marginTop="160dp"
          android:background="@drawable/barra_busqueda"
          android:ems="10"
          android:hint="Buscar"
          android:inputType="text"
          android:paddingLeft="10dp"
          app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintHorizontal_bias="0.206"
+         app:layout_constraintHorizontal_bias="0.333"
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toTopOf="parent" />
 
@@ -194,10 +194,10 @@
                    android:textSize="12sp"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="1.70"
+                   app:layout_constraintHorizontal_bias="0.992"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toBottomOf="@+id/BtnCategoria6"
-                   app:layout_constraintVertical_bias="0.2" />
+                   app:layout_constraintVertical_bias="0.125" />
 
                <ImageButton
                    android:id="@+id/BtnCategoria7"
@@ -221,10 +221,10 @@
                    android:textSize="12sp"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="0.866"
+                   app:layout_constraintHorizontal_bias="0.881"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toBottomOf="@+id/BtnCategoria7"
-                   app:layout_constraintVertical_bias="0.157" />
+                   app:layout_constraintVertical_bias="0.21" />
 
                <ImageButton
                    android:id="@+id/BtnCategoria8"
@@ -248,7 +248,7 @@
                    android:textSize="12sp"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="0.774"
+                   app:layout_constraintHorizontal_bias="0.765"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toBottomOf="@+id/BtnCategoria8"
                    app:layout_constraintVertical_bias="0.2" />
@@ -308,6 +308,115 @@
                    app:layout_constraintTop_toBottomOf="@+id/BtnCategoria10"
                    app:layout_constraintVertical_bias="0.2" />
 
+               <ImageView
+                   android:id="@+id/imageView15"
+                   android:layout_width="73dp"
+                   android:layout_height="51dp"
+                   android:layout_marginTop="4dp"
+                   android:src="@drawable/icono"
+                   app:layout_constraintEnd_toStartOf="@+id/BtnCategoria2"
+                   app:layout_constraintHorizontal_bias="0.47"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toTopOf="parent" />
+
+               <ImageView
+                   android:id="@+id/imageView19"
+                   android:layout_width="63dp"
+                   android:layout_height="46dp"
+                   android:layout_marginTop="8dp"
+                   android:src="@drawable/iconod"
+                   app:layout_constraintEnd_toStartOf="@+id/BtnCategoria3"
+                   app:layout_constraintHorizontal_bias="0.454"
+                   app:layout_constraintStart_toEndOf="@+id/imageView15"
+                   app:layout_constraintTop_toTopOf="parent" />
+
+               <ImageView
+                   android:id="@+id/imageView20"
+                   android:layout_width="51dp"
+                   android:layout_height="42dp"
+                   android:layout_marginTop="12dp"
+                   android:src="@drawable/iconody"
+                   app:layout_constraintEnd_toStartOf="@+id/BtnCategoria5"
+                   app:layout_constraintStart_toEndOf="@+id/BtnCategoria3"
+                   app:layout_constraintTop_toTopOf="parent" />
+
+               <ImageView
+                   android:id="@+id/imageView21"
+                   android:layout_width="70dp"
+                   android:layout_height="50dp"
+                   android:layout_marginTop="4dp"
+                   android:src="@drawable/iconof"
+                   app:layout_constraintEnd_toStartOf="@+id/BtnCategoria4"
+                   app:layout_constraintHorizontal_bias="0.769"
+                   app:layout_constraintStart_toEndOf="@+id/BtnCategoria2"
+                   app:layout_constraintTop_toTopOf="parent" />
+
+               <ImageView
+                   android:id="@+id/imageView22"
+                   android:layout_width="57dp"
+                   android:layout_height="45dp"
+                   android:layout_marginTop="12dp"
+                   android:src="@drawable/iconos"
+                   app:layout_constraintEnd_toStartOf="@+id/BtnCategoria10"
+                   app:layout_constraintHorizontal_bias="0.428"
+                   app:layout_constraintStart_toEndOf="@+id/BtnCategoria4"
+                   app:layout_constraintTop_toTopOf="parent" />
+
+               <ImageView
+                   android:id="@+id/imageView23"
+                   android:layout_width="55dp"
+                   android:layout_height="51dp"
+                   android:layout_marginTop="8dp"
+                   android:src="@drawable/iconor"
+                   app:layout_constraintEnd_toStartOf="@+id/BtnCategoria9"
+                   app:layout_constraintHorizontal_bias="0.393"
+                   app:layout_constraintStart_toEndOf="@+id/BtnCategoria5"
+                   app:layout_constraintTop_toTopOf="parent" />
+
+               <ImageView
+                   android:id="@+id/imageView24"
+                   android:layout_width="60dp"
+                   android:layout_height="52dp"
+                   android:layout_marginTop="4dp"
+                   android:src="@drawable/iconosv"
+                   app:layout_constraintEnd_toStartOf="@+id/BtnCategoria8"
+                   app:layout_constraintHorizontal_bias="0.538"
+                   app:layout_constraintStart_toEndOf="@+id/BtnCategoria10"
+                   app:layout_constraintTop_toTopOf="parent" />
+
+               <ImageView
+                   android:id="@+id/imageView25"
+                   android:layout_width="41dp"
+                   android:layout_height="49dp"
+                   android:layout_marginTop="4dp"
+                   android:src="@drawable/iconocll"
+                   app:layout_constraintEnd_toStartOf="@+id/BtnCategoria7"
+                   app:layout_constraintHorizontal_bias="0.454"
+                   app:layout_constraintStart_toEndOf="@+id/BtnCategoria9"
+                   app:layout_constraintTop_toTopOf="@+id/BtnCategoria8" />
+
+               <ImageView
+                   android:id="@+id/imageView26"
+                   android:layout_width="51dp"
+                   android:layout_height="49dp"
+                   android:layout_marginTop="4dp"
+                   android:src="@drawable/iconoe"
+                   app:layout_constraintEnd_toStartOf="@+id/BtnCategoria6"
+                   app:layout_constraintHorizontal_bias="0.488"
+                   app:layout_constraintStart_toEndOf="@+id/BtnCategoria8"
+                   app:layout_constraintTop_toTopOf="@+id/BtnCategoria7" />
+
+               <ImageView
+                   android:id="@+id/imageView28"
+                   android:layout_width="60dp"
+                   android:layout_height="42dp"
+                   android:layout_marginTop="12dp"
+                   android:src="@drawable/iconoh"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.952"
+                   app:layout_constraintStart_toEndOf="@+id/BtnCategoria7"
+                   app:layout_constraintTop_toTopOf="parent" />
+
 
           </androidx.constraintlayout.widget.ConstraintLayout>
      </HorizontalScrollView>
@@ -328,11 +437,11 @@
 
      <androidx.recyclerview.widget.RecyclerView
          android:id="@+id/rcvTrabajosPublicados"
-         android:layout_width="371dp"
-         android:layout_height="323dp"
-         android:layout_marginTop="44dp"
+         android:layout_width="358dp"
+         android:layout_height="457dp"
+         android:layout_marginTop="48dp"
          app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintHorizontal_bias="0.705"
+         app:layout_constraintHorizontal_bias="0.487"
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView2" />
 

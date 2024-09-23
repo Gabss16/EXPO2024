@@ -1,54 +1,54 @@
 package com.example.expogbss
 
-import android.app.AlertDialog
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.expogbss.ui.dashboard.DashboardFragment
-import com.example.expogbss.ui.home.HomeFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import modelo.ClaseConexion
-import modelo.Empleador
-import java.security.MessageDigest
-import java.util.Date
+        import android.app.AlertDialog
+        import android.content.Intent
+        import androidx.appcompat.app.AppCompatActivity
+        import android.os.Bundle
+        import android.view.Window
+        import android.widget.Button
+        import android.widget.EditText
+        import android.widget.ImageButton
+        import android.widget.TextView
+        import android.widget.Toast
+        import androidx.activity.enableEdgeToEdge
+        import androidx.core.view.ViewCompat
+        import androidx.core.view.WindowInsetsCompat
+        import com.example.expogbss.ui.dashboard.DashboardFragment
+        import com.example.expogbss.ui.home.HomeFragment
+        import kotlinx.coroutines.CoroutineScope
+        import kotlinx.coroutines.Dispatchers
+        import kotlinx.coroutines.GlobalScope
+        import kotlinx.coroutines.launch
+        import kotlinx.coroutines.withContext
+        import modelo.ClaseConexion
+        import modelo.Empleador
+        import java.security.MessageDigest
+        import java.util.Date
 
-class login : AppCompatActivity() {
-    companion object variablesGlobalesRecuperacionDeContrasena {
+        class login : AppCompatActivity() {
+            companion object variablesGlobalesRecuperacionDeContrasena {
 
-        // Valores para empleador
-        lateinit var IdEmpleador: String
-        lateinit var nombreEmpresa: String
-        lateinit var nombreEmpleador: String
-        lateinit var correoEmpleador: String
-        lateinit var numeroEmpleador: String
-        lateinit var altitudEmpleador: String
-        lateinit var latitudEmpleador: String
-        lateinit var direccionEmpleador: String
-        lateinit var sitioWebEmpleador: String
-        lateinit var fotoEmpleador: String
+                // Valores para empleador
+                lateinit var IdEmpleador: String
+                lateinit var nombreEmpresa: String
+                lateinit var nombreEmpleador: String
+                lateinit var correoEmpleador: String
+                lateinit var numeroEmpleador: String
+                lateinit var altitudEmpleador: String
+                lateinit var latitudEmpleador: String
+                lateinit var direccionEmpleador: String
+                lateinit var sitioWebEmpleador: String
+                lateinit var fotoEmpleador: String
 
-        // Valores para solicitante
-        lateinit var IdSolicitante: String
-        lateinit var nombresSolicitante: String
-        lateinit var correoSolicitante: String
-        lateinit var numeroSolicitante: String
-        lateinit var direccionSolicitante: String
-        lateinit var estadoSolicitante: String
-        lateinit var altitudSolicitante: String
-        lateinit var latitudSolicitante: String
+                // Valores para solicitante
+                lateinit var IdSolicitante: String
+                lateinit var nombresSolicitante: String
+                lateinit var correoSolicitante: String
+                lateinit var numeroSolicitante: String
+                lateinit var direccionSolicitante: String
+                lateinit var estadoSolicitante: String
+                lateinit var altitudSolicitante: String
+                lateinit var latitudSolicitante: String
         lateinit var fechaNacimiento: String
         lateinit var generoSolicitante: String
         lateinit var habilidades: String
