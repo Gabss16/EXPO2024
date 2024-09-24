@@ -51,9 +51,16 @@ class Salud : AppCompatActivity() {
     T.IdTrabajo, 
     T.Titulo, 
     T.IdEmpleador, 
-    A.NombreAreaDeTrabajo AS NombreAreaDeTrabajo, 
-    T.Descripcion, 
-    T.Estado
+    A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
+    T.Descripcion,   
+    T.Direccion, 
+    T.IdDepartamento, 
+    T.Experiencia, 
+    T.Requerimientos, 
+    T.Estado, 
+    T.Salario, 
+    T.Beneficios, 
+    T.FechaDePublicacion
 FROM 
     TRABAJO T
 INNER JOIN 

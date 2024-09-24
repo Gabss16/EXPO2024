@@ -437,8 +437,8 @@
 
      <androidx.recyclerview.widget.RecyclerView
          android:id="@+id/rcvTrabajosPublicados"
-         android:layout_width="400dp"
-         android:layout_height="421dp"
+         android:layout_width="384dp"
+         android:layout_height="367dp"
          android:layout_marginTop="52dp"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintHorizontal_bias="0.454"

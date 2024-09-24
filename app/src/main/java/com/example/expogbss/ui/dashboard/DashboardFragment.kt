@@ -47,13 +47,13 @@ class DashboardFragment : Fragment() {
 
         rcvMSolis.layoutManager = LinearLayoutManager(requireContext())
 
-        fun obtenerSolicitudesParaTrabajo(): List<Solicitud>{
+        fun obtenerSolicitudesParaTrabajo(): List<Solicitud> {
             val objConexion = ClaseConexion().cadenaConexion()
-            //aqui obtengo el id de quien inicio sesion
+            // Aquí obtengo el id de quien inició sesión
             val idSolicitante = login.IdSolicitante
-            //2 - Creo un statement
-
+            // Creo un statement
             val statement = objConexion?.createStatement()
+
             val resultSet = statement?.executeQuery("""
         SELECT 
             s.IdSolicitud, 
@@ -62,13 +62,14 @@ class DashboardFragment : Fragment() {
             s.FechaSolicitud, 
             s.Estado,
             t.Titulo AS TituloTrabajo,
-            t.IdAreaDeTrabajo AS CategoriaTrabajo
+            a.NombreAreaDeTrabajo AS CategoriaTrabajo
         FROM SOLICITUD s
         INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
+        INNER JOIN AreaDeTrabajo a ON t.IdAreaDeTrabajo = a.IdAreaDeTrabajo
         WHERE s.IdSolicitante = '$idSolicitante'
-        """)!!
+    """)!!
 
-            //en esta variable se añaden TODOS los valores de mascotas
+            // En esta variable se añaden TODOS los valores de solicitudes
             val listaSolicitud = mutableListOf<Solicitud>()
 
             while (resultSet.next()) {
@@ -78,8 +79,7 @@ class DashboardFragment : Fragment() {
                 val FechaSolicitud = resultSet.getString("FechaSolicitud")
                 val Estado = resultSet.getString("Estado")
                 val tituloTrabajo = resultSet.getString("TituloTrabajo")
-                val categoriaTrabajo = resultSet.getInt("CategoriaTrabajo")
-
+                val categoriaTrabajo = resultSet.getString("CategoriaTrabajo") // Ahora es el nombre del área
 
                 val solicitud = Solicitud(
                     IdSolicitud,
@@ -93,8 +93,8 @@ class DashboardFragment : Fragment() {
                 listaSolicitud.add(solicitud)
             }
             return listaSolicitud
-
         }
+
 
         // Configurar adaptador para solicitudes
         CoroutineScope(Dispatchers.IO).launch {

@@ -18,7 +18,7 @@ class AdaptadorMSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<V
         val Solicitud = Datos[position]
 
         holder.jobTitleTextView2 .text = Solicitud.TituloTrabajo
-        holder.statusTextView1.text = Solicitud.CategoriaTrabajo.toString()
+        holder.jobCategoryTextView2.text = Solicitud.CategoriaTrabajo.toString()
         holder.statusTextView1.text = Solicitud.Estado
     }
 }
