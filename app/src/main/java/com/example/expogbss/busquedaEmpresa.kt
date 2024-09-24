@@ -45,7 +45,7 @@ class busquedaEmpresa : Fragment() {
         val searchView = view.findViewById<SearchView>(R.id.srchBuscarEmpleo)
         val recyclerView = view.findViewById<RecyclerView>(R.id.rcvEmpleos)
 
-        //Esto esta al 50%, necesito las cards para esto y aparte que funcionen para comprobar y corregir todo xd
+
 
         itemList = listOf("Empresa 1", "Empresa 2", "Empresa 3")
         adapter = AdaptadorBuscarEmpleo(itemList)

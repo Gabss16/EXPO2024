@@ -309,11 +309,18 @@ class registro_empresa : AppCompatActivity() {
                                                 )
 
                                                 if (correoEnviado) {
-                                                    AlertDialog.Builder(this@registro_empresa)
+                                                    val alertDialog = AlertDialog.Builder(this@registro_empresa)
                                                         .setTitle("Cuenta registrada")
-                                                        .setMessage("Tu cuenta ha sido creada, puedes regresar al inicio de sesión.")
+                                                        .setMessage("Tu cuenta ha sido creada, revise su correo electrónico para más información.")
                                                         .setPositiveButton("Aceptar", null)
-                                                        .show()
+                                                        .create()
+
+                                                    alertDialog.setOnDismissListener { _ ->
+                                                        val login = Intent(this@registro_empresa, login::class.java)
+                                                        login.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                        startActivity(login)
+                                                    }
+                                                    alertDialog.show()
                                                     txtNombreEmpleador.setText("")
                                                     txtEmpresaEmpleador.setText("")
                                                     txtCorreoEmpleador.setText("")
@@ -323,6 +330,8 @@ class registro_empresa : AppCompatActivity() {
                                                     txtSitioWebEmpleador.setText("")
                                                     imgFotoDePerfilEmpleador.setImageDrawable(null)
                                                 }
+
+
                                             }
                                         } else {
                                             withContext(Dispatchers.Main) {
@@ -468,11 +477,18 @@ class registro_empresa : AppCompatActivity() {
                                             crearUsuario.executeUpdate()
 
                                             withContext(Dispatchers.Main) {
-                                                AlertDialog.Builder(this@registro_empresa)
+                                                val alertDialog = AlertDialog.Builder(this@registro_empresa)
                                                     .setTitle("Cuenta registrada")
-                                                    .setMessage("Tu cuenta ha sido creada, puedes regresar al inicio de sesión.")
+                                                    .setMessage("Tu cuenta ha sido creada.")
                                                     .setPositiveButton("Aceptar", null)
-                                                    .show()
+                                                    .create()
+
+                                                alertDialog.setOnDismissListener { _ ->
+                                                    val login = Intent(this@registro_empresa, login::class.java)
+                                                    login.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                    startActivity(login)
+                                                }
+                                                alertDialog.show()
                                                 txtNombreEmpleador.setText("")
                                                 txtEmpresaEmpleador.setText("")
                                                 txtCorreoEmpleador.setText("")
