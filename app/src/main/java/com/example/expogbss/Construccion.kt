@@ -48,7 +48,21 @@ class Construccion : AppCompatActivity() {
             //2 - Creo un statement
             //El símbolo de pregunta es pq los datos pueden ser nulos
             val statement = objConexion?.createStatement()
-            val resultSet = statement?.executeQuery("SELECT * FROM TRABAJO WHERE IdAreaDeTrabajo = 5")!!
+            val resultSet = statement?.executeQuery("""SELECT 
+    T.IdTrabajo, 
+    T.Titulo, 
+    T.IdEmpleador, 
+    A.NombreAreaDeTrabajo AS NombreAreaDeTrabajo, 
+    T.Descripcion, 
+    T.Estado
+FROM 
+    TRABAJO T
+INNER JOIN 
+    AreaDeTrabajo A
+ON 
+    T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+WHERE 
+    T.IdAreaDeTrabajo = 5 AND Estado = 'Activo'""")!!
 
 
             //en esta variable se añaden TODOS los valores de mascotas
@@ -60,7 +74,7 @@ class Construccion : AppCompatActivity() {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
                 val IdEmpleador = resultSet.getString("IdEmpleador")
-                val IdAreaDeTrabajo = resultSet.getInt("IdAreaDeTrabajo")
+                val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Direccion = resultSet.getString("Direccion")
                 val IdDepartamento = resultSet.getInt("IdDepartamento")
@@ -75,7 +89,7 @@ class Construccion : AppCompatActivity() {
                     IdTrabajo,
                     Titulo,
                     IdEmpleador,
-                    IdAreaDeTrabajo,
+                    NombreAreaDeTrabajo,
                     Descripcion,
                     Direccion,
                     IdDepartamento,
