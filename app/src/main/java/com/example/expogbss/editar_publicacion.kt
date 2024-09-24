@@ -24,6 +24,7 @@ import modelo.AreaDeTrabajo
 import modelo.ClaseConexion
 import modelo.Departamento
 import modelo.Trabajo
+import java.math.BigDecimal
 
 class editar_publicacion : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -195,10 +196,25 @@ class editar_publicacion : AppCompatActivity() {
             val ExperienciaJobEditado = txtExperienciaJobEditar.text.toString()
             val HabilidadesJobEditado = txtHabilidadesJobEditar.text.toString()
             val BeneficiosJobEditado = txtBeneficiosJobEditar.text.toString()
-            val SalarioJobEditado = txtSalarioJobEditar.text.toString().toBigDecimal()
+            val SalarioJobEditado = BigDecimal(txtSalarioJobEditar.text.toString())
             val TiposTrabajoEditado = spnTiposTrabajoEditar.selectedItem.toString()
 
             println(SalarioJobEditado)
+
+
+            if (txtTituloJobEditar.text.isEmpty() || txtUbicacionJobEditar.text.isEmpty() || txtDescripcionJobEditar.text.isEmpty() ||
+                txtExperienciaJobEditar.text.isEmpty() || txtHabilidadesJobEditar.text.isEmpty() || txtBeneficiosJobEditar.text.isEmpty() ||
+                txtSalarioJobEditar.text.isEmpty()) {
+
+                Toast.makeText(this, "Todos los campos deben estar llenos", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            val salarioText1 = txtSalarioJobEditar.text.toString()
+            if (!salarioText1.matches(Regex("^\\d+(\\.\\d+)?$"))) {
+                Toast.makeText(this, "El salario debe ser un número válido", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
 
             GlobalScope.launch(Dispatchers.IO) {
                 try {

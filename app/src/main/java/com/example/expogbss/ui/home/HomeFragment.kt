@@ -10,21 +10,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.expogbss.Construccion
 import com.example.expogbss.Domestico
+import com.example.expogbss.eeducacion
 import com.example.expogbss.Freelance
 import com.example.expogbss.R
+import com.example.expogbss.Remoto
 import com.example.expogbss.Salud
+import com.example.expogbss.Servicios
 import com.example.expogbss.databinding.FragmentHomeBinding
-import com.example.expogbss.delivery
-import com.example.expogbss.educacion
 import com.example.expogbss.hosteleria
-import com.example.expogbss.sp
 import com.example.expogbss.ventas
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +31,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
 import modelo.Trabajo
+import com.example.expogbss.ddelivery
+
 
 class HomeFragment : Fragment() {
 
@@ -80,7 +81,7 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
         delivery.setOnClickListener{
-            val intent = Intent(context, delivery::class.java)
+            val intent = Intent(context, ddelivery::class.java)
             startActivity(intent)
         }
         salud.setOnClickListener{
@@ -88,11 +89,11 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
         remoto.setOnClickListener{
-            val intent = Intent(context, Construccion::class.java)
+            val intent = Intent(context, Remoto::class.java)
             startActivity(intent)
         }
         sp.setOnClickListener{
-            val intent = Intent(context, sp::class.java)
+            val intent = Intent(context, Servicios::class.java)
             startActivity(intent)
         }
         cliente.setOnClickListener{
@@ -100,7 +101,7 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
         educacion.setOnClickListener{
-            val intent = Intent(context, educacion::class.java)
+            val intent = Intent(context, eeducacion::class.java)
             startActivity(intent)
         }
         hotel.setOnClickListener{

@@ -1,7 +1,6 @@
 package com.example.expogbss
 
 import RecicleViewHelpers.AdaptadorTrabajos
-import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.widget.ImageButton
@@ -11,7 +10,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.expogbss.ui.home.HomeFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,24 +17,24 @@ import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
 import modelo.Trabajo
 
-class educacion : AppCompatActivity() {
+class Servicios : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_educacion)
+        setContentView(R.layout.activity_sp)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        val salir = findViewById<ImageButton>(R.id.salir1)
+        val salir = findViewById<ImageButton>(R.id.salir7)
         salir.setOnClickListener{
             finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
         }
 
-        val rcvTrabajosPublicados = findViewById<RecyclerView>(R.id.rcvEducacionEnsenanza)
+        val rcvTrabajosPublicados = findViewById<RecyclerView>(R.id.rcvServiciosProfesionales)
         rcvTrabajosPublicados.layoutManager = LinearLayoutManager(this)
 
 
@@ -47,7 +45,7 @@ class educacion : AppCompatActivity() {
             //2 - Creo un statement
             //El símbolo de pregunta es pq los datos pueden ser nulos
             val statement = objConexion?.createStatement()
-            val resultSet = statement?.executeQuery("SELECT * FROM TRABAJO WHERE IdAreaDeTrabajo = 10")!!
+            val resultSet = statement?.executeQuery("SELECT * FROM TRABAJO WHERE IdAreaDeTrabajo = 8")!!
 
 
             //en esta variable se añaden TODOS los valores de mascotas

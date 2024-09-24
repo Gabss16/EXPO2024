@@ -1,7 +1,6 @@
 package com.example.expogbss
 
 import RecicleViewHelpers.AdaptadorTrabajos
-import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.widget.ImageButton
@@ -11,7 +10,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.expogbss.ui.home.HomeFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +17,7 @@ import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
 import modelo.Trabajo
 
-class remoto : AppCompatActivity() {
+class Remoto : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)

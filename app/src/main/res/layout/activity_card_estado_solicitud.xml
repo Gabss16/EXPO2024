@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="5dp">
+    android:layout_margin="0dp"
+    app:cardCornerRadius="1dp"
+    app:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="97dp"
         android:padding="16dp">
 
         <!-- Estado de la solicitud -->
@@ -25,15 +25,15 @@
 
         <TextView
             android:id="@+id/txtStatus"
-            android:layout_width="78dp"
-            android:layout_height="28dp"
+            android:layout_width="86dp"
+            android:layout_height="27dp"
             android:background="@drawable/solicitud"
             android:padding="4dp"
             android:text="Pendiente"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.936"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,12 +41,11 @@
             android:id="@+id/tvTitle"
             android:layout_width="177dp"
             android:layout_height="25dp"
-            android:layout_marginTop="16dp"
             android:text="Título del Trabajo"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.094"
+            app:layout_constraintHorizontal_bias="0.239"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,14 +53,34 @@
             android:id="@+id/tvCategory"
             android:layout_width="232dp"
             android:layout_height="24dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:text="Categoría del Trabajo"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.129"
+            app:layout_constraintHorizontal_bias="0.333"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgSpli"
+            android:layout_width="36dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/solicituuud" />
+
+        <ImageView
+            android:id="@+id/imageView33"
+            android:layout_width="339dp"
+            android:layout_height="62dp"
+            android:layout_marginStart="44dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/separar" />
 
         <!-- Botón Eliminar Solicitud -->
 

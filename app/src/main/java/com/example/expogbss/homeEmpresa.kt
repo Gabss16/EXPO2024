@@ -82,7 +82,7 @@ class homeEmpresa : Fragment() {
 
 
             //El símbolo de pregunta es pq los datos pueden ser nulos
-            val statement = objConexion?.prepareStatement("SELECT * FROM TRABAJO WHERE IdEmpleador = ?")
+            val statement = objConexion?.prepareStatement("SELECT * FROM TRABAJO WHERE IdEmpleador = ? AND Estado = 'Activo'")
             statement?.setString(1, idEmpleador)
             val resultSet = statement?.executeQuery()!!
 
