@@ -320,8 +320,7 @@ class registroSolicitante : AppCompatActivity() {
 
                             // Creo una variable que contenga un PrepareStatement
                             val crearUsuario = objConexion?.prepareStatement(
-                                "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion,IdDepartamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
-                            )!!
+                                "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion,IdDepartamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena, EstadoCuenta) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?)")!!
                             crearUsuario.setString(1, uuid)
                             crearUsuario.setString(2, txtNombreSolicitante.text.toString().trim())
                             crearUsuario.setString(3, txtCorreoSolicitante.text.toString().trim())
@@ -347,6 +346,8 @@ class registroSolicitante : AppCompatActivity() {
                             ); // Asignar un BLOB vacío
                             crearUsuario.setString(13, miPath)
                             crearUsuario.setString(14, contrasenaEncriptada)
+                            crearUsuario.setString(15, "Activo")
+
 
                             crearUsuario.executeUpdate()
 
