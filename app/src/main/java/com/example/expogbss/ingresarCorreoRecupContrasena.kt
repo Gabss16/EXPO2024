@@ -30,7 +30,6 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
         var CambiarContraSolicitante: Boolean = false
     }
 
-    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -42,7 +41,49 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
             insets
         }
 
-        //TODO: Verificar en clase por qué no se envían los correos, el código es el correcto
+        fun generarHTMLCorreo(codigo: String): String{
+            return """
+<html>
+<body style="font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;">
+    <div class="container" style="width: 100%;
+            max-width: 600px; 
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 30px 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);">
+        <div class="img" style="text-align: center;
+            margin-top: 40px;">
+            <img src="https://i.imgur.com/bXHJUmC.png" alt="Logo" width="400" style="border-radius: 10px;">
+        </div>
+        <div class="message" style="text-align: center;
+            color: #2c3e50;
+            margin-bottom: 40px;">
+            <h2 style="font-size: 28px; 
+            font-weight: 600;
+            margin-bottom: 10px;">Recuperación de Contraseña</h2>
+            <p style="font-size: 18px; color: #7f8c8d;">Usa el siguiente código para recuperar tu contraseña:</p>
+            <div class="code" style="display: inline-block;
+            padding: 20px 40px; 
+            font-size: 26px; 
+            color: #000;
+            background-color: #d2dee7;
+            border-radius: 10px; 
+            margin-top: 20px;
+            letter-spacing: 2px;">$codigo</div>
+        </div>
+        <div class="footer-logo" style="text-align: center;
+            margin-top: 40px;">
+            <img src="https://i.imgur.com/TU8KAcy.png" alt="Logo" width="550" style="border-radius: 10px;">
+        </div>
+    </div>
+</body>
+</html>
+""".trimIndent()
+        }
 
         val btnEnviar = findViewById<Button>(R.id.btnEnviarCodigoRecuperacion)
         val txtcorreoRecuperacion = findViewById<EditText>(R.id.txtIngresarCorreoRecuperacion)
@@ -87,12 +128,11 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
                         if (esEmpleador.next()) {
                             withContext(Dispatchers.Main) {
                                 CambiarContraEmpleador = true
-                                println("Es empleador kkk")
+                                val correoConHtml = generarHTMLCorreo(codigo)
+
                                 val correoEnviado = recuperarContrasena(
                                     correoIngresado,
-                                    "Recuperación de contraseña",
-                                    "Hola este es su codigo de recuperacion: $codigo"
-                                )
+                                    "Recuperación de contraseña", correoConHtml)
                                 if (correoEnviado) {
                                     val pantallaIngresoCodigo = Intent(
                                         this@ingresarCorreoRecupContrasena, recoveryCode::class.java
@@ -106,12 +146,11 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
                         } else if (esSolicitante.next()) {
                             withContext(Dispatchers.Main) {
                                 CambiarContraSolicitante = true
-                                println("entra a la corrutina")
+                                val correoConHtml = generarHTMLCorreo(codigo)
+
                                 val correoEnviado = recuperarContrasena(
                                     correoIngresado,
-                                    "Recuperación de contraseña",
-                                    "Hola este es su codigo de recuperacion: $codigo"
-                                )
+                                    "Recuperación de contraseña",correoConHtml)
 
                                 if (correoEnviado) {
                                     val pantallaIngresoCodigo = Intent(
