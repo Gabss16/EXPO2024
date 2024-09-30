@@ -71,7 +71,7 @@
             android:id="@+id/textView6"
             android:layout_width="212dp"
             android:layout_height="19dp"
-            android:text="Descripcion del puesto:"
+            android:text="Descripción del puesto:"
             android:textColor="#000000"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -32,7 +32,7 @@ class Detalle_Puesto : AppCompatActivity() {
             insets
         }
         val TituloRecibido = intent.getStringExtra("Titulo")
-        val AreaDeTrabajoRecibido = intent.getIntExtra("IdAreaDeTrabajo",1)
+        val NombreAreaDeTrabajo = intent.getStringExtra("NombreAreaDeTrabajo")
         val DescripcionRecibido = intent.getStringExtra("Descripcion")
         val UbicacionRecibido = intent.getStringExtra("Direccion")
         val ExperienciaRecibida = intent.getStringExtra("Experiencia")
@@ -49,7 +49,7 @@ class Detalle_Puesto : AppCompatActivity() {
 
         //Solo es para ver si los datos se reciben correctamente
         Log.d("Detalle_Puesto", "Titulo: $TituloRecibido")
-        Log.d("Detalle_Puesto", "IdAreaDeTrabajo: $AreaDeTrabajoRecibido")
+        Log.d("Detalle_Puesto", "NombreAreaDeTrabajo: $NombreAreaDeTrabajo")
         Log.d("Detalle_Puesto", "Descripcion: $DescripcionRecibido")
         Log.d("Detalle_Puesto", "Direccion: $UbicacionRecibido")
         Log.d("Detalle_Puesto", "Experiencia: $ExperienciaRecibida")
@@ -68,7 +68,7 @@ class Detalle_Puesto : AppCompatActivity() {
         val txtBeneficiosDetalle = findViewById<TextView>(R.id.txtBeneficiosDetalle)
         val txtSalarioDetalle = findViewById<TextView>(R.id.txtSalarioDetalle)
 
-         txtAreaTrabajoDetalle.text = AreaDeTrabajoRecibido.toString()
+         txtAreaTrabajoDetalle.text = NombreAreaDeTrabajo
          txtTituloDetalle.text = TituloRecibido
          txtDescripcionDetalle.text = DescripcionRecibido
          txtUbicacionDetalle.text = UbicacionRecibido
@@ -131,7 +131,7 @@ class Detalle_Puesto : AppCompatActivity() {
     }
 
     fun obtenerIdSolicitante(): String {
-        return login.variablesGlobalesRecuperacionDeContrasena.IdSolicitante
+        return login.IdSolicitante
     }
 
     val IdSolicitante = obtenerIdSolicitante()

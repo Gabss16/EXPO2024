@@ -53,8 +53,9 @@ class perfilEmpresa : Fragment() {
         // Manejar el evento de clic en el botón de editar perfil
         btnCerrarSesionEmpleador.setOnClickListener {
             // Iniciar la actividad "editar_perfil_Empleador"
-            val intent = Intent(activity, login::class.java)
-            startActivity(intent)
+            val login = Intent(activity, login::class.java)
+            login.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(login)
         }
 
         val btnEditarContrasena = root.findViewById<ImageView>(R.id.btnEditarContrasenaEmpresa)

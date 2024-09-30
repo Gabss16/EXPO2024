@@ -6,7 +6,7 @@ class Trabajo(
     val IdTrabajo: Int,
     val Titulo: String,
     val IdEmpleador: String,
-    val IdAreaDeTrabajo: Int,
+    val NombreAreaDeTrabajo: String,
     val Descripcion: String,
     val Direccion: String,
     val IdDepartamento: Int,

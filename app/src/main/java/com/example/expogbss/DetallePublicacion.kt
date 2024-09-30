@@ -91,7 +91,7 @@ SELECT
                 val FechaSolicitud = resultSet.getString("FechaSolicitud")
                 val Estado = resultSet.getString("Estado")
                 val tituloTrabajo = resultSet.getString("TituloTrabajo")
-                val categoriaTrabajo = resultSet.getInt("CategoriaTrabajo")
+                val categoriaTrabajo = resultSet.getString("CategoriaTrabajo")
 
 
                 val solicitud = Solicitud(

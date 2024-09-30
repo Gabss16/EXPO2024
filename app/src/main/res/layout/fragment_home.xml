@@ -59,7 +59,7 @@
                    android:layout_width="60dp"
                    android:layout_height="60dp"
                    android:background="@drawable/circulos"
-                   android:backgroundTint="#4C536D"
+                   android:backgroundTint="#569783"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
                    app:layout_constraintHorizontal_bias="0.142"
@@ -98,7 +98,7 @@
                    android:id="@+id/Circulo1"
                    android:layout_width="77dp"
                    android:layout_height="17dp"
-                   android:text="Construccion"
+                   android:text="Construcción"
                    android:textSize="12sp"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
@@ -111,7 +111,7 @@
                    android:id="@+id/Circulo2"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:text="Domestico"
+                   android:text="Doméstico"
                    android:textSize="12sp"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
@@ -138,8 +138,8 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="22dp"
-                   android:layout_marginTop="8dp"
-                   android:text="delivery"
+                   android:layout_marginTop="4dp"
+                   android:text="Delivery"
                    android:textSize="12sp"
                    app:layout_constraintEnd_toEndOf="parent"
                    app:layout_constraintHorizontal_bias="0.0"
@@ -217,7 +217,7 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginStart="10dp"
-                   android:text="Educacion"
+                   android:text="Educación"
                    android:textSize="12sp"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
@@ -248,10 +248,10 @@
                    android:textSize="12sp"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="0.765"
+                   app:layout_constraintHorizontal_bias="0.769"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toBottomOf="@+id/BtnCategoria8"
-                   app:layout_constraintVertical_bias="0.2" />
+                   app:layout_constraintVertical_bias="0.3" />
 
                <ImageButton
                    android:id="@+id/BtnCategoria9"
@@ -321,12 +321,12 @@
 
                <ImageView
                    android:id="@+id/imageView19"
-                   android:layout_width="63dp"
+                   android:layout_width="50dp"
                    android:layout_height="46dp"
                    android:layout_marginTop="8dp"
                    android:src="@drawable/iconod"
                    app:layout_constraintEnd_toStartOf="@+id/BtnCategoria3"
-                   app:layout_constraintHorizontal_bias="0.454"
+                   app:layout_constraintHorizontal_bias="0.54"
                    app:layout_constraintStart_toEndOf="@+id/imageView15"
                    app:layout_constraintTop_toTopOf="parent" />
 
@@ -437,8 +437,8 @@
 
      <androidx.recyclerview.widget.RecyclerView
          android:id="@+id/rcvTrabajosPublicados"
-         android:layout_width="400dp"
-         android:layout_height="421dp"
+         android:layout_width="384dp"
+         android:layout_height="367dp"
          android:layout_marginTop="52dp"
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintHorizontal_bias="0.454"

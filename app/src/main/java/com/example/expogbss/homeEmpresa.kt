@@ -82,7 +82,28 @@ class homeEmpresa : Fragment() {
 
 
             //El símbolo de pregunta es pq los datos pueden ser nulos
-            val statement = objConexion?.prepareStatement("SELECT * FROM TRABAJO WHERE IdEmpleador = ? AND Estado = 'Activo'")
+            val statement = objConexion?.prepareStatement("""SELECT 
+    T.IdTrabajo, 
+    T.Titulo, 
+    T.IdEmpleador, 
+    A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
+    T.Descripcion,   
+    T.Direccion, 
+    T.IdDepartamento, 
+    T.Experiencia, 
+    T.Requerimientos, 
+    T.Estado, 
+    T.Salario, 
+    T.Beneficios, 
+    T.FechaDePublicacion
+FROM 
+    TRABAJO T
+INNER JOIN 
+    AreaDeTrabajo A
+ON 
+    T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+ WHERE IdEmpleador = ? AND Estado = 'Activo'""")
+
             statement?.setString(1, idEmpleador)
             val resultSet = statement?.executeQuery()!!
 
@@ -96,7 +117,7 @@ class homeEmpresa : Fragment() {
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
-                val AreaDeTrabajo = resultSet.getInt("IdAreaDeTrabajo")
+                val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Ubicacion = resultSet.getString("Direccion")
                 val Departamento = resultSet.getInt("IdDepartamento")
@@ -111,7 +132,7 @@ class homeEmpresa : Fragment() {
                     IdTrabajo,
                     Titulo,
                     idEmpleador,
-                    AreaDeTrabajo,
+                    NombreAreaDeTrabajo,
                     Descripcion,
                     Ubicacion,
                     Departamento,
@@ -125,8 +146,6 @@ class homeEmpresa : Fragment() {
                 listaTrabajos.add(trabajo)
             }
             return listaTrabajos
-
-
         }
 
         CoroutineScope(Dispatchers.IO).launch {

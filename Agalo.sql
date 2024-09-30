@@ -24,7 +24,7 @@ CREATE TABLE EMPLEADOR (
     Direccion varchar2(250),
     IdDepartamento INT,
     SitioWeb VARCHAR2(500),
-    Estado VARCHAR(10) CHECK (Estado IN ('Activo', 'Pendiente')),
+    Estado VARCHAR(20) CHECK (Estado IN ('Activo', 'Pendiente', 'Restringido')),
     Foto VARCHAR2(300),
     Contrasena VARCHAR2(250) NOT NULL,
     CONSTRAINT FkDepartamentoEmpleador FOREIGN KEY (IdDepartamento) REFERENCES DEPARTAMENTO(IdDepartamento) ON DELETE CASCADE);
@@ -60,6 +60,7 @@ CREATE TABLE SOLICITANTE (
     IdDepartamento INT,  
     FechaDeNacimiento VARCHAR2(20),
     Estado VARCHAR(11) CHECK (Estado IN ('Empleado', 'Desempleado')),
+    EstadoCuenta VARCHAR(20) CHECK (EstadoCuenta IN ('Activo', 'Restringido')),
     Genero VARCHAR2(20) CHECK (Genero IN ('Masculino', 'Femenino', 'Prefiero no decirlo')),
     IdAreaDeTrabajo INT,
     Habilidades VARCHAR2(250),

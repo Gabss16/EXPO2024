@@ -54,7 +54,7 @@ class AdaptadorPublicacion(var Datos : List<Trabajo>) : RecyclerView.Adapter<Vie
     override fun onBindViewHolder(holder: ViewHolderPublicacion, position: Int) {
         val trabajos = Datos[position]
         holder.txtTIituloTrabajo.text = trabajos.Titulo
-        holder.txtTipoTrabajo.text = trabajos.IdAreaDeTrabajo.toString()
+        holder.txtTipoTrabajo.text = trabajos.NombreAreaDeTrabajo.toString()
 
         //todo: clic al icono de eliminar
         holder.imgBorrar.setOnClickListener {
@@ -90,7 +90,7 @@ class AdaptadorPublicacion(var Datos : List<Trabajo>) : RecyclerView.Adapter<Vie
             PantallaEditar.putExtra("IdTrabajo", trabajos.IdTrabajo) // Pasas el IdTrabajo
 
             PantallaEditar.putExtra("Titulo", trabajos.Titulo)
-            PantallaEditar.putExtra("IdAreaDeTrabajo", trabajos.IdAreaDeTrabajo)
+            PantallaEditar.putExtra("NombreAreaDeTrabajo", trabajos.NombreAreaDeTrabajo)
             PantallaEditar.putExtra("Descripcion", trabajos.Descripcion)
             PantallaEditar.putExtra("Direccion", trabajos.Direccion)
             PantallaEditar.putExtra("IdDepartamento", trabajos.IdDepartamento)
@@ -111,7 +111,7 @@ class AdaptadorPublicacion(var Datos : List<Trabajo>) : RecyclerView.Adapter<Vie
 
             //enviar a la otra pantalla todos mis valores
             pantallaDetalleP.putExtra("Titulo", trabajos.Titulo)
-            pantallaDetalleP.putExtra("AreaDeTrabajo", trabajos.IdAreaDeTrabajo)
+            pantallaDetalleP.putExtra("NombreAreaDeTrabajo", trabajos.NombreAreaDeTrabajo)
             pantallaDetalleP.putExtra("Descripcion", trabajos.Descripcion)
             pantallaDetalleP.putExtra("Direccion", trabajos.Direccion)
             pantallaDetalleP.putExtra("IdDepartamento", trabajos.IdDepartamento)

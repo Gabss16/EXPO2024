@@ -45,7 +45,28 @@ class Servicios : AppCompatActivity() {
             //2 - Creo un statement
             //El símbolo de pregunta es pq los datos pueden ser nulos
             val statement = objConexion?.createStatement()
-            val resultSet = statement?.executeQuery("SELECT * FROM TRABAJO WHERE IdAreaDeTrabajo = 8")!!
+            val resultSet = statement?.executeQuery("""SELECT 
+    T.IdTrabajo, 
+    T.Titulo, 
+    T.IdEmpleador, 
+    A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
+    T.Descripcion,   
+    T.Direccion, 
+    T.IdDepartamento, 
+    T.Experiencia, 
+    T.Requerimientos, 
+    T.Estado, 
+    T.Salario, 
+    T.Beneficios, 
+    T.FechaDePublicacion
+FROM 
+    TRABAJO T
+INNER JOIN 
+    AreaDeTrabajo A
+ON 
+    T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+WHERE 
+    T.IdAreaDeTrabajo = 8 AND Estado = 'Activo'""")!!
 
 
             //en esta variable se añaden TODOS los valores de mascotas
@@ -57,7 +78,7 @@ class Servicios : AppCompatActivity() {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
                 val IdEmpleador = resultSet.getString("IdEmpleador")
-                val IdAreaDeTrabajo = resultSet.getInt("IdAreaDeTrabajo")
+                val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Direccion = resultSet.getString("Direccion")
                 val IdDepartamento = resultSet.getInt("IdDepartamento")
@@ -72,7 +93,7 @@ class Servicios : AppCompatActivity() {
                     IdTrabajo,
                     Titulo,
                     IdEmpleador,
-                    IdAreaDeTrabajo,
+                    NombreAreaDeTrabajo,
                     Descripcion,
                     Direccion,
                     IdDepartamento,

@@ -219,11 +219,6 @@ class registroSolicitante : AppCompatActivity() {
             )
         spEstadoSolicitante.adapter = adaptadorDeEstado
 
-
-
-
-
-
         // Creo la función para encriptar la contraseña
         fun hashSHA256(contraseniaEscrita: String): String {
             val bytes =
@@ -356,10 +351,18 @@ class registroSolicitante : AppCompatActivity() {
                             crearUsuario.executeUpdate()
 
                             withContext(Dispatchers.Main) {
-                                AlertDialog.Builder(this@registroSolicitante)
+                                val alertDialog = AlertDialog.Builder(this@registroSolicitante)
                                     .setTitle("Cuenta registrada")
-                                    .setMessage("Tu cuenta ha sido creada, puedes regresar al inicio de sesión.")
-                                    .setPositiveButton("Aceptar", null).show()
+                                    .setMessage("Tu cuenta ha sido creada.")
+                                    .setPositiveButton("Aceptar", null)
+                                    .create()
+
+                                alertDialog.setOnDismissListener { _ ->
+                                    val login = Intent(this@registroSolicitante, login::class.java)
+                                    login.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    startActivity(login)
+                                }
+                                alertDialog.show()
                                 txtNombreSolicitante.setText("")
                                 txtCorreoSolicitante.setText("")
                                 txtConstrasenaSolicitante.setText("")
