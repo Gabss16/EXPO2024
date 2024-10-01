@@ -29,6 +29,8 @@ import android.net.Uri
 import android.util.Log
 import android.view.Window
 import androidx.appcompat.app.AlertDialog
+import com.example.expogbss.ingresarCorreoRecupContrasena.variablesGlobalesRecuperacionDeContrasena.codigo
+import com.example.expogbss.ingresarCorreoRecupContrasena.variablesGlobalesRecuperacionDeContrasena.correoIngresado
 import modelo.Departamento
 import java.sql.SQLException
 
@@ -56,6 +58,44 @@ class registro_empresa : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        fun generarHTMLCorreo(): String{
+            return """
+<html>
+<body style="font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;">
+    <div class="container" style="width: 100%;
+            max-width: 600px; 
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 30px 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);">
+        <div class="img" style="text-align: center;
+            margin-top: 40px;">
+            <img src="https://i.imgur.com/bXHJUmC.png" alt="Logo" width="400" style="border-radius: 10px;">
+        </div>
+        <div class="message" style="text-align: center;
+            color: #2c3e50;
+            margin-bottom: 40px;">
+            <h2 style="font-size: 28px; 
+            font-weight: 600;
+            margin-bottom: 10px;">Creación de cuenta</h2>
+            <p style="font-size: 18px; color: #7f8c8d;">
+                Su cuenta ha sido creada. Sin embargo, no podrá utilizar su cuenta hasta nuevo aviso. Primero, debemos asegurarnos de la autenticidad de sus datos, ya que se ha registrado en nombre de una empresa. Le informaremos tan pronto como la verificación se haya completado.
+            </p>
+        </div>
+        <div class="footer-logo" style="text-align: center;
+            margin-top: 40px;">
+            <img src="https://i.imgur.com/TU8KAcy.png" alt="Logo" width="550" style="border-radius: 10px;">
+        </div>
+    </div>
+</body>
+</html>
+""".trimIndent()
         }
 
         // Mando a llamar a todos los elementos de la vista
@@ -304,8 +344,7 @@ class registro_empresa : AppCompatActivity() {
                                             withContext(Dispatchers.Main) {
                                                 val correoEnviado = recuperarContrasena(
                                                     CorreoEmpleador,
-                                                    "Creación de cuenta",
-                                                    "Su cuenta ha sido creada. Sin embargo, no podrá utilizar su cuenta hasta nuevo aviso. Primero, debemos asegurarnos de la autenticidad de sus datos, ya que se ha registrado en nombre de una empresa. Le informaremos tan pronto como la verificación se haya completado."
+                                                    "Creación de cuenta", generarHTMLCorreo()
                                                 )
 
                                                 if (correoEnviado) {
