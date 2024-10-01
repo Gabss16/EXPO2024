@@ -19,7 +19,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/ventas"></com.airbnb.lottie.LottieAnimationView>
+        app:lottie_rawRes="@raw/ventas">
+
+    </com.airbnb.lottie.LottieAnimationView>
 
     <TextView
         android:id="@+id/tvVentasServicioClienteTitulo"
