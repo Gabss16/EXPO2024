@@ -196,9 +196,11 @@ class editar_publicacion : AppCompatActivity() {
             val ExperienciaJobEditado = txtExperienciaJobEditar.text.toString()
             val HabilidadesJobEditado = txtHabilidadesJobEditar.text.toString()
             val BeneficiosJobEditado = txtBeneficiosJobEditar.text.toString()
-            val SalarioJobEditado = BigDecimal(txtSalarioJobEditar.text.toString())
+            val SalarioJobEditado = txtSalarioJobEditar.text.toString().toDouble()
             val TiposTrabajoEditado = spnTiposTrabajoEditar.selectedItem.toString()
+            val idEMpleador = login.IdEmpleador
 
+            println(idEMpleador)
             println(SalarioJobEditado)
 
 
@@ -210,11 +212,13 @@ class editar_publicacion : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val salarioText1 = txtSalarioJobEditar.text.toString()
-            if (!salarioText1.matches(Regex("^\\d+(\\.\\d+)?$"))) {
-                Toast.makeText(this, "El salario debe ser un número válido", Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
+//            val salarioText1 = txtSalarioJobEditar.text.toString()
+//            if (!salarioText1.matches(Regex("^\\d+(\\.\\d+)?$"))) {
+//                Toast.makeText(this, "El salario debe ser un número válido", Toast.LENGTH_LONG).show()
+//                return@setOnClickListener
+//            }
+
+
 
             GlobalScope.launch(Dispatchers.IO) {
                 try {
@@ -266,7 +270,7 @@ class editar_publicacion : AppCompatActivity() {
                     updateTrabajo.setInt(5, idDepartamento) // Asegúrate de que idDepartamento esté definido
                     updateTrabajo.setString(6, ExperienciaJobEditado)
                     updateTrabajo.setString(7, HabilidadesJobEditado)
-                    updateTrabajo.setBigDecimal(8, SalarioJobEditado)
+                    updateTrabajo.setDouble(8, SalarioJobEditado)
                     updateTrabajo.setString(9, BeneficiosJobEditado)
                     updateTrabajo.setInt(10, idTrabajo) // Asegúrate de que idTrabajo esté definido
 

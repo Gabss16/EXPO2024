@@ -19,6 +19,9 @@ import modelo.Trabajo
 
 class AdaptadorPublicacion(var Datos : List<Trabajo>) : RecyclerView.Adapter<ViewHolderPublicacion>() {
 
+    fun actualizarDatos(nuevosDatos: List<Trabajo>) {
+        Datos= nuevosDatos
+        notifyDataSetChanged()}
 
     fun eliminarDatos(TituloTrabajo: String, posicion: Int) {
         //Actualizo la lista de datos y notifico al adaptador

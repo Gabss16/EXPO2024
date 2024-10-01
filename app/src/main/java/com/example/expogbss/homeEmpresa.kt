@@ -65,12 +65,7 @@ class homeEmpresa : Fragment() {
         val btnShowBottomSheet = root.findViewById<ImageButton>(R.id.idBtnShowBottomSheet)
         val rcvTrabajos = root.findViewById<RecyclerView>(R.id.rcvTrabajos)
         val idEmpleador = login.IdEmpleador
-        println("este es el id empleador $idEmpleador" +
-                "" +
-                "" +
-                "" +
-                "" +
-                "")
+        println("este es el id empleador $idEmpleador")
 
         rcvTrabajos.layoutManager = LinearLayoutManager(requireContext())
 
@@ -347,10 +342,11 @@ ON
                         val TrabajoDb = obtenerDatos()
 
                         withContext(Dispatchers.Main) {
-                            (rcvTrabajos.adapter as? AdaptadorTrabajos)?.actualizarDatos(TrabajoDb)
                             Toast.makeText(requireContext(), "Trabajo Ingresado", Toast.LENGTH_LONG)
                                 .show()
                             dialog.dismiss()
+                            (rcvTrabajos.adapter as? AdaptadorPublicacion)?.actualizarDatos(TrabajoDb)
+                            rcvTrabajos.adapter?.notifyDataSetChanged() // Agrega esta línea
                         }
                     } catch (e: Exception) {
                         Log.e("InsertJob", "Error al insertar trabajo", e)
@@ -369,7 +365,7 @@ ON
             }
             // below line is use to set cancelable to avoid
             // closing of dialog box when clicking on the screen.
-            dialog.setCancelable(false)
+            dialog.setCancelable(true)
 
             // on below line we are setting
             // content view to our view.

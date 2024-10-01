@@ -21,6 +21,8 @@ class AdaptadorTrabajos(var Datos : List<Trabajo>) : RecyclerView.Adapter<ViewHo
         Datos= nuevosDatos
         notifyDataSetChanged()}
 
+
+
     fun filtrar(query: String) {
         Datos = if (query.isEmpty()) {
             datosOriginales
