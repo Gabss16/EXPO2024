@@ -38,7 +38,7 @@ suspend fun recuperarContrasena(receptor: String, sujeto: String, mensaje: Strin
                 setFrom(InternetAddress("agaloempresa@gmail.com"))
                 addRecipient(Message.RecipientType.TO, InternetAddress(receptor))
                 subject = sujeto
-                setText(mensaje)
+                setContent(mensaje, "text/html; charset=utf-8")
             }
             Transport.send(message)
             println("Correo enviado satisfactoriamente")

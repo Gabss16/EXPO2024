@@ -49,10 +49,10 @@ package com.example.expogbss
                 lateinit var estadoSolicitante: String
                 lateinit var altitudSolicitante: String
                 lateinit var latitudSolicitante: String
-        lateinit var fechaNacimiento: String
-        lateinit var generoSolicitante: String
-        lateinit var habilidades: String
-        lateinit var fotoSolicitante: String
+                lateinit var fechaNacimiento: String
+                lateinit var generoSolicitante: String
+                lateinit var habilidades: String
+                lateinit var fotoSolicitante: String
 
 
         // Otras variables
@@ -216,7 +216,15 @@ package com.example.expogbss
                                 withContext(Dispatchers.Main) {
                                     startActivity(pantallaEmpleador)
                                 }
-                            } else {
+                            } else if (estadoEmpleador == "Restringido"){
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(
+                                        this@login,
+                                        "Este usuario ha sido restringido de la aplicación, para más info contactarse con agaloempresa@gmail.com",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }else {
                                 withContext(Dispatchers.Main) {
                                     Toast.makeText(
                                         this@login,
@@ -226,28 +234,41 @@ package com.example.expogbss
                                 }
                             }
                         } else if (esSolicitante.next()) {
-                            IdSolicitante = esSolicitante.getString("IdSolicitante")
-                            nombresSolicitante = esSolicitante.getString("Nombre")
-                            correoSolicitante = esSolicitante.getString("CorreoElectronico")
-                            numeroSolicitante = esSolicitante.getString("Telefono")
-                            direccionSolicitante = esSolicitante.getString("Direccion")
-                            idDepartamento = esSolicitante.getInt("IdDepartamento")
-                            estadoSolicitante = esSolicitante.getString("Estado")
-                            fechaNacimiento = esSolicitante.getString("FechaDeNacimiento")
-                            generoSolicitante = esSolicitante.getString("Genero")
-                            areaDeTrabajo = esSolicitante.getInt("IdAreaDeTrabajo")
-                            habilidades = esSolicitante.getString("Habilidades")
-                            fotoSolicitante = esSolicitante.getString("Foto")
+                            val estadoCuentaSolicitante = esSolicitante.getString("EstadoCuenta")
 
-                            withContext(Dispatchers.Main) {
-                                startActivity(pantallaSolicitante)
+                            if (estadoCuentaSolicitante == "Activo") {
+                                IdSolicitante = esSolicitante.getString("IdSolicitante")
+                                nombresSolicitante = esSolicitante.getString("Nombre")
+                                correoSolicitante = esSolicitante.getString("CorreoElectronico")
+                                numeroSolicitante = esSolicitante.getString("Telefono")
+                                direccionSolicitante = esSolicitante.getString("Direccion")
+                                idDepartamento = esSolicitante.getInt("IdDepartamento")
+                                estadoSolicitante = esSolicitante.getString("Estado")
+                                fechaNacimiento = esSolicitante.getString("FechaDeNacimiento")
+                                generoSolicitante = esSolicitante.getString("Genero")
+                                areaDeTrabajo = esSolicitante.getInt("IdAreaDeTrabajo")
+                                habilidades = esSolicitante.getString("Habilidades")
+                                fotoSolicitante = esSolicitante.getString("Foto")
+
+                                withContext(Dispatchers.Main) {
+                                    startActivity(pantallaSolicitante)
+                                }
+                            }
+                            else   {
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(
+                                        this@login,
+                                        "Este usuario ha sido restringido de la aplicación, para más info contactarse con agaloempresa@gmail.com",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             }
                         } else {
                             // Si no se encuentra ninguna coincidencia
                             withContext(Dispatchers.Main) {
                                 Toast.makeText(
                                     this@login,
-                                    "Correo electrónico o contraseña incorrectos.",
+                                    "Correo o contraseña incorrectos",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }

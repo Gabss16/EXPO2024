@@ -20,19 +20,19 @@ class forgotPassword : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_forgot_password)
+        //setContentView(R.layout.activity_forgot_password)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        val btnViaEmail = findViewById<ImageView>(R.id.btnViaEmail)
-        val btnViaSms = findViewById<ImageView>(R.id.btnViaSms)
+        //val btnViaEmail = findViewById<ImageView>(R.id.btnViaEmail)
+        //val btnViaSms = findViewById<ImageView>(R.id.btnViaSms)
 
-        btnViaEmail.setOnClickListener {
+        //btnViaEmail.setOnClickListener {
             val pantallaIngresoCorreo = Intent(this, ingresarCorreoRecupContrasena::class.java)
             startActivity(pantallaIngresoCorreo)
         }
     }
-}
+//}

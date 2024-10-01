@@ -309,6 +309,14 @@ DROP SEQUENCE Trabajoseq;
 DROP TRIGGER TrigSolicitud;
 DROP TRIGGER TrigTrabajo;
 
+select * from solicitante
+
+
+UPDATE solicitante SET EstadoCuenta = 'Restringido' WHERE IdSolicitante = '74a58d12-c9be-463a-806b-4c7ee1d6cce1'
+
+select * from solicitante
+commit;
+
 -- Eliminar tablas
 DROP TABLE SOLICITUD;
 DROP TABLE SOLICITANTE;
@@ -318,3 +326,7 @@ DROP TABLE AREADETRABAJO;
 Drop table UsuarioEscritorio;
 Drop table ROLESCRITORIO;
 Drop table DEPARTAMENTO;
+drop table AUDITORIA;
+
+INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion,IdDepartamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena, EstadoCuenta) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?)
+
