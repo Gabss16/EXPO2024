@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
 import modelo.Solicitud
 import modelo.Solicitante
@@ -35,9 +36,16 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
             updateSolicitud.setString(1, nuevoEstado)
             updateSolicitud.setInt(2, idSolicitud)
             updateSolicitud.executeUpdate()
-
             val commit = objConexion.prepareStatement ("commit")
             commit.executeUpdate()
+            withContext(Dispatchers.Main) {
+            val index = Datos.indexOfFirst { it.IdSolicitud == idSolicitud }
+            if (index != -1) {
+                Datos[index].Estado = nuevoEstado
+                actualizarDatos(Datos)
+                notifyItemChanged(index) // Notificar que el elemento ha cambiado
+            }}
+
         }
     }
 
@@ -86,7 +94,8 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
             builder.setPositiveButton("Rechazar") { dialog, _ ->
                 // Actualizar el estado de la solicitud a 'Rechazada'
                 actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Rechazada")
-                dialog.dismiss() // Cerrar el diálogo
+                dialog.dismiss()// Cerrar el diálogo
+
             }
 
             builder.setNegativeButton("Cancelar") { dialog, _ ->

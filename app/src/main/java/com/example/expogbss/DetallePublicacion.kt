@@ -63,6 +63,9 @@ class DetallePublicacion : AppCompatActivity() {
         // Obtener lista de solicitudes (esto es un ejemplo; debes obtenerlas desde tu fuente de datos)
         //val solicitudes = obtenerSolicitudesParaTrabajo()
 
+
+
+
         fun obtenerSolicitudesParaTrabajo(): List<Solicitud>{
             val objConexion = ClaseConexion().cadenaConexion()
             //2 - Creo un statement
@@ -109,6 +112,7 @@ SELECT
 
         }
 
+
         // Configurar adaptador para solicitudes
         CoroutineScope(Dispatchers.IO).launch {
             val solicitudesDb = obtenerSolicitudesParaTrabajo()
@@ -117,8 +121,6 @@ SELECT
                 rcvSolicitudes.adapter = adapter
             }
         }
-       // solicitudesAdapter = AdaptadorSolicitud(solicitudes)
-      //  rcvSolicitudes.adapter = solicitudesAdapter
 
 
 

@@ -169,13 +169,6 @@ class editar_publicacion : AppCompatActivity() {
         }
 
 
-        fun obtenerIdEmpleador(): String {
-            return login.IdEmpleador
-        }
-
-        val idEmpleador = obtenerIdEmpleador()
-        Log.d("InsertJob", "IdEmpleador obtenido: $idEmpleador")
-
         txtTituloJobEditar.setText(Titulo)
         txtDescripcionJobEditar.setText(Descripcion)
         // spnDepartamentosEditar.setText(Descripcion)
@@ -191,17 +184,13 @@ class editar_publicacion : AppCompatActivity() {
             // Capturar los nuevos valores
             val TituloJobEditado = txtTituloJobEditar.text.toString()
             val DescripcionJobEditado = txtDescripcionJobEditar.text.toString()
-            val DepartamentosEditado = spnDepartamentosEditar.selectedItem.toString()
+            val DepartamentoNombre =  spnDepartamentosEditar.selectedItem.toString()
             val UbicacionJobEditado = txtUbicacionJobEditar.text.toString()
             val ExperienciaJobEditado = txtExperienciaJobEditar.text.toString()
             val HabilidadesJobEditado = txtHabilidadesJobEditar.text.toString()
             val BeneficiosJobEditado = txtBeneficiosJobEditar.text.toString()
-            val SalarioJobEditado = txtSalarioJobEditar.text.toString().toDouble()
-            val TiposTrabajoEditado = spnTiposTrabajoEditar.selectedItem.toString()
-            val idEMpleador = login.IdEmpleador
+            val AreaDeTrabajoNombre = spnTiposTrabajoEditar.selectedItem.toString()
 
-            println(idEMpleador)
-            println(SalarioJobEditado)
 
 
             if (txtTituloJobEditar.text.isEmpty() || txtUbicacionJobEditar.text.isEmpty() || txtDescripcionJobEditar.text.isEmpty() ||
@@ -212,11 +201,11 @@ class editar_publicacion : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-//            val salarioText1 = txtSalarioJobEditar.text.toString()
-//            if (!salarioText1.matches(Regex("^\\d+(\\.\\d+)?$"))) {
-//                Toast.makeText(this, "El salario debe ser un número válido", Toast.LENGTH_LONG).show()
-//                return@setOnClickListener
-//            }
+            val salarioText1 = txtSalarioJobEditar.text.toString()
+            if (!salarioText1.matches(Regex("^\\d+(\\.\\d+)?$"))) {
+                Toast.makeText(this, "El salario debe ser un número válido", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
 
 
 
@@ -228,8 +217,9 @@ class editar_publicacion : AppCompatActivity() {
 
 
                     val idTrabajo = intent.getIntExtra("IdTrabajo", 22)
-                    val DepartamentoNombre =
-                        spnDepartamentosEditar.selectedItem.toString()
+
+                    val SalarioJobEditado = BigDecimal(txtSalarioJobEditar.text.toString())
+
                     // Obtener el id_medicamento desde el Spinner
                     val Departamento =
                         obtenerDepartamentos() // Se asume que puedes obtener la lista de medicamentos aquí
@@ -239,15 +229,9 @@ class editar_publicacion : AppCompatActivity() {
                         DepartamentoSeleccionado!!.Id_departamento
 
 
-
-
-                    val AreaDeTrabajoNombre =
-                        spnTiposTrabajoEditar.selectedItem.toString()
-
                     // Obtener el id_medicamento desde el Spinner
                     val Area =
                         obtenerAreasDeTrabajo() // Se asume que puedes obtener la lista de medicamentos aquí
-
                     val AreaSeleccionada =
                         Area.find { it.NombreAreaDetrabajo == AreaDeTrabajoNombre }
                     val idAreaDeTrabajo =
@@ -270,7 +254,7 @@ class editar_publicacion : AppCompatActivity() {
                     updateTrabajo.setInt(5, idDepartamento) // Asegúrate de que idDepartamento esté definido
                     updateTrabajo.setString(6, ExperienciaJobEditado)
                     updateTrabajo.setString(7, HabilidadesJobEditado)
-                    updateTrabajo.setDouble(8, SalarioJobEditado)
+                    updateTrabajo.setBigDecimal(8, SalarioJobEditado)
                     updateTrabajo.setString(9, BeneficiosJobEditado)
                     updateTrabajo.setInt(10, idTrabajo) // Asegúrate de que idTrabajo esté definido
 

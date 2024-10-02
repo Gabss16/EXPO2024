@@ -346,7 +346,7 @@ ON
                                 .show()
                             dialog.dismiss()
                             (rcvTrabajos.adapter as? AdaptadorPublicacion)?.actualizarDatos(TrabajoDb)
-                            rcvTrabajos.adapter?.notifyDataSetChanged() // Agrega esta línea
+                            rcvTrabajos.adapter?.notifyDataSetChanged()
                         }
                     } catch (e: Exception) {
                         Log.e("InsertJob", "Error al insertar trabajo", e)
