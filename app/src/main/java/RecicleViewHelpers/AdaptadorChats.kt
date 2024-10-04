@@ -8,6 +8,8 @@ import com.example.expogbss.R
 import modelo.Empleador
 import modelo.Solicitante
 
+
+
 class AdaptadorChats(var Datos: List<Empleador>): RecyclerView.Adapter<ViewHolderChats>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderChats {
         val vista = LayoutInflater.from(parent.context).inflate(R.layout.activity_card_chats, parent, false)

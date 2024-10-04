@@ -29,6 +29,10 @@ import android.net.Uri
 import android.util.Log
 import android.view.Window
 import androidx.appcompat.app.AlertDialog
+import com.example.expogbss.login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.ktx.database
 import modelo.Departamento
 import java.sql.SQLException
 
@@ -156,6 +160,9 @@ class registro_empresa : AppCompatActivity() {
         }
 
         btnCrearCuentaEmpleador.setOnClickListener {
+
+
+
             // Deshabilitar el botón para evitar múltiples clicks
             btnCrearCuentaEmpleador.isEnabled = false
 
@@ -243,7 +250,7 @@ class registro_empresa : AppCompatActivity() {
                                 btnCrearCuentaEmpleador.isEnabled = true
                             }
                         } else {
-                            // Encripto la contraseña usando la función de encriptación
+                        // Encripto la contraseña usando la función de encriptación
                             val contrasenaEncriptada =
                                 hashSHA256(txtContrasenaEmpleador.text.toString())
                             withContext(Dispatchers.Main) {
@@ -302,7 +309,8 @@ class registro_empresa : AppCompatActivity() {
                                         if (filasAfectadas > 0) {
                                             // La inserción fue exitosa
                                             withContext(Dispatchers.Main) {
-                                                val correoEnviado = recuperarContrasena(
+
+                                            val correoEnviado = recuperarContrasena(
                                                     CorreoEmpleador,
                                                     "Creación de cuenta",
                                                     "Su cuenta ha sido creada. Sin embargo, no podrá utilizar su cuenta hasta nuevo aviso. Primero, debemos asegurarnos de la autenticidad de sus datos, ya que se ha registrado en nombre de una empresa. Le informaremos tan pronto como la verificación se haya completado."
@@ -476,8 +484,40 @@ class registro_empresa : AppCompatActivity() {
 
                                             crearUsuario.executeUpdate()
 
+                                            //TODO: ESTA PARTE ES PARA QUE EL NOMBRE Y CONTRASEÑA SE ENVIEN A FIREBASE
+
                                             withContext(Dispatchers.Main) {
-                                                val alertDialog = AlertDialog.Builder(this@registro_empresa)
+                                                FirebaseAuth.getInstance().createUserWithEmailAndPassword(CorreoEmpleador, ContrasenaEmpleador)
+                                                    .addOnCompleteListener { task ->
+                                                        if (task.isSuccessful) {
+                                                            // Usuario creado en Firebase Authentication
+                                                            val user = FirebaseAuth.getInstance().currentUser
+                                                            val profileUpdates = UserProfileChangeRequest.Builder()
+                                                                .setDisplayName(nombreEmpleador)  // Establecer el nombre del usuario
+                                                                .build()
+
+                                                            // Actualizar el perfil del usuario con el nombre
+                                                            user?.updateProfile(profileUpdates)?.addOnCompleteListener { updateTask ->
+                                                                if (updateTask.isSuccessful) {
+                                                                    Toast.makeText(this@registro_empresa, "Registro completo. Nombre actualizado en Firebase.", Toast.LENGTH_LONG).show()
+                                                                    val intent = Intent(this@registro_empresa, login::class.java)
+                                                                    startActivity(intent)
+                                                                    finish()
+                                                                } else {
+                                                                    Toast.makeText(this@registro_empresa, "Error al actualizar nombre en Firebase: ${updateTask.exception?.message}", Toast.LENGTH_LONG).show()
+                                                                }
+                                                            }
+                                                        } else {
+                                                            // Error al registrar en Firebase
+                                                            Toast.makeText(this@registro_empresa, "Error al registrar en Firebase: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                                                            btnCrearCuentaEmpleador.isEnabled = true
+                                                        }
+                                                    }
+                                            }
+
+                                            //hasta aqui es lo de firebase
+
+                                            val alertDialog = AlertDialog.Builder(this@registro_empresa)
                                                     .setTitle("Cuenta registrada")
                                                     .setMessage("Tu cuenta ha sido creada.")
                                                     .setPositiveButton("Aceptar", null)
@@ -497,8 +537,8 @@ class registro_empresa : AppCompatActivity() {
                                                 txtDireccionEmpleador.setText("")
                                                 txtSitioWebEmpleador.setText("")
                                                 imgFotoDePerfilEmpleador.setImageDrawable(null)
-                                            }
-                                        } catch (e: SQLException) {
+
+                                            } catch (e: SQLException) {
                                             when (e.errorCode) {
                                                 1 -> { // ORA-00001: unique constraint violated
                                                     withContext(Dispatchers.Main) {
@@ -509,6 +549,7 @@ class registro_empresa : AppCompatActivity() {
                                                         ).show()
                                                     }
                                                 }
+
 
                                                 else -> {
                                                     withContext(Dispatchers.Main) {
@@ -681,3 +722,4 @@ class registro_empresa : AppCompatActivity() {
         }
     }
 }
+
