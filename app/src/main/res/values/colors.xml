@@ -3,7 +3,7 @@
     <color name="black">#FBF8F8</color>
     <color name="agalo">#0D1F4D</color>
 
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#F2F1F1</color>
 
 
         <!-- Define the color for the icon tint -->
@@ -30,6 +30,6 @@
 
     <!-- Otros colores -->
     <color name="colorBackground">#FFFFFF</color>
-    <color name="colorDivider">#BDBDBD</color>
+    <color name="colorDivider">#F2EFEF</color>
 
 </resources>
