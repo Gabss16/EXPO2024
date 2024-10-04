@@ -2,6 +2,7 @@ package com.example.expogbss
 
 import RecicleViewHelpers.AdaptadorPublicacion
 import RecicleViewHelpers.AdaptadorTrabajos
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -63,6 +65,7 @@ class homeEmpresa : Fragment() {
 
         // initializing our variable for button with its id.
         val btnShowBottomSheet = root.findViewById<ImageButton>(R.id.idBtnShowBottomSheet)
+        val btnReactivarTrabajos = root.findViewById<ImageView>(R.id.btnHistorialTrabajo)
         val rcvTrabajos = root.findViewById<RecyclerView>(R.id.rcvTrabajos)
         val idEmpleador = login.IdEmpleador
         println("este es el id empleador $idEmpleador")
@@ -149,6 +152,14 @@ ON
                 val adapter = AdaptadorPublicacion(TrabajoDb)
                 rcvTrabajos.adapter = adapter
             }
+        }
+
+        btnReactivarTrabajos.setOnClickListener {
+
+            // Iniciar la actividad "editar_perfil_Empleador"
+            val intent = Intent(activity, trabajos_Inactivos::class.java)
+            startActivity(intent)
+
         }
 
         // adding on click listener for our button.
@@ -268,6 +279,7 @@ ON
 
             val idEmpleador = obtenerIdEmpleador()
             Log.d("InsertJob", "IdEmpleador obtenido: $idEmpleador")
+
 
 
             // on below line we are adding on click listener

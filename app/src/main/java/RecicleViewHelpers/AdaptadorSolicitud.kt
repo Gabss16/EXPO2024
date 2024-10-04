@@ -23,6 +23,31 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
         Datos= nuevosDatos
         notifyDataSetChanged()}
 
+    fun eliminarDatos(idSolicitud: Int, nuevoEstado: String, posicion: Int) {
+        //Actualizo la lista de datos y notifico al adaptador
+        val listaDatos = Datos.toMutableList()
+        listaDatos.removeAt(posicion)
+
+        GlobalScope.launch(Dispatchers.IO) {
+            //1- Creamos un objeto de la clase conexion
+            val objConexion = ClaseConexion().cadenaConexion()
+
+            val updateSolicitud = objConexion?.prepareStatement("UPDATE SOLICITUD SET Estado = ? WHERE IdSolicitud = ?") !!
+
+            // Asignar parámetros a la consulta
+            updateSolicitud.setString(1, nuevoEstado)
+            updateSolicitud.setInt(2, idSolicitud)
+            updateSolicitud.executeUpdate()
+            val commit = objConexion.prepareStatement ("commit")
+            commit.executeUpdate()
+        }
+        Datos = listaDatos.toList()
+        // Notificar al adaptador sobre los cambios
+        notifyItemRemoved(posicion)
+        notifyDataSetChanged()
+    }
+
+
     fun actualizarEstadoSolicitud(idSolicitud: Int, nuevoEstado: String) {
         GlobalScope.launch(Dispatchers.IO) {
             // Crear un objeto de la clase de conexión
@@ -73,6 +98,8 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
             builder.setPositiveButton("Aceptar") { dialog, _ ->
                 // Actualizar el estado de la solicitud a 'Aprobada'
                 actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Aprobada")
+                eliminarDatos(Solicitud.IdSolicitud, "Aprobada", position)
+
                 dialog.dismiss() // Cerrar el diálogo
             }
 
@@ -94,6 +121,7 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
             builder.setPositiveButton("Rechazar") { dialog, _ ->
                 // Actualizar el estado de la solicitud a 'Rechazada'
                 actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Rechazada")
+                eliminarDatos(Solicitud.IdSolicitud, "Rechazada", position)
                 dialog.dismiss()// Cerrar el diálogo
 
             }

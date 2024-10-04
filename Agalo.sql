@@ -119,17 +119,35 @@ BEGIN
 END;
 
 
-CREATE OR REPLACE TRIGGER trg_audit_delete_trabajo
-AFTER DELETE ON TRABAJO
+CREATE OR REPLACE TRIGGER trg_audit_update_Borrar_trabajo
+AFTER UPDATE ON TRABAJO
 FOR EACH ROW
+WHEN (OLD.Estado = 'Activo' AND NEW.Estado = 'Inactivo')
 BEGIN
-    INSERT INTO AUDITORIA (TablaAfectada, Operacion, Usuario, FechaAccion, Detalles, IdTrabajo) VALUES (
-        'Trabajo', 
-        'DELETE', 
-        :OLD.IdEmpleador, 
-        TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'),
-        'Se creó un trabajo con descripción: ' || :OLD.Descripcion, -- Detalles con mensaje personalizado
-        :OLD.IdTrabajo
+    INSERT INTO AUDITORIA (TablaAfectada, Operacion, Usuario, FechaAccion, Detalles, IdTrabajo)
+    VALUES (
+    'Trabajo',
+    'UPDATE',                           -- Tipo de operación (actualización)
+    :OLD.IdEmpleador,                   -- ID del empleador que realizó la operación
+    SYSDATE,                            -- Fecha actual de la operación
+   'Trabajo con Descripción ' || :OLD.Descripcion || ' fue marcado como inactivo.',-- Detalle
+    :OLD.IdTrabajo
+    );
+END;
+
+CREATE OR REPLACE TRIGGER trg_audit_update_Reactivar_trabajo
+AFTER UPDATE ON TRABAJO
+FOR EACH ROW
+WHEN (OLD.Estado = 'Inactivo' AND NEW.Estado = 'Activo')
+BEGIN
+    INSERT INTO AUDITORIA (TablaAfectada, Operacion, Usuario, FechaAccion, Detalles, IdTrabajo)
+    VALUES (
+    'Trabajo',
+    'UPDATE',                           -- Tipo de operación (actualización)
+    :OLD.IdEmpleador,                   -- ID del empleador que realizó la operación
+    SYSDATE,                            -- Fecha actual de la operación
+   'Trabajo con Descripción ' || :OLD.Descripcion || ' fue reactivado.',-- Detalle
+    :OLD.IdTrabajo
     );
 END;
 
@@ -278,15 +296,34 @@ commit;
 begin 
 VerificarCorreoElectronico('Ricardo de paz', 'RicAdmin3', 'ContrasenaEncriptada', 'Foto1', 'prueba3@gmail.com', 1);
 end;
-
-select * from usuarioEscritorio;
-
+SELECT 
+    T.IdTrabajo, 
+    T.Titulo, 
+    T.IdEmpleador, 
+    A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
+    T.Descripcion,   
+    T.Direccion, 
+    T.IdDepartamento, 
+    T.Experiencia, 
+    T.Requerimientos, 
+    T.Estado, 
+    T.Salario, 
+    T.Beneficios, 
+    T.FechaDePublicacion
+FROM 
+    TRABAJO T
+INNER JOIN 
+    AreaDeTrabajo A
+ON 
+    T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+ WHERE IdEmpleador = 'b3e80aa6-a7be-4a18-b074-aa5cf01bc2b9'  AND Estado = 'Inactivo'
 
 select * from empleador;
 select * from solicitante;
 select * from solicitud;
 select * from trabajo;
-
+            
+select * from AreadeTrabajo
 delete from Empleador where idEmpleador = 'fdc019cf-6449-4655-8913-685ffbb9bf1b';
 
 SELECT * FROM EMPLEADOR WHERE CorreoElectronico = 'contacto@innovaciones.com.sv' AND Contrasena = 'contraseÃ±a1';
