@@ -1,5 +1,7 @@
 package com.example.expogbss
 
+import RecicleViewHelpers.AdaptadorChats
+import RecicleViewHelpers.AdaptadorChatsEmpleador
 import RecicleViewHelpers.AdaptadorMensajes
 import RecicleViewHelpers.Message
 import android.os.Bundle
@@ -18,6 +20,13 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import modelo.ClaseConexion
+import modelo.Empleador
+import modelo.Solicitante
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,13 +42,6 @@ class chatEmpresa : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var editTextMensaje: EditText
-    private lateinit var buttonEnviar: Button
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var messageAdapter: AdaptadorMensajes
-    private val messageList = mutableListOf<Message>()
-    private val chatId = "chatId1" // Reemplaza con el ID del chat correspondiente
-    private val senderId = "IdEmpleador" // Reemplaza con el ID del usuario que envía el mensaje
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,74 +60,67 @@ class chatEmpresa : Fragment() {
 
         // ESTO Configura el RecyclerView
 
-        recyclerView = view.findViewById(R.id.recyclerViewMensajes)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        messageAdapter = AdaptadorMensajes(messageList)
-        recyclerView.adapter = messageAdapter
+        val rcvChatEmpleador = view.findViewById<RecyclerView>(R.id.rcvChatEmpleador)
+        rcvChatEmpleador.layoutManager = LinearLayoutManager(requireContext())
 
-        escucharMensajes("chatId1")
+        fun obtenerDatos(): List<Solicitante> {
+            //1- Creo un objeto de la clase conexión
+            val objConexion = ClaseConexion().cadenaConexion()
 
-        // Inicializa el EditText y el Button usando la vista inflada
-        editTextMensaje = view.findViewById(R.id.editTextMensaje)
-        buttonEnviar = view.findViewById(R.id.buttonEnviar)
+            //2 - Creo un statement
+            //El símbolo de pregunta es pq los datos pueden ser nulos
+            val statement = objConexion?.createStatement()
+            val resultSet = statement?.executeQuery("""SELECT * FROM SOLICITANTE""")!!
 
-        // Establece el listener para el botón
-        buttonEnviar.setOnClickListener {
-            // Obtén el texto del EditText
-            val mensaje = editTextMensaje.text.toString()
 
-            // Verifica que el mensaje no esté vacío
-            if (mensaje.isNotBlank()) {
-                // Llama a la función para enviar el mensaje
-                enviarMensaje(chatId, senderId, mensaje)
+            //en esta variable se añaden TODOS los valores de mascotas
+            val listaSolicitante = mutableListOf<Solicitante>()
 
-                // Limpia el EditText después de enviar el mensaje
-                editTextMensaje.text.clear()
-            } else {
-                Toast.makeText(requireContext(), "Por favor, escribe un mensaje.", Toast.LENGTH_LONG).show()
+            //Recorro todos los registros de la base de datos
+            //.next() significa que mientras haya un valor después de ese se va a repetir el proceso
+            while (resultSet.next()) {
+                val IdSolicitante = resultSet.getString("IdSolicitante")
+                val Nombre = resultSet.getString("Nombre")
+                val CorreoElectronico = resultSet.getString("CorreoElectronico")
+                val Telefono = resultSet.getString("Telefono")
+                val Direccion = resultSet.getString("Direccion")
+                val idDepartamento = resultSet.getInt("IdDepartamento")
+                val FechaDeNacimiento = resultSet.getString("FechaDeNacimiento")
+                val Estado = resultSet.getString("Estado")
+                val IdAreaDeTrabajo = resultSet.getInt("IdAreaDeTrabajo")
+                val Habilidades = resultSet.getString("Habilidades")
+                val foto = resultSet.getString("Foto")
+                val Contrasena = resultSet.getString("Contrasena")
+
+                val Solicitante = Solicitante(
+                    IdSolicitante,
+                    Nombre,
+                    CorreoElectronico,
+                    Telefono,
+                    Direccion,
+                    idDepartamento,
+                    FechaDeNacimiento,
+                    Estado,
+                    IdAreaDeTrabajo,
+                    Habilidades,
+                    foto,
+                    Contrasena
+                )
+                listaSolicitante.add(Solicitante)
             }
+            return listaSolicitante
         }
 
+        CoroutineScope(Dispatchers.IO).launch {
+            val SolicitanteDb = obtenerDatos()
+            withContext(Dispatchers.Main) {
+                val adapter = AdaptadorChatsEmpleador(SolicitanteDb)
+                rcvChatEmpleador.adapter = adapter
+            }
+        }
         return view
     }
 
-    private fun escucharMensajes(chatId: String) {
-        val database = Firebase.database.reference
-        val messagesRef = database.child("chats").child(chatId).child("messages")
-
-        messagesRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                messageList.clear() // Limpiar la lista para agregar los mensajes actuales
-                for (messageSnapshot in snapshot.children) {
-                    val message = messageSnapshot.getValue(Message::class.java)
-                    if (message != null) {
-                        messageList.add(message)
-                    }
-                }
-                // Notificar al adaptador que la lista ha cambiado
-                messageAdapter.notifyDataSetChanged()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("Firebase", "Error al obtener los mensajes", error.toException())
-            }
-        })
-    }
-
-    private fun enviarMensaje(chatId: String, senderId: String, mensaje: String) {
-        val database = Firebase.database.reference
-        val messageId = database.child("chats").child(chatId).child("messages").push().key
-
-        val messageInfo = mapOf(
-            "senderId" to senderId,
-            "message" to mensaje,
-            "timestamp" to System.currentTimeMillis()
-        )
-
-        if (messageId != null) {
-            database.child("chats").child(chatId).child("messages").child(messageId).setValue(messageInfo)
-        }
-    }
 
 
     companion object {

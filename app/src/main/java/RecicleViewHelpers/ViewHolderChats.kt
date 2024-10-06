@@ -8,4 +8,6 @@ import com.example.expogbss.R
 class ViewHolderChats(view: View): RecyclerView.ViewHolder(view) {
 
     val txtNombreChats = view.findViewById<TextView>(R.id.txtNombreChat)
+    val txtNombreEmpresaChats = view.findViewById<TextView>(R.id.txtNombreEmpresaChat)
+
 }

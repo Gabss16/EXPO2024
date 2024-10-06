@@ -487,32 +487,55 @@ class registro_empresa : AppCompatActivity() {
                                             //TODO: ESTA PARTE ES PARA QUE EL NOMBRE Y CONTRASEÑA SE ENVIEN A FIREBASE
 
                                             withContext(Dispatchers.Main) {
-                                                FirebaseAuth.getInstance().createUserWithEmailAndPassword(CorreoEmpleador, ContrasenaEmpleador)
+                                                FirebaseAuth.getInstance()
+                                                    .createUserWithEmailAndPassword(
+                                                        CorreoEmpleador,
+                                                        ContrasenaEmpleador
+                                                    )
                                                     .addOnCompleteListener { task ->
                                                         if (task.isSuccessful) {
                                                             // Usuario creado en Firebase Authentication
-                                                            val user = FirebaseAuth.getInstance().currentUser
-                                                            val profileUpdates = UserProfileChangeRequest.Builder()
-                                                                .setDisplayName(nombreEmpleador)  // Establecer el nombre del usuario
-                                                                .build()
+                                                            val user =
+                                                                FirebaseAuth.getInstance().currentUser
+                                                            val profileUpdates =
+                                                                UserProfileChangeRequest.Builder()
+                                                                    .setDisplayName(nombreEmpleador)  // Establecer el nombre del usuario
+                                                                    .build()
 
                                                             // Actualizar el perfil del usuario con el nombre
-                                                            user?.updateProfile(profileUpdates)?.addOnCompleteListener { updateTask ->
-                                                                if (updateTask.isSuccessful) {
-                                                                    Toast.makeText(this@registro_empresa, "Registro completo. Nombre actualizado en Firebase.", Toast.LENGTH_LONG).show()
-                                                                    val intent = Intent(this@registro_empresa, login::class.java)
-                                                                    startActivity(intent)
-                                                                    finish()
-                                                                } else {
-                                                                    Toast.makeText(this@registro_empresa, "Error al actualizar nombre en Firebase: ${updateTask.exception?.message}", Toast.LENGTH_LONG).show()
+                                                            user?.updateProfile(profileUpdates)
+                                                                ?.addOnCompleteListener { updateTask ->
+                                                                    if (updateTask.isSuccessful) {
+                                                                        Toast.makeText(
+                                                                            this@registro_empresa,
+                                                                            "Registro completo. Nombre actualizado en Firebase.",
+                                                                            Toast.LENGTH_LONG
+                                                                        ).show()
+                                                                        val intent = Intent(
+                                                                            this@registro_empresa,
+                                                                            login::class.java
+                                                                        )
+                                                                        startActivity(intent)
+                                                                        finish()
+                                                                    } else {
+                                                                        Toast.makeText(
+                                                                            this@registro_empresa,
+                                                                            "Error al actualizar nombre en Firebase: ${updateTask.exception?.message}",
+                                                                            Toast.LENGTH_LONG
+                                                                        ).show()
+                                                                    }
                                                                 }
-                                                            }
                                                         } else {
                                                             // Error al registrar en Firebase
-                                                            Toast.makeText(this@registro_empresa, "Error al registrar en Firebase: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                                                            Toast.makeText(
+                                                                this@registro_empresa,
+                                                                "Error al registrar en Firebase: ${task.exception?.message}",
+                                                                Toast.LENGTH_LONG
+                                                            ).show()
                                                             btnCrearCuentaEmpleador.isEnabled = true
                                                         }
                                                     }
+
                                             }
 
                                             //hasta aqui es lo de firebase

@@ -8,39 +8,13 @@
     tools:context=".chatEmpresa">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewMensajes"
-        android:layout_width="351dp"
-        android:layout_height="539dp"
-        android:layout_weight="1"
-        android:scrollbars="vertical"
+        android:id="@+id/rcvChatEmpleador"
+        android:layout_width="333dp"
+        android:layout_height="510dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.14" />
-
-    <EditText
-        android:id="@+id/editTextMensaje"
-        android:layout_width="294dp"
-        android:layout_height="42dp"
-        android:hint="Escribe tu mensaje"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.136"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.849" />
-
-    <Button
-        android:id="@+id/buttonEnviar"
-        android:layout_width="88dp"
-        android:layout_height="41dp"
-        android:text="Enviar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.972"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.85" />
+        app:layout_constraintVertical_bias="0.23" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

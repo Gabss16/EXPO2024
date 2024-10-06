@@ -10,13 +10,13 @@ class Solicitante(
    val CorreoElectronico: String,
    val Telefono: String,
    val Direccion: String,
-   val Departamento: Int,
-   val FechaDeNacimiento: DATE,
+   val IdDepartamento: Int,
+   val FechaDeNacimiento: String,
    val Estado: String,
-   val Genero: String,
+   //val Genero: String,
    val IdAreaDeTrabajo: Int,
    val Habilidades: String,
-   val Curriculum: BLOB,
+   //val Curriculum: BLOB,
    val Foto: String,
    val Contrasena: String
 )

@@ -32,6 +32,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.storage
 import modelo.AreaDeTrabajo
 import modelo.Departamento
@@ -352,6 +354,58 @@ class registroSolicitante : AppCompatActivity() {
                             crearUsuario.executeUpdate()
 
                             withContext(Dispatchers.Main) {
+
+                                FirebaseAuth.getInstance()
+                                    .createUserWithEmailAndPassword(
+                                        correoSolicitante,
+                                        contrasenaSolicitante
+                                    )
+                                    .addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            // Usuario creado en Firebase Authentication
+                                            val user =
+                                                FirebaseAuth.getInstance().currentUser
+                                            val profileUpdates =
+                                                UserProfileChangeRequest.Builder()
+                                                    .setDisplayName(nombreSolicitante)  // Establecer el nombre del usuario
+                                                    .build()
+
+                                            // Actualizar el perfil del usuario con el nombre
+                                            user?.updateProfile(profileUpdates)
+                                                ?.addOnCompleteListener { updateTask ->
+                                                    if (updateTask.isSuccessful) {
+                                                        Toast.makeText(
+                                                            this@registroSolicitante,
+                                                            "Registro completo. Nombre actualizado en Firebase.",
+                                                            Toast.LENGTH_LONG
+                                                        ).show()
+                                                        val intent = Intent(
+                                                            this@registroSolicitante,
+                                                            login::class.java
+                                                        )
+                                                        startActivity(intent)
+                                                        finish()
+                                                    } else {
+                                                        Toast.makeText(
+                                                            this@registroSolicitante,
+                                                            "Error al actualizar nombre en Firebase: ${updateTask.exception?.message}",
+                                                            Toast.LENGTH_LONG
+                                                        ).show()
+                                                    }
+                                                }
+                                        } else {
+                                            // Error al registrar en Firebase
+                                            Toast.makeText(
+                                                this@registroSolicitante,
+                                                "Error al registrar en Firebase: ${task.exception?.message}",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                            btnCrearCuentaSolicitante.isEnabled = true
+                                        }
+                                    }
+
+                            }
+
                                 val alertDialog = AlertDialog.Builder(this@registroSolicitante)
                                     .setTitle("Cuenta registrada")
                                     .setMessage("Tu cuenta ha sido creada.")
@@ -373,7 +427,7 @@ class registroSolicitante : AppCompatActivity() {
                                 imgFotoDePerfilSolicitante.setImageDrawable(null)
                             }
                         }
-                    } catch (e: Exception) {
+                     catch (e: Exception) {
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 this@registroSolicitante,
