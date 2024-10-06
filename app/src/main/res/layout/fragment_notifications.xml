@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background=""
+    android:background="@android:color/background_light"
     android:backgroundTint="@color/colorTextSecondary"
     tools:context=".ui.notifications.NotificationsFragment">
 
@@ -42,9 +42,12 @@
                 android:id="@+id/imageView32"
                 android:layout_width="373dp"
                 android:layout_height="313dp"
+                android:layout_marginTop="36dp"
                 android:src="@drawable/perfilcard"
-                tools:layout_editor_absoluteX="22dp"
-                tools:layout_editor_absoluteY="347dp" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.542"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
             <TextView
                 android:id="@+id/textView14"

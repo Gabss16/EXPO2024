@@ -63,64 +63,73 @@ class DetallePublicacion : AppCompatActivity() {
         // Obtener lista de solicitudes (esto es un ejemplo; debes obtenerlas desde tu fuente de datos)
         //val solicitudes = obtenerSolicitudesParaTrabajo()
 
+        val idTrabajo = intent.getIntExtra("IdTrabajo", 1234)
 
+//TODO DEFINIR BIEN QUÉ MÁS SE VA A MOSTRAR EN LA SOLICITUD
 
-
-        fun obtenerSolicitudesParaTrabajo(): List<Solicitud>{
+        fun obtenerSolicitudesParaTrabajo(idTrabajo: Int): List<Solicitud> {
             val objConexion = ClaseConexion().cadenaConexion()
-            //2 - Creo un statement
-
-            val statement = objConexion?.createStatement()
-            val resultSet = statement?.executeQuery("""
-SELECT
+            val statement = objConexion?.prepareStatement("""
+       SELECT
                 s.IdSolicitud,
                 s.IdSolicitante,
+                ss.Nombre as NombreSolicitante,
                 s.IdTrabajo,
                 s.FechaSolicitud,
                 s.Estado,
                 t.Titulo AS TituloTrabajo,
-                t.IdAreaDeTrabajo AS CategoriaTrabajo
+                t.IdAreaDeTrabajo,
+                A.NombreAreaDetrabajo AS CategoriaTrabajo
             FROM SOLICITUD s
             INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
-            WHERE s.Estado = 'Pendiente'""")!!
+                INNER JOIN SOLICITANTE ss ON s.IdSolicitante = ss.IdSolicitante
+                INNER JOIN AreaDeTrabajo A ON t.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+        WHERE s.Estado = 'Pendiente' AND s.IdTrabajo = ?
+    """)
 
-            //en esta variable se añaden TODOS los valores de mascotas
+            // Establecer el idTrabajo en la consulta
+            statement?.setInt(1, idTrabajo)
+
+            val resultSet = statement?.executeQuery()
+
             val listaSolicitud = mutableListOf<Solicitud>()
 
-            while (resultSet.next()) {
-                val IdSolicitud = resultSet.getInt("IdSolicitud")
-                val IdSolicitante = resultSet.getString("IdSolicitante")
-                val IdTrabajo = resultSet.getInt("IdTrabajo")
-                val FechaSolicitud = resultSet.getString("FechaSolicitud")
-                val Estado = resultSet.getString("Estado")
+            while (resultSet?.next() == true) {
+                val idSolicitud = resultSet.getInt("IdSolicitud")
+                val idSolicitante = resultSet.getString("IdSolicitante")
+                val idTrabajoDb = resultSet.getInt("IdTrabajo")
+                val fechaSolicitud = resultSet.getString("FechaSolicitud")
+                val estado = resultSet.getString("Estado")
                 val tituloTrabajo = resultSet.getString("TituloTrabajo")
                 val categoriaTrabajo = resultSet.getString("CategoriaTrabajo")
-
+                val nombreSolicitante = resultSet.getString("NombreSolicitante")
 
                 val solicitud = Solicitud(
-                    IdSolicitud,
-                    IdSolicitante,
-                    IdTrabajo,
-                    FechaSolicitud,
-                    Estado,
+                    idSolicitud,
+                    idSolicitante,
+                    idTrabajoDb,
+                    fechaSolicitud,
+                    estado,
                     tituloTrabajo,
-                    categoriaTrabajo
+                    categoriaTrabajo,
+                    nombreSolicitante
                 )
+
                 listaSolicitud.add(solicitud)
             }
+
             return listaSolicitud
-
         }
-
 
         // Configurar adaptador para solicitudes
         CoroutineScope(Dispatchers.IO).launch {
-            val solicitudesDb = obtenerSolicitudesParaTrabajo()
+            val solicitudesDb = obtenerSolicitudesParaTrabajo(idTrabajo)
             withContext(Dispatchers.Main) {
                 val adapter = AdaptadorSolicitud(solicitudesDb)
                 rcvSolicitudes.adapter = adapter
             }
         }
+
 
 
 

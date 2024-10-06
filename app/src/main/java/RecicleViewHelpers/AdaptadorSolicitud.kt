@@ -85,7 +85,7 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
     override fun onBindViewHolder(holder: ViewHolderSolicitud, position: Int) {
         val Solicitud = Datos[position]
 
-        holder.jobTitleTextView .text = Solicitud.TituloTrabajo
+        holder.jobTitleTextView .text = Solicitud.NombreSolicitante
         holder.jobCategoryTextView.text = Solicitud.CategoriaTrabajo.toString()
         holder.statusTextView.text = Solicitud.Estado
 
@@ -142,6 +142,7 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
             val pantallaDetalleP = Intent(context, Info_Perfil_Solicitante::class.java)
 
             pantallaDetalleP.putExtra("IdSolicitante", Solicitud.IdSolicitante)
+            pantallaDetalleP.putExtra("NombreSolicitante", Solicitud.NombreSolicitante)
 
             context.startActivity(pantallaDetalleP)
         }

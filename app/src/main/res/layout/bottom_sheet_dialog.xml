@@ -154,12 +154,12 @@
                     app:layout_constraintVertical_bias="0.72" />
 
                 <EditText
-                    android:id="@+id/txtSalarioJob"
+                    android:id="@+id/txtSalarioJobMinimo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_trabajos"
                     android:ems="10"
-                    android:hint="Salario"
+                    android:hint="Salario Min USD"
                     android:inputType="text"
                     android:paddingLeft="35dp"
                     android:textColor="#97000000"
@@ -181,7 +181,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtSalarioJob" />
+                    app:layout_constraintTop_toBottomOf="@+id/txtSalarioJobMinimo" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

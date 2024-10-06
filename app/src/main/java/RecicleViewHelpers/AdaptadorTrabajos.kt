@@ -48,8 +48,8 @@ class AdaptadorTrabajos(var Datos : List<Trabajo>) : RecyclerView.Adapter<ViewHo
 
     override fun onBindViewHolder(holder: ViewHolderTrabajos, position: Int) {
         val trabajos = Datos[position]
-        holder.txtTIituloTrabajo.text = trabajos.Titulo
-        holder.txtTipoTrabajo.text = trabajos.NombreAreaDeTrabajo.toString()
+        holder.txtTIituloTrabajo.text = trabajos.NombreAreaDeTrabajo.toString()
+        holder.txtTipoTrabajo.text = trabajos.Titulo
 
         //click a la card
 

@@ -29,6 +29,7 @@ CREATE TABLE EMPLEADOR (
     Contrasena VARCHAR2(250) NOT NULL,
     CONSTRAINT FkDepartamentoEmpleador FOREIGN KEY (IdDepartamento) REFERENCES DEPARTAMENTO(IdDepartamento) ON DELETE CASCADE);
 
+-- Limitar a 25,000 máximo 
 CREATE TABLE TRABAJO (
     IdTrabajo INT PRIMARY KEY, 
     Titulo VARCHAR2(50) NOT NULL,
@@ -42,7 +43,8 @@ CREATE TABLE TRABAJO (
     Experiencia VARCHAR2(50),
     Requerimientos VARCHAR2(150),
     Estado VARCHAR(10) CHECK (Estado IN ('Activo', 'Inactivo')),
-    Salario NUMBER,
+    SalarioMinimo NUMBER,
+    SalarioMaximo NUMBER,
     Beneficios VARCHAR2(100),
     FechaDePublicacion  VARCHAR2(20),
     CONSTRAINT FKEmpleadorTrabajo FOREIGN KEY (IdEmpleador) REFERENCES EMPLEADOR(IdEmpleador) ON DELETE CASCADE,
@@ -197,6 +199,8 @@ INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Sector de la hostelería
 INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Servicios profesionales');
 INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Área de ventas y atención al cliente');
 INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Educación y enseñanza');  
+
+
 
 Insert into DEPARTAMENTO(Nombre) values ('Ahuachapán');
 Insert into DEPARTAMENTO(Nombre) values ('Cabañas');
@@ -353,6 +357,40 @@ UPDATE solicitante SET EstadoCuenta = 'Restringido' WHERE IdSolicitante = '74a58
 
 select * from solicitante
 commit;
+
+SELECT
+            s.IdSolicitud,
+            s.IdSolicitante,
+            ss.Nombre as NombreSolicitante,
+            s.IdTrabajo,
+            s.FechaSolicitud,
+            s.Estado,
+            t.Titulo AS TituloTrabajo,
+            t.IdAreaDeTrabajo AS CategoriaTrabajo
+        FROM SOLICITUD s
+        INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
+        INNER JOIN SOLICITANTE ss ON s.IdSolicitante = ss.IdSolicitante
+        WHERE s.Estado = 'Pendiente' AND s.IdTrabajo = ?
+
+SELECT
+                s.IdSolicitud,
+                s.IdSolicitante,
+                ss.Nombre as NombreSolicitante,
+                s.IdTrabajo,
+                s.FechaSolicitud,
+                s.Estado,
+                t.Titulo AS TituloTrabajo,
+                t.IdAreaDeTrabajo,
+                A.NombreAreaDetrabajo AS CategoriaTrabajo
+
+            FROM SOLICITUD s
+            INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
+                INNER JOIN SOLICITANTE ss ON s.IdSolicitante = ss.IdSolicitante
+                INNER JOIN AreaDeTrabajo A ON t.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+
+            WHERE s.Estado = 'Pendiente' AND s.idTrabajo = 4
+            
+            select * from solicitante
 
 -- Eliminar tablas
 DROP TABLE SOLICITUD;

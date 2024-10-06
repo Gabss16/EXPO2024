@@ -1,7 +1,6 @@
 package com.example.expogbss
 
 import RecicleViewHelpers.AdaptadorPublicacion
-import RecicleViewHelpers.AdaptadorTrabajos
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -31,7 +30,6 @@ import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.util.UUID
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -181,7 +179,7 @@ ON
             val txtExperienciaJob = view.findViewById<EditText>(R.id.txtExperienciaJob)
             val txtHabilidadesJob = view.findViewById<EditText>(R.id.txtHabilidadesJob)
             val txtBeneficiosJob = view.findViewById<EditText>(R.id.txtBeneficiosJob)
-            val txtSalarioJob = view.findViewById<EditText>(R.id.txtSalarioJob)
+            val txtSalarioJob = view.findViewById<EditText>(R.id.txtSalarioJobMinimo)
 
 
             val fechaDePublicacion =

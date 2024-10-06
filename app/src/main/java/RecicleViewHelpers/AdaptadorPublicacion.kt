@@ -113,6 +113,7 @@ class AdaptadorPublicacion(var Datos : List<Trabajo>) : RecyclerView.Adapter<Vie
             val pantallaDetalleP = Intent(context,DetallePublicacion ::class.java)
 
             //enviar a la otra pantalla todos mis valores
+            pantallaDetalleP.putExtra("IdTrabajo", trabajos.IdTrabajo)
             pantallaDetalleP.putExtra("Titulo", trabajos.Titulo)
             pantallaDetalleP.putExtra("NombreAreaDeTrabajo", trabajos.NombreAreaDeTrabajo)
             pantallaDetalleP.putExtra("Descripcion", trabajos.Descripcion)
