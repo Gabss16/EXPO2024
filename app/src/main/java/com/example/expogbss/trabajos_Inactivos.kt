@@ -1,54 +1,59 @@
 package com.example.expogbss
 
-import RecicleViewHelpers.AdaptadorTrabajos
-import android.content.Intent
+import RecicleViewHelpers.AdaptadorPublicacion
+import RecicleViewHelpers.AdaptadorPublicacionReactivar
+import RecicleViewHelpers.AdaptadorSolicitud
 import android.os.Bundle
 import android.view.Window
-import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.expogbss.ui.home.HomeFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
+import modelo.Solicitud
 import modelo.Trabajo
 
-class Construccion : AppCompatActivity() {
+class trabajos_Inactivos : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_construccion)
+        setContentView(R.layout.activity_trabajos_inactivos)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        val rcvTrabajosPublicados = findViewById<RecyclerView>(R.id.rcvConstruccion)
-        rcvTrabajosPublicados.layoutManager = LinearLayoutManager(this)
+        val idEmpleador = login.IdEmpleador
+        val rcvTrabajosInactivos = findViewById<RecyclerView>(R.id.rcvTrabajosEliminados)
 
-        val salir = findViewById<ImageButton>(R.id.btnSalir1)
-        salir.setOnClickListener{
+
+
+        // Configurar RecyclerView para solicitudes
+        rcvTrabajosInactivos.layoutManager = LinearLayoutManager(this)
+
+        val btnSalir = findViewById<ImageButton>(R.id.btnSalirTrabajosInactivos)
+        btnSalir.setOnClickListener {
             finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
         }
-
 
         fun obtenerDatos(): List<Trabajo> {
             //1- Creo un objeto de la clase conexión
             val objConexion = ClaseConexion().cadenaConexion()
 
-            //2 - Creo un statement
+
             //El símbolo de pregunta es pq los datos pueden ser nulos
-            val statement = objConexion?.createStatement()
-            val resultSet = statement?.executeQuery("""SELECT 
+            val statement = objConexion?.prepareStatement("""SELECT 
     T.IdTrabajo, 
     T.Titulo, 
     T.IdEmpleador, 
@@ -69,12 +74,15 @@ INNER JOIN
     AreaDeTrabajo A
 ON 
     T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
-WHERE 
-    T.IdAreaDeTrabajo = 5 AND Estado = 'Activo'""")!!
+ WHERE IdEmpleador = ?  AND Estado = 'Inactivo'""")
 
+            statement?.setString(1, idEmpleador)
+            val resultSet = statement?.executeQuery()!!
 
             //en esta variable se añaden TODOS los valores de mascotas
             val listaTrabajos = mutableListOf<Trabajo>()
+
+
 
             //Recorro todos los registros de la base de datos
             //.next() significa que mientras haya un valor después de ese se va a repetir el proceso
@@ -113,16 +121,16 @@ WHERE
                 listaTrabajos.add(trabajo)
             }
             return listaTrabajos
-
-
         }
 
         CoroutineScope(Dispatchers.IO).launch {
             val TrabajoDb = obtenerDatos()
             withContext(Dispatchers.Main) {
-                val adapter = AdaptadorTrabajos(TrabajoDb)
-                rcvTrabajosPublicados.adapter = adapter
+                val adapter = AdaptadorPublicacionReactivar(TrabajoDb)
+                rcvTrabajosInactivos.adapter = adapter
             }
         }
+
+
     }
 }

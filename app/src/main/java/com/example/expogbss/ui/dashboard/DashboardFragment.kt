@@ -55,9 +55,10 @@ class DashboardFragment : Fragment() {
             val statement = objConexion?.createStatement()
 
             val resultSet = statement?.executeQuery("""
-        SELECT 
+     SELECT 
             s.IdSolicitud, 
             s.IdSolicitante, 
+            ss.Nombre as NombreSolicitante,
             s.IdTrabajo, 
             s.FechaSolicitud, 
             s.Estado,
@@ -66,8 +67,8 @@ class DashboardFragment : Fragment() {
         FROM SOLICITUD s
         INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
         INNER JOIN AreaDeTrabajo a ON t.IdAreaDeTrabajo = a.IdAreaDeTrabajo
-        WHERE s.IdSolicitante = '$idSolicitante'
-    """)!!
+        INNER JOIN SOLICITANTE ss ON s.IdSolicitante = ss.IdSolicitante
+        WHERE s.IdSolicitante = '$idSolicitante'""")!!
 
             // En esta variable se añaden TODOS los valores de solicitudes
             val listaSolicitud = mutableListOf<Solicitud>()
@@ -80,6 +81,7 @@ class DashboardFragment : Fragment() {
                 val Estado = resultSet.getString("Estado")
                 val tituloTrabajo = resultSet.getString("TituloTrabajo")
                 val categoriaTrabajo = resultSet.getString("CategoriaTrabajo") // Ahora es el nombre del área
+                val nombreSolicitante = resultSet.getString("NombreSolicitante") // Ahora es el nombre del solicitante
 
                 val solicitud = Solicitud(
                     IdSolicitud,
@@ -88,7 +90,8 @@ class DashboardFragment : Fragment() {
                     FechaSolicitud,
                     Estado,
                     tituloTrabajo,
-                    categoriaTrabajo
+                    categoriaTrabajo,
+                    nombreSolicitante
                 )
                 listaSolicitud.add(solicitud)
             }

@@ -148,40 +148,55 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.494"
+                    app:layout_constraintHorizontal_bias="0.505"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.72" />
+                    app:layout_constraintVertical_bias="0.68" />
 
                 <EditText
-                    android:id="@+id/txtSalarioJob"
+                    android:id="@+id/txtSalarioJobMinimo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_trabajos"
                     android:ems="10"
-                    android:hint="Salario"
+                    android:hint="Salario Min USD"
                     android:inputType="text"
                     android:paddingLeft="35dp"
                     android:textColor="#97000000"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.494"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.84" />
+                    app:layout_constraintVertical_bias="0.755" />
+
+                <EditText
+                    android:id="@+id/txtSalarioJobMaximo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_trabajos"
+                    android:ems="10"
+                    android:hint="Salario Max USD"
+                    android:inputType="text"
+                    android:paddingLeft="35dp"
+                    android:textColor="#97000000"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.511"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.835" />
 
                 <Spinner
                     android:id="@+id/spnTiposTrabajo"
                     android:layout_width="239dp"
                     android:layout_height="55dp"
-                    android:layout_marginStart="50dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="119dp"
+                    android:layout_marginTop="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_bias="0.257"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtSalarioJob" />
+                    app:layout_constraintTop_toBottomOf="@+id/txtSalarioJobMaximo" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

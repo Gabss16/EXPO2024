@@ -40,6 +40,15 @@
             android:name=".card_mensajes"
             android:exported="false" />
         <activity
+            android:name=".solicitudes_aceptadas"
+            android:exported="false" />
+        <activity
+            android:name=".cardTrabajosEliminados"
+            android:exported="false" />
+        <activity
+            android:name=".trabajos_Inactivos"
+            android:exported="false" />
+        <activity
             android:name=".Info_Perfil_Solicitante"
             android:exported="false" />
         <activity

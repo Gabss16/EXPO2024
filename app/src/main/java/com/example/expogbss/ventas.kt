@@ -57,7 +57,8 @@ class ventas : AppCompatActivity() {
     T.Experiencia, 
     T.Requerimientos, 
     T.Estado, 
-    T.Salario, 
+    T.SalarioMinimo,
+    T.SalarioMaximo,
     T.Beneficios, 
     T.FechaDePublicacion
 FROM 
@@ -86,7 +87,8 @@ WHERE
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
                 val Estado = resultSet.getString("Estado")
-                val Salario = resultSet.getBigDecimal("Salario")
+                val SalarioMinimo = resultSet.getBigDecimal("SalarioMinimo")
+                val SalarioMaximo = resultSet.getBigDecimal("SalarioMaximo")
                 val Beneficios = resultSet.getString("Beneficios")
                 val FechaDePublicacion = resultSet.getDate("FechaDePublicacion")
 
@@ -101,7 +103,8 @@ WHERE
                     Experiencia,
                     Requerimientos,
                     Estado,
-                    Salario,
+                    SalarioMinimo,
+                    SalarioMaximo,
                     Beneficios,
                     FechaDePublicacion
                 )

@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
 import modelo.Solicitud
 import modelo.Solicitante
@@ -21,6 +22,31 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
     fun actualizarDatos(nuevosDatos: List<Solicitud>) {
         Datos= nuevosDatos
         notifyDataSetChanged()}
+
+    fun eliminarDatos(idSolicitud: Int, nuevoEstado: String, posicion: Int) {
+        //Actualizo la lista de datos y notifico al adaptador
+        val listaDatos = Datos.toMutableList()
+        listaDatos.removeAt(posicion)
+
+        GlobalScope.launch(Dispatchers.IO) {
+            //1- Creamos un objeto de la clase conexion
+            val objConexion = ClaseConexion().cadenaConexion()
+
+            val updateSolicitud = objConexion?.prepareStatement("UPDATE SOLICITUD SET Estado = ? WHERE IdSolicitud = ?") !!
+
+            // Asignar parámetros a la consulta
+            updateSolicitud.setString(1, nuevoEstado)
+            updateSolicitud.setInt(2, idSolicitud)
+            updateSolicitud.executeUpdate()
+            val commit = objConexion.prepareStatement ("commit")
+            commit.executeUpdate()
+        }
+        Datos = listaDatos.toList()
+        // Notificar al adaptador sobre los cambios
+        notifyItemRemoved(posicion)
+        notifyDataSetChanged()
+    }
+
 
     fun actualizarEstadoSolicitud(idSolicitud: Int, nuevoEstado: String) {
         GlobalScope.launch(Dispatchers.IO) {
@@ -35,9 +61,16 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
             updateSolicitud.setString(1, nuevoEstado)
             updateSolicitud.setInt(2, idSolicitud)
             updateSolicitud.executeUpdate()
-
             val commit = objConexion.prepareStatement ("commit")
             commit.executeUpdate()
+            withContext(Dispatchers.Main) {
+            val index = Datos.indexOfFirst { it.IdSolicitud == idSolicitud }
+            if (index != -1) {
+                Datos[index].Estado = nuevoEstado
+                actualizarDatos(Datos)
+                notifyItemChanged(index) // Notificar que el elemento ha cambiado
+            }}
+
         }
     }
 
@@ -52,7 +85,7 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
     override fun onBindViewHolder(holder: ViewHolderSolicitud, position: Int) {
         val Solicitud = Datos[position]
 
-        holder.jobTitleTextView .text = Solicitud.TituloTrabajo
+        holder.jobTitleTextView .text = Solicitud.NombreSolicitante
         holder.jobCategoryTextView.text = Solicitud.CategoriaTrabajo.toString()
         holder.statusTextView.text = Solicitud.Estado
 
@@ -65,6 +98,8 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
             builder.setPositiveButton("Aceptar") { dialog, _ ->
                 // Actualizar el estado de la solicitud a 'Aprobada'
                 actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Aprobada")
+                eliminarDatos(Solicitud.IdSolicitud, "Aprobada", position)
+
                 dialog.dismiss() // Cerrar el diálogo
             }
 
@@ -86,7 +121,9 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
             builder.setPositiveButton("Rechazar") { dialog, _ ->
                 // Actualizar el estado de la solicitud a 'Rechazada'
                 actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Rechazada")
-                dialog.dismiss() // Cerrar el diálogo
+                eliminarDatos(Solicitud.IdSolicitud, "Rechazada", position)
+                dialog.dismiss()// Cerrar el diálogo
+
             }
 
             builder.setNegativeButton("Cancelar") { dialog, _ ->
@@ -105,6 +142,7 @@ class AdaptadorSolicitud (var Datos : List<Solicitud>) : RecyclerView.Adapter<Vi
             val pantallaDetalleP = Intent(context, Info_Perfil_Solicitante::class.java)
 
             pantallaDetalleP.putExtra("IdSolicitante", Solicitud.IdSolicitante)
+            pantallaDetalleP.putExtra("NombreSolicitante", Solicitud.NombreSolicitante)
 
             context.startActivity(pantallaDetalleP)
         }

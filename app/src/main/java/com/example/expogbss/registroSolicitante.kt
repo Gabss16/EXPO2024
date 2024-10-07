@@ -38,6 +38,7 @@ import com.google.firebase.storage.storage
 import modelo.AreaDeTrabajo
 import modelo.Departamento
 import java.io.ByteArrayOutputStream
+import java.sql.SQLException
 import java.util.UUID
 
 //TODO Terminar insert cuando esté completo el diseño
@@ -279,11 +280,30 @@ class registroSolicitante : AppCompatActivity() {
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
                         val objConexion = ClaseConexion().cadenaConexion()
-                        val comprobarSiExisteCorreo =
-                            objConexion?.prepareStatement("SELECT * FROM Empleador WHERE CorreoElectronico = ? ")!!
-                        comprobarSiExisteCorreo.setString(1, correoSolicitante)
+                        val comprobarSiExisteCorreoEmpleador =
+                            objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE CorreoElectronico = ? ")!!
+                        comprobarSiExisteCorreoEmpleador.setString(1, correoSolicitante)
 
-                        val existeCorreoSolicitante = comprobarSiExisteCorreo.executeQuery()
+                        val comprobarSiExisteCorreoSolicitante =
+                            objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE CorreoElectronico = ? ")!!
+                        comprobarSiExisteCorreoSolicitante.setString(1, correoSolicitante)
+
+                        val comprobarSiExistetelefonoSolicitante =
+                            objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE Telefono = ? ")!!
+                        comprobarSiExistetelefonoSolicitante.setString(1, telefonoSolicitante)
+
+                        val comprobarSiExistetelefonoEmpleador =
+                            objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE NumeroTelefono = ? ")!!
+                        comprobarSiExistetelefonoEmpleador.setString(1, telefonoSolicitante)
+
+                        val existeCorreoSolicitante = comprobarSiExisteCorreoSolicitante.executeQuery()
+                        val existeCorreoEmpleador = comprobarSiExisteCorreoEmpleador.executeQuery()
+
+                        val existeTelefonoSolicitante =
+                            comprobarSiExistetelefonoSolicitante.executeQuery()
+
+                        val existeTelefonoEmpleador =
+                            comprobarSiExistetelefonoEmpleador.executeQuery()
 
                         if (existeCorreoSolicitante.next()) {
                             withContext(Dispatchers.Main) {
@@ -293,7 +313,32 @@ class registroSolicitante : AppCompatActivity() {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-                        } else {
+                        } else if (existeCorreoEmpleador.next()) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@registroSolicitante,
+                                    "Ya existe alguien con ese correo electrónico, por favor, utiliza otro.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }else if (existeTelefonoSolicitante.next()) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@registroSolicitante,
+                                    "Ya existe alguien con ese número de teléfono, por favor, utiliza otro.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                        else if (existeTelefonoEmpleador.next()){
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@registroSolicitante,
+                                    "Ya existe alguien con ese número de teléfono, por favor, utiliza otro.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }else {
                             println("Esto sale en la fecha: $fechaNacimientoSeleccionada")
 
                             // Encripto la contraseña usando la función de encriptación
@@ -426,8 +471,28 @@ class registroSolicitante : AppCompatActivity() {
                                 txtFechaSolicitante.setText("")
                                 imgFotoDePerfilSolicitante.setImageDrawable(null)
                             }
+                    }catch (e: SQLException) {
+                        when (e.errorCode) {
+                            1 -> { // ORA-00001: unique constraint violated
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(
+                                        this@registroSolicitante,
+                                        "Ya existe un usuario con ese correo electrónico, por favor ingresa uno distinto.",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
+                            else -> {
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(
+                                        this@registroSolicitante,
+                                        "Error SQL: ${e.message}",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
                         }
-                     catch (e: Exception) {
+                    }catch (e: Exception) {
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 this@registroSolicitante,

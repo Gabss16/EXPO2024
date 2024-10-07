@@ -13,7 +13,8 @@ class Trabajo(
     val Experiencia: String,
     val Requerimientos: String,
     val Estado: String,
-    val Salario: Number,
+    val SalarioMinimo: Number,
+    val SalarioMaximo: Number,
     val Beneficios: String,
     val FechaDePublicacion: Date
 )

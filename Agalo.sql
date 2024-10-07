@@ -29,6 +29,7 @@ CREATE TABLE EMPLEADOR (
     Contrasena VARCHAR2(250) NOT NULL,
     CONSTRAINT FkDepartamentoEmpleador FOREIGN KEY (IdDepartamento) REFERENCES DEPARTAMENTO(IdDepartamento) ON DELETE CASCADE);
 
+-- Limitar a 25,000 máximo 
 CREATE TABLE TRABAJO (
     IdTrabajo INT PRIMARY KEY, 
     Titulo VARCHAR2(50) NOT NULL,
@@ -42,7 +43,8 @@ CREATE TABLE TRABAJO (
     Experiencia VARCHAR2(50),
     Requerimientos VARCHAR2(150),
     Estado VARCHAR(10) CHECK (Estado IN ('Activo', 'Inactivo')),
-    Salario NUMBER,
+    SalarioMinimo NUMBER,
+    SalarioMaximo NUMBER,
     Beneficios VARCHAR2(100),
     FechaDePublicacion  VARCHAR2(20),
     CONSTRAINT FKEmpleadorTrabajo FOREIGN KEY (IdEmpleador) REFERENCES EMPLEADOR(IdEmpleador) ON DELETE CASCADE,
@@ -119,17 +121,35 @@ BEGIN
 END;
 
 
-CREATE OR REPLACE TRIGGER trg_audit_delete_trabajo
-AFTER DELETE ON TRABAJO
+CREATE OR REPLACE TRIGGER trg_audit_update_Borrar_trabajo
+AFTER UPDATE ON TRABAJO
 FOR EACH ROW
+WHEN (OLD.Estado = 'Activo' AND NEW.Estado = 'Inactivo')
 BEGIN
-    INSERT INTO AUDITORIA (TablaAfectada, Operacion, Usuario, FechaAccion, Detalles, IdTrabajo) VALUES (
-        'Trabajo', 
-        'DELETE', 
-        :OLD.IdEmpleador, 
-        TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'),
-        'Se creó un trabajo con descripción: ' || :OLD.Descripcion, -- Detalles con mensaje personalizado
-        :OLD.IdTrabajo
+    INSERT INTO AUDITORIA (TablaAfectada, Operacion, Usuario, FechaAccion, Detalles, IdTrabajo)
+    VALUES (
+    'Trabajo',
+    'UPDATE',                           -- Tipo de operación (actualización)
+    :OLD.IdEmpleador,                   -- ID del empleador que realizó la operación
+    SYSDATE,                            -- Fecha actual de la operación
+   'Trabajo con Descripción ' || :OLD.Descripcion || ' fue marcado como inactivo.',-- Detalle
+    :OLD.IdTrabajo
+    );
+END;
+
+CREATE OR REPLACE TRIGGER trg_audit_update_Reactivar_trabajo
+AFTER UPDATE ON TRABAJO
+FOR EACH ROW
+WHEN (OLD.Estado = 'Inactivo' AND NEW.Estado = 'Activo')
+BEGIN
+    INSERT INTO AUDITORIA (TablaAfectada, Operacion, Usuario, FechaAccion, Detalles, IdTrabajo)
+    VALUES (
+    'Trabajo',
+    'UPDATE',                           -- Tipo de operación (actualización)
+    :OLD.IdEmpleador,                   -- ID del empleador que realizó la operación
+    SYSDATE,                            -- Fecha actual de la operación
+   'Trabajo con Descripción ' || :OLD.Descripcion || ' fue reactivado.',-- Detalle
+    :OLD.IdTrabajo
     );
 END;
 
@@ -179,6 +199,9 @@ INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Sector de la hostelería
 INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Servicios profesionales');
 INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Área de ventas y atención al cliente');
 INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Educación y enseñanza');  
+INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Otros');  
+
+commit;
 
 Insert into DEPARTAMENTO(Nombre) values ('Ahuachapán');
 Insert into DEPARTAMENTO(Nombre) values ('Cabañas');
@@ -278,15 +301,34 @@ commit;
 begin 
 VerificarCorreoElectronico('Ricardo de paz', 'RicAdmin3', 'ContrasenaEncriptada', 'Foto1', 'prueba3@gmail.com', 1);
 end;
-
-select * from usuarioEscritorio;
-
+SELECT 
+    T.IdTrabajo, 
+    T.Titulo, 
+    T.IdEmpleador, 
+    A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
+    T.Descripcion,   
+    T.Direccion, 
+    T.IdDepartamento, 
+    T.Experiencia, 
+    T.Requerimientos, 
+    T.Estado, 
+    T.Salario, 
+    T.Beneficios, 
+    T.FechaDePublicacion
+FROM 
+    TRABAJO T
+INNER JOIN 
+    AreaDeTrabajo A
+ON 
+    T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+ WHERE IdEmpleador = 'b3e80aa6-a7be-4a18-b074-aa5cf01bc2b9'  AND Estado = 'Inactivo'
 
 select * from empleador;
 select * from solicitante;
 select * from solicitud;
 select * from trabajo;
-
+            
+select * from AreadeTrabajo
 delete from Empleador where idEmpleador = 'fdc019cf-6449-4655-8913-685ffbb9bf1b';
 
 SELECT * FROM EMPLEADOR WHERE CorreoElectronico = 'contacto@innovaciones.com.sv' AND Contrasena = 'contraseÃ±a1';
@@ -309,13 +351,6 @@ DROP SEQUENCE Trabajoseq;
 DROP TRIGGER TrigSolicitud;
 DROP TRIGGER TrigTrabajo;
 
-select * from solicitante
-
-
-UPDATE solicitante SET EstadoCuenta = 'Restringido' WHERE IdSolicitante = '74a58d12-c9be-463a-806b-4c7ee1d6cce1'
-
-select * from solicitante
-commit;
 
 -- Eliminar tablas
 DROP TABLE SOLICITUD;
@@ -328,5 +363,108 @@ Drop table ROLESCRITORIO;
 Drop table DEPARTAMENTO;
 drop table AUDITORIA;
 
+
+delete from solicitante
+    commit;
+    
+    
+    select* from EMpleador;
+    Select * from solicitante;
+
+SELECT * FROM EMPLEADOR WHERE NumeroTelefono = '1234-5678'
+UPDATE solicitante SET EstadoCuenta = 'Restringido' WHERE IdSolicitante = '74a58d12-c9be-463a-806b-4c7ee1d6cce1'
+
+commit;
+
+SELECT
+            s.IdSolicitud,
+            s.IdSolicitante,
+            ss.Nombre as NombreSolicitante,
+            s.IdTrabajo,
+            s.FechaSolicitud,
+            s.Estado,
+            t.Titulo AS TituloTrabajo,
+            t.IdAreaDeTrabajo AS CategoriaTrabajo
+        FROM SOLICITUD s
+        INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
+        INNER JOIN SOLICITANTE ss ON s.IdSolicitante = ss.IdSolicitante
+        WHERE s.Estado = 'Pendiente' AND s.IdTrabajo = ?
+
+SELECT
+                s.IdSolicitud,
+                s.IdSolicitante,
+                ss.Nombre as NombreSolicitante,
+                s.IdTrabajo,
+                s.FechaSolicitud,
+                s.Estado,
+                t.Titulo AS TituloTrabajo,
+                ss.IdAreaDeTrabajo,
+                A.NombreAreaDetrabajo AS CategoriaTrabajoSolicitante
+
+            FROM SOLICITUD s
+            INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
+                INNER JOIN SOLICITANTE ss ON s.IdSolicitante = ss.IdSolicitante
+                INNER JOIN AreaDeTrabajo A ON ss.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+
+            WHERE s.Estado = 'Pendiente' AND s.idTrabajo = 4
+            
+            commit;
+            
+SELECT 
+    T.IdTrabajo, 
+    T.Titulo, 
+    T.IdEmpleador, 
+    A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
+    T.Descripcion,   
+    T.Direccion, 
+    T.IdDepartamento, 
+    T.Experiencia, 
+    T.Requerimientos, 
+    T.Estado, 
+    T.SalarioMinimo,
+    T.SalarioMaximo,
+    T.Beneficios, 
+    T.FechaDePublicacion
+FROM 
+    TRABAJO T
+INNER JOIN 
+    AreaDeTrabajo A
+ON 
+    T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+ WHERE IdEmpleador = '4273908e-26b3-4bd7-983f-5be6d00240e3'  AND Estado = 'Activo'
+        
+        UPDATE TRABAJO SET Titulo = ?, IdAreaDeTrabajo = ?, Descripcion = ?, Direccion = ?, IdDepartamento = ?, Experiencia = ?, Requerimientos = ?, SalarioMinimo = ?, SalarioMaximo= ?, Beneficios = ? WHERE IdTrabajo = ?
+        
+        
+        
+        select * from solicitud;
+        
+Select * from solicitud where IdSolicitante = ? and IdTrabajo= ?
+
+SELECT 
+    T.IdTrabajo, 
+    T.Titulo, 
+    T.IdEmpleador, 
+    A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
+    T.Descripcion,   
+    T.Direccion, 
+    T.IdDepartamento, 
+    T.Experiencia, 
+    T.Requerimientos, 
+    T.Estado, 
+    T.SalarioMinimo,
+    T.SalarioMaximo,
+    T.Beneficios, 
+    T.FechaDePublicacion
+FROM 
+    TRABAJO T
+INNER JOIN 
+    AreaDeTrabajo A
+ON 
+    T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+WHERE 
+    T.IdAreaDeTrabajo = 5 AND Estado = 'Activo'
+
 INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion,IdDepartamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena, EstadoCuenta) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?)
 
+INSERT INTO TRABAJO ( Titulo , IdEmpleador , IdAreaDeTrabajo,Descripcion ,Direccion ,IdDepartamento, Experiencia , Requerimientos , Estado ,SalarioMinimo, SalarioMaximo , Beneficios, FechaDePublicacion ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )

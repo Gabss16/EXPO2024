@@ -4,6 +4,7 @@ import RecicleViewHelpers.AdaptadorPublicacion
 import RecicleViewHelpers.AdaptadorSolicitud
 import android.os.Bundle
 import android.view.Window
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -12,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,6 +44,39 @@ class DetallePublicacion : AppCompatActivity() {
         txtTituloDetalle = findViewById(R.id.txtJobTitle1)
         txtDescripcionDetalle = findViewById(R.id.txtJobDescription)
         rcvSolicitudes = findViewById(R.id.rcvSolicitudesRecibidas)
+        val btnShowBottomSheet = findViewById<ImageButton>(R.id.btnAceppt);
+
+        btnShowBottomSheet.setOnClickListener {
+
+            // on below line we are creating a new bottom sheet dialog.
+            val dialog = BottomSheetDialog(this)
+
+            // on below line we are inflating a layout file which we have created.
+            val view = layoutInflater.inflate(R.layout.solis_aceptadas, null)
+
+            // on below line we are creating a variable for our button
+            // which we are using to dismiss our dialog.
+            val btnClose = view.findViewById<ImageButton>(R.id.idBtnDismis)
+
+            // on below line we are adding on click listener
+            // for our dismissing the dialog button.
+            btnClose.setOnClickListener {
+                // on below line we are calling a dismiss
+                // method to close our dialog.
+                dialog.dismiss()
+            }
+            // below line is use to set cancelable to avoid
+            // closing of dialog box when clicking on the screen.
+            dialog.setCancelable(false)
+
+            // on below line we are setting
+            // content view to our view.
+            dialog.setContentView(view)
+
+            // on below line we are calling
+            // a show method to display a dialog.
+            dialog.show()
+        }
 
         // Obtener datos del Intent
         val titulo = intent.getStringExtra("Titulo")
@@ -63,62 +98,73 @@ class DetallePublicacion : AppCompatActivity() {
         // Obtener lista de solicitudes (esto es un ejemplo; debes obtenerlas desde tu fuente de datos)
         //val solicitudes = obtenerSolicitudesParaTrabajo()
 
-        fun obtenerSolicitudesParaTrabajo(): List<Solicitud>{
-            val objConexion = ClaseConexion().cadenaConexion()
-            //2 - Creo un statement
+        val idTrabajo = intent.getIntExtra("IdTrabajo", 1234)
 
-            val statement = objConexion?.createStatement()
-            val resultSet = statement?.executeQuery("""
-SELECT
+//TODO DEFINIR BIEN QUÉ MÁS SE VA A MOSTRAR EN LA SOLICITUD
+
+        fun obtenerSolicitudesParaTrabajo(idTrabajo: Int): List<Solicitud> {
+            val objConexion = ClaseConexion().cadenaConexion()
+            val statement = objConexion?.prepareStatement("""
+     SELECT
                 s.IdSolicitud,
                 s.IdSolicitante,
+                ss.Nombre as NombreSolicitante,
                 s.IdTrabajo,
                 s.FechaSolicitud,
                 s.Estado,
                 t.Titulo AS TituloTrabajo,
-                t.IdAreaDeTrabajo AS CategoriaTrabajo
+                ss.IdAreaDeTrabajo,
+                A.NombreAreaDetrabajo AS CategoriaTrabajoSolicitante
             FROM SOLICITUD s
             INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
-            WHERE s.Estado = 'Pendiente'""")!!
+                INNER JOIN SOLICITANTE ss ON s.IdSolicitante = ss.IdSolicitante
+                INNER JOIN AreaDeTrabajo A ON ss.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+        WHERE s.Estado = 'Pendiente' AND s.IdTrabajo = ?
+    """)
 
-            //en esta variable se añaden TODOS los valores de mascotas
+            // Establecer el idTrabajo en la consulta
+            statement?.setInt(1, idTrabajo)
+
+            val resultSet = statement?.executeQuery()
+
             val listaSolicitud = mutableListOf<Solicitud>()
 
-            while (resultSet.next()) {
-                val IdSolicitud = resultSet.getInt("IdSolicitud")
-                val IdSolicitante = resultSet.getString("IdSolicitante")
-                val IdTrabajo = resultSet.getInt("IdTrabajo")
-                val FechaSolicitud = resultSet.getString("FechaSolicitud")
-                val Estado = resultSet.getString("Estado")
+            while (resultSet?.next() == true) {
+                val idSolicitud = resultSet.getInt("IdSolicitud")
+                val idSolicitante = resultSet.getString("IdSolicitante")
+                val idTrabajoDb = resultSet.getInt("IdTrabajo")
+                val fechaSolicitud = resultSet.getString("FechaSolicitud")
+                val estado = resultSet.getString("Estado")
                 val tituloTrabajo = resultSet.getString("TituloTrabajo")
-                val categoriaTrabajo = resultSet.getString("CategoriaTrabajo")
-
+                val categoriaTrabajo = resultSet.getString("CategoriaTrabajoSolicitante")
+                val nombreSolicitante = resultSet.getString("NombreSolicitante")
 
                 val solicitud = Solicitud(
-                    IdSolicitud,
-                    IdSolicitante,
-                    IdTrabajo,
-                    FechaSolicitud,
-                    Estado,
+                    idSolicitud,
+                    idSolicitante,
+                    idTrabajoDb,
+                    fechaSolicitud,
+                    estado,
                     tituloTrabajo,
-                    categoriaTrabajo
+                    categoriaTrabajo,
+                    nombreSolicitante
                 )
+
                 listaSolicitud.add(solicitud)
             }
-            return listaSolicitud
 
+            return listaSolicitud
         }
 
         // Configurar adaptador para solicitudes
         CoroutineScope(Dispatchers.IO).launch {
-            val solicitudesDb = obtenerSolicitudesParaTrabajo()
+            val solicitudesDb = obtenerSolicitudesParaTrabajo(idTrabajo)
             withContext(Dispatchers.Main) {
                 val adapter = AdaptadorSolicitud(solicitudesDb)
                 rcvSolicitudes.adapter = adapter
             }
         }
-       // solicitudesAdapter = AdaptadorSolicitud(solicitudes)
-      //  rcvSolicitudes.adapter = solicitudesAdapter
+
 
 
 

@@ -38,7 +38,9 @@ class Detalle_Puesto : AppCompatActivity() {
         val ExperienciaRecibida = intent.getStringExtra("Experiencia")
         val RequerimientosRecibida = intent.getStringExtra("Requerimientos")
         val EstadoRecibida = intent.getStringExtra("Estado")
-        val SalarioRecibido = intent.getStringExtra("Salario")
+        val SalarioMinimoRecibido = intent.getStringExtra("SalarioMinimo")
+        val SalarioMaximoRecibido = intent.getStringExtra("SalarioMaximo")
+
         val BeneficiosRecibida = intent.getStringExtra("Beneficios")
 
         val btnSalir = findViewById<ImageButton>(R.id.btnSalirDetalles)
@@ -55,7 +57,8 @@ class Detalle_Puesto : AppCompatActivity() {
         Log.d("Detalle_Puesto", "Experiencia: $ExperienciaRecibida")
         Log.d("Detalle_Puesto", "Requerimientos: $RequerimientosRecibida")
         Log.d("Detalle_Puesto", "Estado: $EstadoRecibida")
-        Log.d("Detalle_Puesto", "Salario: $SalarioRecibido")
+        Log.d("Detalle_Puesto", "SalarioMinimo: $SalarioMinimoRecibido")
+        Log.d("Detalle_Puesto", "SalarioMaximo: $SalarioMaximoRecibido")
         Log.d("Detalle_Puesto", "Beneficios: $BeneficiosRecibida")
 
         val txtAreaTrabajoDetalle = findViewById<TextView>(R.id.txtAreaTrabajoDetalle)
@@ -66,7 +69,8 @@ class Detalle_Puesto : AppCompatActivity() {
         val txtExpReqDetalle = findViewById<TextView>(R.id.txtExpReqDetalle)
         val txtHabilidadesDetalle = findViewById<TextView>(R.id.txtHabilidadesDetalle)
         val txtBeneficiosDetalle = findViewById<TextView>(R.id.txtBeneficiosDetalle)
-        val txtSalarioDetalle = findViewById<TextView>(R.id.txtSalarioDetalle)
+        val txtSalarioMinimoDetalle = findViewById<TextView>(R.id.txtSalarioMinimoDetalle)
+        val txtSalarioMaximoDetalle = findViewById<TextView>(R.id.txtSalarioMaximoDetalle)
 
          txtAreaTrabajoDetalle.text = NombreAreaDeTrabajo
          txtTituloDetalle.text = TituloRecibido
@@ -78,7 +82,8 @@ class Detalle_Puesto : AppCompatActivity() {
          txtBeneficiosDetalle.text = BeneficiosRecibida
 
         // Convertir el salario a cadena y establecerlo en el TextView
-        txtSalarioDetalle.text = SalarioRecibido ?: "No disponible"
+        txtSalarioMinimoDetalle.text = (SalarioMinimoRecibido ?: "No disponible")+ "USD"
+        txtSalarioMaximoDetalle.text = (SalarioMaximoRecibido ?: "No disponible")+ "USD"
 
         //btnSolicitud
         val btnSolicitar = findViewById<ImageButton>(R.id.btnSolicitar)
@@ -87,44 +92,54 @@ class Detalle_Puesto : AppCompatActivity() {
     }
     }
     private fun enviarSolicitud() {
-
-        //el numero hay que cambiarlo dependiendo del idTrabjo que aparezca en la base de datos
-        //luego luego hay que hacer una funcion para que no pase esto
-
         val idTrabajo = intent.getIntExtra("IdTrabajo", 1)
         val idSolicitante = IdSolicitante
         val fechaSolicitud = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val estado = "Pendiente"
 
-        //println("Este es el idTrabajo:" + idTrabajo)
-        println("Este es el idSolicitante:" + idSolicitante)
-
         CoroutineScope(Dispatchers.IO).launch {
             var objConexion: Connection? = null
             try {
                 objConexion = ClaseConexion().cadenaConexion()
-                val insertSolicitud = objConexion?.prepareStatement(
-                    "INSERT INTO SOLICITUD (IdSolicitante, IdTrabajo, FechaSolicitud, Estado) VALUES (?, ?, ?, ?)"
+
+                // Verificar si ya existe una solicitud para el IdSolicitante e IdTrabajo
+                val comprobarSolicitudExistente = objConexion?.prepareStatement(
+                    "SELECT * FROM SOLICITUD WHERE IdSolicitante = ? AND IdTrabajo = ?"
                 )
+                comprobarSolicitudExistente?.setString(1, idSolicitante)
+                comprobarSolicitudExistente?.setInt(2, idTrabajo)
 
-                insertSolicitud?.setString(1, idSolicitante)
-                insertSolicitud?.setInt(2, idTrabajo)
-                insertSolicitud?.setString(3, fechaSolicitud)
-                insertSolicitud?.setString(4, estado)
+                val resultadoConsulta = comprobarSolicitudExistente?.executeQuery()
 
-                insertSolicitud?.executeUpdate()
+                if (resultadoConsulta?.next() == true) {
+                    // Si ya existe una solicitud, mostramos un mensaje y detenemos la ejecución
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@Detalle_Puesto, "Solamente puedes solicitar una vez este trabajo", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    // Si no existe la solicitud, la insertamos en la base de datos
+                    val insertSolicitud = objConexion?.prepareStatement(
+                        "INSERT INTO SOLICITUD (IdSolicitante, IdTrabajo, FechaSolicitud, Estado) VALUES (?, ?, ?, ?)"
+                    )
 
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@Detalle_Puesto, "Solicitud enviada", Toast.LENGTH_LONG).show()
+                    insertSolicitud?.setString(1, idSolicitante)
+                    insertSolicitud?.setInt(2, idTrabajo)
+                    insertSolicitud?.setString(3, fechaSolicitud)
+                    insertSolicitud?.setString(4, estado)
+
+                    insertSolicitud?.executeUpdate()
+
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@Detalle_Puesto, "Solicitud enviada", Toast.LENGTH_LONG).show()
+                    }
                 }
+
             } catch (e: Exception) {
                 Log.e("InsertSolicitud", "Error al insertar solicitud", e)
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@Detalle_Puesto, "Error al enviar solicitud", Toast.LENGTH_LONG).show()
                 }
             } finally {
-
-
                 objConexion?.close()
             }
         }

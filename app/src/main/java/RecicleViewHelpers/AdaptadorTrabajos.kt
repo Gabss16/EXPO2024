@@ -21,6 +21,8 @@ class AdaptadorTrabajos(var Datos : List<Trabajo>) : RecyclerView.Adapter<ViewHo
         Datos= nuevosDatos
         notifyDataSetChanged()}
 
+
+
     fun filtrar(query: String) {
         Datos = if (query.isEmpty()) {
             datosOriginales
@@ -46,8 +48,8 @@ class AdaptadorTrabajos(var Datos : List<Trabajo>) : RecyclerView.Adapter<ViewHo
 
     override fun onBindViewHolder(holder: ViewHolderTrabajos, position: Int) {
         val trabajos = Datos[position]
-        holder.txtTIituloTrabajo.text = trabajos.Titulo
-        holder.txtTipoTrabajo.text = trabajos.NombreAreaDeTrabajo.toString()
+        holder.txtTIituloTrabajo.text = trabajos.NombreAreaDeTrabajo.toString()
+        holder.txtTipoTrabajo.text = trabajos.Titulo
 
         //click a la card
 
@@ -66,7 +68,8 @@ class AdaptadorTrabajos(var Datos : List<Trabajo>) : RecyclerView.Adapter<ViewHo
             pantallaDetalle.putExtra("Experiencia", trabajos.Experiencia)
             pantallaDetalle.putExtra("Requerimientos", trabajos.Requerimientos)
             pantallaDetalle.putExtra("Estado", trabajos.Estado)
-            pantallaDetalle.putExtra("Salario", trabajos.Salario.toString()) // Para convertir de BigDecimal a cadena
+            pantallaDetalle.putExtra("SalarioMinimo", trabajos.SalarioMinimo.toString()) // Para convertir de BigDecimal a cadena
+            pantallaDetalle.putExtra("SalarioMaximo", trabajos.SalarioMaximo.toString()) // Para convertir de BigDecimal a cadena
             pantallaDetalle.putExtra("Beneficios", trabajos.Beneficios)
             context.startActivity(pantallaDetalle)
         }

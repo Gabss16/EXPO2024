@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.expogbss.ingresarCorreoRecupContrasena.variablesGlobalesRecuperacionDeContrasena.codigo
+import com.example.expogbss.ingresarCorreoRecupContrasena.variablesGlobalesRecuperacionDeContrasena.correoIngresado
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,14 +31,57 @@ class recoveryCode : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        fun generarHTMLCorreo(codigo: String): String{
+            return """
+<html>
+<body style="font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;">
+    <div class="container" style="width: 100%;
+            max-width: 600px; 
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 30px 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);">
+        <div class="img" style="text-align: center;
+            margin-top: 40px;">
+            <img src="https://i.imgur.com/bXHJUmC.png" alt="Logo" width="400" style="border-radius: 10px;">
+        </div>
+        <div class="message" style="text-align: center;
+            color: #2c3e50;
+            margin-bottom: 40px;">
+            <h2 style="font-size: 28px; 
+            font-weight: 600;
+            margin-bottom: 10px;">Recuperación de Contraseña</h2>
+            <p style="font-size: 18px; color: #7f8c8d;">Usa el siguiente código para recuperar tu contraseña:</p>
+            <div class="code" style="display: inline-block;
+            padding: 20px 40px; 
+            font-size: 26px; 
+            color: #000;
+            background-color: #d2dee7;
+            border-radius: 10px; 
+            margin-top: 20px;
+            letter-spacing: 2px;">$codigo</div>
+        </div>
+        <div class="footer-logo" style="text-align: center;
+            margin-top: 40px;">
+            <img src="https://i.imgur.com/TU8KAcy.png" alt="Logo" width="550" style="border-radius: 10px;">
+        </div>
+    </div>
+</body>
+</html>
+""".trimIndent()
+        }
 
         //Botones
         val btnConfirmarCodigo = findViewById<Button>(R.id.btnConfirmarCodigo)
         val btnReenviarCodigo = findViewById<Button>(R.id.btnVolverAEnviarCodigo)
 
         //Códigos que se traen de la pantalla anterior
-        val correo = ingresarCorreoRecupContrasena.correoIngresado
-        val codigoRecuperacion = ingresarCorreoRecupContrasena.codigo
+        val correo = correoIngresado
+        val codigoRecuperacion = codigo
 
         //Declaro los 4 dígitos
         val txtPrimerDigito = findViewById<EditText>(R.id.txtPrimerDigito)
@@ -108,11 +153,12 @@ class recoveryCode : AppCompatActivity() {
         btnReenviarCodigo.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
+                    val correoConHtml = generarHTMLCorreo(codigoRecuperacion)
+
                     val correoEnviado = recuperarContrasena(
                         correo,
-                        "Recuperación de contraseña",
-                        "Hola este es su codigo de recuperacion: $codigoRecuperacion"
-                    )
+                        "Recuperación de contraseña", correoConHtml)
+
                     withContext(Dispatchers.Main) {
                         if (correoEnviado) {
                             Toast.makeText(

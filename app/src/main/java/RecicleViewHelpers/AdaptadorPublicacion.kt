@@ -19,6 +19,9 @@ import modelo.Trabajo
 
 class AdaptadorPublicacion(var Datos : List<Trabajo>) : RecyclerView.Adapter<ViewHolderPublicacion>() {
 
+    fun actualizarDatos(nuevosDatos: List<Trabajo>) {
+        Datos= nuevosDatos
+        notifyDataSetChanged()}
 
     fun eliminarDatos(TituloTrabajo: String, posicion: Int) {
         //Actualizo la lista de datos y notifico al adaptador
@@ -97,7 +100,8 @@ class AdaptadorPublicacion(var Datos : List<Trabajo>) : RecyclerView.Adapter<Vie
             PantallaEditar.putExtra("Experiencia", trabajos.Experiencia)
             PantallaEditar.putExtra("Requerimientos", trabajos.Requerimientos)
             PantallaEditar.putExtra("Estado", trabajos.Estado)
-            PantallaEditar.putExtra("Salario", trabajos.Salario.toString()) // Para convertir de BigDecimal a cadena
+            PantallaEditar.putExtra("SalarioMinimo", trabajos.SalarioMinimo.toString()) // Para convertir de BigDecimal a cadena
+            PantallaEditar.putExtra("SalarioMaximo", trabajos.SalarioMaximo.toString()) // Para convertir de BigDecimal a cadena
             PantallaEditar.putExtra("Beneficios", trabajos.Beneficios)
             context.startActivity(PantallaEditar)
         }
@@ -110,6 +114,7 @@ class AdaptadorPublicacion(var Datos : List<Trabajo>) : RecyclerView.Adapter<Vie
             val pantallaDetalleP = Intent(context,DetallePublicacion ::class.java)
 
             //enviar a la otra pantalla todos mis valores
+            pantallaDetalleP.putExtra("IdTrabajo", trabajos.IdTrabajo)
             pantallaDetalleP.putExtra("Titulo", trabajos.Titulo)
             pantallaDetalleP.putExtra("NombreAreaDeTrabajo", trabajos.NombreAreaDeTrabajo)
             pantallaDetalleP.putExtra("Descripcion", trabajos.Descripcion)
@@ -118,7 +123,8 @@ class AdaptadorPublicacion(var Datos : List<Trabajo>) : RecyclerView.Adapter<Vie
             pantallaDetalleP.putExtra("Experiencia", trabajos.Experiencia)
             pantallaDetalleP.putExtra("Requerimientos", trabajos.Requerimientos)
             pantallaDetalleP.putExtra("Estado", trabajos.Estado)
-            pantallaDetalleP.putExtra("Salario", trabajos.Salario.toString()) // Para convertir de BigDecimal a cadena
+            pantallaDetalleP.putExtra("SalarioMinimo", trabajos.SalarioMinimo.toString()) // Para convertir de BigDecimal a cadena
+            pantallaDetalleP.putExtra("SalarioMaximo", trabajos.SalarioMaximo.toString()) // Para convertir de BigDecimal a cadena
             pantallaDetalleP.putExtra("Beneficios", trabajos.Beneficios)
             context.startActivity(pantallaDetalleP)
 
