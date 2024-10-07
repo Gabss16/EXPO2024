@@ -73,7 +73,6 @@ class chatEmpresa : Fragment() {
             val resultSet = statement?.executeQuery("""SELECT * FROM SOLICITANTE""")!!
 
 
-            //en esta variable se añaden TODOS los valores de mascotas
             val listaSolicitante = mutableListOf<Solicitante>()
 
             //Recorro todos los registros de la base de datos
