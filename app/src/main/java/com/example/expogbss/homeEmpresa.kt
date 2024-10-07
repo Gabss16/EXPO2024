@@ -89,7 +89,8 @@ class homeEmpresa : Fragment() {
     T.Experiencia, 
     T.Requerimientos, 
     T.Estado, 
-    T.Salario, 
+    T.SalarioMinimo,
+    T.SalarioMaximo,
     T.Beneficios, 
     T.FechaDePublicacion
 FROM 
@@ -98,7 +99,7 @@ INNER JOIN
     AreaDeTrabajo A
 ON 
     T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
- WHERE IdEmpleador = ? AND Estado = 'Activo'""")
+ WHERE IdEmpleador = ?  AND Estado = 'Activo'""")
 
             statement?.setString(1, idEmpleador)
             val resultSet = statement?.executeQuery()!!
@@ -120,7 +121,9 @@ ON
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
                 val Estado = resultSet.getString("Estado")
-                val Salario = resultSet.getBigDecimal("Salario")
+                val SalarioMinimo = resultSet.getBigDecimal("SalarioMinimo")
+                val SalarioMaximo = resultSet.getBigDecimal("SalarioMaximo")
+
                 val Beneficios = resultSet.getString("Beneficios")
                 val FechaDePublicacion = resultSet.getDate("FechaDePublicacion")
 
@@ -135,7 +138,8 @@ ON
                     Experiencia,
                     Requerimientos,
                     Estado,
-                    Salario,
+                    SalarioMinimo,
+                    SalarioMaximo,
                     Beneficios,
                     FechaDePublicacion
                 )
@@ -179,7 +183,8 @@ ON
             val txtExperienciaJob = view.findViewById<EditText>(R.id.txtExperienciaJob)
             val txtHabilidadesJob = view.findViewById<EditText>(R.id.txtHabilidadesJob)
             val txtBeneficiosJob = view.findViewById<EditText>(R.id.txtBeneficiosJob)
-            val txtSalarioJob = view.findViewById<EditText>(R.id.txtSalarioJobMinimo)
+            val txtSalarioJobMinimo = view.findViewById<EditText>(R.id.txtSalarioJobMinimo)
+            val txtSalarioJobMaximo = view.findViewById<EditText>(R.id.txtSalarioJobMaximo)
 
 
             val fechaDePublicacion =
@@ -286,17 +291,47 @@ ON
 
                 if (txtTituloJob.text.isEmpty() || txtUbicacionJob.text.isEmpty() || txtDescripcionJob.text.isEmpty() ||
                     txtExperienciaJob.text.isEmpty() || txtHabilidadesJob.text.isEmpty() || txtBeneficiosJob.text.isEmpty() ||
-                    txtSalarioJob.text.isEmpty()) {
+                    txtSalarioJobMaximo.text.isEmpty() || txtSalarioJobMinimo.text.isEmpty()) {
 
                     Toast.makeText(requireContext(), "Todos los campos deben estar llenos", Toast.LENGTH_LONG).show()
                     return@setOnClickListener
                 }
 
-                val salarioText = txtSalarioJob.text.toString()
-                if (!salarioText.matches(Regex("^\\d+(\\.\\d+)?$"))) {
-                    Toast.makeText(requireContext(), "El salario debe ser un número válido", Toast.LENGTH_LONG).show()
+                val salarioMinText = txtSalarioJobMinimo.text.toString()
+                val salarioMaxText = txtSalarioJobMaximo.text.toString()
+
+                // Regex para validar números con hasta dos decimales y sin comas
+                val salarioRegex = Regex("^\\d+(\\.\\d{1,2})?$")
+
+                // Verificar si el texto contiene comas
+                if (salarioMinText.contains(",") || salarioMaxText.contains(",")) {
+                    Toast.makeText(requireContext(), "El salario no puede contener comas. Ejemplo: use 25000 en lugar de 25,000", Toast.LENGTH_LONG).show()
                     return@setOnClickListener
                 }
+
+                // Validar que los salarios coincidan con el formato sin comas y con hasta dos decimales
+                if (!salarioMinText.matches(salarioRegex) || !salarioMaxText.matches(salarioRegex)) {
+                    Toast.makeText(requireContext(), "El salario debe ser un número válido con hasta 2 decimales", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
+
+                // Convertir a BigDecimal
+                val salarioMax = BigDecimal(salarioMaxText)
+                val salarioMin = BigDecimal(salarioMinText)
+
+                // Verificar si el salario máximo excede 25,000
+                val maxPermitido = BigDecimal("25000.00")
+                if (salarioMax > maxPermitido || salarioMin > maxPermitido) {
+                    Toast.makeText(requireContext(), "El salario no puede exceder 25,000", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
+
+                // Verificar si el salario mínimo es mayor al salario máximo
+                if (salarioMin > salarioMax) {
+                    Toast.makeText(requireContext(), "El salario mínimo no puede ser mayor al salario máximo", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
+
 
 
 
@@ -322,14 +357,13 @@ ON
                             AreaDeTrabajo.find { it.NombreAreaDetrabajo == AreadetrabajoNombre }
                         val idAreaDeTrabajo = AreaDeTrabajoSeleccionada!!.idAreaDeTrabajo
 
-                        val salario = BigDecimal(txtSalarioJob.text.toString())
                         //1-creo un objeto de la clse conexion
                         val objConexion = ClaseConexion().cadenaConexion()
 
                         //2-creo una variable que contenga un PrepareStatement
 
                         val addTrabajo =
-                            objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , IdAreaDeTrabajo,Descripcion ,Direccion ,IdDepartamento, Experiencia , Requerimientos , Estado ,Salario , Beneficios, FechaDePublicacion ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
+                            objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , IdAreaDeTrabajo,Descripcion ,Direccion ,IdDepartamento, Experiencia , Requerimientos , Estado ,SalarioMinimo, SalarioMaximo , Beneficios, FechaDePublicacion ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
                         addTrabajo.setString(1, txtTituloJob.text.toString().trim())
                         addTrabajo.setString(2, idEmpleador)
                         addTrabajo.setInt(3, idAreaDeTrabajo)
@@ -339,13 +373,14 @@ ON
                         addTrabajo.setString(7, txtExperienciaJob.text.toString().trim())
                         addTrabajo.setString(8, txtHabilidadesJob.text.toString().trim())
                         addTrabajo.setString(9, "Activo")
-                        addTrabajo.setBigDecimal(10, salario)
-                        addTrabajo.setString(11, txtBeneficiosJob.text.toString().trim())
-                        addTrabajo.setString(12, fechaDePublicacion)
+                        addTrabajo.setBigDecimal(10, salarioMin)
+                        addTrabajo.setBigDecimal(11, salarioMax)
+                        addTrabajo.setString(12, txtBeneficiosJob.text.toString().trim())
+                        addTrabajo.setString(13, fechaDePublicacion)
 
                         Log.d(
                             "InsertJob",
-                            "Datos a insertar: Titulo=${txtTituloJob.text}, IdEmpleador=$idEmpleador, IdAreaDeTrabajo=$idAreaDeTrabajo, Descripcion=${txtDescripcionJob.text}, Direccion=${txtUbicacionJob.text},idDepartamento=$idDepartamento ,Experiencia=${txtExperienciaJob.text}, Requerimientos=${txtHabilidadesJob.text}, Estado=Activo, Salario=$salario, Beneficios=${txtBeneficiosJob.text}, FechaDePublicacion=$fechaDePublicacion"
+                            "Datos a insertar: Titulo=${txtTituloJob.text}, IdEmpleador=$idEmpleador, IdAreaDeTrabajo=$idAreaDeTrabajo, Descripcion=${txtDescripcionJob.text}, Direccion=${txtUbicacionJob.text},idDepartamento=$idDepartamento ,Experiencia=${txtExperienciaJob.text}, Requerimientos=${txtHabilidadesJob.text}, Estado=Activo, SalarioMinimo=$salarioMin, SalarioMaximo=$salarioMax Beneficios=${txtBeneficiosJob.text}, FechaDePublicacion=$fechaDePublicacion"
                         )
 
                         addTrabajo.executeUpdate()

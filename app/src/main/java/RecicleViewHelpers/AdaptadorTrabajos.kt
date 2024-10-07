@@ -68,7 +68,8 @@ class AdaptadorTrabajos(var Datos : List<Trabajo>) : RecyclerView.Adapter<ViewHo
             pantallaDetalle.putExtra("Experiencia", trabajos.Experiencia)
             pantallaDetalle.putExtra("Requerimientos", trabajos.Requerimientos)
             pantallaDetalle.putExtra("Estado", trabajos.Estado)
-            pantallaDetalle.putExtra("Salario", trabajos.Salario.toString()) // Para convertir de BigDecimal a cadena
+            pantallaDetalle.putExtra("SalarioMinimo", trabajos.SalarioMinimo.toString()) // Para convertir de BigDecimal a cadena
+            pantallaDetalle.putExtra("SalarioMaximo", trabajos.SalarioMaximo.toString()) // Para convertir de BigDecimal a cadena
             pantallaDetalle.putExtra("Beneficios", trabajos.Beneficios)
             context.startActivity(pantallaDetalle)
         }

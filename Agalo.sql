@@ -199,8 +199,9 @@ INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Sector de la hostelería
 INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Servicios profesionales');
 INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Área de ventas y atención al cliente');
 INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Educación y enseñanza');  
+INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Otros');  
 
-
+commit;
 
 Insert into DEPARTAMENTO(Nombre) values ('Ahuachapán');
 Insert into DEPARTAMENTO(Nombre) values ('Cabañas');
@@ -350,12 +351,29 @@ DROP SEQUENCE Trabajoseq;
 DROP TRIGGER TrigSolicitud;
 DROP TRIGGER TrigTrabajo;
 
-select * from solicitante
+
+-- Eliminar tablas
+DROP TABLE SOLICITUD;
+DROP TABLE SOLICITANTE;
+DROP TABLE TRABAJO;
+DROP TABLE EMPLEADOR;
+DROP TABLE AREADETRABAJO;
+Drop table UsuarioEscritorio;
+Drop table ROLESCRITORIO;
+Drop table DEPARTAMENTO;
+drop table AUDITORIA;
 
 
+delete from solicitante
+    commit;
+    
+    
+    select* from EMpleador;
+    Select * from solicitante;
+
+SELECT * FROM EMPLEADOR WHERE NumeroTelefono = '1234-5678'
 UPDATE solicitante SET EstadoCuenta = 'Restringido' WHERE IdSolicitante = '74a58d12-c9be-463a-806b-4c7ee1d6cce1'
 
-select * from solicitante
 commit;
 
 SELECT
@@ -380,28 +398,67 @@ SELECT
                 s.FechaSolicitud,
                 s.Estado,
                 t.Titulo AS TituloTrabajo,
-                t.IdAreaDeTrabajo,
-                A.NombreAreaDetrabajo AS CategoriaTrabajo
+                ss.IdAreaDeTrabajo,
+                A.NombreAreaDetrabajo AS CategoriaTrabajoSolicitante
 
             FROM SOLICITUD s
             INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
                 INNER JOIN SOLICITANTE ss ON s.IdSolicitante = ss.IdSolicitante
-                INNER JOIN AreaDeTrabajo A ON t.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+                INNER JOIN AreaDeTrabajo A ON ss.IdAreaDeTrabajo = A.IdAreaDeTrabajo
 
             WHERE s.Estado = 'Pendiente' AND s.idTrabajo = 4
             
-            select * from solicitante
-
--- Eliminar tablas
-DROP TABLE SOLICITUD;
-DROP TABLE SOLICITANTE;
-DROP TABLE TRABAJO;
-DROP TABLE EMPLEADOR;
-DROP TABLE AREADETRABAJO;
-Drop table UsuarioEscritorio;
-Drop table ROLESCRITORIO;
-Drop table DEPARTAMENTO;
-drop table AUDITORIA;
+            commit;
+            
+SELECT 
+    T.IdTrabajo, 
+    T.Titulo, 
+    T.IdEmpleador, 
+    A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
+    T.Descripcion,   
+    T.Direccion, 
+    T.IdDepartamento, 
+    T.Experiencia, 
+    T.Requerimientos, 
+    T.Estado, 
+    T.SalarioMinimo,
+    T.SalarioMaximo,
+    T.Beneficios, 
+    T.FechaDePublicacion
+FROM 
+    TRABAJO T
+INNER JOIN 
+    AreaDeTrabajo A
+ON 
+    T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+ WHERE IdEmpleador = '4273908e-26b3-4bd7-983f-5be6d00240e3'  AND Estado = 'Activo'
+        
+        UPDATE TRABAJO SET Titulo = ?, IdAreaDeTrabajo = ?, Descripcion = ?, Direccion = ?, IdDepartamento = ?, Experiencia = ?, Requerimientos = ?, SalarioMinimo = ?, SalarioMaximo= ?, Beneficios = ? WHERE IdTrabajo = ?
+        
+SELECT 
+    T.IdTrabajo, 
+    T.Titulo, 
+    T.IdEmpleador, 
+    A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
+    T.Descripcion,   
+    T.Direccion, 
+    T.IdDepartamento, 
+    T.Experiencia, 
+    T.Requerimientos, 
+    T.Estado, 
+    T.SalarioMinimo,
+    T.SalarioMaximo,
+    T.Beneficios, 
+    T.FechaDePublicacion
+FROM 
+    TRABAJO T
+INNER JOIN 
+    AreaDeTrabajo A
+ON 
+    T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+WHERE 
+    T.IdAreaDeTrabajo = 5 AND Estado = 'Activo'
 
 INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion,IdDepartamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena, EstadoCuenta) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?)
 
+INSERT INTO TRABAJO ( Titulo , IdEmpleador , IdAreaDeTrabajo,Descripcion ,Direccion ,IdDepartamento, Experiencia , Requerimientos , Estado ,SalarioMinimo, SalarioMaximo , Beneficios, FechaDePublicacion ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )

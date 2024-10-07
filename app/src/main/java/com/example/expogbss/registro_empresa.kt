@@ -253,17 +253,31 @@ class registro_empresa : AppCompatActivity() {
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
                         val objConexion = ClaseConexion().cadenaConexion()
-                        val comprobarSiExisteCorreo =
+                        val comprobarSiExisteCorreoEmpleador =
+                            objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE CorreoElectronico = ? ")!!
+                        comprobarSiExisteCorreoEmpleador.setString(1, CorreoEmpleador)
+
+                        val comprobarSiExisteCorreoSolicitante =
                             objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE CorreoElectronico = ? ")!!
-                        comprobarSiExisteCorreo.setString(1, CorreoEmpleador)
+                        comprobarSiExisteCorreoSolicitante.setString(1, CorreoEmpleador)
 
                         val comprobarSiExistetelefonoSolicitante =
                             objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE Telefono = ? ")!!
                         comprobarSiExistetelefonoSolicitante.setString(1, TelefoEmpleador)
 
-                        val existeCorreoSolicitante = comprobarSiExisteCorreo.executeQuery()
+                        val comprobarSiExistetelefonoEmpleador =
+                            objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE NumeroTelefono = ? ")!!
+                        comprobarSiExistetelefonoEmpleador.setString(1, TelefoEmpleador)
+
+                        val existeCorreoSolicitante = comprobarSiExisteCorreoSolicitante.executeQuery()
+                        val existeCorreoEmpleador = comprobarSiExisteCorreoEmpleador.executeQuery()
+
                         val existeTelefonoSolicitante =
                             comprobarSiExistetelefonoSolicitante.executeQuery()
+
+                        val existeTelefonoEmpleador =
+                            comprobarSiExistetelefonoEmpleador.executeQuery()
+
                         if (existeCorreoSolicitante.next()) {
                             withContext(Dispatchers.Main) {
                                 Toast.makeText(
@@ -273,7 +287,26 @@ class registro_empresa : AppCompatActivity() {
                                 ).show()
                                 btnCrearCuentaEmpleador.isEnabled = true
                             }
-                        } else if (existeTelefonoSolicitante.next()) {
+                        } else if (existeCorreoEmpleador.next()) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@registro_empresa,
+                                    "Ya existe alguien con ese correo electrónico, por favor, utiliza otro.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                btnCrearCuentaEmpleador.isEnabled = true
+                            }
+                        }else if (existeTelefonoSolicitante.next()) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@registro_empresa,
+                                    "Ya existe alguien con ese número de teléfono, por favor, utiliza otro.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                btnCrearCuentaEmpleador.isEnabled = true
+                            }
+                        }
+                        else if (existeTelefonoEmpleador.next()){
                             withContext(Dispatchers.Main) {
                                 Toast.makeText(
                                     this@registro_empresa,
@@ -427,17 +460,30 @@ class registro_empresa : AppCompatActivity() {
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
                         val objConexion = ClaseConexion().cadenaConexion()
-                        val comprobarSiExisteCorreo =
+                        val comprobarSiExisteCorreoEmpleador =
+                            objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE CorreoElectronico = ? ")!!
+                        comprobarSiExisteCorreoEmpleador.setString(1, CorreoEmpleador)
+
+                        val comprobarSiExisteCorreoSolicitante =
                             objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE CorreoElectronico = ? ")!!
-                        comprobarSiExisteCorreo.setString(1, CorreoEmpleador)
+                        comprobarSiExisteCorreoSolicitante.setString(1, CorreoEmpleador)
 
                         val comprobarSiExistetelefonoSolicitante =
                             objConexion?.prepareStatement("SELECT * FROM SOLICITANTE WHERE Telefono = ? ")!!
                         comprobarSiExistetelefonoSolicitante.setString(1, TelefoEmpleador)
 
+                        val comprobarSiExistetelefonoEmpleador =
+                            objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE NumeroTelefono = ? ")!!
+                        comprobarSiExistetelefonoEmpleador.setString(1, TelefoEmpleador)
+
+                        val existeCorreoSolicitante = comprobarSiExisteCorreoSolicitante.executeQuery()
+                        val existeCorreoEmpleador = comprobarSiExisteCorreoEmpleador.executeQuery()
+
                         val existeTelefonoSolicitante =
                             comprobarSiExistetelefonoSolicitante.executeQuery()
-                        val existeCorreoSolicitante = comprobarSiExisteCorreo.executeQuery()
+
+                        val existeTelefonoEmpleador =
+                            comprobarSiExistetelefonoEmpleador.executeQuery()
 
                         if (existeCorreoSolicitante.next()) {
                             withContext(Dispatchers.Main) {
@@ -448,7 +494,26 @@ class registro_empresa : AppCompatActivity() {
                                 ).show()
                                 btnCrearCuentaEmpleador.isEnabled = true
                             }
-                        } else if (existeTelefonoSolicitante.next()) {
+                        } else if (existeCorreoEmpleador.next()) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@registro_empresa,
+                                    "Ya existe alguien con ese correo electrónico, por favor, utiliza otro.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                btnCrearCuentaEmpleador.isEnabled = true
+                            }
+                        }else if (existeTelefonoSolicitante.next()) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    this@registro_empresa,
+                                    "Ya existe alguien con ese número de teléfono, por favor, utiliza otro.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                btnCrearCuentaEmpleador.isEnabled = true
+                            }
+                        }
+                        else if (existeTelefonoEmpleador.next()){
                             withContext(Dispatchers.Main) {
                                 Toast.makeText(
                                     this@registro_empresa,

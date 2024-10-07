@@ -1,6 +1,5 @@
 package com.example.expogbss
 
-import RecicleViewHelpers.AdaptadorPublicacion
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
@@ -23,7 +22,6 @@ import kotlinx.coroutines.withContext
 import modelo.AreaDeTrabajo
 import modelo.ClaseConexion
 import modelo.Departamento
-import modelo.Trabajo
 import java.math.BigDecimal
 
 class editar_publicacion : AppCompatActivity() {
@@ -45,7 +43,9 @@ class editar_publicacion : AppCompatActivity() {
         val txtExperienciaJobEditar = findViewById<EditText>(R.id.txtExperienciaJobEditar)
         val txtHabilidadesJobEditar = findViewById<EditText>(R.id.txtHabilidadesJobEditar)
         val txtBeneficiosJobEditar = findViewById<EditText>(R.id.txtBeneficiosJobEditar)
-        val txtSalarioJobEditar = findViewById<EditText>(R.id.txtSalarioJobEditar)
+        val txtSalarioMinimoJobEditar = findViewById<EditText>(R.id.txtSalarioJobMinimoEditar)
+        val txtSalarioMaximoJobEditar = findViewById<EditText>(R.id.txtSalarioJobMaximoEditar)
+
         val spnTiposTrabajoEditar = findViewById<Spinner>(R.id.spnTiposTrabajoEditar)
         val BtnIngresoEditado = findViewById<Button>(R.id.BtnIngresoEditado)
 
@@ -63,7 +63,8 @@ class editar_publicacion : AppCompatActivity() {
         val Experiencia = intent.getStringExtra("Experiencia")
         val Requerimientos = intent.getStringExtra("Requerimientos")
         val Estado = intent.getStringExtra("Estado")
-        val Salario = intent.getStringExtra("Salario")
+        val SalarioMinimo = intent.getStringExtra("SalarioMinimo")
+        val SalarioMaximo = intent.getStringExtra("SalarioMaximo")
         val Beneficios = intent.getStringExtra("Beneficios")
 
                 // Función para hacer el select de los Departamentos
@@ -176,7 +177,9 @@ class editar_publicacion : AppCompatActivity() {
         txtExperienciaJobEditar.setText(Experiencia)
         txtHabilidadesJobEditar.setText(Requerimientos)
         txtBeneficiosJobEditar.setText(Beneficios)
-        txtSalarioJobEditar.setText(Salario)
+        txtSalarioMinimoJobEditar.setText(SalarioMinimo)
+        txtSalarioMaximoJobEditar.setText(SalarioMaximo)
+
         //spnTiposTrabajoEditar.setText(nombreEmpleador)
 
 
@@ -195,15 +198,44 @@ class editar_publicacion : AppCompatActivity() {
 
             if (txtTituloJobEditar.text.isEmpty() || txtUbicacionJobEditar.text.isEmpty() || txtDescripcionJobEditar.text.isEmpty() ||
                 txtExperienciaJobEditar.text.isEmpty() || txtHabilidadesJobEditar.text.isEmpty() || txtBeneficiosJobEditar.text.isEmpty() ||
-                txtSalarioJobEditar.text.isEmpty()) {
+                txtSalarioMinimoJobEditar.text.isEmpty() || txtSalarioMaximoJobEditar.text.isEmpty()  ) {
 
                 Toast.makeText(this, "Todos los campos deben estar llenos", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
-            val salarioText1 = txtSalarioJobEditar.text.toString()
-            if (!salarioText1.matches(Regex("^\\d+(\\.\\d+)?$"))) {
-                Toast.makeText(this, "El salario debe ser un número válido", Toast.LENGTH_LONG).show()
+            val salarioMinText = txtSalarioMinimoJobEditar.text.toString()
+            val salarioMaxText = txtSalarioMaximoJobEditar.text.toString()
+
+            // Regex para validar números con hasta dos decimales y sin comas
+            val salarioRegex = Regex("^\\d+(\\.\\d{1,2})?$")
+
+            // Verificar si el texto contiene comas
+            if (salarioMinText.contains(",") || salarioMaxText.contains(",")) {
+                Toast.makeText(this, "El salario no puede contener comas. Ejemplo: use 25000 en lugar de 25,000", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            // Validar que los salarios coincidan con el formato sin comas y con hasta dos decimales
+            if (!salarioMinText.matches(salarioRegex) || !salarioMaxText.matches(salarioRegex)) {
+                Toast.makeText(this, "El salario debe ser un número válido con hasta 2 decimales", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            // Convertir a BigDecimal
+            val salarioMax = BigDecimal(salarioMaxText)
+            val salarioMin = BigDecimal(salarioMinText)
+
+            // Verificar si el salario máximo excede 25,000
+            val maxPermitido = BigDecimal("25000.00")
+            if (salarioMax > maxPermitido || salarioMin > maxPermitido) {
+                Toast.makeText(this, "El salario no puede exceder 25,000", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            // Verificar si el salario mínimo es mayor al salario máximo
+            if (salarioMin > salarioMax) {
+                Toast.makeText(this, "El salario mínimo no puede ser mayor al salario máximo", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
@@ -218,7 +250,6 @@ class editar_publicacion : AppCompatActivity() {
 
                     val idTrabajo = intent.getIntExtra("IdTrabajo", 22)
 
-                    val SalarioJobEditado = BigDecimal(txtSalarioJobEditar.text.toString())
 
                     // Obtener el id_medicamento desde el Spinner
                     val Departamento =
@@ -240,11 +271,7 @@ class editar_publicacion : AppCompatActivity() {
 
                     //2- creo una variable que contenga un PrepareStatement
                     val updateTrabajo = objConexion?.prepareStatement("""
-    UPDATE TRABAJO 
-    SET Titulo = ?, IdAreaDeTrabajo = ?, Descripcion = ?, Direccion = ?, 
-        IdDepartamento = ?, Experiencia = ?, Requerimientos = ?, 
-        Salario = ?, Beneficios = ? 
-    WHERE IdTrabajo = ?
+      UPDATE TRABAJO SET Titulo = ?, IdAreaDeTrabajo = ?, Descripcion = ?, Direccion = ?, IdDepartamento = ?, Experiencia = ?, Requerimientos = ?, SalarioMinimo = ?, SalarioMaximo= ?, Beneficios = ? WHERE IdTrabajo = ?
 """)!!
 
                     updateTrabajo.setString(1, TituloJobEditado)
@@ -254,9 +281,10 @@ class editar_publicacion : AppCompatActivity() {
                     updateTrabajo.setInt(5, idDepartamento) // Asegúrate de que idDepartamento esté definido
                     updateTrabajo.setString(6, ExperienciaJobEditado)
                     updateTrabajo.setString(7, HabilidadesJobEditado)
-                    updateTrabajo.setBigDecimal(8, SalarioJobEditado)
-                    updateTrabajo.setString(9, BeneficiosJobEditado)
-                    updateTrabajo.setInt(10, idTrabajo) // Asegúrate de que idTrabajo esté definido
+                    updateTrabajo.setBigDecimal(8, salarioMin)
+                    updateTrabajo.setBigDecimal(9, salarioMax)
+                    updateTrabajo.setString(10, BeneficiosJobEditado)
+                    updateTrabajo.setInt(11, idTrabajo) // Asegúrate de que idTrabajo esté definido
 
                     updateTrabajo.executeUpdate()
 

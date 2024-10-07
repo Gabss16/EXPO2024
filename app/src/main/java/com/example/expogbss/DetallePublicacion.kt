@@ -70,7 +70,7 @@ class DetallePublicacion : AppCompatActivity() {
         fun obtenerSolicitudesParaTrabajo(idTrabajo: Int): List<Solicitud> {
             val objConexion = ClaseConexion().cadenaConexion()
             val statement = objConexion?.prepareStatement("""
-       SELECT
+     SELECT
                 s.IdSolicitud,
                 s.IdSolicitante,
                 ss.Nombre as NombreSolicitante,
@@ -78,12 +78,12 @@ class DetallePublicacion : AppCompatActivity() {
                 s.FechaSolicitud,
                 s.Estado,
                 t.Titulo AS TituloTrabajo,
-                t.IdAreaDeTrabajo,
-                A.NombreAreaDetrabajo AS CategoriaTrabajo
+                ss.IdAreaDeTrabajo,
+                A.NombreAreaDetrabajo AS CategoriaTrabajoSolicitante
             FROM SOLICITUD s
             INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
                 INNER JOIN SOLICITANTE ss ON s.IdSolicitante = ss.IdSolicitante
-                INNER JOIN AreaDeTrabajo A ON t.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+                INNER JOIN AreaDeTrabajo A ON ss.IdAreaDeTrabajo = A.IdAreaDeTrabajo
         WHERE s.Estado = 'Pendiente' AND s.IdTrabajo = ?
     """)
 
@@ -101,7 +101,7 @@ class DetallePublicacion : AppCompatActivity() {
                 val fechaSolicitud = resultSet.getString("FechaSolicitud")
                 val estado = resultSet.getString("Estado")
                 val tituloTrabajo = resultSet.getString("TituloTrabajo")
-                val categoriaTrabajo = resultSet.getString("CategoriaTrabajo")
+                val categoriaTrabajo = resultSet.getString("CategoriaTrabajoSolicitante")
                 val nombreSolicitante = resultSet.getString("NombreSolicitante")
 
                 val solicitud = Solicitud(

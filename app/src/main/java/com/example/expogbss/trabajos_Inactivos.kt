@@ -64,7 +64,8 @@ class trabajos_Inactivos : AppCompatActivity() {
     T.Experiencia, 
     T.Requerimientos, 
     T.Estado, 
-    T.Salario, 
+    T.SalarioMinimo,
+    T.SalarioMaximo,
     T.Beneficios, 
     T.FechaDePublicacion
 FROM 
@@ -88,29 +89,32 @@ ON
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
+                val IdEmpleador = resultSet.getString("IdEmpleador")
                 val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
-                val Ubicacion = resultSet.getString("Direccion")
-                val Departamento = resultSet.getInt("IdDepartamento")
+                val Direccion = resultSet.getString("Direccion")
+                val IdDepartamento = resultSet.getInt("IdDepartamento")
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
                 val Estado = resultSet.getString("Estado")
-                val Salario = resultSet.getBigDecimal("Salario")
+                val SalarioMinimo = resultSet.getBigDecimal("SalarioMinimo")
+                val SalarioMaximo = resultSet.getBigDecimal("SalarioMaximo")
                 val Beneficios = resultSet.getString("Beneficios")
                 val FechaDePublicacion = resultSet.getDate("FechaDePublicacion")
 
                 val trabajo = Trabajo(
                     IdTrabajo,
                     Titulo,
-                    idEmpleador,
+                    IdEmpleador,
                     NombreAreaDeTrabajo,
                     Descripcion,
-                    Ubicacion,
-                    Departamento,
+                    Direccion,
+                    IdDepartamento,
                     Experiencia,
                     Requerimientos,
                     Estado,
-                    Salario,
+                    SalarioMinimo,
+                    SalarioMaximo,
                     Beneficios,
                     FechaDePublicacion
                 )

@@ -100,7 +100,8 @@ class AdaptadorPublicacion(var Datos : List<Trabajo>) : RecyclerView.Adapter<Vie
             PantallaEditar.putExtra("Experiencia", trabajos.Experiencia)
             PantallaEditar.putExtra("Requerimientos", trabajos.Requerimientos)
             PantallaEditar.putExtra("Estado", trabajos.Estado)
-            PantallaEditar.putExtra("Salario", trabajos.Salario.toString()) // Para convertir de BigDecimal a cadena
+            PantallaEditar.putExtra("SalarioMinimo", trabajos.SalarioMinimo.toString()) // Para convertir de BigDecimal a cadena
+            PantallaEditar.putExtra("SalarioMaximo", trabajos.SalarioMaximo.toString()) // Para convertir de BigDecimal a cadena
             PantallaEditar.putExtra("Beneficios", trabajos.Beneficios)
             context.startActivity(PantallaEditar)
         }
@@ -122,7 +123,8 @@ class AdaptadorPublicacion(var Datos : List<Trabajo>) : RecyclerView.Adapter<Vie
             pantallaDetalleP.putExtra("Experiencia", trabajos.Experiencia)
             pantallaDetalleP.putExtra("Requerimientos", trabajos.Requerimientos)
             pantallaDetalleP.putExtra("Estado", trabajos.Estado)
-            pantallaDetalleP.putExtra("Salario", trabajos.Salario.toString()) // Para convertir de BigDecimal a cadena
+            pantallaDetalleP.putExtra("SalarioMinimo", trabajos.SalarioMinimo.toString()) // Para convertir de BigDecimal a cadena
+            pantallaDetalleP.putExtra("SalarioMaximo", trabajos.SalarioMaximo.toString()) // Para convertir de BigDecimal a cadena
             pantallaDetalleP.putExtra("Beneficios", trabajos.Beneficios)
             context.startActivity(pantallaDetalleP)
 

@@ -38,7 +38,9 @@ class Detalle_Puesto : AppCompatActivity() {
         val ExperienciaRecibida = intent.getStringExtra("Experiencia")
         val RequerimientosRecibida = intent.getStringExtra("Requerimientos")
         val EstadoRecibida = intent.getStringExtra("Estado")
-        val SalarioRecibido = intent.getStringExtra("Salario")
+        val SalarioMinimoRecibido = intent.getStringExtra("SalarioMinimo")
+        val SalarioMaximoRecibido = intent.getStringExtra("SalarioMaximo")
+
         val BeneficiosRecibida = intent.getStringExtra("Beneficios")
 
         val btnSalir = findViewById<ImageButton>(R.id.btnSalirDetalles)
@@ -55,7 +57,8 @@ class Detalle_Puesto : AppCompatActivity() {
         Log.d("Detalle_Puesto", "Experiencia: $ExperienciaRecibida")
         Log.d("Detalle_Puesto", "Requerimientos: $RequerimientosRecibida")
         Log.d("Detalle_Puesto", "Estado: $EstadoRecibida")
-        Log.d("Detalle_Puesto", "Salario: $SalarioRecibido")
+        Log.d("Detalle_Puesto", "SalarioMinimo: $SalarioMinimoRecibido")
+        Log.d("Detalle_Puesto", "SalarioMaximo: $SalarioMaximoRecibido")
         Log.d("Detalle_Puesto", "Beneficios: $BeneficiosRecibida")
 
         val txtAreaTrabajoDetalle = findViewById<TextView>(R.id.txtAreaTrabajoDetalle)
@@ -66,7 +69,8 @@ class Detalle_Puesto : AppCompatActivity() {
         val txtExpReqDetalle = findViewById<TextView>(R.id.txtExpReqDetalle)
         val txtHabilidadesDetalle = findViewById<TextView>(R.id.txtHabilidadesDetalle)
         val txtBeneficiosDetalle = findViewById<TextView>(R.id.txtBeneficiosDetalle)
-        val txtSalarioDetalle = findViewById<TextView>(R.id.txtSalarioDetalle)
+        val txtSalarioMinimoDetalle = findViewById<TextView>(R.id.txtSalarioMinimoDetalle)
+        val txtSalarioMaximoDetalle = findViewById<TextView>(R.id.txtSalarioMaximoDetalle)
 
          txtAreaTrabajoDetalle.text = NombreAreaDeTrabajo
          txtTituloDetalle.text = TituloRecibido
@@ -78,7 +82,8 @@ class Detalle_Puesto : AppCompatActivity() {
          txtBeneficiosDetalle.text = BeneficiosRecibida
 
         // Convertir el salario a cadena y establecerlo en el TextView
-        txtSalarioDetalle.text = SalarioRecibido ?: "No disponible"
+        txtSalarioMinimoDetalle.text = (SalarioMinimoRecibido ?: "No disponible")+ "USD"
+        txtSalarioMaximoDetalle.text = (SalarioMaximoRecibido ?: "No disponible")+ "USD"
 
         //btnSolicitud
         val btnSolicitar = findViewById<ImageButton>(R.id.btnSolicitar)
