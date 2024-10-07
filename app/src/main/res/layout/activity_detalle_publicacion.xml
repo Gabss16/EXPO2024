@@ -5,24 +5,25 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fondopublicacion"
+    android:background="@android:drawable/ic_dialog_info"
     android:backgroundTint="#FAFAFA"
     tools:context=".DetallePublicacion">
 
     <!-- Descripción del trabajo -->
 
     <!-- RecyclerView para solicitudes -->
+
     <ImageButton
         android:id="@+id/btnSalirDetallesPublicacion"
-        android:layout_width="35dp"
-        android:layout_height="34dp"
+        android:layout_width="24dp"
+        android:layout_height="18dp"
         android:background="@drawable/baseline_arrow_back_ios_black_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintHorizontal_bias="0.041"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.038" />
+        app:layout_constraintVertical_bias="0.019" />
 
     <TextView
         android:id="@+id/txtJobTitle1"
@@ -33,6 +34,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.215"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,12 +42,12 @@
         android:id="@+id/txtJobDescription"
         android:layout_width="290dp"
         android:layout_height="63dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="48dp"
         android:text="Descripción del Trabajo"
         android:textColor="@android:color/darker_gray"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.768"
+        app:layout_constraintHorizontal_bias="0.33"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,5 +71,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.876"
         app:layout_constraintVertical_chainStyle="packed" />
+
+    <ImageButton
+        android:id="@+id/btnAceppt"
+        android:layout_width="40dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#00FFFFFF"
+        android:tooltipText="j"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.956"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_input_get" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@ import RecicleViewHelpers.AdaptadorPublicacion
 import RecicleViewHelpers.AdaptadorSolicitud
 import android.os.Bundle
 import android.view.Window
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -12,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,6 +44,39 @@ class DetallePublicacion : AppCompatActivity() {
         txtTituloDetalle = findViewById(R.id.txtJobTitle1)
         txtDescripcionDetalle = findViewById(R.id.txtJobDescription)
         rcvSolicitudes = findViewById(R.id.rcvSolicitudesRecibidas)
+        val btnShowBottomSheet = findViewById<ImageButton>(R.id.btnAceppt);
+
+        btnShowBottomSheet.setOnClickListener {
+
+            // on below line we are creating a new bottom sheet dialog.
+            val dialog = BottomSheetDialog(this)
+
+            // on below line we are inflating a layout file which we have created.
+            val view = layoutInflater.inflate(R.layout.solis_aceptadas, null)
+
+            // on below line we are creating a variable for our button
+            // which we are using to dismiss our dialog.
+            val btnClose = view.findViewById<ImageButton>(R.id.idBtnDismis)
+
+            // on below line we are adding on click listener
+            // for our dismissing the dialog button.
+            btnClose.setOnClickListener {
+                // on below line we are calling a dismiss
+                // method to close our dialog.
+                dialog.dismiss()
+            }
+            // below line is use to set cancelable to avoid
+            // closing of dialog box when clicking on the screen.
+            dialog.setCancelable(false)
+
+            // on below line we are setting
+            // content view to our view.
+            dialog.setContentView(view)
+
+            // on below line we are calling
+            // a show method to display a dialog.
+            dialog.show()
+        }
 
         // Obtener datos del Intent
         val titulo = intent.getStringExtra("Titulo")
