@@ -92,44 +92,54 @@ class Detalle_Puesto : AppCompatActivity() {
     }
     }
     private fun enviarSolicitud() {
-
-        //el numero hay que cambiarlo dependiendo del idTrabjo que aparezca en la base de datos
-        //luego luego hay que hacer una funcion para que no pase esto
-
         val idTrabajo = intent.getIntExtra("IdTrabajo", 1)
         val idSolicitante = IdSolicitante
         val fechaSolicitud = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val estado = "Pendiente"
 
-        //println("Este es el idTrabajo:" + idTrabajo)
-        println("Este es el idSolicitante:" + idSolicitante)
-
         CoroutineScope(Dispatchers.IO).launch {
             var objConexion: Connection? = null
             try {
                 objConexion = ClaseConexion().cadenaConexion()
-                val insertSolicitud = objConexion?.prepareStatement(
-                    "INSERT INTO SOLICITUD (IdSolicitante, IdTrabajo, FechaSolicitud, Estado) VALUES (?, ?, ?, ?)"
+
+                // Verificar si ya existe una solicitud para el IdSolicitante e IdTrabajo
+                val comprobarSolicitudExistente = objConexion?.prepareStatement(
+                    "SELECT * FROM SOLICITUD WHERE IdSolicitante = ? AND IdTrabajo = ?"
                 )
+                comprobarSolicitudExistente?.setString(1, idSolicitante)
+                comprobarSolicitudExistente?.setInt(2, idTrabajo)
 
-                insertSolicitud?.setString(1, idSolicitante)
-                insertSolicitud?.setInt(2, idTrabajo)
-                insertSolicitud?.setString(3, fechaSolicitud)
-                insertSolicitud?.setString(4, estado)
+                val resultadoConsulta = comprobarSolicitudExistente?.executeQuery()
 
-                insertSolicitud?.executeUpdate()
+                if (resultadoConsulta?.next() == true) {
+                    // Si ya existe una solicitud, mostramos un mensaje y detenemos la ejecución
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@Detalle_Puesto, "Solamente puedes solicitar una vez este trabajo", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    // Si no existe la solicitud, la insertamos en la base de datos
+                    val insertSolicitud = objConexion?.prepareStatement(
+                        "INSERT INTO SOLICITUD (IdSolicitante, IdTrabajo, FechaSolicitud, Estado) VALUES (?, ?, ?, ?)"
+                    )
 
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@Detalle_Puesto, "Solicitud enviada", Toast.LENGTH_LONG).show()
+                    insertSolicitud?.setString(1, idSolicitante)
+                    insertSolicitud?.setInt(2, idTrabajo)
+                    insertSolicitud?.setString(3, fechaSolicitud)
+                    insertSolicitud?.setString(4, estado)
+
+                    insertSolicitud?.executeUpdate()
+
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@Detalle_Puesto, "Solicitud enviada", Toast.LENGTH_LONG).show()
+                    }
                 }
+
             } catch (e: Exception) {
                 Log.e("InsertSolicitud", "Error al insertar solicitud", e)
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@Detalle_Puesto, "Error al enviar solicitud", Toast.LENGTH_LONG).show()
                 }
             } finally {
-
-
                 objConexion?.close()
             }
         }

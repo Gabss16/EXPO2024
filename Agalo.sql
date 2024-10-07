@@ -435,6 +435,12 @@ ON
         
         UPDATE TRABAJO SET Titulo = ?, IdAreaDeTrabajo = ?, Descripcion = ?, Direccion = ?, IdDepartamento = ?, Experiencia = ?, Requerimientos = ?, SalarioMinimo = ?, SalarioMaximo= ?, Beneficios = ? WHERE IdTrabajo = ?
         
+        
+        
+        select * from solicitud;
+        
+Select * from solicitud where IdSolicitante = ? and IdTrabajo= ?
+
 SELECT 
     T.IdTrabajo, 
     T.Titulo, 
