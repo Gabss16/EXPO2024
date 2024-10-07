@@ -367,12 +367,16 @@ class registroSolicitante : AppCompatActivity() {
 
                             // Creo una variable que contenga un PrepareStatement
                             val crearUsuario = objConexion?.prepareStatement(
-                                "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion,IdDepartamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena, EstadoCuenta) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?)")!!
+                                "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion,IdDepartamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena, EstadoCuenta) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?)"
+                            )!!
                             crearUsuario.setString(1, uuid)
                             crearUsuario.setString(2, txtNombreSolicitante.text.toString().trim())
                             crearUsuario.setString(3, txtCorreoSolicitante.text.toString().trim())
                             crearUsuario.setString(4, txtTelefonoSolicitante.text.toString().trim())
-                            crearUsuario.setString(5, txtDireccionSolicitante.text.toString().trim())
+                            crearUsuario.setString(
+                                5,
+                                txtDireccionSolicitante.text.toString().trim()
+                            )
                             crearUsuario.setInt(
                                 6, idDepartamento
                             )
@@ -451,26 +455,27 @@ class registroSolicitante : AppCompatActivity() {
 
                             }
 
-                                val alertDialog = AlertDialog.Builder(this@registroSolicitante)
-                                    .setTitle("Cuenta registrada")
-                                    .setMessage("Tu cuenta ha sido creada.")
-                                    .setPositiveButton("Aceptar", null)
-                                    .create()
+                            val alertDialog = AlertDialog.Builder(this@registroSolicitante)
+                                .setTitle("Cuenta registrada")
+                                .setMessage("Tu cuenta ha sido creada.")
+                                .setPositiveButton("Aceptar", null)
+                                .create()
 
-                                alertDialog.setOnDismissListener { _ ->
-                                    val login = Intent(this@registroSolicitante, login::class.java)
-                                    login.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    startActivity(login)
-                                }
-                                alertDialog.show()
-                                txtNombreSolicitante.setText("")
-                                txtCorreoSolicitante.setText("")
-                                txtConstrasenaSolicitante.setText("")
-                                txtTelefonoSolicitante.setText("")
-                                txtDireccionSolicitante.setText("")
-                                txtFechaSolicitante.setText("")
-                                imgFotoDePerfilSolicitante.setImageDrawable(null)
+                            alertDialog.setOnDismissListener { _ ->
+                                val login = Intent(this@registroSolicitante, login::class.java)
+                                login.flags =
+                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                startActivity(login)
                             }
+                            alertDialog.show()
+                            txtNombreSolicitante.setText("")
+                            txtCorreoSolicitante.setText("")
+                            txtConstrasenaSolicitante.setText("")
+                            txtTelefonoSolicitante.setText("")
+                            txtDireccionSolicitante.setText("")
+                            txtFechaSolicitante.setText("")
+                            imgFotoDePerfilSolicitante.setImageDrawable(null)
+                        }
                     }catch (e: SQLException) {
                         when (e.errorCode) {
                             1 -> { // ORA-00001: unique constraint violated

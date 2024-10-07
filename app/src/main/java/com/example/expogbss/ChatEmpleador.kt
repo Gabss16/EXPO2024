@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.expogbss.login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -44,8 +45,8 @@ class ChatEmpleador : AppCompatActivity() {
 
         idSolicitante = intent.getStringExtra("IdSolicitante") ?: return
 
-        val EmpleadorId = FirebaseAuth.getInstance().currentUser?.uid ?: return  // Debes obtener el Id del Empleador autenticado
-        chatId = generarChatId(EmpleadorId, idSolicitante!!)
+    //    val EmpleadorId = FirebaseAuth.getInstance().currentUser?.uid ?: return  // Debes obtener el Id del Empleador autenticado
+        chatId = generarChatId(IdEmpleador, idSolicitante!!)
         Log.d("ChatEmpleador", "Chat ID generado: $chatId")
 
         // ESTO Configura el RecyclerView
@@ -69,7 +70,7 @@ class ChatEmpleador : AppCompatActivity() {
             // Verifica que el mensaje no esté vacío
             if (mensaje.isNotBlank()) {
                 // Llama a la función para enviar el mensaje
-                enviarMensaje(chatId!!, EmpleadorId, mensaje)
+                enviarMensaje(chatId!!, IdEmpleador, mensaje)
 
                 // Limpia el EditText después de enviar el mensaje
                 editTextMensajeE.text.clear()
@@ -81,11 +82,7 @@ class ChatEmpleador : AppCompatActivity() {
     }
 
     private fun generarChatId(idEmpleador: String, idSolicitante: String): String {
-        return if (idEmpleador < idSolicitante) {
-            "$idEmpleador-$idSolicitante"
-        } else {
-            "$idSolicitante-$idEmpleador"
-        }
+        return "$idEmpleador $idSolicitante"
     }
 
     private fun escucharMensajes(chatId: String) {

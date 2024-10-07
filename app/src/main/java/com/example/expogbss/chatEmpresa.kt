@@ -70,7 +70,8 @@ class chatEmpresa : Fragment() {
             //2 - Creo un statement
             //El símbolo de pregunta es pq los datos pueden ser nulos
             val statement = objConexion?.createStatement()
-            val resultSet = statement?.executeQuery("""SELECT * FROM SOLICITANTE""")!!
+
+            val resultSet = statement?.executeQuery("""SELECT * FROM SOLICITANTE """)!!
 
 
             val listaSolicitante = mutableListOf<Solicitante>()
