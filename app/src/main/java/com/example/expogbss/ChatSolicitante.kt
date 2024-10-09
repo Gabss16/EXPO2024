@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.expogbss.login.variablesGlobalesRecuperacionDeContrasena.IdSolicitante
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -29,7 +30,7 @@ class ChatSolicitante : AppCompatActivity() {
     private val messageListS = mutableListOf<Message>()
     private var chatId: String? = null
     private var senderId: String? = null
-    private var idEmpleador: String? = null
+    private var IdEmpleador: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +43,10 @@ class ChatSolicitante : AppCompatActivity() {
             insets
         }
 
-        idEmpleador = intent.getStringExtra("IdEmpleador") ?: return
+        IdEmpleador = intent.getStringExtra("IdEmpleador") ?: return
 
-        val solicitanteId = FirebaseAuth.getInstance().currentUser?.uid ?: return   // Debes obtener el Id del solicitante autenticado
-        senderId = solicitanteId
-        chatId = generarChatId(solicitanteId, idEmpleador!!)
+        //val solicitanteId = FirebaseAuth.getInstance().currentUser?.uid ?: return   // Debes obtener el Id del solicitante autenticado
+        chatId = generarChatId(IdSolicitante, IdEmpleador!!)
         Log.d("ChatEmpleador", "Chat ID generado: $chatId")
 
         // ESTO Configura el RecyclerView
@@ -70,7 +70,7 @@ class ChatSolicitante : AppCompatActivity() {
             // Verifica que el mensaje no esté vacío
             if (mensaje.isNotBlank()) {
                 // Llama a la función para enviar el mensaje
-                enviarMensaje(chatId!!, solicitanteId, mensaje)
+                enviarMensaje(chatId!!, IdSolicitante, mensaje)
 
                 // Limpia el EditText después de enviar el mensaje
                 editTextMensajeS.text.clear()
@@ -81,12 +81,8 @@ class ChatSolicitante : AppCompatActivity() {
 
     }
 
-    private fun generarChatId(idSolicitante: String, idEmpleador: String): String {
-        return if (idSolicitante < idEmpleador) {
-            "$idSolicitante-$idEmpleador"
-        } else {
-            "$idEmpleador-$idSolicitante"
-        }
+    private fun generarChatId(IdEmpleador: String, IdSolicitante: String): String {
+        return "$IdSolicitante $IdEmpleador"
     }
 
     private fun escucharMensajes(chatId: String) {

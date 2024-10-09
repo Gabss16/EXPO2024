@@ -81,8 +81,8 @@ class ChatEmpleador : AppCompatActivity() {
 
     }
 
-    private fun generarChatId(idEmpleador: String, idSolicitante: String): String {
-        return "$idEmpleador $idSolicitante"
+    private fun generarChatId(IdEmpleador: String, idSolicitante: String): String {
+        return "$IdEmpleador $idSolicitante"
     }
 
     private fun escucharMensajes(chatId: String) {

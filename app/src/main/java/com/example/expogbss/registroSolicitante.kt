@@ -34,6 +34,7 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.database
 import com.google.firebase.storage.storage
 import modelo.AreaDeTrabajo
 import modelo.Departamento
@@ -402,46 +403,69 @@ class registroSolicitante : AppCompatActivity() {
 
                             crearUsuario.executeUpdate()
 
+                            //TODO: ESTA PARTE ES PARA QUE EL NOMBRE Y CONTRASEÑA SE ENVIEN A FIREBASE
+
                             withContext(Dispatchers.Main) {
 
                                 FirebaseAuth.getInstance()
-                                    .createUserWithEmailAndPassword(
-                                        correoSolicitante,
-                                        contrasenaSolicitante
-                                    )
+                                    .createUserWithEmailAndPassword(correoSolicitante, contrasenaSolicitante)
                                     .addOnCompleteListener { task ->
                                         if (task.isSuccessful) {
                                             // Usuario creado en Firebase Authentication
-                                            val user =
-                                                FirebaseAuth.getInstance().currentUser
-                                            val profileUpdates =
-                                                UserProfileChangeRequest.Builder()
-                                                    .setDisplayName(nombreSolicitante)  // Establecer el nombre del usuario
-                                                    .build()
+                                            val user = FirebaseAuth.getInstance().currentUser
+                                            val profileUpdates = UserProfileChangeRequest.Builder()
+                                                .setDisplayName(nombreSolicitante)  // Establecer el nombre del usuario
+                                                .build()
 
                                             // Actualizar el perfil del usuario con el nombre
-                                            user?.updateProfile(profileUpdates)
-                                                ?.addOnCompleteListener { updateTask ->
-                                                    if (updateTask.isSuccessful) {
-                                                        Toast.makeText(
-                                                            this@registroSolicitante,
-                                                            "Registro completo. Nombre actualizado en Firebase.",
-                                                            Toast.LENGTH_LONG
-                                                        ).show()
-                                                        val intent = Intent(
-                                                            this@registroSolicitante,
-                                                            login::class.java
-                                                        )
-                                                        startActivity(intent)
-                                                        finish()
-                                                    } else {
-                                                        Toast.makeText(
-                                                            this@registroSolicitante,
-                                                            "Error al actualizar nombre en Firebase: ${updateTask.exception?.message}",
-                                                            Toast.LENGTH_LONG
-                                                        ).show()
-                                                    }
+                                            user?.updateProfile(profileUpdates)?.addOnCompleteListener { updateTask ->
+                                                if (updateTask.isSuccessful) {
+                                                    // Obtener el UID del usuario recién creado
+                                                    val userId = user.uid
+
+                                                    // Crear referencia a la base de datos de Firebase
+                                                    val databaseRef = Firebase.database.reference
+
+                                                    // Datos que deseas guardar en la base de datos
+                                                    val userMap = mapOf(
+                                                        "nombre" to nombreSolicitante,
+                                                        "correo" to correoSolicitante,
+                                                        "rol" to "solicitante" // Puedes agregar un campo 'rol' si es necesario
+                                                    )
+
+                                                    // Guardar los datos del usuario en la Realtime Database bajo 'solicitantes/{userId}'
+                                                    databaseRef.child("Usuarios").child(userId).setValue(userMap)
+                                                        .addOnCompleteListener { dbTask ->
+                                                            if (dbTask.isSuccessful) {
+                                                                // Mostrar mensaje de éxito y navegar a la pantalla de login
+                                                                Toast.makeText(
+                                                                    this@registroSolicitante,
+                                                                    "Registro completo. Nombre actualizado y datos guardados en la base de datos.",
+                                                                    Toast.LENGTH_LONG
+                                                                ).show()
+
+                                                                val intent = Intent(
+                                                                    this@registroSolicitante,
+                                                                    login::class.java
+                                                                )
+                                                                startActivity(intent)
+                                                                finish()
+                                                            } else {
+                                                                Toast.makeText(
+                                                                    this@registroSolicitante,
+                                                                    "Error al guardar datos en la base de datos: ${dbTask.exception?.message}",
+                                                                    Toast.LENGTH_LONG
+                                                                ).show()
+                                                            }
+                                                        }
+                                                } else {
+                                                    Toast.makeText(
+                                                        this@registroSolicitante,
+                                                        "Error al actualizar nombre en Firebase: ${updateTask.exception?.message}",
+                                                        Toast.LENGTH_LONG
+                                                    ).show()
                                                 }
+                                            }
                                         } else {
                                             // Error al registrar en Firebase
                                             Toast.makeText(
@@ -454,6 +478,9 @@ class registroSolicitante : AppCompatActivity() {
                                     }
 
                             }
+
+                            //hasta aqui es lo de firebase
+
 
                             val alertDialog = AlertDialog.Builder(this@registroSolicitante)
                                 .setTitle("Cuenta registrada")

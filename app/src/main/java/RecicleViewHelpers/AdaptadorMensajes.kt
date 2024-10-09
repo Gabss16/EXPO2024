@@ -37,4 +37,3 @@ class AdaptadorMensajes(private val messageList: List<Message>) : RecyclerView.A
 }
 
 
-

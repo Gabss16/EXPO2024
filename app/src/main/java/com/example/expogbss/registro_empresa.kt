@@ -35,6 +35,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.ktx.database
 import com.example.expogbss.ingresarCorreoRecupContrasena.variablesGlobalesRecuperacionDeContrasena.codigo
 import com.example.expogbss.ingresarCorreoRecupContrasena.variablesGlobalesRecuperacionDeContrasena.correoIngresado
+import com.google.firebase.database.database
 import modelo.Departamento
 import java.sql.SQLException
 
@@ -587,44 +588,66 @@ class registro_empresa : AppCompatActivity() {
                                             //TODO: ESTA PARTE ES PARA QUE EL NOMBRE Y CONTRASEÑA SE ENVIEN A FIREBASE
 
                                             withContext(Dispatchers.Main) {
+
                                                 FirebaseAuth.getInstance()
-                                                    .createUserWithEmailAndPassword(
-                                                        CorreoEmpleador,
-                                                        ContrasenaEmpleador
-                                                    )
+                                                    .createUserWithEmailAndPassword(CorreoEmpleador, ContrasenaEmpleador)
                                                     .addOnCompleteListener { task ->
                                                         if (task.isSuccessful) {
                                                             // Usuario creado en Firebase Authentication
-                                                            val user =
-                                                                FirebaseAuth.getInstance().currentUser
-                                                            val profileUpdates =
-                                                                UserProfileChangeRequest.Builder()
-                                                                    .setDisplayName(nombreEmpleador)  // Establecer el nombre del usuario
-                                                                    .build()
+                                                            val user = FirebaseAuth.getInstance().currentUser
+                                                            val profileUpdates = UserProfileChangeRequest.Builder()
+                                                                .setDisplayName(nombreEmpleador)  // Establecer el nombre del usuario
+                                                                .build()
 
                                                             // Actualizar el perfil del usuario con el nombre
-                                                            user?.updateProfile(profileUpdates)
-                                                                ?.addOnCompleteListener { updateTask ->
-                                                                    if (updateTask.isSuccessful) {
-                                                                        Toast.makeText(
-                                                                            this@registro_empresa,
-                                                                            "Registro completo. Nombre actualizado en Firebase.",
-                                                                            Toast.LENGTH_LONG
-                                                                        ).show()
-                                                                        val intent = Intent(
-                                                                            this@registro_empresa,
-                                                                            login::class.java
-                                                                        )
-                                                                        startActivity(intent)
-                                                                        finish()
-                                                                    } else {
-                                                                        Toast.makeText(
-                                                                            this@registro_empresa,
-                                                                            "Error al actualizar nombre en Firebase: ${updateTask.exception?.message}",
-                                                                            Toast.LENGTH_LONG
-                                                                        ).show()
-                                                                    }
+                                                            user?.updateProfile(profileUpdates)?.addOnCompleteListener { updateTask ->
+                                                                if (updateTask.isSuccessful) {
+                                                                    // Obtener el UID del usuario recién creado
+                                                                    val userId = user.uid
+
+                                                                    // Crear referencia a la base de datos de Firebase
+                                                                    val databaseRef = com.google.firebase.Firebase.database.reference
+
+                                                                    // Datos que deseas guardar en la base de datos
+                                                                    val userMap = mapOf(
+                                                                        "nombre" to nombreEmpleador,
+                                                                        "correo" to CorreoEmpleador,
+                                                                        "rol" to "empleador" // Puedes agregar un campo 'rol' si es necesario
+                                                                    )
+
+                                                                    // Guardar los datos del usuario en la Realtime Database bajo 'solicitantes/{userId}'
+                                                                    databaseRef.child("Usuarios").child(userId).setValue(userMap)
+                                                                        .addOnCompleteListener { dbTask ->
+                                                                            if (dbTask.isSuccessful) {
+                                                                                // Mostrar mensaje de éxito y navegar a la pantalla de login
+                                                                                Toast.makeText(
+                                                                                    this@registro_empresa,
+                                                                                    "Registro completo. Nombre actualizado y datos guardados en la base de datos.",
+                                                                                    Toast.LENGTH_LONG
+                                                                                ).show()
+
+                                                                                val intent = Intent(
+                                                                                    this@registro_empresa,
+                                                                                    login::class.java
+                                                                                )
+                                                                                startActivity(intent)
+                                                                                finish()
+                                                                            } else {
+                                                                                Toast.makeText(
+                                                                                    this@registro_empresa,
+                                                                                    "Error al guardar datos en la base de datos: ${dbTask.exception?.message}",
+                                                                                    Toast.LENGTH_LONG
+                                                                                ).show()
+                                                                            }
+                                                                        }
+                                                                } else {
+                                                                    Toast.makeText(
+                                                                        this@registro_empresa,
+                                                                        "Error al actualizar nombre en Firebase: ${updateTask.exception?.message}",
+                                                                        Toast.LENGTH_LONG
+                                                                    ).show()
                                                                 }
+                                                            }
                                                         } else {
                                                             // Error al registrar en Firebase
                                                             Toast.makeText(
