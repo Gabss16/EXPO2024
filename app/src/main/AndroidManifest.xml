@@ -37,6 +37,15 @@
             android:value="AIzaSyCYV71CqSm2OgpLUVKyVs5xksWz-_AUzFQ" />
 
         <activity
+            android:name=".ChatEmpleador"
+            android:exported="false" />
+        <activity
+            android:name=".ChatSolicitante"
+            android:exported="false" />
+        <activity
+            android:name=".card_mensajes"
+            android:exported="false" />
+        <activity
             android:name=".solicitudes_aceptadas"
             android:exported="false" />
         <activity

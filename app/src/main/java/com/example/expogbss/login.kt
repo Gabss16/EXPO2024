@@ -103,6 +103,8 @@ package com.example.expogbss
 
         //Botones para ingresar al sistema
         btnSignIn.setOnClickListener {
+
+
 //            println("esta es la variable global $IdEmpleador")
 
             correoLogin = txtCorreoLogin.text.toString()

@@ -34,6 +34,9 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.database
 import com.google.firebase.storage.storage
 import modelo.AreaDeTrabajo
 import modelo.Departamento
@@ -383,11 +386,14 @@ class registroSolicitante : AppCompatActivity() {
 
                             // Creo una variable que contenga un PrepareStatement
                             val crearUsuario = objConexion?.prepareStatement(
+
                                 "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion, Latitud, Longitud, IdDepartamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena, EstadoCuenta) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?)")!!
+
                             crearUsuario.setString(1, uuid)
                             crearUsuario.setString(2, txtNombreSolicitante.text.toString().trim())
                             crearUsuario.setString(3, txtCorreoSolicitante.text.toString().trim())
                             crearUsuario.setString(4, txtTelefonoSolicitante.text.toString().trim())
+
                             crearUsuario.setString(5, txtDireccionSolicitante.text.toString().trim())
                             crearUsuario.setDouble(6, latitudActual ?: 0.0)  // Asegúrate de que no sea null
                             crearUsuario.setDouble(7, longitudActual ?: 0.0) // Asegúrate de que no sea null
@@ -406,27 +412,105 @@ class registroSolicitante : AppCompatActivity() {
 
                             crearUsuario.executeUpdate()
 
-                            withContext(Dispatchers.Main) {
-                                val alertDialog = AlertDialog.Builder(this@registroSolicitante)
-                                    .setTitle("Cuenta registrada")
-                                    .setMessage("Tu cuenta ha sido creada.")
-                                    .setPositiveButton("Aceptar", null)
-                                    .create()
+                            //TODO: ESTA PARTE ES PARA QUE EL NOMBRE Y CONTRASEÑA SE ENVIEN A FIREBASE
 
-                                alertDialog.setOnDismissListener { _ ->
-                                    val login = Intent(this@registroSolicitante, login::class.java)
-                                    login.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    startActivity(login)
-                                }
-                                alertDialog.show()
-                                txtNombreSolicitante.setText("")
-                                txtCorreoSolicitante.setText("")
-                                txtConstrasenaSolicitante.setText("")
-                                txtTelefonoSolicitante.setText("")
-                                txtDireccionSolicitante.setText("")
-                                txtFechaSolicitante.setText("")
-                                imgFotoDePerfilSolicitante.setImageDrawable(null)
+                            withContext(Dispatchers.Main) {
+
+                                FirebaseAuth.getInstance()
+                                    .createUserWithEmailAndPassword(correoSolicitante, contrasenaSolicitante)
+                                    .addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            // Usuario creado en Firebase Authentication
+                                            val user = FirebaseAuth.getInstance().currentUser
+                                            val profileUpdates = UserProfileChangeRequest.Builder()
+                                                .setDisplayName(nombreSolicitante)  // Establecer el nombre del usuario
+                                                .build()
+
+                                            // Actualizar el perfil del usuario con el nombre
+                                            user?.updateProfile(profileUpdates)?.addOnCompleteListener { updateTask ->
+                                                if (updateTask.isSuccessful) {
+                                                    // Obtener el UID del usuario recién creado
+                                                    val userId = user.uid
+
+                                                    // Crear referencia a la base de datos de Firebase
+                                                    val databaseRef = Firebase.database.reference
+
+                                                    // Datos que deseas guardar en la base de datos
+                                                    val userMap = mapOf(
+                                                        "nombre" to nombreSolicitante,
+                                                        "correo" to correoSolicitante,
+                                                        "rol" to "solicitante" // Puedes agregar un campo 'rol' si es necesario
+                                                    )
+
+                                                    // Guardar los datos del usuario en la Realtime Database bajo 'solicitantes/{userId}'
+                                                    databaseRef.child("Usuarios").child(userId).setValue(userMap)
+                                                        .addOnCompleteListener { dbTask ->
+                                                            if (dbTask.isSuccessful) {
+                                                                // Mostrar mensaje de éxito y navegar a la pantalla de login
+                                                                Toast.makeText(
+                                                                    this@registroSolicitante,
+                                                                    "Registro completo. Nombre actualizado y datos guardados en la base de datos.",
+                                                                    Toast.LENGTH_LONG
+                                                                ).show()
+
+                                                                val intent = Intent(
+                                                                    this@registroSolicitante,
+                                                                    login::class.java
+                                                                )
+                                                                startActivity(intent)
+                                                                finish()
+                                                            } else {
+                                                                Toast.makeText(
+                                                                    this@registroSolicitante,
+                                                                    "Error al guardar datos en la base de datos: ${dbTask.exception?.message}",
+                                                                    Toast.LENGTH_LONG
+                                                                ).show()
+                                                            }
+                                                        }
+                                                } else {
+                                                    Toast.makeText(
+                                                        this@registroSolicitante,
+                                                        "Error al actualizar nombre en Firebase: ${updateTask.exception?.message}",
+                                                        Toast.LENGTH_LONG
+                                                    ).show()
+                                                }
+                                            }
+                                        } else {
+                                            // Error al registrar en Firebase
+                                            Toast.makeText(
+                                                this@registroSolicitante,
+                                                "Error al registrar en Firebase: ${task.exception?.message}",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                            btnCrearCuentaSolicitante.isEnabled = true
+                                        }
+                                    }
+
                             }
+
+                            //hasta aqui es lo de firebase
+
+
+                            val alertDialog = AlertDialog.Builder(this@registroSolicitante)
+                                .setTitle("Cuenta registrada")
+                                .setMessage("Tu cuenta ha sido creada.")
+                                .setPositiveButton("Aceptar", null)
+                                .create()
+
+                            alertDialog.setOnDismissListener { _ ->
+                                val login = Intent(this@registroSolicitante, login::class.java)
+                                login.flags =
+                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                startActivity(login)
+                            }
+                            alertDialog.show()
+                            txtNombreSolicitante.setText("")
+                            txtCorreoSolicitante.setText("")
+                            txtConstrasenaSolicitante.setText("")
+                            txtTelefonoSolicitante.setText("")
+                            txtDireccionSolicitante.setText("")
+                            txtFechaSolicitante.setText("")
+                            imgFotoDePerfilSolicitante.setImageDrawable(null)
                         }
                     }catch (e: SQLException) {
                         when (e.errorCode) {
