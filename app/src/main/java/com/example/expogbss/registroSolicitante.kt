@@ -31,6 +31,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.Firebase
 import com.google.firebase.storage.storage
 import modelo.AreaDeTrabajo
@@ -38,9 +40,18 @@ import modelo.Departamento
 import java.io.ByteArrayOutputStream
 import java.sql.SQLException
 import java.util.UUID
+import android.Manifest
+import android.location.Geocoder
+import android.location.Location
+import java.io.IOException
+import java.util.Locale
 
 //TODO Terminar insert cuando esté completo el diseño
 class registroSolicitante : AppCompatActivity() {
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val LOCATION_REQUEST_CODE = 100
+
     val codigo_opcion_galeria = 102
     val codigo_opcion_tomar_foto = 103
     val CAMERA_REQUEST_CODE = 0
@@ -62,6 +73,8 @@ class registroSolicitante : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
 
         //1 Mandar a llamar a todos los elementos en pantalla
@@ -153,6 +166,11 @@ class registroSolicitante : AppCompatActivity() {
             datePickerDialog.datePicker.maxDate = fechaMaxima.timeInMillis
 
             datePickerDialog.show()
+        }
+
+        // Obtener ubicación al hacer clic en el campo de dirección
+        txtDireccionSolicitante.setOnClickListener {
+            solicitarPermisoUbicacion()
         }
 
 
@@ -365,33 +383,25 @@ class registroSolicitante : AppCompatActivity() {
 
                             // Creo una variable que contenga un PrepareStatement
                             val crearUsuario = objConexion?.prepareStatement(
-                                "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion,IdDepartamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena, EstadoCuenta) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?)")!!
+                                "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion, Latitud, Longitud, IdDepartamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena, EstadoCuenta) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?)")!!
                             crearUsuario.setString(1, uuid)
                             crearUsuario.setString(2, txtNombreSolicitante.text.toString().trim())
                             crearUsuario.setString(3, txtCorreoSolicitante.text.toString().trim())
                             crearUsuario.setString(4, txtTelefonoSolicitante.text.toString().trim())
                             crearUsuario.setString(5, txtDireccionSolicitante.text.toString().trim())
-                            crearUsuario.setInt(
-                                6, idDepartamento
-                            )
-                            crearUsuario.setString(7, fechaNacimientoSeleccionada)
-                            crearUsuario.setString(8, spEstadoSolicitante.selectedItem.toString())
-                            crearUsuario.setString(9, spGeneroSolicitante.selectedItem.toString())
-                            crearUsuario.setInt(
-                                10,
-                                idAreaDeTrabajo
-                            )
-                            crearUsuario.setString(
-                                11,
-                                txtHabilidadesSolicitante.text.toString().trim()
-                            )
+                            crearUsuario.setDouble(6, latitudActual ?: 0.0)  // Asegúrate de que no sea null
+                            crearUsuario.setDouble(7, longitudActual ?: 0.0) // Asegúrate de que no sea null
+                            crearUsuario.setInt(8, idDepartamento)
+                            crearUsuario.setString(9, fechaNacimientoSeleccionada)
+                            crearUsuario.setString(10, spEstadoSolicitante.selectedItem.toString())
+                            crearUsuario.setString(11, spGeneroSolicitante.selectedItem.toString())
+                            crearUsuario.setInt(12, idAreaDeTrabajo)
+                            crearUsuario.setString(13, txtHabilidadesSolicitante.text.toString().trim())
                             crearUsuario.setBlob(
-                                12,
-                                objConexion.createBlob()
-                            ); // Asignar un BLOB vacío
-                            crearUsuario.setString(13, miPath)
-                            crearUsuario.setString(14, contrasenaEncriptada)
-                            crearUsuario.setString(15, "Activo")
+                                14, objConexion.createBlob()); // Asignar un BLOB vacío
+                            crearUsuario.setString(15, miPath)
+                            crearUsuario.setString(16, contrasenaEncriptada)
+                            crearUsuario.setString(17, "Activo")
 
 
                             crearUsuario.executeUpdate()
@@ -468,6 +478,68 @@ class registroSolicitante : AppCompatActivity() {
 
 
     }
+
+    // Solicitar permisos de ubicación
+    private fun solicitarPermisoUbicacion() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE
+            )
+        } else {
+            obtenerUbicacionActual()
+        }
+    }
+
+    // Obtener la ubicación actual
+    private fun obtenerUbicacionActual() {
+        // Verificamos el permiso antes de intentar acceder a la ubicación
+        if (ContextCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Permiso de ubicación no concedido", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        try {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    val latitud = location.latitude
+                    val longitud = location.longitude
+                    obtenerNombreLugar(latitud, longitud)
+                } else {
+                    Toast.makeText(this, "No se pudo obtener la ubicación", Toast.LENGTH_SHORT).show()
+                }
+            }.addOnFailureListener {
+                Toast.makeText(this, "Error al obtener la ubicación", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: SecurityException) {
+            // Manejo de la excepción en caso de que la seguridad falle
+            Toast.makeText(this, "Error de seguridad: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private var latitudActual: Double? = null
+    private var longitudActual: Double? = null
+
+    // Convertir coordenadas a dirección con Geocoder
+    private fun obtenerNombreLugar(latitud: Double, longitud: Double) {
+        this.latitudActual = latitud  // Guardar latitud
+        this.longitudActual = longitud  // Guardar longitud
+
+        val geocoder = Geocoder(this, Locale.getDefault())
+        try {
+            val direcciones = geocoder.getFromLocation(latitud, longitud, 1)
+            if (direcciones != null && direcciones.isNotEmpty()) {
+                val direccion = direcciones[0].getAddressLine(0)
+                val txtDireccionSolicitante = findViewById<EditText>(R.id.txtDireccionSolicitante)
+                txtDireccionSolicitante.setText(direccion)
+            } else {
+                Toast.makeText(this, "No se encontró una dirección válida", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error al convertir coordenadas en dirección", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     private fun checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(

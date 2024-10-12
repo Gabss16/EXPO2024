@@ -30,6 +30,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light"
         tools:targetApi="31">
+
+        <!-- Agregar la clave de la API de Google Maps -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCYV71CqSm2OgpLUVKyVs5xksWz-_AUzFQ" />
+
         <activity
             android:name=".solicitudes_aceptadas"
             android:exported="false" />
