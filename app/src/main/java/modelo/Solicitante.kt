@@ -10,8 +10,10 @@ class Solicitante(
    val CorreoElectronico: String,
    val Telefono: String,
    val Direccion: String,
-   val IdDepartamento: Int,
-   val FechaDeNacimiento: String,
+   val Latitud: Double,  // Nueva propiedad para latitud
+   val Longitud: Double,
+   val Departamento: Int,
+   val FechaDeNacimiento: DATE,
    val Estado: String,
    //val Genero: String,
    val IdAreaDeTrabajo: Int,
@@ -19,4 +21,5 @@ class Solicitante(
    //val Curriculum: BLOB,
    val Foto: String,
    val Contrasena: String
+
 )
