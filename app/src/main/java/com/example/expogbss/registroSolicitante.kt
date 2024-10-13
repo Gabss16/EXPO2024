@@ -420,8 +420,8 @@ class registroSolicitante : AppCompatActivity() {
                             crearUsuario.setString(12, spGeneroSolicitante.selectedItem.toString())
                             crearUsuario.setInt(13, idAreaDeTrabajo)
                             crearUsuario.setString(14, txtHabilidadesSolicitante.text.toString().trim())
-                            crearUsuario.setBlob(
-                                15, objConexion.createBlob()); // Asignar un BLOB vacío
+                            crearUsuario.setString(
+                                15, "Placeholder"); // Para mientras
                             crearUsuario.setString(16, miPath)
                             crearUsuario.setString(17, contrasenaEncriptada)
 
