@@ -13,7 +13,7 @@ class Solicitante(
    val Latitud: Double,  // Nueva propiedad para latitud
    val Longitud: Double,
    val Departamento: Int,
-   val FechaDeNacimiento: DATE,
+   val FechaDeNacimiento: String,
    val Estado: String,
    //val Genero: String,
    val IdAreaDeTrabajo: Int,

@@ -248,6 +248,23 @@ class registroSolicitante : AppCompatActivity() {
             return bytes.joinToString("") { "%02x".format(it) }
         }
 
+        txtDireccionSolicitante.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // Solicitar el permiso
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_REQUEST_CODE
+                )
+            } else {
+                // Obtener la ubicación actual si ya tiene permiso
+                obtenerUbicacionActual()
+            }
+        }
+
         btnCrearCuentaSolicitante.setOnClickListener {
 
             // mando a llamar a cada textview
@@ -264,7 +281,7 @@ class registroSolicitante : AppCompatActivity() {
                 Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
 
             // Validaciones de campos vacíos y cosas por ese estilo
-            if (nombreSolicitante.isEmpty() || correoSolicitante.isEmpty() || contrasenaSolicitante.isEmpty() || telefonoSolicitante.isEmpty() || direccionSolicitante.isEmpty() || fechaSolicitante.isEmpty()) {
+            if (nombreSolicitante.isEmpty() || correoSolicitante.isEmpty() || contrasenaSolicitante.isEmpty() || telefonoSolicitante.isEmpty() || fechaSolicitante.isEmpty()) {
                 Toast.makeText(
                     this@registroSolicitante,
                     "Por favor, llenar los espacios obligatorios",
@@ -387,27 +404,27 @@ class registroSolicitante : AppCompatActivity() {
                             // Creo una variable que contenga un PrepareStatement
                             val crearUsuario = objConexion?.prepareStatement(
 
-                                "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion, Latitud, Longitud, IdDepartamento, FechaDeNacimiento, Estado, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena, EstadoCuenta) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?)")!!
+                                "INSERT INTO SOLICITANTE (IdSolicitante, Nombre, CorreoElectronico, Telefono, Direccion, Latitud, Longitud, IdDepartamento, FechaDeNacimiento, Estado, EstadoCuenta, Genero ,IdAreaDeTrabajo, Habilidades,Curriculum,Foto, Contrasena) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?)")!!
 
                             crearUsuario.setString(1, uuid)
                             crearUsuario.setString(2, txtNombreSolicitante.text.toString().trim())
                             crearUsuario.setString(3, txtCorreoSolicitante.text.toString().trim())
                             crearUsuario.setString(4, txtTelefonoSolicitante.text.toString().trim())
-
                             crearUsuario.setString(5, txtDireccionSolicitante.text.toString().trim())
                             crearUsuario.setDouble(6, latitudActual ?: 0.0)  // Asegúrate de que no sea null
                             crearUsuario.setDouble(7, longitudActual ?: 0.0) // Asegúrate de que no sea null
                             crearUsuario.setInt(8, idDepartamento)
                             crearUsuario.setString(9, fechaNacimientoSeleccionada)
                             crearUsuario.setString(10, spEstadoSolicitante.selectedItem.toString())
-                            crearUsuario.setString(11, spGeneroSolicitante.selectedItem.toString())
-                            crearUsuario.setInt(12, idAreaDeTrabajo)
-                            crearUsuario.setString(13, txtHabilidadesSolicitante.text.toString().trim())
+                            crearUsuario.setString(11, "Activo")
+                            crearUsuario.setString(12, spGeneroSolicitante.selectedItem.toString())
+                            crearUsuario.setInt(13, idAreaDeTrabajo)
+                            crearUsuario.setString(14, txtHabilidadesSolicitante.text.toString().trim())
                             crearUsuario.setBlob(
-                                14, objConexion.createBlob()); // Asignar un BLOB vacío
-                            crearUsuario.setString(15, miPath)
-                            crearUsuario.setString(16, contrasenaEncriptada)
-                            crearUsuario.setString(17, "Activo")
+                                15, objConexion.createBlob()); // Asignar un BLOB vacío
+                            crearUsuario.setString(16, miPath)
+                            crearUsuario.setString(17, contrasenaEncriptada)
+
 
 
                             crearUsuario.executeUpdate()
