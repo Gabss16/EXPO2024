@@ -66,7 +66,7 @@ CREATE TABLE SOLICITANTE (
     Genero VARCHAR2(20) CHECK (Genero IN ('Masculino', 'Femenino', 'Prefiero no decirlo')),
     IdAreaDeTrabajo INT,
     Habilidades VARCHAR2(250),
-    Curriculum BLOB,
+    Curriculum VARCHAR2(300),
     Foto VARCHAR2(300),
     Contrasena VARCHAR2(250) NOT NULL,
     CONSTRAINT FkAreaDeTrabajoSolicitante FOREIGN KEY (IdAreaDeTrabajo) REFERENCES AreaDeTrabajo(IdAreaDeTrabajo) ON DELETE CASCADE,
