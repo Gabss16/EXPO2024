@@ -1,29 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp"
-    app:cardElevation="5dp"
-    app:cardCornerRadius="12dp"
-    app:cardUseCompatPadding="true">
+    android:layout_margin="1dp"
+    android:background="@drawable/login_desing"
+    app:cardCornerRadius="1dp"
+    app:cardElevation="3dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="134dp"
-        android:padding="16dp">
+        android:padding="1dp">
 
         <!-- Título del trabajo -->
-
-        <ImageView
-            android:id="@+id/imageView12"
-            android:layout_width="371dp"
-            android:layout_height="93dp"
-            app:srcCompat="@drawable/aaaa"
-            tools:layout_editor_absoluteX="-7dp"
-            tools:layout_editor_absoluteY="-5dp" />
 
         <!-- Tipo de trabajo -->
 
@@ -37,9 +28,23 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintHorizontal_bias="0.194"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="404dp"
+            android:layout_height="42dp"
+            android:background="#181F47"
+            android:backgroundTint="@color/agalo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/txtTipoTrabajo"
@@ -50,32 +55,32 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.038"
+            app:layout_constraintHorizontal_bias="0.951"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.867" />
 
         <ImageButton
             android:id="@+id/imgBorrarPublicacion"
-            android:layout_width="53dp"
-            android:layout_height="43dp"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
 
-            android:layout_marginTop="64dp"
-
+            android:layout_marginTop="12dp"
             android:backgroundTint="#00FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.586"
+            app:layout_constraintHorizontal_bias="0.959"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/cardelete" />
 
         <ImageButton
             android:id="@+id/imgEditarPublicacion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
+            android:layout_width="107dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="40dp"
             android:backgroundTint="#02FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.05"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/cardedit" />
