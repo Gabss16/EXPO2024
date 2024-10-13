@@ -84,7 +84,9 @@ class chatEmpresa : Fragment() {
                 val CorreoElectronico = resultSet.getString("CorreoElectronico")
                 val Telefono = resultSet.getString("Telefono")
                 val Direccion = resultSet.getString("Direccion")
-                val idDepartamento = resultSet.getInt("IdDepartamento")
+                val Latitud = resultSet.getDouble("Latitud")
+                val Longitud = resultSet.getDouble("Longitud")
+                val Departamento = resultSet.getInt("Departamento")
                 val FechaDeNacimiento = resultSet.getString("FechaDeNacimiento")
                 val Estado = resultSet.getString("Estado")
                 val IdAreaDeTrabajo = resultSet.getInt("IdAreaDeTrabajo")
@@ -98,7 +100,9 @@ class chatEmpresa : Fragment() {
                     CorreoElectronico,
                     Telefono,
                     Direccion,
-                    idDepartamento,
+                    Latitud,
+                    Longitud,
+                    Departamento,
                     FechaDeNacimiento,
                     Estado,
                     IdAreaDeTrabajo,
