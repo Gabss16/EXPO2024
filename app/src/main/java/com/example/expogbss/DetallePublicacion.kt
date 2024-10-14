@@ -2,6 +2,7 @@ package com.example.expogbss
 
 import RecicleViewHelpers.AdaptadorPublicacion
 import RecicleViewHelpers.AdaptadorSolicitud
+import RecicleViewHelpers.AdaptadorSolisAceptadas
 import android.os.Bundle
 import android.view.Window
 import android.widget.Button
@@ -44,7 +45,20 @@ class DetallePublicacion : AppCompatActivity() {
         txtTituloDetalle = findViewById(R.id.txtJobTitle1)
         txtDescripcionDetalle = findViewById(R.id.txtJobDescription)
         rcvSolicitudes = findViewById(R.id.rcvSolicitudesRecibidas)
+
+
         val btnShowBottomSheet = findViewById<ImageButton>(R.id.btnAceppt);
+        // Obtener datos del Intent
+        val titulo = intent.getStringExtra("Titulo")
+        val descripcion = intent.getStringExtra("Descripcion")
+
+        val idTrabajo = intent.getIntExtra("IdTrabajo", 1234)
+        // Establecer datos en las Views
+        txtTituloDetalle.text = titulo
+        txtDescripcionDetalle.text = descripcion
+
+        // Configurar RecyclerView para solicitudes
+        rcvSolicitudes.layoutManager = LinearLayoutManager(this)
 
         btnShowBottomSheet.setOnClickListener {
 
@@ -76,18 +90,76 @@ class DetallePublicacion : AppCompatActivity() {
             // on below line we are calling
             // a show method to display a dialog.
             dialog.show()
+
+            // Aquí debes encontrar el RecyclerView dentro del layout del BottomSheet
+            val rcvSolicitudesAceptadas = view.findViewById<RecyclerView>(R.id.rcvSolicitudesAceptadas)
+
+            rcvSolicitudesAceptadas.layoutManager = LinearLayoutManager(this)
+
+            fun obtenerSolicitudesAceptadas(idTrabajo: Int): List<Solicitud> {
+                val objConexion = ClaseConexion().cadenaConexion()
+                val statement = objConexion?.prepareStatement("""
+     SELECT
+                s.IdSolicitud,
+                s.IdSolicitante,
+                ss.Nombre as NombreSolicitante,
+                s.IdTrabajo,
+                s.FechaSolicitud,
+                s.Estado,
+                t.Titulo AS TituloTrabajo,
+                ss.IdAreaDeTrabajo,
+                A.NombreAreaDetrabajo AS CategoriaTrabajoSolicitante
+            FROM SOLICITUD s
+            INNER JOIN TRABAJO t ON s.IdTrabajo = t.IdTrabajo
+                INNER JOIN SOLICITANTE ss ON s.IdSolicitante = ss.IdSolicitante
+                INNER JOIN AreaDeTrabajo A ON ss.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+        WHERE s.Estado = 'Aprobada' AND s.IdTrabajo = ?
+    """)
+
+                // Establecer el idTrabajo en la consulta
+                statement?.setInt(1, idTrabajo)
+
+                val resultSet = statement?.executeQuery()
+
+                val listaSolicitud = mutableListOf<Solicitud>()
+
+                while (resultSet?.next() == true) {
+                    val idSolicitud = resultSet.getInt("IdSolicitud")
+                    val idSolicitante = resultSet.getString("IdSolicitante")
+                    val idTrabajoDb = resultSet.getInt("IdTrabajo")
+                    val fechaSolicitud = resultSet.getString("FechaSolicitud")
+                    val estado = resultSet.getString("Estado")
+                    val tituloTrabajo = resultSet.getString("TituloTrabajo")
+                    val categoriaTrabajo = resultSet.getString("CategoriaTrabajoSolicitante")
+                    val nombreSolicitante = resultSet.getString("NombreSolicitante")
+
+                    val solicitud = Solicitud(
+                        idSolicitud,
+                        idSolicitante,
+                        idTrabajoDb,
+                        fechaSolicitud,
+                        estado,
+                        tituloTrabajo,
+                        categoriaTrabajo,
+                        nombreSolicitante
+                    )
+
+                    listaSolicitud.add(solicitud)
+                }
+
+                return listaSolicitud
+            }
+
+            // Configurar adaptador para solicitudes
+            CoroutineScope(Dispatchers.IO).launch {
+                val solicitudesDb = obtenerSolicitudesAceptadas(idTrabajo)
+                withContext(Dispatchers.Main) {
+                    val adapter = AdaptadorSolisAceptadas(solicitudesDb)
+                    rcvSolicitudesAceptadas.adapter = adapter
+                }
+            }
         }
 
-        // Obtener datos del Intent
-        val titulo = intent.getStringExtra("Titulo")
-        val descripcion = intent.getStringExtra("Descripcion")
-
-        // Establecer datos en las Views
-        txtTituloDetalle.text = titulo
-        txtDescripcionDetalle.text = descripcion
-
-        // Configurar RecyclerView para solicitudes
-        rcvSolicitudes.layoutManager = LinearLayoutManager(this)
 
         val btnSalir = findViewById<ImageButton>(R.id.btnSalirDetallesPublicacion)
 
@@ -98,7 +170,7 @@ class DetallePublicacion : AppCompatActivity() {
         // Obtener lista de solicitudes (esto es un ejemplo; debes obtenerlas desde tu fuente de datos)
         //val solicitudes = obtenerSolicitudesParaTrabajo()
 
-        val idTrabajo = intent.getIntExtra("IdTrabajo", 1234)
+
 
 //TODO DEFINIR BIEN QUÉ MÁS SE VA A MOSTRAR EN LA SOLICITUD
 

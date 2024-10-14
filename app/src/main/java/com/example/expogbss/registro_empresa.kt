@@ -65,7 +65,7 @@ class registro_empresa : AppCompatActivity() {
             insets
         }
 
-        fun generarHTMLCorreo(): String{
+        fun generarHTMLCorreo(): String {
             return """
 <html>
 <body style="font-family: 'Roboto', sans-serif;
@@ -274,7 +274,8 @@ class registro_empresa : AppCompatActivity() {
                             objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE NumeroTelefono = ? ")!!
                         comprobarSiExistetelefonoEmpleador.setString(1, TelefoEmpleador)
 
-                        val existeCorreoSolicitante = comprobarSiExisteCorreoSolicitante.executeQuery()
+                        val existeCorreoSolicitante =
+                            comprobarSiExisteCorreoSolicitante.executeQuery()
                         val existeCorreoEmpleador = comprobarSiExisteCorreoEmpleador.executeQuery()
 
                         val existeTelefonoSolicitante =
@@ -301,7 +302,7 @@ class registro_empresa : AppCompatActivity() {
                                 ).show()
                                 btnCrearCuentaEmpleador.isEnabled = true
                             }
-                        }else if (existeTelefonoSolicitante.next()) {
+                        } else if (existeTelefonoSolicitante.next()) {
                             withContext(Dispatchers.Main) {
                                 Toast.makeText(
                                     this@registro_empresa,
@@ -310,8 +311,7 @@ class registro_empresa : AppCompatActivity() {
                                 ).show()
                                 btnCrearCuentaEmpleador.isEnabled = true
                             }
-                        }
-                        else if (existeTelefonoEmpleador.next()){
+                        } else if (existeTelefonoEmpleador.next()) {
                             withContext(Dispatchers.Main) {
                                 Toast.makeText(
                                     this@registro_empresa,
@@ -321,7 +321,7 @@ class registro_empresa : AppCompatActivity() {
                                 btnCrearCuentaEmpleador.isEnabled = true
                             }
                         } else {
-                        // Encripto la contraseña usando la función de encriptación
+                            // Encripto la contraseña usando la función de encriptación
                             val contrasenaEncriptada =
                                 hashSHA256(txtContrasenaEmpleador.text.toString())
                             withContext(Dispatchers.Main) {
@@ -386,26 +386,140 @@ class registro_empresa : AppCompatActivity() {
                                                 )
 
                                                 if (correoEnviado) {
-                                                    val alertDialog = AlertDialog.Builder(this@registro_empresa)
-                                                        .setTitle("Cuenta registrada")
-                                                        .setMessage("Tu cuenta ha sido creada, revise su correo electrónico para más información.")
-                                                        .setPositiveButton("Aceptar", null)
-                                                        .create()
+                                                    //TODO: ESTA PARTE ES PARA QUE EL NOMBRE Y CONTRASEÑA SE ENVIEN A FIREBASE
 
-                                                    alertDialog.setOnDismissListener { _ ->
-                                                        val login = Intent(this@registro_empresa, login::class.java)
-                                                        login.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                                        startActivity(login)
+                                                    withContext(Dispatchers.Main) {
+
+                                                        FirebaseAuth.getInstance()
+                                                            .createUserWithEmailAndPassword(
+                                                                CorreoEmpleador,
+                                                                ContrasenaEmpleador
+                                                            )
+                                                            .addOnCompleteListener { task ->
+                                                                if (task.isSuccessful) {
+                                                                    // Usuario creado en Firebase Authentication
+                                                                    val user =
+                                                                        FirebaseAuth.getInstance().currentUser
+                                                                    val profileUpdates =
+                                                                        UserProfileChangeRequest.Builder()
+                                                                            .setDisplayName(
+                                                                                nombreEmpleador
+                                                                            )  // Establecer el nombre del usuario
+                                                                            .build()
+
+                                                                    // Actualizar el perfil del usuario con el nombre
+                                                                    user?.updateProfile(
+                                                                        profileUpdates
+                                                                    )
+                                                                        ?.addOnCompleteListener { updateTask ->
+                                                                            if (updateTask.isSuccessful) {
+                                                                                // Obtener el UID del usuario recién creado
+                                                                                val userId =
+                                                                                    user.uid
+
+                                                                                // Crear referencia a la base de datos de Firebase
+                                                                                val databaseRef =
+                                                                                    com.google.firebase.Firebase.database.reference
+
+                                                                                // Datos que deseas guardar en la base de datos
+                                                                                val userMap = mapOf(
+                                                                                    "nombre" to nombreEmpleador,
+                                                                                    "correo" to CorreoEmpleador,
+                                                                                    "rol" to "empleador" // Puedes agregar un campo 'rol' si es necesario
+                                                                                )
+
+                                                                                // Guardar los datos del usuario en la Realtime Database bajo 'solicitantes/{userId}'
+                                                                                databaseRef.child("Usuarios")
+                                                                                    .child(userId)
+                                                                                    .setValue(
+                                                                                        userMap
+                                                                                    )
+                                                                                    .addOnCompleteListener { dbTask ->
+                                                                                        if (dbTask.isSuccessful) {
+                                                                                            val alertDialog =
+                                                                                                AlertDialog.Builder(
+                                                                                                    this@registro_empresa
+                                                                                                )
+                                                                                                    .setTitle(
+                                                                                                        "Cuenta registrada"
+                                                                                                    )
+                                                                                                    .setMessage(
+                                                                                                        "Tu cuenta ha sido creada, revise su correo electrónico para más información."
+                                                                                                    )
+                                                                                                    .setPositiveButton(
+                                                                                                        "Aceptar",
+                                                                                                        null
+                                                                                                    )
+                                                                                                    .create()
+
+                                                                                            alertDialog.setOnDismissListener { _ ->
+                                                                                                val login =
+                                                                                                    Intent(
+                                                                                                        this@registro_empresa,
+                                                                                                        login::class.java
+                                                                                                    )
+                                                                                                login.flags =
+                                                                                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                                                                startActivity(
+                                                                                                    login
+                                                                                                )
+                                                                                            }
+                                                                                            alertDialog.show()
+                                                                                            txtNombreEmpleador.setText(
+                                                                                                ""
+                                                                                            )
+                                                                                            txtEmpresaEmpleador.setText(
+                                                                                                ""
+                                                                                            )
+                                                                                            txtCorreoEmpleador.setText(
+                                                                                                ""
+                                                                                            )
+                                                                                            txtContrasenaEmpleador.setText(
+                                                                                                ""
+                                                                                            )
+                                                                                            txtTelefonoEmpleador.setText(
+                                                                                                ""
+                                                                                            )
+                                                                                            txtDireccionEmpleador.setText(
+                                                                                                ""
+                                                                                            )
+                                                                                            txtSitioWebEmpleador.setText(
+                                                                                                ""
+                                                                                            )
+                                                                                            imgFotoDePerfilEmpleador.setImageDrawable(
+                                                                                                null
+                                                                                            )
+                                                                                        } else {
+                                                                                            Toast.makeText(
+                                                                                                this@registro_empresa,
+                                                                                                "Error al guardar datos en la base de datos: ${dbTask.exception?.message}",
+                                                                                                Toast.LENGTH_LONG
+                                                                                            ).show()
+                                                                                        }
+                                                                                    }
+                                                                            } else {
+                                                                                Toast.makeText(
+                                                                                    this@registro_empresa,
+                                                                                    "Error al actualizar nombre en Firebase: ${updateTask.exception?.message}",
+                                                                                    Toast.LENGTH_LONG
+                                                                                ).show()
+                                                                            }
+                                                                        }
+                                                                } else {
+                                                                    // Error al registrar en Firebase
+                                                                    Toast.makeText(
+                                                                        this@registro_empresa,
+                                                                        "Error al registrar en Firebase: ${task.exception?.message}",
+                                                                        Toast.LENGTH_LONG
+                                                                    ).show()
+                                                                    btnCrearCuentaEmpleador.isEnabled =
+                                                                        true
+                                                                }
+                                                            }
                                                     }
-                                                    alertDialog.show()
-                                                    txtNombreEmpleador.setText("")
-                                                    txtEmpresaEmpleador.setText("")
-                                                    txtCorreoEmpleador.setText("")
-                                                    txtContrasenaEmpleador.setText("")
-                                                    txtTelefonoEmpleador.setText("")
-                                                    txtDireccionEmpleador.setText("")
-                                                    txtSitioWebEmpleador.setText("")
-                                                    imgFotoDePerfilEmpleador.setImageDrawable(null)
+
+                                                    //hasta aqui es lo de firebase
+
                                                 }
 
 
@@ -420,28 +534,6 @@ class registro_empresa : AppCompatActivity() {
                                             }
                                         }
                                     }
-                                }
-                            }
-                        }
-                    } catch (e: SQLException) {
-                        when (e.errorCode) {
-                            1 -> { // ORA-00001: unique constraint violated
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        this@registro_empresa,
-                                        "Ya existe un usuario con ese correo electrónico, por favor ingresa uno distinto.",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            }
-
-                            else -> {
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        this@registro_empresa,
-                                        "Error SQL: ${e.message}",
-                                        Toast.LENGTH_LONG
-                                    ).show()
                                 }
                             }
                         }
@@ -481,7 +573,8 @@ class registro_empresa : AppCompatActivity() {
                             objConexion?.prepareStatement("SELECT * FROM EMPLEADOR WHERE NumeroTelefono = ? ")!!
                         comprobarSiExistetelefonoEmpleador.setString(1, TelefoEmpleador)
 
-                        val existeCorreoSolicitante = comprobarSiExisteCorreoSolicitante.executeQuery()
+                        val existeCorreoSolicitante =
+                            comprobarSiExisteCorreoSolicitante.executeQuery()
                         val existeCorreoEmpleador = comprobarSiExisteCorreoEmpleador.executeQuery()
 
                         val existeTelefonoSolicitante =
@@ -508,7 +601,7 @@ class registro_empresa : AppCompatActivity() {
                                 ).show()
                                 btnCrearCuentaEmpleador.isEnabled = true
                             }
-                        }else if (existeTelefonoSolicitante.next()) {
+                        } else if (existeTelefonoSolicitante.next()) {
                             withContext(Dispatchers.Main) {
                                 Toast.makeText(
                                     this@registro_empresa,
@@ -517,8 +610,7 @@ class registro_empresa : AppCompatActivity() {
                                 ).show()
                                 btnCrearCuentaEmpleador.isEnabled = true
                             }
-                        }
-                        else if (existeTelefonoEmpleador.next()){
+                        } else if (existeTelefonoEmpleador.next()) {
                             withContext(Dispatchers.Main) {
                                 Toast.makeText(
                                     this@registro_empresa,
@@ -590,64 +682,113 @@ class registro_empresa : AppCompatActivity() {
                                             withContext(Dispatchers.Main) {
 
                                                 FirebaseAuth.getInstance()
-                                                    .createUserWithEmailAndPassword(CorreoEmpleador, ContrasenaEmpleador)
+                                                    .createUserWithEmailAndPassword(
+                                                        CorreoEmpleador,
+                                                        ContrasenaEmpleador
+                                                    )
                                                     .addOnCompleteListener { task ->
                                                         if (task.isSuccessful) {
                                                             // Usuario creado en Firebase Authentication
-                                                            val user = FirebaseAuth.getInstance().currentUser
-                                                            val profileUpdates = UserProfileChangeRequest.Builder()
-                                                                .setDisplayName(nombreEmpleador)  // Establecer el nombre del usuario
-                                                                .build()
+                                                            val user =
+                                                                FirebaseAuth.getInstance().currentUser
+                                                            val profileUpdates =
+                                                                UserProfileChangeRequest.Builder()
+                                                                    .setDisplayName(nombreEmpleador)  // Establecer el nombre del usuario
+                                                                    .build()
 
                                                             // Actualizar el perfil del usuario con el nombre
-                                                            user?.updateProfile(profileUpdates)?.addOnCompleteListener { updateTask ->
-                                                                if (updateTask.isSuccessful) {
-                                                                    // Obtener el UID del usuario recién creado
-                                                                    val userId = user.uid
+                                                            user?.updateProfile(profileUpdates)
+                                                                ?.addOnCompleteListener { updateTask ->
+                                                                    if (updateTask.isSuccessful) {
+                                                                        // Obtener el UID del usuario recién creado
+                                                                        val userId = user.uid
 
-                                                                    // Crear referencia a la base de datos de Firebase
-                                                                    val databaseRef = com.google.firebase.Firebase.database.reference
+                                                                        // Crear referencia a la base de datos de Firebase
+                                                                        val databaseRef =
+                                                                            com.google.firebase.Firebase.database.reference
 
-                                                                    // Datos que deseas guardar en la base de datos
-                                                                    val userMap = mapOf(
-                                                                        "nombre" to nombreEmpleador,
-                                                                        "correo" to CorreoEmpleador,
-                                                                        "rol" to "empleador" // Puedes agregar un campo 'rol' si es necesario
-                                                                    )
+                                                                        // Datos que deseas guardar en la base de datos
+                                                                        val userMap = mapOf(
+                                                                            "nombre" to nombreEmpleador,
+                                                                            "correo" to CorreoEmpleador,
+                                                                            "rol" to "empleador" // Puedes agregar un campo 'rol' si es necesario
+                                                                        )
 
-                                                                    // Guardar los datos del usuario en la Realtime Database bajo 'solicitantes/{userId}'
-                                                                    databaseRef.child("Usuarios").child(userId).setValue(userMap)
-                                                                        .addOnCompleteListener { dbTask ->
-                                                                            if (dbTask.isSuccessful) {
-                                                                                // Mostrar mensaje de éxito y navegar a la pantalla de login
-                                                                                Toast.makeText(
-                                                                                    this@registro_empresa,
-                                                                                    "Registro completo. Nombre actualizado y datos guardados en la base de datos.",
-                                                                                    Toast.LENGTH_LONG
-                                                                                ).show()
+                                                                        // Guardar los datos del usuario en la Realtime Database bajo 'solicitantes/{userId}'
+                                                                        databaseRef.child("Usuarios")
+                                                                            .child(userId)
+                                                                            .setValue(userMap)
+                                                                            .addOnCompleteListener { dbTask ->
+                                                                                if (dbTask.isSuccessful) {
+                                                                                    val alertDialog =
+                                                                                        AlertDialog.Builder(
+                                                                                            this@registro_empresa
+                                                                                        )
+                                                                                            .setTitle(
+                                                                                                "Cuenta registrada"
+                                                                                            )
+                                                                                            .setMessage(
+                                                                                                "Tu cuenta ha sido creada."
+                                                                                            )
+                                                                                            .setPositiveButton(
+                                                                                                "Aceptar",
+                                                                                                null
+                                                                                            )
+                                                                                            .create()
 
-                                                                                val intent = Intent(
-                                                                                    this@registro_empresa,
-                                                                                    login::class.java
-                                                                                )
-                                                                                startActivity(intent)
-                                                                                finish()
-                                                                            } else {
-                                                                                Toast.makeText(
-                                                                                    this@registro_empresa,
-                                                                                    "Error al guardar datos en la base de datos: ${dbTask.exception?.message}",
-                                                                                    Toast.LENGTH_LONG
-                                                                                ).show()
+                                                                                    alertDialog.setOnDismissListener { _ ->
+                                                                                        val login =
+                                                                                            Intent(
+                                                                                                this@registro_empresa,
+                                                                                                login::class.java
+                                                                                            )
+                                                                                        login.flags =
+                                                                                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                                                        startActivity(
+                                                                                            login
+                                                                                        )
+                                                                                    }
+                                                                                    alertDialog.show()
+                                                                                    txtNombreEmpleador.setText(
+                                                                                        ""
+                                                                                    )
+                                                                                    txtEmpresaEmpleador.setText(
+                                                                                        ""
+                                                                                    )
+                                                                                    txtCorreoEmpleador.setText(
+                                                                                        ""
+                                                                                    )
+                                                                                    txtContrasenaEmpleador.setText(
+                                                                                        ""
+                                                                                    )
+                                                                                    txtTelefonoEmpleador.setText(
+                                                                                        ""
+                                                                                    )
+                                                                                    txtDireccionEmpleador.setText(
+                                                                                        ""
+                                                                                    )
+                                                                                    txtSitioWebEmpleador.setText(
+                                                                                        ""
+                                                                                    )
+                                                                                    imgFotoDePerfilEmpleador.setImageDrawable(
+                                                                                        null
+                                                                                    )
+                                                                                } else {
+                                                                                    Toast.makeText(
+                                                                                        this@registro_empresa,
+                                                                                        "Error al guardar datos en la base de datos: ${dbTask.exception?.message}",
+                                                                                        Toast.LENGTH_LONG
+                                                                                    ).show()
+                                                                                }
                                                                             }
-                                                                        }
-                                                                } else {
-                                                                    Toast.makeText(
-                                                                        this@registro_empresa,
-                                                                        "Error al actualizar nombre en Firebase: ${updateTask.exception?.message}",
-                                                                        Toast.LENGTH_LONG
-                                                                    ).show()
+                                                                    } else {
+                                                                        Toast.makeText(
+                                                                            this@registro_empresa,
+                                                                            "Error al actualizar nombre en Firebase: ${updateTask.exception?.message}",
+                                                                            Toast.LENGTH_LONG
+                                                                        ).show()
+                                                                    }
                                                                 }
-                                                            }
                                                         } else {
                                                             // Error al registrar en Firebase
                                                             Toast.makeText(
@@ -658,55 +799,10 @@ class registro_empresa : AppCompatActivity() {
                                                             btnCrearCuentaEmpleador.isEnabled = true
                                                         }
                                                     }
-
                                             }
 
                                             //hasta aqui es lo de firebase
 
-                                            val alertDialog = AlertDialog.Builder(this@registro_empresa)
-                                                    .setTitle("Cuenta registrada")
-                                                    .setMessage("Tu cuenta ha sido creada.")
-                                                    .setPositiveButton("Aceptar", null)
-                                                    .create()
-
-                                                alertDialog.setOnDismissListener { _ ->
-                                                    val login = Intent(this@registro_empresa, login::class.java)
-                                                    login.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                                    startActivity(login)
-                                                }
-                                                alertDialog.show()
-                                                txtNombreEmpleador.setText("")
-                                                txtEmpresaEmpleador.setText("")
-                                                txtCorreoEmpleador.setText("")
-                                                txtContrasenaEmpleador.setText("")
-                                                txtTelefonoEmpleador.setText("")
-                                                txtDireccionEmpleador.setText("")
-                                                txtSitioWebEmpleador.setText("")
-                                                imgFotoDePerfilEmpleador.setImageDrawable(null)
-
-                                            } catch (e: SQLException) {
-                                            when (e.errorCode) {
-                                                1 -> { // ORA-00001: unique constraint violated
-                                                    withContext(Dispatchers.Main) {
-                                                        Toast.makeText(
-                                                            this@registro_empresa,
-                                                            "Ya existe un usuario con ese correo electrónico, por favor ingresa uno distinto.",
-                                                            Toast.LENGTH_LONG
-                                                        ).show()
-                                                    }
-                                                }
-
-
-                                                else -> {
-                                                    withContext(Dispatchers.Main) {
-                                                        Toast.makeText(
-                                                            this@registro_empresa,
-                                                            "Error SQL: ${e.message}",
-                                                            Toast.LENGTH_LONG
-                                                        ).show()
-                                                    }
-                                                }
-                                            }
                                         } catch (e: Exception) {
                                             withContext(Dispatchers.Main) {
                                                 Toast.makeText(
@@ -723,28 +819,6 @@ class registro_empresa : AppCompatActivity() {
                                             }
                                         }
                                     }
-                                }
-                            }
-                        }
-                    } catch (e: SQLException) {
-                        when (e.errorCode) {
-                            1 -> { // ORA-00001: unique constraint violated
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        this@registro_empresa,
-                                        "Ya existe un usuario con ese correo electrónico, por favor ingresa uno distinto.",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            }
-
-                            else -> {
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        this@registro_empresa,
-                                        "Error SQL: ${e.message}",
-                                        Toast.LENGTH_LONG
-                                    ).show()
                                 }
                             }
                         }

@@ -3,6 +3,7 @@ package com.example.expogbss
 import RecicleViewHelpers.AdaptadorPublicacion
 import RecicleViewHelpers.AdaptadorPublicacionReactivar
 import RecicleViewHelpers.AdaptadorSolicitud
+import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.widget.ImageButton
@@ -44,7 +45,9 @@ class trabajos_Inactivos : AppCompatActivity() {
 
         val btnSalir = findViewById<ImageButton>(R.id.btnSalirTrabajosInactivos)
         btnSalir.setOnClickListener {
-            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+            val pantallaEmpleador = Intent(this, Empleadores::class.java)
+            startActivity(pantallaEmpleador)
+           finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
         }
 
         fun obtenerDatos(): List<Trabajo> {

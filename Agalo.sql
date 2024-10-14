@@ -366,9 +366,6 @@ drop table AUDITORIA;
 delete from AreaDeTrabajo
     commit;
     
-    
-    select* from EMpleador;
-    Select * from solicitante;
 
 SELECT * FROM EMPLEADOR WHERE NumeroTelefono = '1234-5678'
 UPDATE solicitante SET EstadoCuenta = 'Restringido' WHERE IdSolicitante = '74a58d12-c9be-463a-806b-4c7ee1d6cce1'
@@ -434,10 +431,21 @@ ON
         UPDATE TRABAJO SET Titulo = ?, IdAreaDeTrabajo = ?, Descripcion = ?, Direccion = ?, IdDepartamento = ?, Experiencia = ?, Requerimientos = ?, SalarioMinimo = ?, SalarioMaximo= ?, Beneficios = ? WHERE IdTrabajo = ?
         
         
+commit;
         
-        select * from solicitud;
-        
-Select * from empleador
+delete from empleador
+    
+    select* from EMpleador;
+    Select * from Solicitante;
+
+select * from solicitud;
+
+update solicitud set ESTADO = 'Pendiente' where IdSolicitante = 'c66942e7-10ce-4ddf-925b-53b393f211ed'
+
+commit;
+
+SELECT CorreoElectronico FROM Solicitante WHERE IdSolicitante = 'c66942e7-10ce-4ddf-925b-53b393f211ed'
+SELECT e.CorreoElectronico FROM Empleador e INNER JOIN Trabajo t ON e.IdEmpleador = t.IdEmpleador WHERE t.IdTrabajo = 1
 
 SELECT 
     T.IdTrabajo, 

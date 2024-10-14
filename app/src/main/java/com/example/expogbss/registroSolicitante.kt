@@ -464,18 +464,26 @@ class registroSolicitante : AppCompatActivity() {
                                                         .addOnCompleteListener { dbTask ->
                                                             if (dbTask.isSuccessful) {
                                                                 // Mostrar mensaje de éxito y navegar a la pantalla de login
-                                                                Toast.makeText(
-                                                                    this@registroSolicitante,
-                                                                    "Registro completo. Nombre actualizado y datos guardados en la base de datos.",
-                                                                    Toast.LENGTH_LONG
-                                                                ).show()
+                                                                val alertDialog = AlertDialog.Builder(this@registroSolicitante)
+                                                                    .setTitle("Cuenta registrada")
+                                                                    .setMessage("Tu cuenta ha sido creada.")
+                                                                    .setPositiveButton("Aceptar", null)
+                                                                    .create()
 
-                                                                val intent = Intent(
-                                                                    this@registroSolicitante,
-                                                                    login::class.java
-                                                                )
-                                                                startActivity(intent)
-                                                                finish()
+                                                                alertDialog.setOnDismissListener { _ ->
+                                                                    val login = Intent(this@registroSolicitante, login::class.java)
+                                                                    login.flags =
+                                                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                                    startActivity(login)
+                                                                }
+                                                                alertDialog.show()
+                                                                txtNombreSolicitante.setText("")
+                                                                txtCorreoSolicitante.setText("")
+                                                                txtConstrasenaSolicitante.setText("")
+                                                                txtTelefonoSolicitante.setText("")
+                                                                txtDireccionSolicitante.setText("")
+                                                                txtFechaSolicitante.setText("")
+                                                                imgFotoDePerfilSolicitante.setImageDrawable(null)
                                                             } else {
                                                                 Toast.makeText(
                                                                     this@registroSolicitante,
@@ -507,27 +515,6 @@ class registroSolicitante : AppCompatActivity() {
 
                             //hasta aqui es lo de firebase
 
-
-                            val alertDialog = AlertDialog.Builder(this@registroSolicitante)
-                                .setTitle("Cuenta registrada")
-                                .setMessage("Tu cuenta ha sido creada.")
-                                .setPositiveButton("Aceptar", null)
-                                .create()
-
-                            alertDialog.setOnDismissListener { _ ->
-                                val login = Intent(this@registroSolicitante, login::class.java)
-                                login.flags =
-                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                startActivity(login)
-                            }
-                            alertDialog.show()
-                            txtNombreSolicitante.setText("")
-                            txtCorreoSolicitante.setText("")
-                            txtConstrasenaSolicitante.setText("")
-                            txtTelefonoSolicitante.setText("")
-                            txtDireccionSolicitante.setText("")
-                            txtFechaSolicitante.setText("")
-                            imgFotoDePerfilSolicitante.setImageDrawable(null)
                         }
                     }catch (e: SQLException) {
                         when (e.errorCode) {
