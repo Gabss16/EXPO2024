@@ -178,6 +178,7 @@ class registroSolicitante : AppCompatActivity() {
 
 
 
+
         val listadoGeneros = listOf(
             "Masculino", "Femenino", "Prefiero no decirlo"
         )
