@@ -19,8 +19,8 @@ CREATE TABLE EMPLEADOR (
     NombreRepresentante VARCHAR2(50) NOT NULL,
     CorreoElectronico VARCHAR2(50) NOT NULL UNIQUE,
     NumeroTelefono VARCHAR2(15) NOT NULL,
-    Altitud VARCHAR2(200),
-    Latitud VARCHAR2 (200),
+    Longitud NUMBER,
+    Latitud NUMBER,
     Direccion varchar2(250),
     IdDepartamento INT,
     SitioWeb VARCHAR2(500),
@@ -36,8 +36,8 @@ CREATE TABLE TRABAJO (
     IdEmpleador VARCHAR2(50) NOT NULL,
     IdAreaDeTrabajo INT,
     Descripcion VARCHAR2(150),  
-    Altitud varchar2(250),
-    Latitud VARCHAR2 (200),
+    Longitud NUMBER,
+    Latitud NUMBER,
     Direccion varchar2(250),
     IdDepartamento INT,
     Experiencia VARCHAR2(50),
@@ -57,8 +57,8 @@ CREATE TABLE SOLICITANTE (
     CorreoElectronico VARCHAR2(50) NOT NULL UNIQUE,
     Telefono VARCHAR2(15) NOT NULL UNIQUE,
     Direccion varchar2(250),
-    Altitud VARCHAR2(200),
-    Latitud VARCHAR2 (200),
+    Longitud NUMBER,
+    Latitud NUMBER, 
     IdDepartamento INT,  
     FechaDeNacimiento VARCHAR2(20),
     Estado VARCHAR(11) CHECK (Estado IN ('Empleado', 'Desempleado')),
@@ -66,7 +66,7 @@ CREATE TABLE SOLICITANTE (
     Genero VARCHAR2(20) CHECK (Genero IN ('Masculino', 'Femenino', 'Prefiero no decirlo')),
     IdAreaDeTrabajo INT,
     Habilidades VARCHAR2(250),
-    Curriculum BLOB,
+    Curriculum VARCHAR2(300),
     Foto VARCHAR2(300),
     Contrasena VARCHAR2(250) NOT NULL,
     CONSTRAINT FkAreaDeTrabajoSolicitante FOREIGN KEY (IdAreaDeTrabajo) REFERENCES AreaDeTrabajo(IdAreaDeTrabajo) ON DELETE CASCADE,
@@ -201,8 +201,6 @@ INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Área de ventas y atenci
 INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Educación y enseñanza');  
 INSERT INTO AreaDeTrabajo (nombreareadetrabajo) VALUES ('Otros');  
 
-commit;
-
 Insert into DEPARTAMENTO(Nombre) values ('Ahuachapán');
 Insert into DEPARTAMENTO(Nombre) values ('Cabañas');
 Insert into DEPARTAMENTO(Nombre) values ('Chalatenango');
@@ -222,6 +220,7 @@ Insert into DEPARTAMENTO(Nombre) values ('Usulután');
 INSERT INTO ROLESCRITORIO(Rol) Values('Admin');
 INSERT INTO ROLESCRITORIO(Rol) Values('Super admin');
 
+commit;
 
 //Inner join para ver Trabajo
 SELECT 
@@ -364,7 +363,7 @@ Drop table DEPARTAMENTO;
 drop table AUDITORIA;
 
 
-delete from solicitante
+delete from AreaDeTrabajo
     commit;
     
     
@@ -408,7 +407,6 @@ SELECT
 
             WHERE s.Estado = 'Pendiente' AND s.idTrabajo = 4
             
-            commit;
             
 SELECT 
     T.IdTrabajo, 
@@ -439,7 +437,7 @@ ON
         
         select * from solicitud;
         
-Select * from solicitud where IdSolicitante = ? and IdTrabajo= ?
+Select * from empleador
 
 SELECT 
     T.IdTrabajo, 
