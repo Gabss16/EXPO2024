@@ -54,11 +54,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/crea_cuenta" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:layout_width="342dp"
-        android:layout_height="681dp"
+        android:layout_height="690dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -284,10 +285,10 @@
                 android:layout_marginTop="24dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:hint="Contraseña"
                 android:inputType="textPassword"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.508"
                 app:layout_constraintStart_toStartOf="parent"
@@ -302,11 +303,11 @@
                 android:layout_marginEnd="28dp"
                 android:background="@drawable/txt_registro"
                 android:ems="10"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:gravity="start|top"
                 android:hint="Realiza una breve descripción de tus habilidades laborales."
                 android:inputType="textMultiLine"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spGeneroSolicitante" />
@@ -333,6 +334,37 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtHabilidadesLaborales" />
 
+            <TextView
+                android:id="@+id/fesv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteX="263dp"
+                tools:layout_editor_absoluteY="1211dp" />
+
+            <Button
+                android:id="@+id/btnSubirCV"
+                android:layout_width="212dp"
+                android:layout_height="39dp"
+                android:layout_marginBottom="92dp"
+                android:text="Subir CV"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView37"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/textView37"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Sube tu CV"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.501"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnTomarFotoSolicitante" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

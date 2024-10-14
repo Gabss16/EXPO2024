@@ -178,6 +178,7 @@ class registroSolicitante : AppCompatActivity() {
 
 
 
+
         val listadoGeneros = listOf(
             "Masculino", "Femenino", "Prefiero no decirlo"
         )
@@ -645,7 +646,7 @@ class registroSolicitante : AppCompatActivity() {
 
     private fun checkStoragePermission() {
         if (ContextCompat.checkSelfPermission(
-                this, android.Manifest.permission.READ_EXTERNAL_STORAGE
+                this, android.Manifest.permission.READ_MEDIA_IMAGES
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             // El permiso no está aceptado, entonces se lo pedimos
@@ -657,12 +658,29 @@ class registroSolicitante : AppCompatActivity() {
         }
     }
 
+    fun requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this, android.Manifest.permission.READ_MEDIA_IMAGES
+            )
+        ) {
+            // El usuario ya ha rechazado el permiso anteriormente, debemos informarle que vaya a ajustes.
+            // Aquí podrías mostrar un diálogo explicativo al usuario.
+        } else {
+            // El usuario nunca ha aceptado ni rechazado, así que le pedimos que acepte el permiso.
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES),
+                STORAGE_REQUEST_CODE
+            )
+        }
+    }
+
     fun requestCameraPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(
                 this, android.Manifest.permission.CAMERA
             )
         ) {
-            // El usuario ya ha rechazado el permiso anteriormente, debemos informarle que vaya a ajustes.
+            // El usuario ya ha rechazado el permiso anteriormente, informarle sobre esto.
         } else {
             // El usuario nunca ha aceptado ni rechazado, así que le pedimos que acepte el permiso.
             ActivityCompat.requestPermissions(
@@ -673,42 +691,14 @@ class registroSolicitante : AppCompatActivity() {
         }
     }
 
-    fun requestStoragePermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(
-                this, android.Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-        ) {
-            // El usuario ya ha rechazado el permiso anteriormente, debemos informarle que vaya a ajustes.
-        } else {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                STORAGE_REQUEST_CODE
-            )
-        }
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            CAMERA_REQUEST_CODE -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    //El usuario ha aceptado el permiso, no tiene porqué darle de nuevo al botón, podemos lanzar la funcionalidad desde aquí.
-                    //Abrimos la camara:
-                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    startActivityForResult(intent, codigo_opcion_tomar_foto)
-                } else {
-                    //El usuario ha rechazado el permiso, podemos desactivar la funcionalidad o mostrar una vista/diálogo.
-                }
-
-                return
-            }
-
             STORAGE_REQUEST_CODE -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    //Abrimos la galeria
+                    // Abrimos la galería
                     val intent = Intent(Intent.ACTION_PICK)
                     intent.type = "image/*"
                     startActivityForResult(intent, codigo_opcion_galeria)
@@ -717,8 +707,18 @@ class registroSolicitante : AppCompatActivity() {
                         this,
                         "Permiso de almacenamiento denegado",
                         Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    ).show()
+                }
+            }
+
+            // Si decides mantener el manejo del permiso de la cámara:
+            CAMERA_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // El usuario ha aceptado el permiso, abrimos la cámara:
+                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    startActivityForResult(intent, codigo_opcion_tomar_foto)
+                } else {
+                    // El usuario ha rechazado el permiso para la cámara, manejar la lógica aquí.
                 }
             }
 
@@ -728,17 +728,15 @@ class registroSolicitante : AppCompatActivity() {
         }
     }
 
-    // Esta función onActivityResult se encarga de capturar lo que pasa al abrir la geleria o la camara
+    // Esta función onActivityResult se encarga de capturar lo que pasa al abrir la galería o la cámara
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-
                 codigo_opcion_galeria -> {
                     val imageUri: Uri? = data?.data
                     imageUri?.let {
-                        val imageBitmap =
-                            MediaStore.Images.Media.getBitmap(contentResolver, it)
+                        val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
                         subirimagenFirebase(imageBitmap) { url ->
                             miPath = url
                             imgFotoDePerfilSolicitante.setImageURI(it)
@@ -747,7 +745,6 @@ class registroSolicitante : AppCompatActivity() {
                     }
                 }
 
-
                 codigo_opcion_tomar_foto -> {
                     val imageBitmap = data?.extras?.get("data") as? Bitmap
                     imageBitmap?.let {
@@ -755,7 +752,6 @@ class registroSolicitante : AppCompatActivity() {
                             miPath = url
                             imgFotoDePerfilSolicitante.setImageBitmap(it)
                             fotoSubida = true // Foto subida correctamente
-
                         }
                     }
                 }

@@ -180,7 +180,7 @@ class registro_empresa : AppCompatActivity() {
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
                 // Permiso concedido, abrir la galería
-                openGallery()
+                checkStoragePermission()
             } else {
                 // Permiso no concedido, solicitar permiso
                 checkStoragePermission()
@@ -193,7 +193,7 @@ class registro_empresa : AppCompatActivity() {
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
                 // Permiso concedido, abrir la cámara
-                openCamera()
+                checkCameraPermission()
             } else {
                 // Permiso no concedido, solicitar permiso
                 checkCameraPermission()
@@ -844,75 +844,128 @@ class registro_empresa : AppCompatActivity() {
 
     private fun checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                this, android.Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(
-                    android.Manifest.permission.CAMERA,
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ),
-                CAMERA_REQUEST_CODE
-            )
+            // El permiso no está aceptado, entonces se lo pedimos
+            requestCameraPermission()
         } else {
-            openCamera()
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(intent, codigo_opcion_tomar_foto)
         }
     }
+
 
     private fun checkStoragePermission() {
         if (ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
+                this, android.Manifest.permission.READ_MEDIA_IMAGES
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                STORAGE_REQUEST_CODE
-            )
+            // El permiso no está aceptado, entonces se lo pedimos
+            requestStoragePermission()
         } else {
-            openGallery()
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, codigo_opcion_galeria)
         }
     }
 
-    private fun openCamera() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, codigo_opcion_tomar_foto)
-    }
-
-    private fun openGallery() {
-        val intent =
-            Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+    fun requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this, android.Manifest.permission.READ_MEDIA_IMAGES
             )
-        startActivityForResult(intent, codigo_opcion_galeria)
+        ) {
+            // El usuario ya ha rechazado el permiso anteriormente, debemos informarle que vaya a ajustes.
+            // Aquí podrías mostrar un diálogo explicativo al usuario.
+        } else {
+            // El usuario nunca ha aceptado ni rechazado, así que le pedimos que acepte el permiso.
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES),
+                STORAGE_REQUEST_CODE
+            )
+        }
     }
 
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
-        super.onActivityResult(requestCode, resultCode, data)
+    fun requestCameraPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this, android.Manifest.permission.CAMERA
+            )
+        ) {
+            // El usuario ya ha rechazado el permiso anteriormente, informarle sobre esto.
+        } else {
+            // El usuario nunca ha aceptado ni rechazado, así que le pedimos que acepte el permiso.
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.CAMERA),
+                CAMERA_REQUEST_CODE
+            )
+        }
+    }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            STORAGE_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // Abrimos la galería
+                    val intent = Intent(Intent.ACTION_PICK)
+                    intent.type = "image/*"
+                    startActivityForResult(intent, codigo_opcion_galeria)
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Permiso de almacenamiento denegado",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            // Si decides mantener el manejo del permiso de la cámara:
+            CAMERA_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // El usuario ha aceptado el permiso, abrimos la cámara:
+                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    startActivityForResult(intent, codigo_opcion_tomar_foto)
+                } else {
+                    // El usuario ha rechazado el permiso para la cámara, manejar la lógica aquí.
+                }
+            }
+
+            else -> {
+                // Este else lo dejamos por si sale un permiso que no teníamos controlado.
+            }
+        }
+    }
+
+    // Esta función onActivityResult se encarga de capturar lo que pasa al abrir la galería o la cámara
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                codigo_opcion_tomar_foto -> {
-                    val photo = data?.extras?.get("data") as Bitmap
-                    imgFotoDePerfilEmpleador.setImageBitmap(photo)
-                    fotoSubida = true
+                codigo_opcion_galeria -> {
+                    val imageUri: Uri? = data?.data
+                    imageUri?.let {
+                        val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
+                        subirimagenFirebase(imageBitmap) { url ->
+                            miPathEmpresa = url
+                            imgFotoDePerfilEmpleador.setImageURI(it)
+                            fotoSubida = true // Foto subida correctamente
+                        }
+                    }
                 }
 
-                codigo_opcion_galeria -> {
-                    val imageUri = data?.data
-                    imgFotoDePerfilEmpleador.setImageURI(imageUri)
-                    fotoSubida = true
+                codigo_opcion_tomar_foto -> {
+                    val imageBitmap = data?.extras?.get("data") as? Bitmap
+                    imageBitmap?.let {
+                        subirimagenFirebase(it) { url ->
+                            miPathEmpresa = url
+                            imgFotoDePerfilEmpleador.setImageBitmap(it)
+                            fotoSubida = true // Foto subida correctamente
+                        }
+                    }
                 }
             }
         }
