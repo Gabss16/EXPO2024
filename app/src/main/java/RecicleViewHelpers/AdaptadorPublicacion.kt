@@ -57,7 +57,7 @@ class AdaptadorPublicacion(var Datos : List<Trabajo>) : RecyclerView.Adapter<Vie
     override fun onBindViewHolder(holder: ViewHolderPublicacion, position: Int) {
         val trabajos = Datos[position]
         holder.txtTIituloTrabajo.text = trabajos.Titulo
-        holder.txtTipoTrabajo.text = trabajos.NombreAreaDeTrabajo.toString()
+        holder.txtTipoTrabajo.text = trabajos.FechaDePublicacion.toString()
 
         //todo: clic al icono de eliminar
         holder.imgBorrar.setOnClickListener {
