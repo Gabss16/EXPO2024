@@ -54,6 +54,9 @@ class homeEmpresa : Fragment() {
         }
     }
 
+    private var latitudTrabajo: Double? = null
+    private var longitudTrabajo: Double? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -185,6 +188,18 @@ ON
             val txtBeneficiosJob = view.findViewById<EditText>(R.id.txtBeneficiosJob)
             val txtSalarioJobMinimo = view.findViewById<EditText>(R.id.txtSalarioJobMinimo)
             val txtSalarioJobMaximo = view.findViewById<EditText>(R.id.txtSalarioJobMaximo)
+
+            txtUbicacionJob.setOnClickListener {
+                val bottomSheet = SelectLocationBottomSheet { direccion, latitud, longitud ->
+                    // Mostrar la dirección en el campo de texto
+                    txtUbicacionJob.setText(direccion)
+
+                    // Guardar latitud y longitud en variables globales para usar en la inserción
+                    latitudTrabajo = latitud
+                    longitudTrabajo = longitud
+                }
+                bottomSheet.show(parentFragmentManager, "SelectLocationBottomSheet")
+            }
 
 
             val fechaDePublicacion =
@@ -363,20 +378,22 @@ ON
                         //2-creo una variable que contenga un PrepareStatement
 
                         val addTrabajo =
-                            objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , IdAreaDeTrabajo,Descripcion ,Direccion ,IdDepartamento, Experiencia , Requerimientos , Estado ,SalarioMinimo, SalarioMaximo , Beneficios, FechaDePublicacion ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
+                            objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , IdAreaDeTrabajo,Descripcion ,Direccion , Longitud, Latitud, IdDepartamento, Experiencia , Requerimientos , Estado ,SalarioMinimo, SalarioMaximo , Beneficios, FechaDePublicacion ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,? )")!!
                         addTrabajo.setString(1, txtTituloJob.text.toString().trim())
                         addTrabajo.setString(2, idEmpleador)
                         addTrabajo.setInt(3, idAreaDeTrabajo)
                         addTrabajo.setString(4, txtDescripcionJob.text.toString().trim())
                         addTrabajo.setString(5, txtUbicacionJob.text.toString().trim())
-                        addTrabajo.setInt(6, idDepartamento)
-                        addTrabajo.setString(7, txtExperienciaJob.text.toString().trim())
-                        addTrabajo.setString(8, txtHabilidadesJob.text.toString().trim())
-                        addTrabajo.setString(9, "Activo")
-                        addTrabajo.setBigDecimal(10, salarioMin)
-                        addTrabajo.setBigDecimal(11, salarioMax)
-                        addTrabajo.setString(12, txtBeneficiosJob.text.toString().trim())
-                        addTrabajo.setString(13, fechaDePublicacion)
+                        addTrabajo.setDouble(6, latitudTrabajo ?: 0.0) // Latitud
+                        addTrabajo.setDouble(7, longitudTrabajo ?: 0.0) // Longitud
+                        addTrabajo.setInt(8, idDepartamento)
+                        addTrabajo.setString(9, txtExperienciaJob.text.toString().trim())
+                        addTrabajo.setString(10, txtHabilidadesJob.text.toString().trim())
+                        addTrabajo.setString(11, "Activo")
+                        addTrabajo.setBigDecimal(12, salarioMin)
+                        addTrabajo.setBigDecimal(13, salarioMax)
+                        addTrabajo.setString(14, txtBeneficiosJob.text.toString().trim())
+                        addTrabajo.setString(15, fechaDePublicacion)
 
                         Log.d(
                             "InsertJob",
@@ -421,6 +438,7 @@ ON
             dialog.show()
         }
         return root
+
 
     }
 
