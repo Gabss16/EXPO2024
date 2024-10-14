@@ -28,7 +28,7 @@ class DetallePublicacion : AppCompatActivity() {
     private lateinit var txtTituloDetalle: TextView
     private lateinit var txtDescripcionDetalle: TextView
     private lateinit var rcvSolicitudes: RecyclerView
-   // private lateinit var solicitudesAdapter: AdaptadorSolicitud
+    // private lateinit var solicitudesAdapter: AdaptadorSolicitud
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,13 +92,15 @@ class DetallePublicacion : AppCompatActivity() {
             dialog.show()
 
             // Aquí debes encontrar el RecyclerView dentro del layout del BottomSheet
-            val rcvSolicitudesAceptadas = view.findViewById<RecyclerView>(R.id.rcvSolicitudesAceptadas)
+            val rcvSolicitudesAceptadas =
+                view.findViewById<RecyclerView>(R.id.rcvSolicitudesAceptadas)
 
             rcvSolicitudesAceptadas.layoutManager = LinearLayoutManager(this)
 
             fun obtenerSolicitudesAceptadas(idTrabajo: Int): List<Solicitud> {
                 val objConexion = ClaseConexion().cadenaConexion()
-                val statement = objConexion?.prepareStatement("""
+                val statement = objConexion?.prepareStatement(
+                    """
      SELECT
                 s.IdSolicitud,
                 s.IdSolicitante,
@@ -114,7 +116,8 @@ class DetallePublicacion : AppCompatActivity() {
                 INNER JOIN SOLICITANTE ss ON s.IdSolicitante = ss.IdSolicitante
                 INNER JOIN AreaDeTrabajo A ON ss.IdAreaDeTrabajo = A.IdAreaDeTrabajo
         WHERE s.Estado = 'Aprobada' AND s.IdTrabajo = ?
-    """)
+    """
+                )
 
                 // Establecer el idTrabajo en la consulta
                 statement?.setInt(1, idTrabajo)
@@ -171,12 +174,12 @@ class DetallePublicacion : AppCompatActivity() {
         //val solicitudes = obtenerSolicitudesParaTrabajo()
 
 
-
 //TODO DEFINIR BIEN QUÉ MÁS SE VA A MOSTRAR EN LA SOLICITUD
 
         fun obtenerSolicitudesParaTrabajo(idTrabajo: Int): List<Solicitud> {
             val objConexion = ClaseConexion().cadenaConexion()
-            val statement = objConexion?.prepareStatement("""
+            val statement = objConexion?.prepareStatement(
+                """
      SELECT
                 s.IdSolicitud,
                 s.IdSolicitante,
@@ -192,7 +195,8 @@ class DetallePublicacion : AppCompatActivity() {
                 INNER JOIN SOLICITANTE ss ON s.IdSolicitante = ss.IdSolicitante
                 INNER JOIN AreaDeTrabajo A ON ss.IdAreaDeTrabajo = A.IdAreaDeTrabajo
         WHERE s.Estado = 'Pendiente' AND s.IdTrabajo = ?
-    """)
+    """
+            )
 
             // Establecer el idTrabajo en la consulta
             statement?.setInt(1, idTrabajo)
@@ -230,15 +234,15 @@ class DetallePublicacion : AppCompatActivity() {
 
         // Configurar adaptador para solicitudes
         CoroutineScope(Dispatchers.IO).launch {
-            val solicitudesDb = obtenerSolicitudesParaTrabajo(idTrabajo)
-            withContext(Dispatchers.Main) {
-                val adapter = AdaptadorSolicitud(solicitudesDb)
-                rcvSolicitudes.adapter = adapter
+            CoroutineScope(Dispatchers.IO).launch {
+                val solicitudesDb = obtenerSolicitudesParaTrabajo(idTrabajo)
+                withContext(Dispatchers.Main) {
+                    val adapter = AdaptadorSolicitud(solicitudesDb)
+                    rcvSolicitudes.adapter = adapter
+                }
             }
+
+
         }
-
-
-
-
     }
 }

@@ -11,6 +11,7 @@ import com.example.expogbss.Info_Perfil_Solicitante
 import com.example.expogbss.R
 import com.example.expogbss.ingresarCorreoRecupContrasena.variablesGlobalesRecuperacionDeContrasena.codigo
 import com.example.expogbss.ingresarCorreoRecupContrasena.variablesGlobalesRecuperacionDeContrasena.correoIngresado
+import com.example.expogbss.login
 import com.example.expogbss.recuperarContrasena
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,11 +48,13 @@ class AdaptadorSolicitud(var Datos: List<Solicitud>) : RecyclerView.Adapter<View
             updateSolicitud.executeUpdate()
             val commit = objConexion.prepareStatement("commit")
             commit.executeUpdate()
+            withContext(Dispatchers.Main) {
+                Datos = listaDatos.toList()
+                // Notificar al adaptador sobre los cambios
+                notifyItemRemoved(posicion)
+                notifyDataSetChanged()
+            }
         }
-        Datos = listaDatos.toList()
-        // Notificar al adaptador sobre los cambios
-        notifyItemRemoved(posicion)
-        notifyDataSetChanged()
     }
 
 
@@ -98,15 +101,19 @@ class AdaptadorSolicitud(var Datos: List<Solicitud>) : RecyclerView.Adapter<View
         val Nombresolicitante = Solicitud.NombreSolicitante
 
         // Obtener el correo electrónico del empleador
-        val CorreoElectronico = obtenerCorreoElectronico(Solicitud.IdTrabajo)
+        val correoEmpleador = login.correoEmpleador
+        val papu2 = Solicitud.IdTrabajo
+        val papu = Solicitud.IdSolicitante
 
-        // Obtener el título del trabajo
-        val Títulotrabajo = obtenerTituloTrabajo(Solicitud.IdTrabajo)
 
-        val correo = obtenerCorreoSolicitante(Solicitud.IdSolicitante)
+        CoroutineScope(Dispatchers.IO).launch {
+            val Títulotrabajo = obtenerTituloTrabajo(papu2)
+            val correo = obtenerCorreoSolicitante(papu)
 
-        fun generarHTMLCorreo(): String {
-            return """
+
+            withContext(Dispatchers.Main) {
+                fun generarHTMLCorreo(): String {
+                    return """
 <html>
 <body style="font-family: 'Roboto', sans-serif;
             background-color: #f5f7fa;
@@ -117,7 +124,7 @@ class AdaptadorSolicitud(var Datos: List<Solicitud>) : RecyclerView.Adapter<View
             margin: 50px auto;
             background-color: #ffffff;
             padding: 30px 20px;
-            border-radius: 15px;
+            border-radius: 15 px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);">
         <div class="img" style="text-align: center;
             margin-top: 40px;">
@@ -130,7 +137,7 @@ class AdaptadorSolicitud(var Datos: List<Solicitud>) : RecyclerView.Adapter<View
             font-weight: 600;
             margin-bottom: 10px;">¡Felicidades!</h2>
             <p style="font-size: 18px; color: #7f8c8d;">
-                Estimado usuario: <strong>$Nombresolicitante</strong>, le informamos que su solicitud al trabajo "<strong>$Títulotrabajo</strong>" fue aceptada. Para más información, póngase en contacto con el empleador <strong>$CorreoElectronico</strong>.
+                Estimado usuario: <strong>$Nombresolicitante</strong>, le informamos que su solicitud al trabajo "<strong>$Títulotrabajo</strong>" fue aceptada. Para más información, póngase en contacto con el empleador <strong>$correoEmpleador</strong>.
             </p>
         </div>
         <div class="footer-logo" style="text-align: center;
@@ -142,122 +149,124 @@ class AdaptadorSolicitud(var Datos: List<Solicitud>) : RecyclerView.Adapter<View
 </html>
 
 """.trimIndent()
-        }
+                }
 
-        holder.jobTitleTextView.text = Solicitud.NombreSolicitante
-        holder.jobCategoryTextView.text = Solicitud.CategoriaTrabajo.toString()
-        holder.statusTextView.text = Solicitud.Estado
+                holder.jobTitleTextView.text = Solicitud.NombreSolicitante
+                holder.jobCategoryTextView.text = Solicitud.CategoriaTrabajo.toString()
+                holder.statusTextView.text = Solicitud.Estado
 
-        holder.acceptButton.setOnClickListener {
-            val context = holder.itemView.context
-            val builder = android.app.AlertDialog.Builder(context)
-            builder.setTitle("Confirmación")
-            builder.setMessage("¿Estás seguro de que deseas aceptar la solicitud?")
+                holder.acceptButton.setOnClickListener {
+                    val context = holder.itemView.context
+                    val builder = android.app.AlertDialog.Builder(context)
+                    builder.setTitle("Confirmación")
+                    builder.setMessage("¿Estás seguro de que deseas aceptar la solicitud?")
 
-            println("Este es el fokin correo $correo")
+                    println("Este es el fokin correo $correo")
+                    println("Este es el fokin nombre del solicitante $Nombresolicitante")
+                    println("Este es el fokin correo del empleador $correoEmpleador")
+                    println("Este es el fokin titulo del trabajo $Títulotrabajo")
 
-            builder.setPositiveButton("Aceptar") { dialog, _ ->
+                    builder.setPositiveButton("Aceptar") { dialog, _ ->
 
-                val correoConHtml = generarHTMLCorreo()
+                        val correoConHtml = generarHTMLCorreo()
 
-                if (!correo.isNullOrEmpty()) {
-                    GlobalScope.launch {
-                        val correoEnviado = recuperarContrasena(
-                            correo,
-                            "Actualización sobre solicitud", correoConHtml
-                        )
-                        if (correoEnviado){
-                            // Actualizar el estado de la solicitud a 'Aprobada'
-                            actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Aprobada")
-                            dialog.dismiss() // Cerrar el diálogo
+                        if (!correo.isNullOrEmpty()) {
+                            GlobalScope.launch {
+                                val correoEnviado = recuperarContrasena(
+                                    correo,
+                                    "Actualización sobre solicitud", correoConHtml
+                                )
+                                if (correoEnviado) {
+                                    // Actualizar el estado de la solicitud a 'Aprobada'
+                                    actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Aprobada")
+                                    eliminarDatos(Solicitud.IdSolicitud, "Aprobada", position)
+                                    withContext(Dispatchers.Main) {
+                                        Toast.makeText(
+                                            context,
+                                            "Solicitud aceptada con éxito",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                    dialog.dismiss()
+                                   // Cerrar el diálogo
+                                }
+                            }
+                        } else {
+                            // Maneja el caso en el que la variable correo es vacía
+                            Toast.makeText(
+                                context,
+                                "No se pudo enviar el correo electrónico",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
-                } else {
-                    // Maneja el caso en el que la variable correo es vacía
-                    Toast.makeText(
-                        context,
-                        "No se pudo enviar el correo electrónico",
-                        Toast.LENGTH_SHORT
-                    ).show()
+
+                    builder.setNegativeButton("Cancelar") { dialog, _ ->
+                        // Cerrar el diálogo sin hacer nada
+                        dialog.dismiss()
+                    }
+
+                    val dialog: android.app.AlertDialog = builder.create()
+                    dialog.show()
+                }
+
+                holder.rejectButton.setOnClickListener {
+                    val context = holder.itemView.context
+                    val builder = android.app.AlertDialog.Builder(context)
+                    builder.setTitle("Confirmación")
+                    builder.setMessage("¿Estás seguro de que deseas rechazar la solicitud?")
+
+                    builder.setPositiveButton("Rechazar") { dialog, _ ->
+                        // Actualizar el estado de la solicitud a 'Rechazada'
+                        actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Rechazada")
+                        eliminarDatos(Solicitud.IdSolicitud, "Rechazada", position)
+                        Toast.makeText(
+                            context,
+                            "Solicitud rechazada con éxito",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        dialog.dismiss()// Cerrar el diálogo
+                    }
+
+                    builder.setNegativeButton("Cancelar") { dialog, _ ->
+                        // Cerrar el diálogo sin hacer nada
+                        dialog.dismiss()
+                    }
+
+                    val dialog: android.app.AlertDialog = builder.create()
+                    dialog.show()
+                }
+
+                holder.itemView.setOnClickListener {
+
+                    val context = holder.itemView.context
+                    //Cambiar de pantalla a la pantalla de detalle
+                    val pantallaDetalleP = Intent(context, Info_Perfil_Solicitante::class.java)
+
+                    pantallaDetalleP.putExtra("IdSolicitante", Solicitud.IdSolicitante)
+                    pantallaDetalleP.putExtra("NombreSolicitante", Solicitud.NombreSolicitante)
+
+                    context.startActivity(pantallaDetalleP)
                 }
             }
-
-            builder.setNegativeButton("Cancelar") { dialog, _ ->
-                // Cerrar el diálogo sin hacer nada
-                dialog.dismiss()
-            }
-
-            val dialog: android.app.AlertDialog = builder.create()
-            dialog.show()
-        }
-
-        holder.rejectButton.setOnClickListener {
-            val context = holder.itemView.context
-            val builder = android.app.AlertDialog.Builder(context)
-            builder.setTitle("Confirmación")
-            builder.setMessage("¿Estás seguro de que deseas rechazar la solicitud?")
-
-            builder.setPositiveButton("Rechazar") { dialog, _ ->
-                // Actualizar el estado de la solicitud a 'Rechazada'
-                actualizarEstadoSolicitud(Solicitud.IdSolicitud, "Rechazada")
-                eliminarDatos(Solicitud.IdSolicitud, "Rechazada", position)
-                dialog.dismiss()// Cerrar el diálogo
-
-            }
-
-            builder.setNegativeButton("Cancelar") { dialog, _ ->
-                // Cerrar el diálogo sin hacer nada
-                dialog.dismiss()
-            }
-
-            val dialog: android.app.AlertDialog = builder.create()
-            dialog.show()
-        }
-
-        holder.itemView.setOnClickListener {
-
-            val context = holder.itemView.context
-            //Cambiar de pantalla a la pantalla de detalle
-            val pantallaDetalleP = Intent(context, Info_Perfil_Solicitante::class.java)
-
-            pantallaDetalleP.putExtra("IdSolicitante", Solicitud.IdSolicitante)
-            pantallaDetalleP.putExtra("NombreSolicitante", Solicitud.NombreSolicitante)
-
-            context.startActivity(pantallaDetalleP)
         }
     }
 
-    fun obtenerCorreoElectronico(idTrabajo: Int): String {
-        // Realizar una consulta a la base de datos para obtener el correo electrónico del empleador
-        val objConexion = ClaseConexion().cadenaConexion()
-        val statement =
-            objConexion?.prepareStatement("SELECT e.CorreoElectronico FROM Empleador e INNER JOIN Trabajo t ON e.IdEmpleador = t.IdEmpleador WHERE t.IdTrabajo = ?")
-        statement?.setInt(1, idTrabajo)
-        val resultSet = statement?.executeQuery()
-        val correoElectronico = resultSet?.getString("CorreoElectronico")
-        return correoElectronico ?: ""
-    }
-
-    fun obtenerTituloTrabajo(idTrabajo: Int): String {
-        // Realizar una consulta a la base de datos para obtener el título del trabajo
+    suspend fun obtenerTituloTrabajo(idTrabajo: Int): String? {
         val objConexion = ClaseConexion().cadenaConexion()
         val statement =
             objConexion?.prepareStatement("SELECT t.Titulo FROM Trabajo t WHERE t.IdTrabajo = ?")
         statement?.setInt(1, idTrabajo)
         val resultSet = statement?.executeQuery()
-        val tituloTrabajo = resultSet?.getString("Titulo")
-        return tituloTrabajo ?: ""
+        return if (resultSet?.next() == true) resultSet.getString("TITULO") else null
     }
 
-    fun obtenerCorreoSolicitante(idSolicitante: String): String {
-        Log.d("obtenerCorreoSolicitante", "idSolicitante: $idSolicitante")
+    suspend fun obtenerCorreoSolicitante(idSolicitante: String): String? {
         val objConexion = ClaseConexion().cadenaConexion()
-        val statement = objConexion?.prepareStatement("SELECT CorreoElectronico FROM Solicitante WHERE IdSolicitante = ?")
+        val statement =
+            objConexion?.prepareStatement("SELECT CorreoElectronico FROM Solicitante WHERE IdSolicitante = ?")
         statement?.setString(1, idSolicitante)
         val resultSet = statement?.executeQuery()
-        Log.d("obtenerCorreoSolicitante", "resultSet: $resultSet")
-        val correoSolicitante = resultSet?.getString("CorreoElectronico")
-        Log.d("obtenerCorreoSolicitante", "correoSolicitante: $correoSolicitante")
-        return correoSolicitante ?: ""
+        return if (resultSet?.next() == true) resultSet.getString("CORREOELECTRONICO") else null
     }
 }
