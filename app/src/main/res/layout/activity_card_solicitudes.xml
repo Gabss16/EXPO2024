@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
+    android:layout_margin="1dp"
     android:backgroundTint="#00FFFFFF"
     app:cardCornerRadius="12dp"
-    app:cardElevation="6dp">
+    app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -68,24 +68,24 @@
 
         <ImageButton
             android:id="@+id/iBtnAceptar"
-            android:layout_width="37dp"
-            android:layout_height="38dp"
-            android:layout_marginTop="88dp"
+            android:layout_width="106dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="80dp"
             android:backgroundTint="#00FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.83"
+            app:layout_constraintHorizontal_bias="0.97"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/icona" />
 
         <ImageButton
             android:id="@+id/iBtnRechazar"
-            android:layout_width="39dp"
-            android:layout_height="37dp"
-            android:layout_marginTop="88dp"
+            android:layout_width="123dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="80dp"
             android:backgroundTint="#00FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.944"
+            app:layout_constraintHorizontal_bias="0.551"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/reject" />
