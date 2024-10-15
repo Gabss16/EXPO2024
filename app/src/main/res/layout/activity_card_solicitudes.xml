@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="1dp"
-    android:backgroundTint="#00FFFFFF"
+    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
     app:cardCornerRadius="12dp"
     app:cardElevation="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
         android:padding="16dp">
 
         <!-- Estado de la solicitud -->

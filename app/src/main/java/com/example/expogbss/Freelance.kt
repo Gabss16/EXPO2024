@@ -47,10 +47,10 @@ class Freelance : AppCompatActivity() {
             //2 - Creo un statement
             //El símbolo de pregunta es pq los datos pueden ser nulos
             val statement = objConexion?.createStatement()
-            val resultSet = statement?.executeQuery("""SSELECT 
+            val resultSet = statement?.executeQuery("""SELECT 
     T.IdTrabajo, 
     T.Titulo, 
-    T.IdEmpleador, 
+    E.NombreRepresentante,  -- Agrega el nombre del representante
     A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
     T.Descripcion,   
     T.Direccion, 
@@ -67,11 +67,11 @@ class Freelance : AppCompatActivity() {
 FROM 
     TRABAJO T
 INNER JOIN 
-    AreaDeTrabajo A
-ON 
-    T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+    AreaDeTrabajo A ON T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+INNER JOIN 
+    EMPLEADOR E ON T.IdEmpleador = E.IdEmpleador  -- Agregar JOIN con la tabla EMPLEADOR
 WHERE 
-    T.IdAreaDeTrabajo = 2 AND Estado = 'Activo'""")!!
+    T.IdAreaDeTrabajo = 2 AND T.Estado = 'Activo';""")!!
 
             //en esta variable se añaden TODOS los valores de mascotas
             val listaTrabajos = mutableListOf<Trabajo>()
@@ -81,7 +81,7 @@ WHERE
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
-                val IdEmpleador = resultSet.getString("IdEmpleador")
+                val NombreRepresentante = resultSet.getString("NombreRepresentante")
                 val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Direccion = resultSet.getString("Direccion")
@@ -99,7 +99,7 @@ WHERE
                 val trabajo = Trabajo(
                     IdTrabajo,
                     Titulo,
-                    IdEmpleador,
+                    NombreRepresentante,
                     NombreAreaDeTrabajo,
                     Descripcion,
                     Direccion,

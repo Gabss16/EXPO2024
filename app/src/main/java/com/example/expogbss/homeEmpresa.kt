@@ -84,7 +84,7 @@ class homeEmpresa : Fragment() {
             val statement = objConexion?.prepareStatement("""SELECT 
     T.IdTrabajo, 
     T.Titulo, 
-    T.IdEmpleador, 
+    E.NombreRepresentante, 
     A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
     T.Descripcion,   
     T.Direccion, 
@@ -101,10 +101,11 @@ class homeEmpresa : Fragment() {
 FROM 
     TRABAJO T
 INNER JOIN 
-    AreaDeTrabajo A
-ON 
-    T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
- WHERE IdEmpleador = ?  AND Estado = 'Activo'""")
+    AreaDeTrabajo A ON T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+INNER JOIN 
+    EMPLEADOR E ON T.IdEmpleador = E.IdEmpleador  
+WHERE 
+    T.IdEmpleador = ? AND T.Estado = 'Activo'""")
 
             statement?.setString(1, idEmpleador)
             val resultSet = statement?.executeQuery()!!
@@ -119,6 +120,7 @@ ON
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
+                val NombreRepresentante = resultSet.getString("NombreRepresentante")
                 val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Ubicacion = resultSet.getString("Direccion")
@@ -137,7 +139,7 @@ ON
                 val trabajo = Trabajo(
                     IdTrabajo,
                     Titulo,
-                    idEmpleador,
+                    NombreRepresentante,
                     NombreAreaDeTrabajo,
                     Descripcion,
                     Ubicacion,
