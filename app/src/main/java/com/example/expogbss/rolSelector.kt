@@ -14,6 +14,7 @@ class rolSelector : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.statusBarColor = resources.getColor(R.color.agalo, theme)
         enableEdgeToEdge()
         setContentView(R.layout.activity_rol_selector)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

@@ -254,6 +254,8 @@ class editar_perfil_solicitante : AppCompatActivity() {
         btnEditarPerfilSolicitante.setOnClickListener {
             // Deshabilitar el botón para evitar múltiples clicks
             btnEditarPerfilSolicitante.isEnabled = false
+            val latitud = this.latitudActual ?: 0.0
+            val longitud = this.longitudActual ?: 0.0
 
             // Obtener los valores de los EditText
             val nombreSolicitante = txtNombreSolicitanteEdit.text.toString().trim()
@@ -355,19 +357,22 @@ class editar_perfil_solicitante : AppCompatActivity() {
                             val idAreaTrabajo =
                                 AreaSeleccionada!!.idAreaDeTrabajo
 
+
                             // Actualizar los datos del empleador en la base de datos
                             val actualizarUsuario = objConexion?.prepareStatement(
-                                "UPDATE SOLICITANTE SET Nombre  = ?, CorreoElectronico  = ?, Telefono  = ?, Direccion  = ?, IdDepartamento  = ?, IdAreaDeTrabajo = ?, Habilidades  =?, Estado =?  WHERE IdSolicitante = ?"
+                                "UPDATE SOLICITANTE SET Nombre  = ?, CorreoElectronico  = ?, Telefono  = ?, Direccion  = ?,Latitud = ?, Longitud = ?, IdDepartamento  = ?, IdAreaDeTrabajo = ?, Habilidades  =?, Estado =?  WHERE IdSolicitante = ?"
                             )!!
                             actualizarUsuario.setString(1, nombreSolicitante)
                             actualizarUsuario.setString(2, correoSolicitante)
                             actualizarUsuario.setString(3, telefonoSolicitante)
                             actualizarUsuario.setString(4, direccionSolicitante)
-                            actualizarUsuario.setInt(5, idDepartamento) // Asegúrate de que `idDepartamento` es un Int
-                            actualizarUsuario.setInt(6, idAreaTrabajo) // Asegúrate de que `idAreaTrabajo` es un Int
-                            actualizarUsuario.setString(7, habilidadesSolicitante)
-                            actualizarUsuario.setString(8, spEstadoSolicitante.selectedItem.toString()) // Estado
-                            actualizarUsuario.setString(9, idSolicitante)
+                            actualizarUsuario.setDouble(5, latitud) // Latitud
+                            actualizarUsuario.setDouble(6, longitud) // Longitud
+                            actualizarUsuario.setInt(7, idDepartamento) // Asegúrate de que `idDepartamento` es un Int
+                            actualizarUsuario.setInt(8, idAreaTrabajo) // Asegúrate de que `idAreaTrabajo` es un Int
+                            actualizarUsuario.setString(9, habilidadesSolicitante)
+                            actualizarUsuario.setString(10, spEstadoSolicitante.selectedItem.toString()) // Estado
+                            actualizarUsuario.setString(11, idSolicitante)
 
                             val filasAfectadas = actualizarUsuario.executeUpdate()
 

@@ -8,58 +8,49 @@
     android:background="@drawable/fondopublicacion"
     android:backgroundTint="#FAFAFA"
     tools:context=".trabajos_Inactivos">
+
     <ImageButton
         android:id="@+id/btnSalirTrabajosInactivos"
         android:layout_width="35dp"
         android:layout_height="34dp"
-        android:background="@drawable/baseline_arrow_back_ios_black_24"
+        android:background="@drawable/quantum_ic_clear_grey600_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintHorizontal_bias="0.984"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.038" />
+        app:layout_constraintVertical_bias="0.001" />
 
     <TextView
         android:id="@+id/txtTrabajsdasd"
-        android:layout_width="274dp"
-        android:layout_height="62dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="352dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="32dp"
         android:text="Historial de trabajos eliminados"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.576"
+        app:layout_constraintHorizontal_bias="0.135"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtDescxdasd"
-        android:layout_width="290dp"
-        android:layout_height="63dp"
-        android:layout_marginTop="76dp"
+        android:layout_width="340dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="68dp"
         android:text="Acá puedes reactivar los trabajos que previamante inhabilitaste"
         android:textColor="@android:color/darker_gray"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.652"
+        app:layout_constraintHorizontal_bias="0.112"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView1234"
-        android:layout_width="412dp"
-        android:layout_height="776dp"
-        android:layout_marginTop="128dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/fondo_soli" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvTrabajosEliminados"
-        android:layout_width="366dp"
-        android:layout_height="613dp"
+        android:layout_width="398dp"
+        android:layout_height="698dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

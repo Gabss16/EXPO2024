@@ -126,6 +126,8 @@ class HomeFragment : Fragment() {
     A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
     T.Descripcion,   
     T.Direccion, 
+    T.Longitud,
+    T.Latitud,
     T.IdDepartamento, 
     T.Experiencia, 
     T.Requerimientos, 
@@ -151,10 +153,12 @@ ON
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
-                val IdEmpleador = resultSet.getString("IdEmpleador")
+                val NombreRepresentante = resultSet.getString("NombreRepresentante")
                 val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Direccion = resultSet.getString("Direccion")
+                val Longitud = resultSet.getDouble("Longitud")
+                val Latitud = resultSet.getDouble("Latitud")
                 val IdDepartamento = resultSet.getInt("IdDepartamento")
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
@@ -167,10 +171,12 @@ ON
                 val trabajo = Trabajo(
                     IdTrabajo,
                     Titulo,
-                    IdEmpleador,
+                    NombreRepresentante,
                     NombreAreaDeTrabajo,
                     Descripcion,
                     Direccion,
+                    Longitud,
+                    Latitud,
                     IdDepartamento,
                     Experiencia,
                     Requerimientos,

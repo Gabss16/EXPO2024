@@ -5,7 +5,7 @@ import oracle.sql.DATE
 class Solicitud(
     val IdSolicitud: Int,
     val IdSolicitante: String,
-    val IdTrabajo: Number,
+    val IdTrabajo: Int,
     val FechaSolicitud: String, // Usar LocalDate o Date si quieres trabajar con fechas
     var Estado: String,
     val TituloTrabajo: String,    // Nuevo campo para el título del trabajo

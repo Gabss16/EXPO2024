@@ -46,6 +46,9 @@ import java.util.UUID
 import android.Manifest
 import android.location.Geocoder
 import android.location.Location
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
+import com.google.android.gms.location.LocationRequest
 import java.io.IOException
 import java.util.Locale
 
@@ -55,6 +58,8 @@ class registroSolicitante : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val LOCATION_REQUEST_CODE = 100
 
+    val codigo_opcion_pdf = 104
+    lateinit var pdfUri: Uri
     val codigo_opcion_galeria = 102
     val codigo_opcion_tomar_foto = 103
     val CAMERA_REQUEST_CODE = 0
@@ -62,6 +67,7 @@ class registroSolicitante : AppCompatActivity() {
 
     lateinit var imgFotoDePerfilSolicitante: ImageView
     lateinit var miPath: String
+    lateinit var PathPDF :String
     val uuid = UUID.randomUUID().toString()
     private var fotoSubida = false
     private var fechaNacimientoSeleccionada: String? = null
@@ -96,11 +102,30 @@ class registroSolicitante : AppCompatActivity() {
         val btnCrearCuentaSolicitante = findViewById<ImageButton>(R.id.btnCrearCuentaSolicitante)
         val btnSubirDesdeGaleriaSolicitante = findViewById<Button>(R.id.btnSubirDesdeGaleriaSolicitante)
         imgFotoDePerfilSolicitante = findViewById(R.id.imgFotoDePerfilSolicitante)
+        val btnSubirCV = findViewById<Button>(R.id.btnSubirCV)
 
         val btnSalir8 = findViewById<ImageButton>(R.id.btnSalir8)
 
         btnSalir8.setOnClickListener {
             finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
+
+        var isPasswordVisible = false
+        val passwordview = txtConstrasenaSolicitante
+        val togglePasswordVisibility = findViewById<ImageView>(R.id.mostrarContraRegistSolicit)
+
+        togglePasswordVisibility.setOnClickListener {
+            if (isPasswordVisible) {
+                // Ocultar contraseña
+                passwordview.transformationMethod = PasswordTransformationMethod.getInstance()
+                togglePasswordVisibility.setImageResource(R.drawable.nuevacontra)
+            } else {
+                // Mostrar contraseña
+                passwordview.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                togglePasswordVisibility.setImageResource(R.drawable.mostrarcontrasena)
+            }
+            isPasswordVisible = !isPasswordVisible
+            passwordview.setSelection(passwordview.text.length)
         }
 
         // Función para hacer el select de los Departamentos
@@ -172,9 +197,9 @@ class registroSolicitante : AppCompatActivity() {
         }
 
         // Obtener ubicación al hacer clic en el campo de dirección
-        txtDireccionSolicitante.setOnClickListener {
-            solicitarPermisoUbicacion()
-        }
+//        txtDireccionSolicitante.setOnClickListener {
+//            obtenerUbicacionActual()
+//        }
 
 
 
@@ -421,8 +446,7 @@ class registroSolicitante : AppCompatActivity() {
                             crearUsuario.setString(12, spGeneroSolicitante.selectedItem.toString())
                             crearUsuario.setInt(13, idAreaDeTrabajo)
                             crearUsuario.setString(14, txtHabilidadesSolicitante.text.toString().trim())
-                            crearUsuario.setString(
-                                15, "Placeholder"); // Para mientras
+                            crearUsuario.setString(15, PathPDF)
                             crearUsuario.setString(16, miPath)
                             crearUsuario.setString(17, contrasenaEncriptada)
 
@@ -465,18 +489,26 @@ class registroSolicitante : AppCompatActivity() {
                                                         .addOnCompleteListener { dbTask ->
                                                             if (dbTask.isSuccessful) {
                                                                 // Mostrar mensaje de éxito y navegar a la pantalla de login
-                                                                Toast.makeText(
-                                                                    this@registroSolicitante,
-                                                                    "Registro completo. Nombre actualizado y datos guardados en la base de datos.",
-                                                                    Toast.LENGTH_LONG
-                                                                ).show()
+                                                                val alertDialog = AlertDialog.Builder(this@registroSolicitante)
+                                                                    .setTitle("Cuenta registrada")
+                                                                    .setMessage("Tu cuenta ha sido creada.")
+                                                                    .setPositiveButton("Aceptar", null)
+                                                                    .create()
 
-                                                                val intent = Intent(
-                                                                    this@registroSolicitante,
-                                                                    login::class.java
-                                                                )
-                                                                startActivity(intent)
-                                                                finish()
+                                                                alertDialog.setOnDismissListener { _ ->
+                                                                    val login = Intent(this@registroSolicitante, login::class.java)
+                                                                    login.flags =
+                                                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                                    startActivity(login)
+                                                                }
+                                                                alertDialog.show()
+                                                                txtNombreSolicitante.setText("")
+                                                                txtCorreoSolicitante.setText("")
+                                                                txtConstrasenaSolicitante.setText("")
+                                                                txtTelefonoSolicitante.setText("")
+                                                                txtDireccionSolicitante.setText("")
+                                                                txtFechaSolicitante.setText("")
+                                                                imgFotoDePerfilSolicitante.setImageDrawable(null)
                                                             } else {
                                                                 Toast.makeText(
                                                                     this@registroSolicitante,
@@ -508,27 +540,6 @@ class registroSolicitante : AppCompatActivity() {
 
                             //hasta aqui es lo de firebase
 
-
-                            val alertDialog = AlertDialog.Builder(this@registroSolicitante)
-                                .setTitle("Cuenta registrada")
-                                .setMessage("Tu cuenta ha sido creada.")
-                                .setPositiveButton("Aceptar", null)
-                                .create()
-
-                            alertDialog.setOnDismissListener { _ ->
-                                val login = Intent(this@registroSolicitante, login::class.java)
-                                login.flags =
-                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                startActivity(login)
-                            }
-                            alertDialog.show()
-                            txtNombreSolicitante.setText("")
-                            txtCorreoSolicitante.setText("")
-                            txtConstrasenaSolicitante.setText("")
-                            txtTelefonoSolicitante.setText("")
-                            txtDireccionSolicitante.setText("")
-                            txtFechaSolicitante.setText("")
-                            imgFotoDePerfilSolicitante.setImageDrawable(null)
                         }
                     }catch (e: SQLException) {
                         when (e.errorCode) {
@@ -578,7 +589,17 @@ class registroSolicitante : AppCompatActivity() {
             checkCameraPermission()
         }
 
+        btnSubirCV.setOnClickListener {
+            seleccionarPDF()
+        }
 
+
+    }
+
+    private fun seleccionarPDF() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "application/pdf"
+        startActivityForResult(Intent.createChooser(intent, "Selecciona un PDF"), codigo_opcion_pdf)
     }
 
     // Solicitar permisos de ubicación
@@ -594,7 +615,6 @@ class registroSolicitante : AppCompatActivity() {
 
     // Obtener la ubicación actual
     private fun obtenerUbicacionActual() {
-        // Verificamos el permiso antes de intentar acceder a la ubicación
         if (ContextCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "Permiso de ubicación no concedido", Toast.LENGTH_SHORT).show()
@@ -602,7 +622,9 @@ class registroSolicitante : AppCompatActivity() {
         }
 
         try {
-            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            fusedLocationClient.getCurrentLocation(
+                LocationRequest.PRIORITY_HIGH_ACCURACY, null
+            ).addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     val latitud = location.latitude
                     val longitud = location.longitude
@@ -614,7 +636,6 @@ class registroSolicitante : AppCompatActivity() {
                 Toast.makeText(this, "Error al obtener la ubicación", Toast.LENGTH_SHORT).show()
             }
         } catch (e: SecurityException) {
-            // Manejo de la excepción en caso de que la seguridad falle
             Toast.makeText(this, "Error de seguridad: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
@@ -746,6 +767,12 @@ class registroSolicitante : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
+
+                codigo_opcion_pdf -> {
+                    pdfUri = data?.data!!
+                    subirPDFfirebase(pdfUri)
+                }
+
                 codigo_opcion_galeria -> {
                     val imageUri: Uri? = data?.data
                     imageUri?.let {
@@ -770,6 +797,33 @@ class registroSolicitante : AppCompatActivity() {
                 }
             }
         }
+    }
+
+
+    private fun subirPDFfirebase(pdfUri: Uri) {
+        val storageRef = Firebase.storage.reference
+        val pdfRef = storageRef.child("pdfs/${UUID.randomUUID()}.pdf")
+
+        pdfRef.putFile(pdfUri)
+            .addOnSuccessListener {
+                pdfRef.downloadUrl.addOnSuccessListener { uri ->
+                    // Asigna la URL del PDF a la variable PathPDF
+                    PathPDF = uri.toString()
+
+                    Toast.makeText(
+                        this,
+                        "CV subido correctamente!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    // Aquí puedes guardar la URL en la base de datos o realizar cualquier acción que necesites con PathPDF
+                    println("URL del PDF: $PathPDF")
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Error al subir el PDF", Toast.LENGTH_SHORT).show()
+                println("Error al subir el PDF: $it")
+            }
     }
 
     //Subir la imagen a Firebase Storage

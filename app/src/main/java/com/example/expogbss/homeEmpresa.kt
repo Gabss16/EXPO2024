@@ -54,6 +54,9 @@ class homeEmpresa : Fragment() {
         }
     }
 
+    private var latitudTrabajo: Double? = null
+    private var longitudTrabajo: Double? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -81,10 +84,12 @@ class homeEmpresa : Fragment() {
             val statement = objConexion?.prepareStatement("""SELECT 
     T.IdTrabajo, 
     T.Titulo, 
-    T.IdEmpleador, 
+    E.NombreRepresentante, 
     A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
     T.Descripcion,   
     T.Direccion, 
+    T.Longitud,
+    T.Latitud,
     T.IdDepartamento, 
     T.Experiencia, 
     T.Requerimientos, 
@@ -96,10 +101,11 @@ class homeEmpresa : Fragment() {
 FROM 
     TRABAJO T
 INNER JOIN 
-    AreaDeTrabajo A
-ON 
-    T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
- WHERE IdEmpleador = ?  AND Estado = 'Activo'""")
+    AreaDeTrabajo A ON T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+INNER JOIN 
+    EMPLEADOR E ON T.IdEmpleador = E.IdEmpleador  
+WHERE 
+    T.IdEmpleador = ? AND T.Estado = 'Activo'""")
 
             statement?.setString(1, idEmpleador)
             val resultSet = statement?.executeQuery()!!
@@ -114,9 +120,12 @@ ON
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
+                val NombreRepresentante = resultSet.getString("NombreRepresentante")
                 val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Ubicacion = resultSet.getString("Direccion")
+                val Longitud = resultSet.getDouble("Longitud")
+                val Latitud = resultSet.getDouble("Latitud")
                 val Departamento = resultSet.getInt("IdDepartamento")
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
@@ -130,10 +139,12 @@ ON
                 val trabajo = Trabajo(
                     IdTrabajo,
                     Titulo,
-                    idEmpleador,
+                    NombreRepresentante,
                     NombreAreaDeTrabajo,
                     Descripcion,
                     Ubicacion,
+                    Longitud,
+                    Latitud,
                     Departamento,
                     Experiencia,
                     Requerimientos,
@@ -185,6 +196,18 @@ ON
             val txtBeneficiosJob = view.findViewById<EditText>(R.id.txtBeneficiosJob)
             val txtSalarioJobMinimo = view.findViewById<EditText>(R.id.txtSalarioJobMinimo)
             val txtSalarioJobMaximo = view.findViewById<EditText>(R.id.txtSalarioJobMaximo)
+
+            txtUbicacionJob.setOnClickListener {
+                val bottomSheet = SelectLocationBottomSheet { direccion, latitud, longitud ->
+                    // Mostrar la dirección en el campo de texto
+                    txtUbicacionJob.setText(direccion)
+
+                    // Guardar latitud y longitud en variables globales para usar en la inserción
+                    latitudTrabajo = latitud
+                    longitudTrabajo = longitud
+                }
+                bottomSheet.show(parentFragmentManager, "SelectLocationBottomSheet")
+            }
 
 
             val fechaDePublicacion =
@@ -363,20 +386,22 @@ ON
                         //2-creo una variable que contenga un PrepareStatement
 
                         val addTrabajo =
-                            objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , IdAreaDeTrabajo,Descripcion ,Direccion ,IdDepartamento, Experiencia , Requerimientos , Estado ,SalarioMinimo, SalarioMaximo , Beneficios, FechaDePublicacion ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")!!
+                            objConexion?.prepareStatement("INSERT INTO TRABAJO ( Titulo , IdEmpleador , IdAreaDeTrabajo,Descripcion ,Direccion , Longitud, Latitud, IdDepartamento, Experiencia , Requerimientos , Estado ,SalarioMinimo, SalarioMaximo , Beneficios, FechaDePublicacion ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,? )")!!
                         addTrabajo.setString(1, txtTituloJob.text.toString().trim())
                         addTrabajo.setString(2, idEmpleador)
                         addTrabajo.setInt(3, idAreaDeTrabajo)
                         addTrabajo.setString(4, txtDescripcionJob.text.toString().trim())
                         addTrabajo.setString(5, txtUbicacionJob.text.toString().trim())
-                        addTrabajo.setInt(6, idDepartamento)
-                        addTrabajo.setString(7, txtExperienciaJob.text.toString().trim())
-                        addTrabajo.setString(8, txtHabilidadesJob.text.toString().trim())
-                        addTrabajo.setString(9, "Activo")
-                        addTrabajo.setBigDecimal(10, salarioMin)
-                        addTrabajo.setBigDecimal(11, salarioMax)
-                        addTrabajo.setString(12, txtBeneficiosJob.text.toString().trim())
-                        addTrabajo.setString(13, fechaDePublicacion)
+                        addTrabajo.setDouble(6, latitudTrabajo ?: 0.0) // Latitud
+                        addTrabajo.setDouble(7, longitudTrabajo ?: 0.0) // Longitud
+                        addTrabajo.setInt(8, idDepartamento)
+                        addTrabajo.setString(9, txtExperienciaJob.text.toString().trim())
+                        addTrabajo.setString(10, txtHabilidadesJob.text.toString().trim())
+                        addTrabajo.setString(11, "Activo")
+                        addTrabajo.setBigDecimal(12, salarioMin)
+                        addTrabajo.setBigDecimal(13, salarioMax)
+                        addTrabajo.setString(14, txtBeneficiosJob.text.toString().trim())
+                        addTrabajo.setString(15, fechaDePublicacion)
 
                         Log.d(
                             "InsertJob",
@@ -421,6 +446,7 @@ ON
             dialog.show()
         }
         return root
+
 
     }
 

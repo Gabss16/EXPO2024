@@ -50,10 +50,12 @@ class Salud : AppCompatActivity() {
             val resultSet = statement?.executeQuery("""SELECT 
     T.IdTrabajo, 
     T.Titulo, 
-    T.IdEmpleador, 
+    E.NombreRepresentante,  -- Agrega el nombre del representante
     A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
     T.Descripcion,   
     T.Direccion, 
+    T.Longitud,
+    T.Latitud,
     T.IdDepartamento, 
     T.Experiencia, 
     T.Requerimientos, 
@@ -65,11 +67,11 @@ class Salud : AppCompatActivity() {
 FROM 
     TRABAJO T
 INNER JOIN 
-    AreaDeTrabajo A
-ON 
-    T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+    AreaDeTrabajo A ON T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+INNER JOIN 
+    EMPLEADOR E ON T.IdEmpleador = E.IdEmpleador  -- Agregar JOIN con la tabla EMPLEADOR
 WHERE 
-    T.IdAreaDeTrabajo = 6 AND Estado = 'Activo'""")!!
+    T.IdAreaDeTrabajo = 6 AND T.Estado = 'Activo';""")!!
 
 
             //en esta variable se añaden TODOS los valores de mascotas
@@ -80,10 +82,12 @@ WHERE
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
-                val IdEmpleador = resultSet.getString("IdEmpleador")
+                val NombreRepresentante = resultSet.getString("NombreRepresentante")
                 val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Direccion = resultSet.getString("Direccion")
+                val Longitud = resultSet.getDouble("Longitud")
+                val Latitud = resultSet.getDouble("Latitud")
                 val IdDepartamento = resultSet.getInt("IdDepartamento")
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
@@ -96,10 +100,12 @@ WHERE
                 val trabajo = Trabajo(
                     IdTrabajo,
                     Titulo,
-                    IdEmpleador,
+                    NombreRepresentante,
                     NombreAreaDeTrabajo,
                     Descripcion,
                     Direccion,
+                    Longitud,
+                    Latitud,
                     IdDepartamento,
                     Experiencia,
                     Requerimientos,

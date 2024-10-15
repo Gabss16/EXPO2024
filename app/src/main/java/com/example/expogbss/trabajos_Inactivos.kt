@@ -3,6 +3,7 @@ package com.example.expogbss
 import RecicleViewHelpers.AdaptadorPublicacion
 import RecicleViewHelpers.AdaptadorPublicacionReactivar
 import RecicleViewHelpers.AdaptadorSolicitud
+import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.widget.ImageButton
@@ -44,7 +45,9 @@ class trabajos_Inactivos : AppCompatActivity() {
 
         val btnSalir = findViewById<ImageButton>(R.id.btnSalirTrabajosInactivos)
         btnSalir.setOnClickListener {
-            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+            val pantallaEmpleador = Intent(this, Empleadores::class.java)
+            startActivity(pantallaEmpleador)
+           finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
         }
 
         fun obtenerDatos(): List<Trabajo> {
@@ -60,6 +63,8 @@ class trabajos_Inactivos : AppCompatActivity() {
     A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
     T.Descripcion,   
     T.Direccion, 
+    T.Longitud,
+    T.Latitud,
     T.IdDepartamento, 
     T.Experiencia, 
     T.Requerimientos, 
@@ -93,6 +98,8 @@ ON
                 val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Direccion = resultSet.getString("Direccion")
+                val Longitud = resultSet.getDouble("Longitud")
+                val Latitud = resultSet.getDouble("Latitud")
                 val IdDepartamento = resultSet.getInt("IdDepartamento")
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
@@ -109,6 +116,8 @@ ON
                     NombreAreaDeTrabajo,
                     Descripcion,
                     Direccion,
+                    Longitud,
+                    Latitud,
                     IdDepartamento,
                     Experiencia,
                     Requerimientos,
@@ -121,6 +130,8 @@ ON
                 listaTrabajos.add(trabajo)
             }
             return listaTrabajos
+
+
         }
 
         CoroutineScope(Dispatchers.IO).launch {

@@ -8,13 +8,13 @@
     tools:context=".Domestico">
 
     <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="388dp"
-        android:layout_height="298dp"
+        android:layout_width="470dp"
+        android:layout_height="320dp"
         android:layout_marginStart="132dp"
-        android:layout_marginTop="488dp"
+        android:layout_marginTop="460dp"
         android:layout_marginEnd="30dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.417"
+        app:layout_constraintHorizontal_bias="0.665"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
@@ -36,13 +36,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvTrabajoDomestico"
-        android:layout_width="385dp"
-        android:layout_height="576dp"
+        android:layout_width="401dp"
+        android:layout_height="420dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.619" />
+        app:layout_constraintVertical_bias="0.299" />
 
     <ImageButton
         android:id="@+id/salir10"

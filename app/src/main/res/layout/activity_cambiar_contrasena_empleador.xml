@@ -14,7 +14,7 @@
         android:layout_marginTop="28dp"
         android:background="@drawable/textboxregistro"
         android:ems="10"
-        android:hint="   Vuelve a ingresar la nueva contraseña"
+        android:hint="   Vuelve a ingresar la contraseña"
         android:inputType="textPassword"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -97,6 +97,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/contrasena" />
+
+    <ImageView
+        android:id="@+id/mostrarContraActualEmplead"
+        android:layout_width="43dp"
+        android:layout_height="39dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtContrasenaActualEmpleador"
+        app:layout_constraintEnd_toEndOf="@+id/txtContrasenaActualEmpleador"
+        app:layout_constraintHorizontal_bias="0.984"
+        app:layout_constraintStart_toStartOf="@+id/txtContrasenaActualEmpleador"
+        app:layout_constraintTop_toTopOf="@+id/txtContrasenaActualEmpleador"
+        app:layout_constraintVertical_bias="0.533"
+        app:srcCompat="@drawable/nuevacontra" />
+
+    <ImageView
+        android:id="@+id/mostrarContraNuevaEmplead"
+        android:layout_width="43dp"
+        android:layout_height="39dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtNuevaContrasenaEmpleador"
+        app:layout_constraintEnd_toEndOf="@+id/txtNuevaContrasenaEmpleador"
+        app:layout_constraintHorizontal_bias="0.984"
+        app:layout_constraintStart_toStartOf="@+id/txtNuevaContrasenaEmpleador"
+        app:layout_constraintTop_toTopOf="@+id/txtNuevaContrasenaEmpleador"
+        app:layout_constraintVertical_bias="0.533"
+        app:srcCompat="@drawable/nuevacontra" />
+
+    <ImageView
+        android:id="@+id/mostrarContraNuevaIngreOtravezEmplead"
+        android:layout_width="43dp"
+        android:layout_height="39dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtRepetirNuevaContrasenaEmpleador"
+        app:layout_constraintEnd_toEndOf="@+id/txtRepetirNuevaContrasenaEmpleador"
+        app:layout_constraintHorizontal_bias="0.984"
+        app:layout_constraintStart_toStartOf="@+id/txtRepetirNuevaContrasenaEmpleador"
+        app:layout_constraintTop_toTopOf="@+id/txtRepetirNuevaContrasenaEmpleador"
+        app:layout_constraintVertical_bias="0.533"
+        app:srcCompat="@drawable/nuevacontra" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

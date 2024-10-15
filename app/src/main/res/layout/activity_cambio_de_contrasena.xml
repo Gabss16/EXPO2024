@@ -70,7 +70,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView27"
+        android:id="@+id/ocultarcontrarecup"
         android:layout_width="25dp"
         android:layout_height="19dp"
         android:layout_marginTop="152dp"
