@@ -197,8 +197,8 @@
 
             <ImageView
                 android:id="@+id/btnEditarContrasenaSolicitante"
-                android:layout_width="191dp"
-                android:layout_height="32dp"
+                android:layout_width="215dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="284dp"
                 android:src="@drawable/editar_contrasena"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -213,7 +213,7 @@
                 android:layout_marginTop="284dp"
                 android:src="@drawable/editar_perfil"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.51"
+                app:layout_constraintHorizontal_bias="0.441"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -252,7 +252,7 @@
                 android:layout_marginTop="340dp"
                 android:text="Informacion Laboral"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.067"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -271,13 +271,14 @@
                 android:id="@+id/textView37"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="26dp"
                 android:text="Curriculum"
                 android:textColor="#FAF8F8"
                 android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView32"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.888"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="621dp" />
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

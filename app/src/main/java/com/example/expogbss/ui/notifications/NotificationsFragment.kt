@@ -31,6 +31,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
+import modelo.Solicitante
 
 class NotificationsFragment : Fragment() {
 
@@ -71,6 +72,24 @@ class NotificationsFragment : Fragment() {
             startActivity(login)
         }
 
+       fun downloadPDF(urlCV: String, nombreSolicitante: String) {
+            try {
+                val request = DownloadManager.Request(Uri.parse(urlCV))
+                request.setTitle("Curriculum Vitae de $nombreSolicitante")
+                request.setDescription("Descargando archivo PDF del curriculum")
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Curriculum-$nombreSolicitante.pdf")
+
+                val downloadManager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                downloadManager.enqueue(request)
+
+                Toast.makeText(requireContext(), "Descarga iniciada...", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Error al descargar el archivo", Toast.LENGTH_SHORT).show()
+                Log.e("DownloadError", e.message.toString())
+            }
+        }
+
         val btnEditarContrasena = root.findViewById<ImageView>(R.id.btnEditarContrasenaSolicitante)
 
         // Manejar el evento de clic en el botón de editar contraseña
@@ -80,50 +99,40 @@ class NotificationsFragment : Fragment() {
             startActivity(intent)
         }
 
-
-
-        fun obtenerUrlCurriculum(idSolicitante: String): String? {
-            var urlCurriculum: String? = null
-            val objConexion = ClaseConexion().cadenaConexion() // Clase de conexión que ya has configurado
-
-            try {
-                val statement = objConexion!!.createStatement()
-                val query = "SELECT Curriculum FROM SOLICITANTE WHERE IdSolicitante = '$idSolicitante'"
-                val resultSet = statement.executeQuery(query)
-
-                if (resultSet.next()) {
-                    urlCurriculum = resultSet.getString("Curriculum")
-                } else {
-                    Log.d("DEBUG", "No se encontró el curriculum para el ID: $idSolicitante")
-                }
-            } catch (e: Exception) {
-                e.printStackTrace() // Manejo de errores
-            }
-
-            return urlCurriculum // Retorna el URL o null si no se encuentra
-        }
-
+        // Manejar el evento de clic en el botón de descargar CV
         btnDescargarCV.setOnClickListener {
-            Log.d("DEBUG", "URL del Curriculum: $")
-            try {
-                val pdfUrl = obtenerUrlCurriculum(IdSolicitante) // Utiliza el ID del solicitante
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val objConexion = ClaseConexion().cadenaConexion()
+                    val query = """
+                SELECT Curriculum, Nombre 
+                FROM SOLICITANTE 
+                WHERE CorreoElectronico = ?
+            """
+                    val statement = objConexion?.prepareStatement(query)
+                    statement?.setString(1, login.correoLogin)
+                    val resultSet = statement?.executeQuery()
 
-                if (!pdfUrl.isNullOrEmpty()) {
-                    val request = DownloadManager.Request(Uri.parse(pdfUrl))
-                    request.setTitle("Descargando Curriculum")
-                    request.setDescription("Descargando el archivo PDF...")
-                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Curriculum.pdf")
+                    if (resultSet?.next() == true) {
+                        val urlCV = resultSet.getString(1) // Obtén la URL del CV desde la base de datos
+                        val nombreSolicitante = resultSet.getString(2) // Obtén el nombre del solicitante
 
-                    val manager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-                    manager.enqueue(request)
-                } else {
-                    Toast.makeText(requireContext(), "No se encontró el URL del curriculum", Toast.LENGTH_SHORT).show()
+                        withContext(Dispatchers.Main) {
+                            if (urlCV != null && urlCV.isNotEmpty()) {
+                                downloadPDF(urlCV, nombreSolicitante) // Llamar a la función para descargar el PDF con el nombre
+                            } else {
+                                Toast.makeText(requireContext(), "No se encontró el CV", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(requireContext(), "Error al descargar el CV", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            } catch (e: UninitializedPropertyAccessException) {
-                Toast.makeText(requireContext(), "ID del solicitante no ha sido inicializado", Toast.LENGTH_SHORT).show()
             }
         }
+
 
 
         // Realiza la consulta en un hilo secundario usando corrutinas
