@@ -9,6 +9,8 @@ class Trabajo(
     val NombreAreaDeTrabajo: String,
     val Descripcion: String,
     val Direccion: String,
+    val Longitud: Double,
+    val Latitud: Double,
     val IdDepartamento: Int,
     val Experiencia: String,
     val Requerimientos: String,
