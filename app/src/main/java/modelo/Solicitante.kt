@@ -9,7 +9,7 @@ class Solicitante(
    val Nombre: String,
    val CorreoElectronico: String,
    val Telefono: String,
-   val Direccion: String,
+   val Direccion: String?,
    val Latitud: Double,  // Nueva propiedad para latitud
    val Longitud: Double,
    val Departamento: Int,
