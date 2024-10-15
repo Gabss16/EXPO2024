@@ -18,7 +18,7 @@ class Solicitante(
    //val Genero: String,
    val IdAreaDeTrabajo: Int,
    val Habilidades: String,
-   //val Curriculum: BLOB,
+   //val Curriculum: String,
    val Foto: String,
    val Contrasena: String
 
