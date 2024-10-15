@@ -269,7 +269,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/btnDescargarCV"
                 android:layout_width="173dp"
                 android:layout_height="57dp"
                 android:layout_marginTop="608dp"

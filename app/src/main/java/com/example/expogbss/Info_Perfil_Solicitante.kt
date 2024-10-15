@@ -1,7 +1,10 @@
 package com.example.expogbss
 
+import android.app.DownloadManager
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.Window
 import android.widget.Button
@@ -44,9 +47,12 @@ class Info_Perfil_Solicitante : AppCompatActivity() {
         val textViewHabilidades = findViewById<TextView>(R.id.textViewHabilidades2)
         val btnSalir11 = findViewById<ImageButton>(R.id.salir11)
         val imgFotoSolicitante = findViewById<ImageView>(R.id.imgFotoSolicitante2)
+        val btnCVInfo = findViewById<ImageButton>(R.id.btnCVInfo)
 
-        // Realiza la consulta en un hilo secundario usando corrutinas
-        //val idSolicitante = intent.getIntExtra("IdSolicitante", -1)
+        // Variable para almacenar la URL del CV
+        var urlCV: String? = null
+
+        // Obtener el IdSolicitante desde la actividad anterior
         val idSolicitante = intent.getStringExtra("IdSolicitante")
         Log.d("Info_Perfil_Solicitante", "IdSolicitante recibido: $idSolicitante")
 
@@ -54,6 +60,7 @@ class Info_Perfil_Solicitante : AppCompatActivity() {
             finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
         }
 
+        // Consultar la información del solicitante en la base de datos
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val objConexion = ClaseConexion().cadenaConexion()
@@ -69,7 +76,8 @@ class Info_Perfil_Solicitante : AppCompatActivity() {
                 s.Genero, 
                 a.NombreAreaDeTrabajo, 
                 s.Habilidades, 
-                s.Foto 
+                s.Foto, 
+                s.Curriculum  -- Obtener también el enlace al CV
             FROM 
                 SOLICITANTE s 
             INNER JOIN 
@@ -97,6 +105,9 @@ class Info_Perfil_Solicitante : AppCompatActivity() {
                         textViewArea.text = resultSet.getString("NombreAreaDeTrabajo")
                         textViewHabilidades.text = resultSet.getString("Habilidades")
                         val fotoUrl = resultSet.getString("Foto")
+                        urlCV = resultSet.getString("Curriculum")  // Almacenar la URL del CV
+
+                        // Cargar la foto del solicitante con Glide
                         Glide.with(this@Info_Perfil_Solicitante).load(fotoUrl)
                             .into(imgFotoSolicitante)
                     }
@@ -120,6 +131,34 @@ class Info_Perfil_Solicitante : AppCompatActivity() {
                 }
             }
         }
+
+        // Manejar el clic del botón para descargar el CV
+        btnCVInfo.setOnClickListener {
+            if (urlCV != null && urlCV!!.isNotEmpty()) {
+                // Llamar a la función para descargar el CV
+                downloadPDF(urlCV!!, textViewNombreSolicitante.text.toString())
+            } else {
+                Toast.makeText(this, "No se encontró el CV para descargar", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // Función para descargar el PDF del CV
+    private fun downloadPDF(urlCV: String, nombreSolicitante: String) {
+        try {
+            val request = DownloadManager.Request(Uri.parse(urlCV))
+            request.setTitle("Curriculum Vitae de $nombreSolicitante")
+            request.setDescription("Descargando archivo PDF del curriculum")
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Curriculum-$nombreSolicitante.pdf")
+
+            val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+            downloadManager.enqueue(request)
+
+            Toast.makeText(this, "Descarga iniciada...", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error al descargar el archivo", Toast.LENGTH_SHORT).show()
+            Log.e("DownloadError", e.message.toString())
+        }
     }
 }
-
