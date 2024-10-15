@@ -5,7 +5,7 @@ import java.sql.Date
 class Trabajo(
     val IdTrabajo: Int,
     val Titulo: String,
-    val IdEmpleador: String,
+    val NombreRepresentante: String,
     val NombreAreaDeTrabajo: String,
     val Descripcion: String,
     val Direccion: String,
