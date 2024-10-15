@@ -50,6 +50,10 @@ class AdaptadorTrabajos(var Datos : List<Trabajo>) : RecyclerView.Adapter<ViewHo
         val trabajos = Datos[position]
         holder.txtTIituloTrabajo.text = trabajos.NombreAreaDeTrabajo.toString()
         holder.txtTipoTrabajo.text = trabajos.Titulo
+        holder.txtPublicador.text = trabajos.NombreRepresentante
+        holder.txtFexhaa.text = trabajos.FechaDePublicacion.toString()
+
+
 
         //click a la card
 
