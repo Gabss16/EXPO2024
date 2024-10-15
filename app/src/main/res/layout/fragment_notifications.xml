@@ -207,8 +207,8 @@
 
             <ImageView
                 android:id="@+id/btnEditarContrasenaSolicitante"
-                android:layout_width="191dp"
-                android:layout_height="32dp"
+                android:layout_width="215dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="284dp"
                 android:src="@drawable/editar_contrasena"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -223,7 +223,7 @@
                 android:layout_marginTop="284dp"
                 android:src="@drawable/editar_perfil"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.51"
+                app:layout_constraintHorizontal_bias="0.441"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -269,7 +269,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/btnDescargarCV"
                 android:layout_width="173dp"
                 android:layout_height="57dp"
                 android:layout_marginTop="608dp"

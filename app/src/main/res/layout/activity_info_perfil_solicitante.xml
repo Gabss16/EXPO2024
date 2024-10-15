@@ -224,7 +224,7 @@
                 tools:layout_editor_absoluteY="13dp" />
 
             <ImageButton
-                android:id="@+id/imageButton2"
+                android:id="@+id/btnCVInfo"
                 android:layout_width="173dp"
                 android:layout_height="57dp"
                 android:layout_marginTop="608dp"
