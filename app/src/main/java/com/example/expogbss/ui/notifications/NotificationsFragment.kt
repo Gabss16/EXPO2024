@@ -1,7 +1,12 @@
 package com.example.expogbss.ui.notifications
 
+import android.app.DownloadManager
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +24,8 @@ import com.example.expogbss.databinding.FragmentNotificationsBinding
 import com.example.expogbss.editar_perfil_Empleador
 import com.example.expogbss.editar_perfil_solicitante
 import com.example.expogbss.login
+import com.example.expogbss.login.variablesGlobalesRecuperacionDeContrasena.IdEmpleador
+import com.example.expogbss.login.variablesGlobalesRecuperacionDeContrasena.IdSolicitante
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,6 +53,7 @@ class NotificationsFragment : Fragment() {
         val textViewHabilidades = root.findViewById<TextView>(R.id.textViewHabilidades)
         val imgFotoSolicitante = root.findViewById<ImageView>(R.id.imgFotoSolicitante)
         val btnEditarSolicitante = root.findViewById<ImageView>(R.id.btnEditarSolicitante)
+        val btnDescargarCV = root.findViewById<ImageView>(R.id.btnDescargarCV)
 
         // Manejar el evento de clic en el botón de editar perfil
         btnEditarSolicitante.setOnClickListener {
@@ -70,6 +78,51 @@ class NotificationsFragment : Fragment() {
             // Iniciar la actividad "Cambiar_ContrasenaEmpleador"
             val intent = Intent(activity, cambiar_contrasena_Solicitante::class.java)
             startActivity(intent)
+        }
+
+
+
+        fun obtenerUrlCurriculum(idSolicitante: String): String? {
+            var urlCurriculum: String? = null
+            val objConexion = ClaseConexion().cadenaConexion() // Clase de conexión que ya has configurado
+
+            try {
+                val statement = objConexion!!.createStatement()
+                val query = "SELECT Curriculum FROM SOLICITANTE WHERE IdSolicitante = '$idSolicitante'"
+                val resultSet = statement.executeQuery(query)
+
+                if (resultSet.next()) {
+                    urlCurriculum = resultSet.getString("Curriculum")
+                } else {
+                    Log.d("DEBUG", "No se encontró el curriculum para el ID: $idSolicitante")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace() // Manejo de errores
+            }
+
+            return urlCurriculum // Retorna el URL o null si no se encuentra
+        }
+
+        btnDescargarCV.setOnClickListener {
+            Log.d("DEBUG", "URL del Curriculum: $")
+            try {
+                val pdfUrl = obtenerUrlCurriculum(IdSolicitante) // Utiliza el ID del solicitante
+
+                if (!pdfUrl.isNullOrEmpty()) {
+                    val request = DownloadManager.Request(Uri.parse(pdfUrl))
+                    request.setTitle("Descargando Curriculum")
+                    request.setDescription("Descargando el archivo PDF...")
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Curriculum.pdf")
+
+                    val manager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                    manager.enqueue(request)
+                } else {
+                    Toast.makeText(requireContext(), "No se encontró el URL del curriculum", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: UninitializedPropertyAccessException) {
+                Toast.makeText(requireContext(), "ID del solicitante no ha sido inicializado", Toast.LENGTH_SHORT).show()
+            }
         }
 
 
