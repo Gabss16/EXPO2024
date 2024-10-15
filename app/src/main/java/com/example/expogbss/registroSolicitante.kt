@@ -64,6 +64,7 @@ class registroSolicitante : AppCompatActivity() {
 
     lateinit var imgFotoDePerfilSolicitante: ImageView
     lateinit var miPath: String
+    lateinit var PathPDF :String
     val uuid = UUID.randomUUID().toString()
     private var fotoSubida = false
     private var fechaNacimientoSeleccionada: String? = null
@@ -424,8 +425,7 @@ class registroSolicitante : AppCompatActivity() {
                             crearUsuario.setString(12, spGeneroSolicitante.selectedItem.toString())
                             crearUsuario.setInt(13, idAreaDeTrabajo)
                             crearUsuario.setString(14, txtHabilidadesSolicitante.text.toString().trim())
-                            crearUsuario.setString(
-                                15, "Placeholder"); // Para mientras
+                            crearUsuario.setString(15, PathPDF)
                             crearUsuario.setString(16, miPath)
                             crearUsuario.setString(17, contrasenaEncriptada)
 
@@ -799,20 +799,23 @@ class registroSolicitante : AppCompatActivity() {
         pdfRef.putFile(pdfUri)
             .addOnSuccessListener {
                 pdfRef.downloadUrl.addOnSuccessListener { uri ->
+                    // Asigna la URL del PDF a la variable PathPDF
+                    PathPDF = uri.toString()
+
                     Toast.makeText(
                         this,
-                        "PDF subido correctamente: ${uri.toString()}",
+                        "CV subido correctamente!",
                         Toast.LENGTH_SHORT
                     ).show()
-                    // Aquí puede hacer algo con la URL del PDF, como guardarla en la base de datos
-                    println("URL del PDF: $uri")
+
+                    // Aquí puedes guardar la URL en la base de datos o realizar cualquier acción que necesites con PathPDF
+                    println("URL del PDF: $PathPDF")
                 }
             }
             .addOnFailureListener {
                 Toast.makeText(this, "Error al subir el PDF", Toast.LENGTH_SHORT).show()
                 println("Error al subir el PDF: $it")
             }
-
     }
 
     //Subir la imagen a Firebase Storage
