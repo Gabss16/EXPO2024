@@ -2,10 +2,13 @@ package com.example.expogbss
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -43,7 +46,23 @@ class cambio_de_contrasena : AppCompatActivity() {
             finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
         }
 
+        var isPasswordVisible = false
+        val passwordview = txtContrasenaNueva
+        val togglePasswordVisibility = findViewById<ImageView>(R.id.ocultarcontrarecup)
 
+        togglePasswordVisibility.setOnClickListener {
+            if (isPasswordVisible) {
+                // Ocultar contraseña
+                passwordview.transformationMethod = PasswordTransformationMethod.getInstance()
+                togglePasswordVisibility.setImageResource(R.drawable.nuevacontra)
+            } else {
+                // Mostrar contraseña
+                passwordview.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                togglePasswordVisibility.setImageResource(R.drawable.mostrarcontrasena)
+            }
+            isPasswordVisible = !isPasswordVisible
+            passwordview.setSelection(passwordview.text.length)
+        }
         val verificarContraseña = Regex("^(?=.*[0-9!@#\$%^&*()-_=+\\|\\[{\\]};:'\",<.>/?]).{6,}\$")
 
         // Función para encriptar la contraseña

@@ -14,10 +14,10 @@
         android:layout_marginTop="28dp"
         android:background="@drawable/textboxregistro"
         android:ems="10"
+        android:hint="   Vuelve a ingresar la contraseña"
+        android:inputType="textPassword"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:hint="   Vuelve a ingresar la nueva contraseña"
-        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtNuevaContrasenaSolicitante" />
@@ -100,6 +100,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/contrasena" />
+
+    <ImageView
+        android:id="@+id/mostrarContraActualSoli"
+        android:layout_width="43dp"
+        android:layout_height="39dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtContrasenaActualSolicitante"
+        app:layout_constraintEnd_toEndOf="@+id/txtContrasenaActualSolicitante"
+        app:layout_constraintHorizontal_bias="0.984"
+        app:layout_constraintStart_toStartOf="@+id/txtContrasenaActualSolicitante"
+        app:layout_constraintTop_toTopOf="@+id/txtContrasenaActualSolicitante"
+        app:layout_constraintVertical_bias="0.533"
+        app:srcCompat="@drawable/nuevacontra" />
+
+    <ImageView
+        android:id="@+id/mostrarContraNuevaSoli"
+        android:layout_width="43dp"
+        android:layout_height="39dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtNuevaContrasenaSolicitante"
+        app:layout_constraintEnd_toEndOf="@+id/txtNuevaContrasenaSolicitante"
+        app:layout_constraintHorizontal_bias="0.984"
+        app:layout_constraintStart_toStartOf="@+id/txtNuevaContrasenaSolicitante"
+        app:layout_constraintTop_toTopOf="@+id/txtNuevaContrasenaSolicitante"
+        app:layout_constraintVertical_bias="0.533"
+        app:srcCompat="@drawable/nuevacontra" />
+
+    <ImageView
+        android:id="@+id/mostrarContraNuevaIngreOtravezSoli"
+        android:layout_width="43dp"
+        android:layout_height="39dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtRepetirNuevaContrasenaSolicitante"
+        app:layout_constraintEnd_toEndOf="@+id/txtRepetirNuevaContrasenaSolicitante"
+        app:layout_constraintHorizontal_bias="0.984"
+        app:layout_constraintStart_toStartOf="@+id/txtRepetirNuevaContrasenaSolicitante"
+        app:layout_constraintTop_toTopOf="@+id/txtRepetirNuevaContrasenaSolicitante"
+        app:layout_constraintVertical_bias="0.533"
+        app:srcCompat="@drawable/nuevacontra" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

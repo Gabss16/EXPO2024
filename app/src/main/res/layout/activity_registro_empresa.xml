@@ -231,6 +231,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView19"
                 tools:srcCompat="@tools:sample/avatars" />
 
+            <ImageView
+                android:id="@+id/mostrarContraRegistEmpl"
+                android:layout_width="43dp"
+                android:layout_height="39dp"
+                app:layout_constraintBottom_toBottomOf="@+id/txtContrasenaEmpleador"
+                app:layout_constraintEnd_toEndOf="@+id/txtContrasenaEmpleador"
+                app:layout_constraintHorizontal_bias="0.97"
+                app:layout_constraintStart_toStartOf="@+id/txtContrasenaEmpleador"
+                app:layout_constraintTop_toTopOf="@+id/txtContrasenaEmpleador"
+                app:layout_constraintVertical_bias="0.8"
+                app:srcCompat="@drawable/nuevacontra" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

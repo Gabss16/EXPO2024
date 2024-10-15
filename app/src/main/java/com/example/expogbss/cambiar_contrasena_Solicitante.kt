@@ -2,6 +2,8 @@ package com.example.expogbss
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.Window
 import android.widget.EditText
 import android.widget.ImageButton
@@ -36,6 +38,60 @@ class cambiar_contrasena_Solicitante : AppCompatActivity() {
         val txtReIngresarNuevaContrasenaEmpleador = findViewById<EditText>(R.id.txtRepetirNuevaContrasenaSolicitante)
         val btnEditarContrasena = findViewById<ImageView>(R.id.btnUpdateContrasenaSolicitante)
         val btnSalir1 = findViewById<ImageButton>(R.id.btnSalir1)
+
+        var isPassword1Visible = false
+        var isPassword2Visible = false
+        var isPassword3Visible = false
+
+        val passwordview1 = txtContrasenaActual
+        val passwordview2 = txtNuevaContrasena
+        val passwordview3 = txtReIngresarNuevaContrasenaEmpleador
+
+        val togglePasswordVisibility1 = findViewById<ImageView>(R.id.mostrarContraActualSoli)
+        val togglePasswordVisibility2 = findViewById<ImageView>(R.id.mostrarContraNuevaSoli)
+        val togglePasswordVisibility3 = findViewById<ImageView>(R.id.mostrarContraNuevaIngreOtravezSoli)
+
+        togglePasswordVisibility1.setOnClickListener {
+            if (isPassword1Visible) {
+                // Ocultar contraseña
+                passwordview1.transformationMethod = PasswordTransformationMethod.getInstance()
+                togglePasswordVisibility1.setImageResource(R.drawable.nuevacontra)
+            } else {
+                // Mostrar contraseña
+                passwordview1.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                togglePasswordVisibility1.setImageResource(R.drawable.mostrarcontrasena)
+            }
+            isPassword1Visible = !isPassword1Visible
+            passwordview1.setSelection(passwordview1.text.length)
+        }
+
+        togglePasswordVisibility2.setOnClickListener {
+            if (isPassword2Visible) {
+                // Ocultar contraseña
+                passwordview2.transformationMethod = PasswordTransformationMethod.getInstance()
+                togglePasswordVisibility2.setImageResource(R.drawable.nuevacontra)
+            } else {
+                // Mostrar contraseña
+                passwordview2.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                togglePasswordVisibility2.setImageResource(R.drawable.mostrarcontrasena)
+            }
+            isPassword2Visible = !isPassword2Visible
+            passwordview2.setSelection(passwordview2.text.length)
+        }
+
+        togglePasswordVisibility3.setOnClickListener {
+            if (isPassword3Visible) {
+                // Ocultar contraseña
+                passwordview3.transformationMethod = PasswordTransformationMethod.getInstance()
+                togglePasswordVisibility3.setImageResource(R.drawable.nuevacontra)
+            } else {
+                // Mostrar contraseña
+                passwordview3.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                togglePasswordVisibility3.setImageResource(R.drawable.mostrarcontrasena)
+            }
+            isPassword3Visible = !isPassword3Visible
+            passwordview3.setSelection(passwordview3.text.length)
+        }
 
 
         // Creo la función para encriptar la contraseña

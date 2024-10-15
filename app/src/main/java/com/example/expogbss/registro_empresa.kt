@@ -26,6 +26,8 @@ import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
 import java.util.*
 import android.net.Uri
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.Window
 import androidx.appcompat.app.AlertDialog
@@ -120,6 +122,24 @@ class registro_empresa : AppCompatActivity() {
 
         btnSalir7.setOnClickListener {
             finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
+
+        var isPasswordVisible = false
+        val passwordview = txtContrasenaEmpleador
+        val togglePasswordVisibility = findViewById<ImageView>(R.id.mostrarContraRegistEmpl)
+
+        togglePasswordVisibility.setOnClickListener {
+            if (isPasswordVisible) {
+                // Ocultar contraseña
+                passwordview.transformationMethod = PasswordTransformationMethod.getInstance()
+                togglePasswordVisibility.setImageResource(R.drawable.nuevacontra)
+            } else {
+                // Mostrar contraseña
+                passwordview.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                togglePasswordVisibility.setImageResource(R.drawable.mostrarcontrasena)
+            }
+            isPasswordVisible = !isPasswordVisible
+            passwordview.setSelection(passwordview.text.length)
         }
 
         // Función para hacer el select de los Departamentos

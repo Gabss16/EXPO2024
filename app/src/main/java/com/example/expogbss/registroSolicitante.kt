@@ -46,6 +46,8 @@ import java.util.UUID
 import android.Manifest
 import android.location.Geocoder
 import android.location.Location
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import java.io.IOException
 import java.util.Locale
 
@@ -101,6 +103,24 @@ class registroSolicitante : AppCompatActivity() {
 
         btnSalir8.setOnClickListener {
             finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
+
+        var isPasswordVisible = false
+        val passwordview = txtConstrasenaSolicitante
+        val togglePasswordVisibility = findViewById<ImageView>(R.id.mostrarContraRegistSolicit)
+
+        togglePasswordVisibility.setOnClickListener {
+            if (isPasswordVisible) {
+                // Ocultar contraseña
+                passwordview.transformationMethod = PasswordTransformationMethod.getInstance()
+                togglePasswordVisibility.setImageResource(R.drawable.nuevacontra)
+            } else {
+                // Mostrar contraseña
+                passwordview.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                togglePasswordVisibility.setImageResource(R.drawable.mostrarcontrasena)
+            }
+            isPasswordVisible = !isPasswordVisible
+            passwordview.setSelection(passwordview.text.length)
         }
 
         // Función para hacer el select de los Departamentos

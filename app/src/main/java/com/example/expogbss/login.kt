@@ -4,10 +4,13 @@ package com.example.expogbss
         import android.content.Intent
         import androidx.appcompat.app.AppCompatActivity
         import android.os.Bundle
+        import android.text.method.HideReturnsTransformationMethod
+        import android.text.method.PasswordTransformationMethod
         import android.view.Window
         import android.widget.Button
         import android.widget.EditText
         import android.widget.ImageButton
+        import android.widget.ImageView
         import android.widget.TextView
         import android.widget.Toast
         import androidx.activity.enableEdgeToEdge
@@ -77,6 +80,25 @@ package com.example.expogbss
         val txtCorreoLogin = findViewById<EditText>(R.id.txtEmailLogin)
         val txtcontrasenaLogin = findViewById<EditText>(R.id.txtPasswordLogin)
         val btnSignIn = findViewById<ImageButton>(R.id.btnSignInLogin)
+
+        var isPasswordVisible = false
+        val passwordview = txtcontrasenaLogin
+        val togglePasswordVisibility = findViewById<ImageView>(R.id.mostrarContra)
+
+        togglePasswordVisibility.setOnClickListener {
+            if (isPasswordVisible) {
+                // Ocultar contraseña
+                passwordview.transformationMethod = PasswordTransformationMethod.getInstance()
+                togglePasswordVisibility.setImageResource(R.drawable.nuevacontra)
+            } else {
+                // Mostrar contraseña
+                passwordview.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                togglePasswordVisibility.setImageResource(R.drawable.mostrarcontrasena)
+            }
+            isPasswordVisible = !isPasswordVisible
+            passwordview.setSelection(passwordview.text.length)
+        }
+
 
         val validarCorreo = Regex("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
 

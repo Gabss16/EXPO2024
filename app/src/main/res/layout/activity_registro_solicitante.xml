@@ -364,6 +364,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnTomarFotoSolicitante" />
 
+            <ImageView
+                android:id="@+id/mostrarContraRegistSolicit"
+                android:layout_width="43dp"
+                android:layout_height="39dp"
+                app:layout_constraintBottom_toBottomOf="@+id/txtContrasenaSolicitante"
+                app:layout_constraintEnd_toEndOf="@+id/txtContrasenaSolicitante"
+                app:layout_constraintHorizontal_bias="0.97"
+                app:layout_constraintStart_toStartOf="@+id/txtContrasenaSolicitante"
+                app:layout_constraintTop_toTopOf="@+id/txtContrasenaSolicitante"
+                app:layout_constraintVertical_bias="0.8"
+                app:srcCompat="@drawable/nuevacontra" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
