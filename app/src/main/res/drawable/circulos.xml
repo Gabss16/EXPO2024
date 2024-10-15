@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-    <shape xmlns:android="http://schemas.android.com/apk/res/android">
-        <solid android:color="#FF0000" /> <!-- Color de relleno rojo -->
-        <corners android:radius="50dp" /> <!-- Radio del círculo -->
-        <size android:width="100dp" android:height="100dp" /> <!-- Tamaño del círculo -->
-    </shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Estado presionado del botón -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="#E0E0E0" />  <!-- Fondo gris claro al presionar -->
+            <corners android:radius="16dp" />  <!-- Bordes redondeados -->
+            <stroke android:width="2dp" android:color="#BDBDBD" />  <!-- Borde gris oscuro -->
+        </shape>
+    </item>
+
+    <!-- Estado normal del botón -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" />  <!-- Fondo blanco -->
+            <corners android:radius="16dp" />  <!-- Bordes redondeados -->
+            <stroke android:width="2dp" android:color="#E0E0E0" />  <!-- Borde gris claro -->
+            <padding android:left="16dp" android:right="16dp" android:top="8dp" android:bottom="8dp" />
+        </shape>
+    </item>
+
+</selector>
