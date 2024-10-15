@@ -48,6 +48,7 @@ import android.location.Geocoder
 import android.location.Location
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import com.google.android.gms.location.LocationRequest
 import java.io.IOException
 import java.util.Locale
 
@@ -196,9 +197,9 @@ class registroSolicitante : AppCompatActivity() {
         }
 
         // Obtener ubicación al hacer clic en el campo de dirección
-        txtDireccionSolicitante.setOnClickListener {
-            solicitarPermisoUbicacion()
-        }
+//        txtDireccionSolicitante.setOnClickListener {
+//            obtenerUbicacionActual()
+//        }
 
 
 
@@ -614,7 +615,6 @@ class registroSolicitante : AppCompatActivity() {
 
     // Obtener la ubicación actual
     private fun obtenerUbicacionActual() {
-        // Verificamos el permiso antes de intentar acceder a la ubicación
         if (ContextCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "Permiso de ubicación no concedido", Toast.LENGTH_SHORT).show()
@@ -622,7 +622,9 @@ class registroSolicitante : AppCompatActivity() {
         }
 
         try {
-            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            fusedLocationClient.getCurrentLocation(
+                LocationRequest.PRIORITY_HIGH_ACCURACY, null
+            ).addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     val latitud = location.latitude
                     val longitud = location.longitude
@@ -634,7 +636,6 @@ class registroSolicitante : AppCompatActivity() {
                 Toast.makeText(this, "Error al obtener la ubicación", Toast.LENGTH_SHORT).show()
             }
         } catch (e: SecurityException) {
-            // Manejo de la excepción en caso de que la seguridad falle
             Toast.makeText(this, "Error de seguridad: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }

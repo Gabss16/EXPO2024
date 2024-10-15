@@ -52,6 +52,8 @@ class Servicios : AppCompatActivity() {
     A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
     T.Descripcion,   
     T.Direccion, 
+    T.Longitud,
+    T.Latitud,
     T.IdDepartamento, 
     T.Experiencia, 
     T.Requerimientos, 

@@ -88,6 +88,8 @@ class homeEmpresa : Fragment() {
     A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
     T.Descripcion,   
     T.Direccion, 
+    T.Longitud,
+    T.Latitud,
     T.IdDepartamento, 
     T.Experiencia, 
     T.Requerimientos, 
@@ -121,7 +123,7 @@ ON
                 val Descripcion = resultSet.getString("Descripcion")
                 val Ubicacion = resultSet.getString("Direccion")
                 val Longitud = resultSet.getDouble("Longitud")
-                val Latitud = resultSet.getDouble("Longitud")
+                val Latitud = resultSet.getDouble("Latitud")
                 val Departamento = resultSet.getInt("IdDepartamento")
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
