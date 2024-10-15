@@ -70,22 +70,22 @@
             android:id="@+id/iBtnAceptar"
             android:layout_width="106dp"
             android:layout_height="35dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="76dp"
             android:backgroundTint="#00FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.97"
+            app:layout_constraintHorizontal_bias="0.055"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/icona" />
 
         <ImageButton
             android:id="@+id/iBtnRechazar"
-            android:layout_width="123dp"
-            android:layout_height="34dp"
-            android:layout_marginTop="80dp"
+            android:layout_width="37dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="76dp"
             android:backgroundTint="#00FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.551"
+            app:layout_constraintHorizontal_bias="0.355"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/reject" />

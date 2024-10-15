@@ -93,6 +93,8 @@ ON
                 val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Direccion = resultSet.getString("Direccion")
+                val Longitud = resultSet.getDouble("Longitud")
+                val Latitud = resultSet.getDouble("Latitud")
                 val IdDepartamento = resultSet.getInt("IdDepartamento")
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
@@ -109,6 +111,8 @@ ON
                     NombreAreaDeTrabajo,
                     Descripcion,
                     Direccion,
+                    Longitud,
+                    Latitud,
                     IdDepartamento,
                     Experiencia,
                     Requerimientos,
@@ -121,6 +125,8 @@ ON
                 listaTrabajos.add(trabajo)
             }
             return listaTrabajos
+
+
         }
 
         CoroutineScope(Dispatchers.IO).launch {
