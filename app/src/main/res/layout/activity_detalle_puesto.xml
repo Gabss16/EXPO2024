@@ -34,7 +34,6 @@
         android:background="@drawable/detalles_puestos2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
@@ -252,18 +251,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.868" />
 
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="28dp"
-            android:layout_height="27dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.091"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.366"
-            app:srcCompat="@drawable/ubicacion" />
-
         <ImageButton
             android:id="@+id/btnSolicitar"
             android:layout_width="wrap_content"
@@ -290,6 +277,18 @@
             app:layout_constraintHorizontal_bias="0.013"
             app:layout_constraintStart_toEndOf="@+id/txtSalarioMinimoDetalle"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btnRuta"
+            android:layout_width="36dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="237dp"
+            android:backgroundTint="#00FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.09"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ubicacion" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

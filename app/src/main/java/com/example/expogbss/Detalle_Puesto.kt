@@ -1,5 +1,6 @@
 package com.example.expogbss
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
@@ -15,12 +16,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import modelo.ClaseConexion
+import modelo.Solicitante
 import java.sql.Connection
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class Detalle_Puesto : AppCompatActivity() {
+    private var latSolicitante: Double = 0.0
+    private var lonSolicitante: Double = 0.0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -31,6 +35,7 @@ class Detalle_Puesto : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         val TituloRecibido = intent.getStringExtra("Titulo")
         val NombreAreaDeTrabajo = intent.getStringExtra("NombreAreaDeTrabajo")
         val DescripcionRecibido = intent.getStringExtra("Descripcion")
@@ -44,6 +49,33 @@ class Detalle_Puesto : AppCompatActivity() {
         val BeneficiosRecibida = intent.getStringExtra("Beneficios")
 
         val btnSalir = findViewById<ImageButton>(R.id.btnSalirDetalles)
+        val btnRuta = findViewById<ImageButton>(R.id.btnRuta)
+
+        // Obtener coordenadas del solicitante
+        obtenerCoordenadasSolicitante(IdSolicitante)
+
+        // Obtener los datos de la Intent
+        val latTrabajo = intent.getDoubleExtra("LatitudTrabajo", 0.0)
+        val lonTrabajo = intent.getDoubleExtra("LongitudTrabajo", 0.0)
+
+
+
+        btnRuta.setOnClickListener {
+            val intent = Intent(this, MapaRutaActivity::class.java)
+
+            // Verificar que las coordenadas del trabajo no sean cero
+            if (latTrabajo != 0.0 && lonTrabajo != 0.0) {
+                // Pasar las coordenadas al intent
+                intent.putExtra("latSolicitante", latSolicitante)
+                intent.putExtra("lonSolicitante", lonSolicitante)
+                intent.putExtra("latTrabajo", latTrabajo)
+                intent.putExtra("lonTrabajo", lonTrabajo)
+
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Error al obtener la ubicación del trabajo.", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         btnSalir.setOnClickListener {
             finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
@@ -139,6 +171,30 @@ class Detalle_Puesto : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@Detalle_Puesto, "Error al enviar solicitud", Toast.LENGTH_LONG).show()
                 }
+            } finally {
+                objConexion?.close()
+            }
+        }
+    }
+
+    private fun obtenerCoordenadasSolicitante(idSolicitante: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            var objConexion: Connection? = null
+            try {
+                objConexion = ClaseConexion().cadenaConexion()
+
+                val consultarCoordenadas = objConexion?.prepareStatement(
+                    "SELECT Latitud, Longitud FROM SOLICITANTE WHERE IdSolicitante = ?"
+                )
+                consultarCoordenadas?.setString(1, idSolicitante)
+
+                val resultado = consultarCoordenadas?.executeQuery()
+                if (resultado?.next() == true) {
+                    latSolicitante = resultado.getDouble("Latitud")
+                    lonSolicitante = resultado.getDouble("Longitud")
+                }
+            } catch (e: Exception) {
+                Log.e("Coordenadas", "Error al obtener coordenadas: ${e.message}")
             } finally {
                 objConexion?.close()
             }
