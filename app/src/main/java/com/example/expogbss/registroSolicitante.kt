@@ -55,6 +55,8 @@ class registroSolicitante : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val LOCATION_REQUEST_CODE = 100
 
+    val codigo_opcion_pdf = 104
+    lateinit var pdfUri: Uri
     val codigo_opcion_galeria = 102
     val codigo_opcion_tomar_foto = 103
     val CAMERA_REQUEST_CODE = 0
@@ -96,6 +98,7 @@ class registroSolicitante : AppCompatActivity() {
         val btnCrearCuentaSolicitante = findViewById<ImageButton>(R.id.btnCrearCuentaSolicitante)
         val btnSubirDesdeGaleriaSolicitante = findViewById<Button>(R.id.btnSubirDesdeGaleriaSolicitante)
         imgFotoDePerfilSolicitante = findViewById(R.id.imgFotoDePerfilSolicitante)
+        val btnSubirCV = findViewById<Button>(R.id.btnSubirCV)
 
         val btnSalir8 = findViewById<ImageButton>(R.id.btnSalir8)
 
@@ -577,7 +580,17 @@ class registroSolicitante : AppCompatActivity() {
             checkCameraPermission()
         }
 
+        btnSubirCV.setOnClickListener {
+            seleccionarPDF()
+        }
 
+
+    }
+
+    private fun seleccionarPDF() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "application/pdf"
+        startActivityForResult(Intent.createChooser(intent, "Selecciona un PDF"), codigo_opcion_pdf)
     }
 
     // Solicitar permisos de ubicación
@@ -745,6 +758,12 @@ class registroSolicitante : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
+
+                codigo_opcion_pdf -> {
+                    pdfUri = data?.data!!
+                    subirPDFfirebase(pdfUri)
+                }
+
                 codigo_opcion_galeria -> {
                     val imageUri: Uri? = data?.data
                     imageUri?.let {
@@ -769,6 +788,30 @@ class registroSolicitante : AppCompatActivity() {
                 }
             }
         }
+    }
+
+
+    private fun subirPDFfirebase(pdfUri: Uri) {
+        val storageRef = Firebase.storage.reference
+        val pdfRef = storageRef.child("pdfs/${UUID.randomUUID()}.pdf")
+
+        pdfRef.putFile(pdfUri)
+            .addOnSuccessListener {
+                pdfRef.downloadUrl.addOnSuccessListener { uri ->
+                    Toast.makeText(
+                        this,
+                        "PDF subido correctamente: ${uri.toString()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    // Aquí puede hacer algo con la URL del PDF, como guardarla en la base de datos
+                    println("URL del PDF: $uri")
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Error al subir el PDF", Toast.LENGTH_SHORT).show()
+                println("Error al subir el PDF: $it")
+            }
+
     }
 
     //Subir la imagen a Firebase Storage
