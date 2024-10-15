@@ -120,6 +120,8 @@ ON
                 val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Ubicacion = resultSet.getString("Direccion")
+                val Longitud = resultSet.getDouble("Longitud")
+                val Latitud = resultSet.getDouble("Longitud")
                 val Departamento = resultSet.getInt("IdDepartamento")
                 val Experiencia = resultSet.getString("Experiencia")
                 val Requerimientos = resultSet.getString("Requerimientos")
@@ -137,6 +139,8 @@ ON
                     NombreAreaDeTrabajo,
                     Descripcion,
                     Ubicacion,
+                    Longitud,
+                    Latitud,
                     Departamento,
                     Experiencia,
                     Requerimientos,
