@@ -81,7 +81,7 @@ WHERE
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
-                val IdEmpleador = resultSet.getString("IdEmpleador")
+                val NombreRepresentante = resultSet.getString("NombreRepresentante")
                 val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Direccion = resultSet.getString("Direccion")
@@ -99,7 +99,7 @@ WHERE
                 val trabajo = Trabajo(
                     IdTrabajo,
                     Titulo,
-                    IdEmpleador,
+                    NombreRepresentante,
                     NombreAreaDeTrabajo,
                     Descripcion,
                     Direccion,
