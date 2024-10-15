@@ -8,12 +8,14 @@
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_width="377dp"
+        android:layout_height="645dp" />
 
     <Button
         android:id="@+id/btnConfirmarUbicacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Confirmar Ubicación" />
+        android:backgroundTint="@color/agalo2"
+        android:text="Confirmar Ubicación"
+        android:textColor="@color/colorIconTint" />
 </LinearLayout>

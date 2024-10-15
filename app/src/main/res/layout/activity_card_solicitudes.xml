@@ -7,7 +7,7 @@
     android:layout_margin="1dp"
     android:backgroundTint="#00FFFFFF"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardElevation="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -82,7 +82,7 @@
             android:id="@+id/iBtnRechazar"
             android:layout_width="37dp"
             android:layout_height="33dp"
-            android:layout_marginTop="76dp"
+            android:layout_marginTop="77dp"
             android:backgroundTint="#00FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.355"
