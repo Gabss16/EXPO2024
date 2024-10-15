@@ -160,14 +160,14 @@
         android:id="@+id/btnVolverAEnviarCodigo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="164dp"
+        android:layout_marginTop="632dp"
         android:backgroundTint="@color/colorTextPrimary"
         android:text="Reenviar Código"
         android:textColor="@color/colorIconTint"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.176"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnConfirmarCodigo"
