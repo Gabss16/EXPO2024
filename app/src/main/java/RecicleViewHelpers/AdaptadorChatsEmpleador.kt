@@ -65,6 +65,7 @@ class AdaptadorChatsEmpleador(var Datos: List<Solicitante>): RecyclerView.Adapte
             ChatsEmpleador.putExtra("IdSolicitante", ChatEmp.IdSolicitante)
             ChatsEmpleador.putExtra("Nombre", ChatEmp.Nombre)
             ChatsEmpleador.putExtra("CorreoElectronico", ChatEmp.CorreoElectronico)
+            ChatsEmpleador.putExtra("Foto", ChatEmp.Foto)
             context.startActivity(ChatsEmpleador)
         }
     }

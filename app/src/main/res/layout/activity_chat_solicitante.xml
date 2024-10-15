@@ -5,40 +5,98 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatSolicitante">
+    tools:context=".ChatSolicitante"
+    android:background="@drawable/fondochat">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMensajesS"
-        android:layout_width="351dp"
-        android:layout_height="539dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="392dp"
+        android:layout_height="564dp"
+        android:layout_marginBottom="88dp"
         android:layout_weight="1"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/editTextMensajeS"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.53" />
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/editTextMensajeS"
-        android:layout_width="294dp"
-        android:layout_height="42dp"
+        android:layout_width="315dp"
+        android:layout_height="45dp"
         android:layout_marginBottom="28dp"
+        android:padding="10dp"
         android:hint="Escribe tu mensaje"
+        android:textColorHint="#A8A8A8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.136"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/barrabusquedachats"/>
 
     <Button
         android:id="@+id/buttonEnviarS"
-        android:layout_width="88dp"
-        android:layout_height="41dp"
+        android:layout_width="60dp"
+        android:layout_height="45dp"
         android:layout_marginBottom="28dp"
-        android:text="Enviar"
+        android:background="@drawable/btnenviar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.959"
+        app:layout_constraintHorizontal_bias="0.971"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="415dp"
+        android:layout_height="102dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        android:background="@drawable/chatdecoracion2">
+
+        <ImageView
+            android:id="@+id/imgFotoMsjChatS"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:background="@drawable/imagencircular"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/fotoperfil"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.177"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.51" />
+
+        <TextView
+            android:id="@+id/txtNombreUsuarioChatS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NombreUsuario"
+            android:textColor="#081D65"
+            android:textSize="18dp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.444"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btnSalirchatS"
+            android:layout_width="35dp"
+            android:layout_height="34dp"
+            android:background="@drawable/baseline_arrow_back_ios_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.042"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,9 @@ import android.util.Log
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +17,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.expogbss.login.variablesGlobalesRecuperacionDeContrasena.IdSolicitante
 import com.example.expogbss.login.variablesGlobalesRecuperacionDeContrasena.nombresSolicitante
 import com.google.firebase.Firebase
@@ -31,6 +35,9 @@ class ChatSolicitante : AppCompatActivity() {
     private val messageListS = mutableListOf<Message>()
     private var chatId: String? = null
     private var IdEmpleador: String? = null
+    private var NombreRepresentanteChatS: String? = null
+    private var FotoChatS: String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +51,9 @@ class ChatSolicitante : AppCompatActivity() {
         }
 
         IdEmpleador = intent.getStringExtra("IdEmpleador") ?: return
+        NombreRepresentanteChatS = intent.getStringExtra("NombreRepresentante") ?: return
+        FotoChatS = intent.getStringExtra("Foto") ?: return
+
 
         //val solicitanteId = FirebaseAuth.getInstance().currentUser?.uid ?: return   // Debes obtener el Id del solicitante autenticado
         chatId = generarChatId(IdSolicitante, IdEmpleador!!)
@@ -61,6 +71,18 @@ class ChatSolicitante : AppCompatActivity() {
         // Inicializa el EditText y el Button usando la vista inflada
         editTextMensajeS = findViewById(R.id.editTextMensajeS)
         buttonEnviarS = findViewById(R.id.buttonEnviarS)
+
+        val btnSalirS = findViewById<ImageButton>(R.id.btnSalirchatS)
+        val fotoMsjChatS = findViewById<ImageView>(R.id.imgFotoMsjChatS)
+        val nombreChatMsjS = findViewById<TextView>(R.id.txtNombreUsuarioChatS)
+
+        btnSalirS.setOnClickListener {
+            finish()  // Finaliza la actividad actual y regresa a la anterior en la pila
+        }
+
+        nombreChatMsjS.text = NombreRepresentanteChatS
+
+        Glide.with(this).load(FotoChatS).into(fotoMsjChatS)
 
         // Establece el listener para el botón
         buttonEnviarS.setOnClickListener {

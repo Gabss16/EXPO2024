@@ -66,6 +66,7 @@ class AdaptadorChats(var Datos: List<Empleador>): RecyclerView.Adapter<ViewHolde
             ChatSolicitante.putExtra("IdEmpleador", ChatSoli.IdEmpleador)
             ChatSolicitante.putExtra("NombreEmpresa", ChatSoli.NombreEmpresa)
             ChatSolicitante.putExtra("NombreRepresentante", ChatSoli.NombreRepresentante)
+            ChatSolicitante.putExtra("Foto", ChatSoli.Foto)
             context.startActivity(ChatSolicitante)
         }
     }

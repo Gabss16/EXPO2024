@@ -153,7 +153,7 @@ ON
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
-                val NombreRepresentante = resultSet.getString("NombreRepresentante")
+                val NombreRepresentante = resultSet.getString("IdEmpleador")
                 val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Direccion = resultSet.getString("Direccion")
