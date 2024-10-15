@@ -24,7 +24,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light"
         tools:targetApi="31">
-
+        <activity
+            android:name=".cardMensajesRemitente"
+            android:exported="false" />
         <activity
             android:name=".ChatEmpleador"
             android:exported="false" />

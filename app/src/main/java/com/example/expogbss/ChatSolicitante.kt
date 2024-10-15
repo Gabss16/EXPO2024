@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.expogbss.login.variablesGlobalesRecuperacionDeContrasena.IdSolicitante
+import com.example.expogbss.login.variablesGlobalesRecuperacionDeContrasena.nombresSolicitante
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -29,7 +30,6 @@ class ChatSolicitante : AppCompatActivity() {
     private lateinit var messageAdapter: AdaptadorMensajes
     private val messageListS = mutableListOf<Message>()
     private var chatId: String? = null
-    private var senderId: String? = null
     private var IdEmpleador: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +70,7 @@ class ChatSolicitante : AppCompatActivity() {
             // Verifica que el mensaje no esté vacío
             if (mensaje.isNotBlank()) {
                 // Llama a la función para enviar el mensaje
-                enviarMensaje(chatId!!, IdSolicitante, mensaje)
+                enviarMensaje(chatId!!, nombresSolicitante, mensaje)
 
                 // Limpia el EditText después de enviar el mensaje
                 editTextMensajeS.text.clear()

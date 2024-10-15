@@ -3,12 +3,17 @@ package com.example.expogbss
 import RecicleViewHelpers.AdaptadorChats
 import RecicleViewHelpers.AdaptadorTrabajos
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,6 +52,11 @@ class chat : Fragment() {
         val root = inflater.inflate(R.layout.fragment_chat, container, false)
 
         val rcvChatSolicitante = root.findViewById<RecyclerView>(R.id.rcvChatSolicitante)
+        val imgFotoChatSoli = root.findViewById<ImageView>(R.id.imgFotoChatSoli)
+        val txtBuscarChatsSoli = root.findViewById<EditText>(R.id.txtBuscarChatsSoli)
+
+        Glide.with(this).load(login.fotoSolicitante).into(imgFotoChatSoli)
+
         rcvChatSolicitante.layoutManager = LinearLayoutManager(requireContext())
 
         fun obtenerDatos(): List<Empleador> {
@@ -100,6 +110,32 @@ class chat : Fragment() {
             withContext(Dispatchers.Main) {
                 val adapter = AdaptadorChats(EmpleadorDb)
                 rcvChatSolicitante.adapter = adapter
+
+                txtBuscarChatsSoli.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+
+                        adapter.filtrar(s.toString())
+
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {
+
+                    }
+                })
             }
         }
 

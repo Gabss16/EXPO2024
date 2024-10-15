@@ -5,6 +5,8 @@ import RecicleViewHelpers.AdaptadorChatsEmpleador
 import RecicleViewHelpers.AdaptadorMensajes
 import RecicleViewHelpers.Message
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,9 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.Firebase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -61,6 +65,11 @@ class chatEmpresa : Fragment() {
         // ESTO Configura el RecyclerView
 
         val rcvChatEmpleador = view.findViewById<RecyclerView>(R.id.rcvChatEmpleador)
+        val imgFotoChatEmp = view.findViewById<ImageView>(R.id.imgFotoChatEmp)
+        val txtBuscarChatsEmp = view.findViewById<EditText>(R.id.txtBuscarChatsEmp)
+
+        Glide.with(this).load(login.fotoEmpleador).into(imgFotoChatEmp)
+
         rcvChatEmpleador.layoutManager = LinearLayoutManager(requireContext())
 
         fun obtenerDatos(): List<Solicitante> {
@@ -86,7 +95,7 @@ class chatEmpresa : Fragment() {
                 val Direccion = resultSet.getString("Direccion")
                 val Latitud = resultSet.getDouble("Latitud")
                 val Longitud = resultSet.getDouble("Longitud")
-                val Departamento = resultSet.getInt("Departamento")
+                val Departamento = resultSet.getInt("IdDepartamento")
                 val FechaDeNacimiento = resultSet.getString("FechaDeNacimiento")
                 val Estado = resultSet.getString("Estado")
                 val IdAreaDeTrabajo = resultSet.getInt("IdAreaDeTrabajo")
@@ -113,6 +122,7 @@ class chatEmpresa : Fragment() {
                 listaSolicitante.add(Solicitante)
             }
             return listaSolicitante
+
         }
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -120,6 +130,32 @@ class chatEmpresa : Fragment() {
             withContext(Dispatchers.Main) {
                 val adapter = AdaptadorChatsEmpleador(SolicitanteDb)
                 rcvChatEmpleador.adapter = adapter
+                txtBuscarChatsEmp.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+
+                        adapter.filtrar(s.toString())
+
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {
+
+                    }
+                })
+
             }
         }
         return view
