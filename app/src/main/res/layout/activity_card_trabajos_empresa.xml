@@ -35,16 +35,16 @@
 
         <TextView
             android:id="@+id/txtTIituloTrabajoo"
-            android:layout_width="106dp"
-            android:layout_height="21dp"
-            android:layout_marginTop="50dp"
+            android:layout_width="217dp"
+            android:layout_height="23dp"
+            android:layout_marginTop="48dp"
             android:background="@drawable/fondo_areat"
             android:text="Construccion"
             android:textAlignment="center"
             android:textColor="@color/agalo2"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.047"
+            app:layout_constraintHorizontal_bias="0.077"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

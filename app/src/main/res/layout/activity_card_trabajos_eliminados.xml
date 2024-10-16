@@ -74,7 +74,7 @@
             app:layout_constraintHorizontal_bias="0.05"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/cardedit" />
+            app:srcCompat="@drawable/reactivar_chamba" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

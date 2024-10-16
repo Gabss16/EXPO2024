@@ -41,31 +41,31 @@
         <TextView
             android:id="@+id/txtTituloDetalle"
             android:layout_width="332dp"
-            android:layout_height="25dp"
+            android:layout_height="29dp"
             android:text="TextView"
             android:textColor="@color/agalo2"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.571"
+            app:layout_constraintHorizontal_bias="0.529"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.061" />
+            app:layout_constraintVertical_bias="0.049" />
 
         <TextView
             android:id="@+id/txtAreaTrabajoDetalle"
-            android:layout_width="212dp"
-            android:layout_height="19dp"
+            android:layout_width="340dp"
+            android:layout_height="29dp"
             android:text="TextView"
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.223"
+            app:layout_constraintHorizontal_bias="0.584"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.168" />
+            app:layout_constraintVertical_bias="0.163" />
 
         <TextView
             android:id="@+id/textView6"
@@ -225,17 +225,17 @@
 
         <TextView
             android:id="@+id/txtSalarioMinimoDetalle"
-            android:layout_width="61dp"
-            android:layout_height="31dp"
+            android:layout_width="86dp"
+            android:layout_height="30dp"
             android:text="TextView"
             android:textColor="#B50000"
             android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.28"
+            app:layout_constraintHorizontal_bias="0.326"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.873" />
+            app:layout_constraintVertical_bias="0.872" />
 
         <TextView
             android:id="@+id/txtSalarioMaximoDetalle"
@@ -246,7 +246,7 @@
             android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.147"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textView43"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.868" />
@@ -267,14 +267,14 @@
 
         <TextView
             android:id="@+id/textView43"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="8dp"
+            android:layout_height="22dp"
             android:layout_marginTop="572dp"
             android:text="-"
             android:textColor="#850F0F"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.013"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/txtSalarioMinimoDetalle"
             app:layout_constraintTop_toTopOf="parent" />
 

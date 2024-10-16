@@ -233,29 +233,28 @@ class editar_perfil_solicitante : AppCompatActivity() {
         val btnEditarPerfilSolicitante =
             findViewById<ImageButton>(R.id.btnEditarPerfilSolicitanteEdit)
 
-        txtDireccionSolicitanteEdit.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    this, Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // Solicitar el permiso
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_REQUEST_CODE
-                )
-            } else {
-                // Obtener la ubicación actual si ya tiene permiso
-                obtenerUbicacionActual()
-            }
-        }
+//        txtDireccionSolicitanteEdit.setOnClickListener {
+//            if (ContextCompat.checkSelfPermission(
+//                    this, Manifest.permission.ACCESS_FINE_LOCATION
+//                ) != PackageManager.PERMISSION_GRANTED
+//            ) {
+//                // Solicitar el permiso
+//                ActivityCompat.requestPermissions(
+//                    this,
+//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+//                    LOCATION_REQUEST_CODE
+//                )
+//            } else {
+//                // Obtener la ubicación actual si ya tiene permiso
+//                obtenerUbicacionActual()
+//            }
+//        }
 
 
         btnEditarPerfilSolicitante.setOnClickListener {
             // Deshabilitar el botón para evitar múltiples clicks
             btnEditarPerfilSolicitante.isEnabled = false
-            val latitud = this.latitudActual ?: 0.0
-            val longitud = this.longitudActual ?: 0.0
+
 
             // Obtener los valores de los EditText
             val nombreSolicitante = txtNombreSolicitanteEdit.text.toString().trim()
@@ -360,19 +359,17 @@ class editar_perfil_solicitante : AppCompatActivity() {
 
                             // Actualizar los datos del empleador en la base de datos
                             val actualizarUsuario = objConexion?.prepareStatement(
-                                "UPDATE SOLICITANTE SET Nombre  = ?, CorreoElectronico  = ?, Telefono  = ?, Direccion  = ?,Latitud = ?, Longitud = ?, IdDepartamento  = ?, IdAreaDeTrabajo = ?, Habilidades  =?, Estado =?  WHERE IdSolicitante = ?"
+                                "UPDATE SOLICITANTE SET Nombre  = ?, CorreoElectronico  = ?, Telefono  = ?, Direccion  = ?, IdDepartamento  = ?, IdAreaDeTrabajo = ?, Habilidades  =?, Estado =?  WHERE IdSolicitante = ?"
                             )!!
                             actualizarUsuario.setString(1, nombreSolicitante)
                             actualizarUsuario.setString(2, correoSolicitante)
                             actualizarUsuario.setString(3, telefonoSolicitante)
                             actualizarUsuario.setString(4, direccionSolicitante)
-                            actualizarUsuario.setDouble(5, latitud) // Latitud
-                            actualizarUsuario.setDouble(6, longitud) // Longitud
-                            actualizarUsuario.setInt(7, idDepartamento) // Asegúrate de que `idDepartamento` es un Int
-                            actualizarUsuario.setInt(8, idAreaTrabajo) // Asegúrate de que `idAreaTrabajo` es un Int
-                            actualizarUsuario.setString(9, habilidadesSolicitante)
-                            actualizarUsuario.setString(10, spEstadoSolicitante.selectedItem.toString()) // Estado
-                            actualizarUsuario.setString(11, idSolicitante)
+                            actualizarUsuario.setInt(5, idDepartamento) // Asegúrate de que `idDepartamento` es un Int
+                            actualizarUsuario.setInt(6, idAreaTrabajo) // Asegúrate de que `idAreaTrabajo` es un Int
+                            actualizarUsuario.setString(7, habilidadesSolicitante)
+                            actualizarUsuario.setString(8, spEstadoSolicitante.selectedItem.toString()) // Estado
+                            actualizarUsuario.setString(9, idSolicitante)
 
                             val filasAfectadas = actualizarUsuario.executeUpdate()
 
@@ -446,64 +443,64 @@ class editar_perfil_solicitante : AppCompatActivity() {
         }
     }
 
-    // Solicitar permisos de ubicación
-    private fun solicitarPermisoUbicacion() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE
-            )
-        } else {
-            obtenerUbicacionActual()
-        }
-    }
-
-    // Obtener la ubicación actual
-    private fun obtenerUbicacionActual() {
-        // Verificamos el permiso antes de intentar acceder a la ubicación
-        if (ContextCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Permiso de ubicación no concedido", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        try {
-            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    val latitud = location.latitude
-                    val longitud = location.longitude
-                    obtenerNombreLugar(latitud, longitud)
-                } else {
-                    Toast.makeText(this, "No se pudo obtener la ubicación", Toast.LENGTH_SHORT).show()
-                }
-            }.addOnFailureListener {
-                Toast.makeText(this, "Error al obtener la ubicación", Toast.LENGTH_SHORT).show()
-            }
-        } catch (e: SecurityException) {
-            // Manejo de la excepción en caso de que la seguridad falle
-            Toast.makeText(this, "Error de seguridad: ${e.message}", Toast.LENGTH_SHORT).show()
-        }
-    }
+//    // Solicitar permisos de ubicación
+//    private fun solicitarPermisoUbicacion() {
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(
+//                this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE
+//            )
+//        } else {
+//            obtenerUbicacionActual()
+//        }
+//    }
+//
+//    // Obtener la ubicación actual
+//    private fun obtenerUbicacionActual() {
+//        // Verificamos el permiso antes de intentar acceder a la ubicación
+//        if (ContextCompat.checkSelfPermission(
+//                this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            Toast.makeText(this, "Permiso de ubicación no concedido", Toast.LENGTH_SHORT).show()
+//            return
+//        }
+//
+//        try {
+//            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+//                if (location != null) {
+//                    val latitud = location.latitude
+//                    val longitud = location.longitude
+//                    obtenerNombreLugar(latitud, longitud)
+//                } else {
+//                    Toast.makeText(this, "No se pudo obtener la ubicación", Toast.LENGTH_SHORT).show()
+//                }
+//            }.addOnFailureListener {
+//                Toast.makeText(this, "Error al obtener la ubicación", Toast.LENGTH_SHORT).show()
+//            }
+//        } catch (e: SecurityException) {
+//            // Manejo de la excepción en caso de que la seguridad falle
+//            Toast.makeText(this, "Error de seguridad: ${e.message}", Toast.LENGTH_SHORT).show()
+//        }
+//    }
     private var latitudActual: Double? = null
     private var longitudActual: Double? = null
-
-    // Convertir coordenadas a dirección con Geocoder
-    private fun obtenerNombreLugar(latitud: Double, longitud: Double) {
-        this.latitudActual = latitud  // Guardar latitud
-        this.longitudActual = longitud  // Guardar longitud
-
-        val geocoder = Geocoder(this, Locale.getDefault())
-        try {
-            val direcciones = geocoder.getFromLocation(latitud, longitud, 1)
-            if (direcciones != null && direcciones.isNotEmpty()) {
-                val direccion = direcciones[0].getAddressLine(0)
-                val txtDireccionSolicitante = findViewById<EditText>(R.id.txtDireccionSolicitante)
-                txtDireccionSolicitante.setText(direccion)
-            } else {
-                Toast.makeText(this, "No se encontró una dirección válida", Toast.LENGTH_SHORT).show()
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Toast.makeText(this, "Error al convertir coordenadas en dirección", Toast.LENGTH_SHORT).show()
-        }
-    }
+//
+//    // Convertir coordenadas a dirección con Geocoder
+//    private fun obtenerNombreLugar(latitud: Double, longitud: Double) {
+//        this.latitudActual = latitud  // Guardar latitud
+//        this.longitudActual = longitud  // Guardar longitud
+//
+//        val geocoder = Geocoder(this, Locale.getDefault())
+//        try {
+//            val direcciones = geocoder.getFromLocation(latitud, longitud, 1)
+//            if (direcciones != null && direcciones.isNotEmpty()) {
+//                val direccion = direcciones[0].getAddressLine(0)
+//                val txtDireccionSolicitante = findViewById<EditText>(R.id.txtDireccionSolicitante)
+//                txtDireccionSolicitante.setText(direccion)
+//            } else {
+//                Toast.makeText(this, "No se encontró una dirección válida", Toast.LENGTH_SHORT).show()
+//            }
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//            Toast.makeText(this, "Error al convertir coordenadas en dirección", Toast.LENGTH_SHORT).show()
+//        }
+//    }
 }

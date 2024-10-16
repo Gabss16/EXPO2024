@@ -22,39 +22,42 @@
 
     <EditText
         android:id="@+id/editTextMensajeE"
-        android:layout_width="315dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="28dp"
-        android:padding="10dp"
+        android:layout_width="297dp"
+        android:layout_height="43dp"
+        android:background="@drawable/barrabusquedachats"
         android:hint="Escribe tu mensaje"
+        android:padding="10dp"
         android:textColorHint="#A8A8A8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.136"
+        app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/barrabusquedachats"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.96" />
 
     <Button
         android:id="@+id/buttonEnviarE"
         android:layout_width="60dp"
         android:layout_height="45dp"
-        android:layout_marginBottom="28dp"
         android:background="@drawable/btnenviar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.971"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.957"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.961" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout5"
         android:layout_width="415dp"
         android:layout_height="102dp"
+        android:background="@drawable/chatdecoracion2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        android:background="@drawable/chatdecoracion2">
+        app:layout_constraintVertical_bias="0.0">
 
         <ImageView
             android:id="@+id/imgFotoMsjChat"
@@ -66,7 +69,7 @@
             android:src="@drawable/fotoperfil"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.213"
+            app:layout_constraintHorizontal_bias="0.247"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.51" />
@@ -91,7 +94,7 @@
             android:background="@drawable/baseline_arrow_back_ios_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.081"
+            app:layout_constraintHorizontal_bias="0.094"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -21,18 +21,6 @@
         app:layout_constraintVertical_bias="0.073" />
 
 
-    <ImageButton
-        android:id="@+id/btnSalir5"
-        android:layout_width="35dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/baseline_arrow_back_ios_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.151"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="328dp"
@@ -230,8 +218,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/txtHabilidadesLaboralesEdit" />
 
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <ImageButton
+        android:id="@+id/btnSalir5"
+        android:layout_width="35dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/baseline_arrow_back_ios_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.060"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

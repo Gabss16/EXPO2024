@@ -25,19 +25,20 @@
 
      <HorizontalScrollView
          android:id="@+id/horizontalScrollView2"
-         android:layout_width="401dp"
-         android:layout_height="96dp"
+         android:layout_width="384dp"
+         android:layout_height="95dp"
          android:layout_marginStart="1dp"
-         android:layout_marginTop="238dp"
+         android:layout_marginTop="240dp"
          android:layout_marginEnd="1dp"
          app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintHorizontal_bias="0.4"
+
+
          app:layout_constraintStart_toStartOf="parent"
-
-
          app:layout_constraintTop_toTopOf="parent">
 
           <androidx.constraintlayout.widget.ConstraintLayout
-              android:layout_width="wrap_content"
+              android:layout_width="600dp"
               android:layout_height="match_parent">
 
 
@@ -102,10 +103,10 @@
                    android:textSize="12sp"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="0.0"
+                   app:layout_constraintHorizontal_bias="0.023"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toBottomOf="@+id/BtnCategoria1"
-                   app:layout_constraintVertical_bias="0.2" />
+                   app:layout_constraintVertical_bias="0.21" />
 
                <TextView
                    android:id="@+id/Circulo2"
@@ -194,7 +195,7 @@
                    android:textSize="12sp"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="0.992"
+                   app:layout_constraintHorizontal_bias="0.990"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toBottomOf="@+id/BtnCategoria6"
                    app:layout_constraintVertical_bias="0.125" />
@@ -207,7 +208,7 @@
                    android:backgroundTint="#A6E4E8EC"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="0.885"
+                   app:layout_constraintHorizontal_bias="0.883"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toTopOf="parent"
                    app:layout_constraintVertical_bias="0.027" />
@@ -221,7 +222,7 @@
                    android:textSize="12sp"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="0.881"
+                   app:layout_constraintHorizontal_bias="0.878"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toBottomOf="@+id/BtnCategoria7"
                    app:layout_constraintVertical_bias="0.21" />
@@ -284,8 +285,8 @@
                    android:id="@+id/BtnCategoria10"
                    android:layout_width="60dp"
                    android:layout_height="60dp"
-                   android:layout_marginStart="13dp"
-                   android:layout_marginEnd="300dp"
+                   android:layout_marginStart="8dp"
+                   android:layout_marginEnd="296dp"
                    android:background="@drawable/circulos"
                    android:backgroundTint="#B2B2B2"
                    app:layout_constraintBottom_toBottomOf="parent"
@@ -303,7 +304,7 @@
                    android:textSize="12sp"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="0.565"
+                   app:layout_constraintHorizontal_bias="0.560"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toBottomOf="@+id/BtnCategoria10"
                    app:layout_constraintVertical_bias="0.2" />
@@ -413,7 +414,7 @@
                    android:layout_marginTop="12dp"
                    android:src="@drawable/iconoh"
                    app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintHorizontal_bias="0.952"
+                   app:layout_constraintHorizontal_bias="0.948"
                    app:layout_constraintStart_toEndOf="@+id/BtnCategoria7"
                    app:layout_constraintTop_toTopOf="parent" />
 
