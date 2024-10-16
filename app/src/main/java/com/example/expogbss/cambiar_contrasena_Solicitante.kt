@@ -25,6 +25,7 @@ class cambiar_contrasena_Solicitante : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+        getWindow().setStatusBarColor(resources.getColor(R.color.agalo, theme))
         enableEdgeToEdge()
         setContentView(R.layout.activity_cambiar_contrasena_solicitante)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

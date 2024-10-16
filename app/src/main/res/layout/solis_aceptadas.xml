@@ -51,22 +51,22 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="376dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="1dp"
+            android:layout_marginStart="333dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="44dp"
             android:backgroundTint="#00FFFFFF"
             app:srcCompat="@drawable/quantum_ic_clear_grey600_24" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvSolicitudesAceptadas"
-            android:layout_width="398dp"
-            android:layout_height="466dp"
+            android:layout_width="370dp"
+            android:layout_height="469dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="11dp"
-            android:layout_marginTop="79dp"
-            android:layout_marginEnd="2dp" />
+            android:layout_marginTop="76dp"
+            android:layout_marginEnd="40dp" />
 
         <!--button for dismissing our dialog-->
 

@@ -168,7 +168,7 @@ class ingresarCorreoRecupContrasena : AppCompatActivity() {
                             withContext(Dispatchers.Main) {
                                 Toast.makeText(
                                     this@ingresarCorreoRecupContrasena,
-                                    "Correo electrónico no encontrado, ingrese un correo válido",
+                                    "Correo electrónico no encontrado",
                                     Toast.LENGTH_LONG
                                 ).show()
                             }

@@ -10,13 +10,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvChatEmpleador"
-        android:layout_width="387dp"
-        android:layout_height="568dp"
+        android:layout_width="376dp"
+        android:layout_height="460dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.73" />
+        app:layout_constraintVertical_bias="0.627" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="415dp"
@@ -43,10 +44,10 @@
             android:paddingLeft="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.4"
+            app:layout_constraintHorizontal_bias="0.828"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.829" />
+            app:layout_constraintVertical_bias="0.844" />
 
         <TextView
             android:id="@+id/textView10"
@@ -58,10 +59,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.088"
+            app:layout_constraintHorizontal_bias="0.12"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.247" />
+            app:layout_constraintVertical_bias="0.25" />
 
         <ImageView
             android:id="@+id/imageView35"

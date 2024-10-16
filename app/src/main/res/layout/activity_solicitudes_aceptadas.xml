@@ -32,14 +32,14 @@
 
         <TextView
             android:id="@+id/txJobTitleeee"
-            android:layout_width="223dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="217dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="12dp"
             android:text="Título del Trabajo"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.098"
+            app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

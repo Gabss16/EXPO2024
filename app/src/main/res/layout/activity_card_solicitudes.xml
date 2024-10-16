@@ -44,14 +44,14 @@
 
         <TextView
             android:id="@+id/tvJobTitle"
-            android:layout_width="223dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="218dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="12dp"
             android:text="Título del Trabajo"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.098"
+            app:layout_constraintHorizontal_bias="0.097"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -84,10 +84,10 @@
             android:id="@+id/iBtnRechazar"
             android:layout_width="37dp"
             android:layout_height="33dp"
-            android:layout_marginTop="77dp"
+            android:layout_marginTop="76dp"
             android:backgroundTint="#00FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.355"
+            app:layout_constraintHorizontal_bias="0.385"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/reject" />

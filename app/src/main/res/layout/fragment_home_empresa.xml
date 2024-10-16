@@ -47,16 +47,16 @@
 
             <ImageView
                 android:id="@+id/imageView16"
-                android:layout_width="133dp"
-                android:layout_height="39dp"
+                android:layout_width="145dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="4dp"
                 android:src="@drawable/txt1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.044"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.526" />
+                app:layout_constraintVertical_bias="0.578" />
 
             <ImageView
                 android:id="@+id/btnHistorialTrabajo"
@@ -74,13 +74,15 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvTrabajos"
-            android:layout_width="409dp"
-            android:layout_height="547dp"
+            android:layout_width="375dp"
+            android:layout_height="372dp"
             android:layout_marginTop="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.555"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+            app:layout_constraintVertical_bias="0.093" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

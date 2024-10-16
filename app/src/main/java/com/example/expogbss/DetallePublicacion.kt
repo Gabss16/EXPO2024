@@ -3,7 +3,10 @@ package com.example.expogbss
 import RecicleViewHelpers.AdaptadorPublicacion
 import RecicleViewHelpers.AdaptadorSolicitud
 import RecicleViewHelpers.AdaptadorSolisAceptadas
+import android.content.res.Resources
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.ImageButton
@@ -14,6 +17,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -86,6 +90,17 @@ class DetallePublicacion : AppCompatActivity() {
             // on below line we are setting
             // content view to our view.
             dialog.setContentView(view)
+            // Configura el comportamiento del BottomSheet
+            val bottomSheetBehavior = BottomSheetBehavior.from(view.parent as View)
+
+// Establecer el ancho máximo
+            val params = view.layoutParams
+            params.width = ViewGroup.LayoutParams.MATCH_PARENT
+
+            view.layoutParams = params
+
+// Mostrar el dialog
+            dialog.show()
 
             // on below line we are calling
             // a show method to display a dialog.
@@ -244,5 +259,8 @@ class DetallePublicacion : AppCompatActivity() {
 
 
         }
+    }
+    fun Int.dpToPx(): Int {
+        return (this * Resources.getSystem().displayMetrics.density).toInt()
     }
 }

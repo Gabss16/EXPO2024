@@ -129,7 +129,7 @@ package com.example.expogbss
 
 //            println("esta es la variable global $IdEmpleador")
 
-            correoLogin = txtCorreoLogin.text.toString()
+            correoLogin = txtCorreoLogin.text.toString().trim()
 //            //obtener idEmpleador
 //            GlobalScope.launch(Dispatchers.IO) {
 //                try {
@@ -192,7 +192,7 @@ package com.example.expogbss
 //                }
 //            }
 
-            val correo = txtCorreoLogin.text.toString()
+            val correo = txtCorreoLogin.text.toString().trim()
             val contrasena = txtcontrasenaLogin.text.toString()
 
             if (correo.isEmpty() || contrasena.isEmpty()) {

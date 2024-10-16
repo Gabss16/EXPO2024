@@ -30,7 +30,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.135"
+        app:layout_constraintHorizontal_bias="0.305"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,19 +38,19 @@
         android:id="@+id/txtDescxdasd"
         android:layout_width="340dp"
         android:layout_height="59dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="92dp"
         android:text="Acá puedes reactivar los trabajos que previamante inhabilitaste"
         android:textColor="@android:color/darker_gray"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.112"
+        app:layout_constraintHorizontal_bias="0.225"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvTrabajosEliminados"
-        android:layout_width="398dp"
-        android:layout_height="698dp"
+        android:layout_width="366dp"
+        android:layout_height="546dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -47,11 +47,11 @@
                 android:id="@+id/textViewNombreEmpleador"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="32dp"
                 android:text="Nombre empleador"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.436"
+                app:layout_constraintHorizontal_bias="0.334"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,13 +59,25 @@
                 android:id="@+id/imgFotoEmpleador"
                 android:layout_width="82dp"
                 android:layout_height="83dp"
+                android:layout_marginStart="16dp"
                 android:background="@drawable/imagencircular"
                 android:clipToOutline="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/fotoperfil"
 
-                tools:layout_editor_absoluteX="6dp"
-                tools:layout_editor_absoluteY="9dp" />
+                android:src="@drawable/fotoperfil"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/btnEditarPerfil"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:src="@drawable/editar_perfil"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.242"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="1dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -77,13 +89,13 @@
 
         <TextView
             android:id="@+id/textViewCorreoEmpresa"
-            android:layout_width="334dp"
-            android:layout_height="24dp"
+            android:layout_width="326dp"
+            android:layout_height="22dp"
             android:layout_marginTop="312dp"
             android:text="Correo Empleador"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.753"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -109,7 +121,7 @@
             android:text="7277 9865"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.613"
+            app:layout_constraintHorizontal_bias="0.684"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textViewCorreoEmpresa" />
 
@@ -130,11 +142,11 @@
             android:id="@+id/textViewDireccionEmpleador"
             android:layout_width="170dp"
             android:layout_height="26dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="20dp"
             android:text="Direccion"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.427"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewNumeroEmpleador" />
 
@@ -152,24 +164,13 @@
 
 
         <ImageView
-            android:id="@+id/btnEditarPerfil"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_marginTop="510dp"
-            android:src="@drawable/editar_perfil"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.297"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
             android:id="@+id/btnEditarContrasenaEmpresa"
             android:layout_width="236dp"
             android:layout_height="51dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="100dp"
             android:src="@drawable/editar_contrasena"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.89"
+            app:layout_constraintHorizontal_bias="0.902"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewSitioWeb" />
 

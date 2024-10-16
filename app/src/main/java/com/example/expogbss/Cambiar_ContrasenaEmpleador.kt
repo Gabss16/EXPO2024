@@ -25,7 +25,10 @@ import java.security.MessageDigest
 class Cambiar_ContrasenaEmpleador : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.statusBarColor = resources.getColor(R.color.agalo, theme)
+
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_cambiar_contrasena_empleador)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
