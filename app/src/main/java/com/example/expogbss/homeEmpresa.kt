@@ -435,7 +435,7 @@ WHERE
             }
             // below line is use to set cancelable to avoid
             // closing of dialog box when clicking on the screen.
-            dialog.setCancelable(true)
+            dialog.setCancelable(false)
 
             // on below line we are setting
             // content view to our view.

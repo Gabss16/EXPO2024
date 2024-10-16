@@ -72,7 +72,7 @@ INNER JOIN
 INNER JOIN 
     EMPLEADOR E ON T.IdEmpleador = E.IdEmpleador  -- Agregar JOIN con la tabla EMPLEADOR
 WHERE 
-    T.IdAreaDeTrabajo = 5 AND T.Estado = 'Activo';""")!!
+    T.IdAreaDeTrabajo = 5 AND T.Estado = 'Activo'""")!!
 
 
             //en esta variable se añaden TODOS los valores de mascotas
@@ -83,6 +83,7 @@ WHERE
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
+                val IdEmpleador = resultSet.getString("IdEmpleador")
                 val NombreRepresentante = resultSet.getString("NombreRepresentante")
                 val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")

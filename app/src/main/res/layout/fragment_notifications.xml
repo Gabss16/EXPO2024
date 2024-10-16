@@ -28,18 +28,10 @@
             android:backgroundTint="@color/colorDivider">
 
             <ImageView
-                android:id="@+id/imageView17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/a1"
-                tools:layout_editor_absoluteX="42dp"
-                tools:layout_editor_absoluteY="203dp" />
-
-            <ImageView
                 android:id="@+id/imageView7"
-                android:layout_width="401dp"
-                android:layout_height="338dp"
-                android:layout_marginTop="4dp"
+                android:layout_width="406dp"
+                android:layout_height="370dp"
+                android:layout_marginTop="8dp"
                 android:src="@drawable/perfilcard"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -97,13 +89,13 @@
 
             <TextView
                 android:id="@+id/textViewCorreoSolicitante"
-                android:layout_width="222dp"
-                android:layout_height="25dp"
-                android:layout_marginTop="146dp"
+                android:layout_width="289dp"
+                android:layout_height="27dp"
+                android:layout_marginTop="148dp"
                 android:text="Correo solicitante"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.333"
+                app:layout_constraintHorizontal_bias="0.504"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -121,13 +113,13 @@
 
             <TextView
                 android:id="@+id/textViewDireccionSolicitante"
-                android:layout_width="250dp"
-                android:layout_height="26dp"
+                android:layout_width="323dp"
+                android:layout_height="59dp"
                 android:layout_marginTop="8dp"
-                android:text="Casa123"
+                android:text="Casa123 jvnsdjvbsdkvbkdsjbvuksdbkvbweuivbiwebuivbuiwbiuvwebuivdbwbvjhsvbjwbviwvbiwvbuwebvuewbiwe"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.392"
+                app:layout_constraintHorizontal_bias="0.689"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewNumeroSolicitante" />
 
@@ -171,12 +163,12 @@
                 android:id="@+id/textViewArea"
                 android:layout_width="300dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="400dp"
+                android:layout_marginTop="420dp"
                 android:text="Area1"
                 android:textColor="#070707"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.175"
+                app:layout_constraintHorizontal_bias="0.148"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -197,22 +189,22 @@
                 android:id="@+id/textViewHabilidades"
                 android:layout_width="358dp"
                 android:layout_height="174dp"
-                android:layout_marginTop="120dp"
+                android:layout_marginTop="92dp"
                 android:text="En el corazón de la ciudad, un viejo reloj marcaba las horas. La gente pasaba apresurada, pero nadie parecía notarlo. Sin embargo, para Juan, ese reloj era un recordatorio de su infancia, de tiempos más sencillos. Cada campanada le devolvía un instante de aquellos días felices."
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.38"
+                app:layout_constraintHorizontal_bias="0.32"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/imageView32" />
 
             <ImageView
                 android:id="@+id/btnEditarContrasenaSolicitante"
-                android:layout_width="215dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="284dp"
+                android:layout_width="222dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="326dp"
                 android:src="@drawable/editar_contrasena"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.913"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -220,10 +212,10 @@
                 android:id="@+id/btnEditarSolicitante"
                 android:layout_width="34dp"
                 android:layout_height="34dp"
-                android:layout_marginTop="284dp"
+                android:layout_marginTop="333dp"
                 android:src="@drawable/editar_perfil"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.441"
+                app:layout_constraintHorizontal_bias="0.35"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -259,12 +251,12 @@
                 android:id="@+id/textView35"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="364dp"
+                android:layout_marginTop="392dp"
                 android:text="Informacion Laboral"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.056"
+                app:layout_constraintHorizontal_bias="0.072"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -272,11 +264,11 @@
                 android:id="@+id/btnDescargarCV"
                 android:layout_width="173dp"
                 android:layout_height="57dp"
-                android:layout_marginTop="608dp"
+                android:layout_marginTop="640dp"
                 android:backgroundTint="#00FFFFFF"
                 android:src="@drawable/cv"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.085"
+                app:layout_constraintHorizontal_bias="0.08"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -317,10 +309,10 @@
                 android:id="@+id/imageView35"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="244dp"
+                android:layout_marginTop="276dp"
                 android:src="@drawable/a4"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.065"
+                app:layout_constraintHorizontal_bias="0.067"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

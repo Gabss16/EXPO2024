@@ -119,10 +119,11 @@ class HomeFragment : Fragment() {
             //2 - Creo un statement
             //El símbolo de pregunta es pq los datos pueden ser nulos
             val statement = objConexion?.createStatement()
-            val resultSet = statement?.executeQuery("""SELECT 
+            val resultSet = statement?.executeQuery("""    SELECT 
     T.IdTrabajo, 
     T.Titulo, 
     T.IdEmpleador, 
+    E.NombreRepresentante,  -- Agrega el nombre del representante
     A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
     T.Descripcion,   
     T.Direccion, 
@@ -138,11 +139,10 @@ class HomeFragment : Fragment() {
     T.FechaDePublicacion
 FROM 
     TRABAJO T
-INNER JOIN 
-    AreaDeTrabajo A
-ON 
-    T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
- WHERE Estado = 'Activo'""")!!
+INNER JOIN AreaDeTrabajo A ON  T.IdAreaDeTrabajo = A.IdAreaDeTrabajo
+    INNER JOIN 
+    EMPLEADOR E ON T.IdEmpleador = E.IdEmpleador
+ WHERE T.Estado = 'Activo'""")!!
 
 
             //en esta variable se añaden TODOS los valores de mascotas
@@ -153,7 +153,8 @@ ON
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
-                val NombreRepresentante = resultSet.getString("IdEmpleador")
+                val IdEmpleador = resultSet.getString("IdEmpleador")
+                val NombreRepresentante = resultSet.getString("NombreRepresentante")
                 val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
                 val Direccion = resultSet.getString("Direccion")

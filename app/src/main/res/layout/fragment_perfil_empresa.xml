@@ -47,11 +47,25 @@
                 android:id="@+id/textViewNombreEmpleador"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="28dp"
                 android:text="Nombre empleador"
-                android:textSize="16sp"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="103dp" />
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.436"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imgFotoEmpleador"
+                android:layout_width="82dp"
+                android:layout_height="83dp"
+                android:background="@drawable/imagencircular"
+                android:clipToOutline="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/fotoperfil"
+
+                tools:layout_editor_absoluteX="6dp"
+                tools:layout_editor_absoluteY="9dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -61,31 +75,17 @@
             tools:layout_editor_absoluteY="1000dp" />
 
 
-        <ImageView
-            android:id="@+id/imgFotoEmpleador"
-            android:layout_width="82dp"
-            android:layout_height="83dp"
-            android:layout_marginEnd="320dp"
-            android:background="@drawable/imagencircular"
-            android:clipToOutline="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/fotoperfil"
-            app:layout_constraintBottom_toBottomOf="parent"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.264" />
-
         <TextView
             android:id="@+id/textViewCorreoEmpresa"
             android:layout_width="334dp"
             android:layout_height="24dp"
+            android:layout_marginTop="312dp"
             android:text="Correo Empleador"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.779"
+            app:layout_constraintHorizontal_bias="0.753"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="312dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewN"

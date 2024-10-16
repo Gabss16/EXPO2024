@@ -7,15 +7,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="415dp"
-        android:layout_height="419dp"
+        android:layout_width="414dp"
+        android:layout_height="667dp"
         android:layout_margin="2dp"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="-4dp">
+        tools:layout_editor_absoluteX="-2dp">
 
         <ScrollView
-            android:layout_width="414dp"
-            android:layout_height="418dp"
+            android:layout_width="415dp"
+            android:layout_height="666dp"
             tools:layout_editor_absoluteX="-1dp"
             tools:layout_editor_absoluteY="1dp">
 
@@ -56,8 +56,9 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_trabajos"
                     android:ems="10"
+                    android:focusable="false"
                     android:hint="Ubicación"
-                    android:inputType="text"
+                    android:inputType="none"
                     android:paddingLeft="35dp"
                     android:textColor="#97000000"
                     android:textStyle="bold"

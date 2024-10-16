@@ -184,7 +184,7 @@ class NotificationsFragment : Fragment() {
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Error al consultar la base de datos", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(), "Error al consultar la base de datos", Toast.LENGTH_SHORT).show()
                 }
             }
 
