@@ -49,8 +49,9 @@ class Construccion : AppCompatActivity() {
             //El símbolo de pregunta es pq los datos pueden ser nulos
             val statement = objConexion?.createStatement()
             val resultSet = statement?.executeQuery("""SELECT 
-    T.IdTrabajo, 
+        T.IdTrabajo, 
     T.Titulo, 
+    T.IdEmpleador, 
     E.NombreRepresentante,  -- Agrega el nombre del representante
     A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
     T.Descripcion,   

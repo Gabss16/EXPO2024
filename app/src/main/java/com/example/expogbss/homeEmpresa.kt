@@ -433,6 +433,16 @@ WHERE
                 }
 
             }
+
+            val btnCerrarChamba = view.findViewById<ImageButton>(R.id.idBtnDismisstrabajo)
+
+            // on below line we are adding on click listener
+            // for our dismissing the dialog button.
+            btnCerrarChamba.setOnClickListener {
+                // on below line we are calling a dismiss
+                // method to close our dialog.
+                dialog.dismiss()
+            }
             // below line is use to set cancelable to avoid
             // closing of dialog box when clicking on the screen.
             dialog.setCancelable(false)

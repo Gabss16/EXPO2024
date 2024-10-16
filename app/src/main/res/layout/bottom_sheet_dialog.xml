@@ -33,6 +33,22 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <ImageButton
+                    android:id="@+id/idBtnDismisstrabajo"
+                    android:layout_width="34dp"
+                    android:layout_height="33dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:backgroundTint="#00FFFFFF"
+                    app:layout_constraintBottom_toTopOf="@+id/txtTituloJob"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.971"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:srcCompat="@drawable/quantum_ic_clear_grey600_24" />
+
                 <EditText
                     android:id="@+id/txtTituloJob"
                     android:layout_width="wrap_content"

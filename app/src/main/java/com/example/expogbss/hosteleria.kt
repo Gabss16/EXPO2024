@@ -50,6 +50,7 @@ class hosteleria : AppCompatActivity() {
             val resultSet = statement?.executeQuery("""SELECT 
     T.IdTrabajo, 
     T.Titulo, 
+    T.IdEmpleador, 
     E.NombreRepresentante,  -- Agrega el nombre del representante
     A.NombreAreaDetrabajo AS NombreAreaDeTrabajo, 
     T.Descripcion,   
@@ -71,7 +72,7 @@ INNER JOIN
 INNER JOIN 
     EMPLEADOR E ON T.IdEmpleador = E.IdEmpleador  -- Agregar JOIN con la tabla EMPLEADOR
 WHERE 
-    T.IdAreaDeTrabajo = 7 AND T.Estado = 'Activo';""")!!
+    T.IdAreaDeTrabajo = 7 AND T.Estado = 'Activo'""")!!
 
 
             //en esta variable se añaden TODOS los valores de mascotas
@@ -82,6 +83,7 @@ WHERE
             while (resultSet.next()) {
                 val IdTrabajo = resultSet.getInt("IdTrabajo")
                 val Titulo = resultSet.getString("Titulo")
+                val IdEmpleador = resultSet.getString("IdEmpleador")
                 val NombreRepresentante = resultSet.getString("NombreRepresentante")
                 val NombreAreaDeTrabajo  = resultSet.getString("NombreAreaDeTrabajo")
                 val Descripcion = resultSet.getString("Descripcion")
